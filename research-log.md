@@ -37,10 +37,3 @@ Questions for Warwick:
 
 * What angle you think is more interesting -> whether to co-occurrence from joint species distributions models or -> whether species distribution models are improved more with real interaction data or inferred co-occurrence. *Answer: If one could do both directions it would be really cool story. Otherwise interactions -> SDM sounds good*
 * Danger of too many species with SY-NZ? *Answer: Yes, and also many understudied species and many missing interactions*
-
-#### Todo
-
-* [x] Email Lupe to ask about Perry's data
-* [ ] Understand copulas better, what's the difference between them and normal JSDM
-* [ ] Read Godsoe paper
-* [ ] Read Alison barner paper
