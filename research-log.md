@@ -2,15 +2,20 @@
 
 *Fernando Cagua*
 
-#### 4 October 2018
+#### 11 October 2018
 
-Had a meeting with Daniel. Regarding potential datasets that include data on species locations to construct a distribution model and real interactions between the species. He highlighted three possible sources:
+Alison Barner has a cool paper checking whether co-occurrence patterns can be used to infer non-trophic interactions in some tidal communities. Answer is no. Very different results. See study [here](http://onlinelibrary.wiley.com/doi/10.1002/ecy.2133/full). Data is available though and perhaps could be used to explore the same question from a different angle, whether knowing the interactions is useful to infer species distributions or co-occurrence are better still. Her dataset is closely related to PISCO to be OK. It has shit tons of survey data from Alaska to California. Which might help to use large scale species distribution models. 
 
-* PISCO. The pacific intertidal database of sedentary things. Has data on co-occurrence and potentially also on interactions of species. Can ask Spencer Woods (who was here on visit, and used to work maintaining the database) and Alison Barner (who seems to have worked with data and approaches to co-occurrence).
+Questions for Warwick:
 
-* EOL/GBIF Interaction database. 
+* What angle you think is more interesting -> whether to co-occurrence from joint species distributions models or -> whether species distribution models are improved more with real interaction data or inferred co-occurrence. *Answer: If one could do both directions it would be really cool story. Otherwise interactions -> SDM sounds good*
+* Danger of too many species with SY-NZ? *Answer: Yes, and also many understudied species and many missing interactions*
 
-Also suggested to check [Martin Anderson R package on copulas](https://cran.r-project.org/web/packages/copula/copula.pdf). It has examples about fitting copulas in R
+#### 10 October 2018
+
+Had a meeting with Jason. He also mentioned the Plant Sy-nz database but highlighted that it has mainly herbivore interactions. He suggested that an option could be to integrate the data from George Perry (that Lupe is using for her project) and that of [Ruffel and Didham](https://newzealandecology.org/nzje/3296.pdf). 
+
+Perry's data seems to be a collection of bird and plant interactions. Ruffel and Dietham worked on predicting the effect of forest cover and trapping on bird populations. 
 
 #### 7 October 2018
 
@@ -23,17 +28,12 @@ After writing an email to Warwick about potential databases for this work he rep
 
 Warwick also suggested to talk to William Godsoe, who has been thinking about similar problems before. See his link to his paper with Gravel [Integrating Biogeography with Contemporary Niche Theory](https://www-sciencedirect-com.ezproxy.canterbury.ac.nz/science/article/pii/S0169534717300836).
 
-#### 10 October 2018
+#### 4 October 2018
 
-Had a meeting with Jason. He also mentioned the Plant Sy-nz database but highlighted that it has mainly herbivore interactions. He suggested that an option could be to integrate the data from George Perry (that Lupe is using for her project) and that of [Ruffel and Didham](https://newzealandecology.org/nzje/3296.pdf). 
+Had a meeting with Daniel. Regarding potential datasets that include data on species locations to construct a distribution model and real interactions between the species. He highlighted three possible sources:
 
-Perry's data seems to be a collection of bird and plant interactions. Ruffel and Dietham worked on predicting the effect of forest cover and trapping on bird populations. 
+* PISCO. The pacific intertidal database of sedentary things. Has data on co-occurrence and potentially also on interactions of species. Can ask Spencer Woods (who was here on visit, and used to work maintaining the database) and Alison Barner (who seems to have worked with data and approaches to co-occurrence).
 
-#### 11 October 2018
+* EOL/GBIF Interaction database. 
 
-Alison Barner has a cool paper checking whether co-occurrence patterns can be used to infer non-trophic interactions in some tidal communities. Answer is no. Very different results. See study [here](http://onlinelibrary.wiley.com/doi/10.1002/ecy.2133/full). Data is available though and perhaps could be used to explore the same question from a different angle, whether knowing the interactions is useful to infer species distributions or co-occurrence are better still. Her dataset is closely related to PISCO to be OK. It has shit tons of survey data from Alaska to California. Which might help to use large scale species distribution models. 
-
-Questions for Warwick:
-
-* What angle you think is more interesting -> whether to co-occurrence from joint species distributions models or -> whether species distribution models are improved more with real interaction data or inferred co-occurrence. *Answer: If one could do both directions it would be really cool story. Otherwise interactions -> SDM sounds good*
-* Danger of too many species with SY-NZ? *Answer: Yes, and also many understudied species and many missing interactions*
+Also suggested to check [Martin Anderson R package on copulas](https://cran.r-project.org/web/packages/copula/copula.pdf). It has examples about fitting copulas in R
