@@ -2,11 +2,15 @@
 
 *Fernando Cagua*
 
+#### 16 October 2018
+
+Had a look at the intro of [Dependence Modeling with Copulas by Harry Joe](https://www.crcpress.com/Dependence-Modeling-with-Copulas/Joe/p/book/9781466583221). Just gives an overview of what copulas are, which I already. Won't be using copula theory for the chapter, as it's just a trick to get the multivariate methods working on non-continuous data. So there goes 260 dollars wasted. I could have used that money so much better...
+
 #### 15 October 2018
 
 Spent most of the day reading Popovich paper. I understand it a bit better. 
 
-Copulas are just a method that allows to specify models for marginal distributions separately from the dependence structure that links those distributions into a joint one. That's it. 
+Copulas are just a method that allows to specify models for marginal distributions separately from the dependence structure that links those distributions into a joint one. That's it. Copulas can mix variables that have different distributions because it all get translated to uniform margins between 0 and 1.
 
 What popovich paper is about is that there are many methods of dependence modelling that are cool (like Gaussian graphical models, factor analysis, latent variables, etc.) but these only work in Gaussian data. Not the case when you have species counts or presence/absence. Her work allows us to use these cool methods in discrete data by using a copula and some tricks of expectation maximisation. She shows that in many cases this approach is better than using dependence modelling in Pearson residuals (what happens on joint species distributions?) or the methods adapted for discrete data (there aren't many). It takes more computational power though. 
 
