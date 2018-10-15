@@ -2,6 +2,20 @@
 
 *Fernando Cagua*
 
+#### 15 October 2018
+
+Spent most of the day reading Popovich paper. I understand it a bit better. 
+
+Copulas are just a method that allows to specify models for marginal distributions separately from the dependence structure that links those distributions into a joint one. That's it. 
+
+What popovich paper is about is that there are many methods of dependence modelling that are cool (like Gaussian graphical models, factor analysis, latent variables, etc.) but these only work in Gaussian data. Not the case when you have species counts or presence/absence. Her work allows us to use these cool methods in discrete data by using a copula and some tricks of expectation maximisation. She shows that in many cases this approach is better than using dependence modelling in Pearson residuals (what happens on joint species distributions?) or the methods adapted for discrete data (there aren't many). It takes more computational power though. 
+
+Daniel said in a previous meeting that Copulas allow you to infer actual interactions from species associations. Not at all... Copulas estimate a the link between distributions. He was probably thinking about Gaussian graphical models, which give the conditional dependence of two variables (the dependence given that the dependence among other variables has been taken care of). 
+
+Gaussian graphical models are nicely explained in YouTube and [Epskamp et al. “The Gaussian Graphical Model in Cross-Sectional and Time-Series Data.”](https://doi.org/10.1080/00273171.2018.1454823). 
+
+Some open questions for the project: I was thinking that if species dependences encapsulate missing environmental variables, then there should be a relationship with latent variables? Latent variables should be able to pick up the missing covariates? Or to simplify dependence on other species? Lasso to fit models of species-species presence/absence?
+
 #### 11 October 2018
 
 Alison Barner has a cool paper checking whether co-occurrence patterns can be used to infer non-trophic interactions in some tidal communities. Answer is no. Very different results. See study [here](http://onlinelibrary.wiley.com/doi/10.1002/ecy.2133/full). Data is available though and perhaps could be used to explore the same question from a different angle, whether knowing the interactions is useful to infer species distributions or co-occurrence are better still. Her dataset is closely related to PISCO to be OK. It has shit tons of survey data from Alaska to California. Which might help to use large scale species distribution models. 
