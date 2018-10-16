@@ -2,6 +2,16 @@
 
 *Fernando Cagua*
 
+#### 17 October 2018
+
+Had a skype with Lupe regarding Perry's data. It looks like something that might be perfect for the project. But there is the danger that Perry is using it for exactly the same thing. Need to discuss. 
+
+Data consists on bird-plant interactions. Interactions were collected from the literature and they specify the resource that the bird was using from the plant. Lupe believes interactions are restricted to thropic relationships (fruit, nectar, bark, leaves, ...). Each interaction has a broad location associated with it, but perhaps it's possible to obtain more detailled locations by looking at the original publications. 
+
+Plant ocurrence could be obtained from the national plant survey and other databases and bird ocurrences could potentially be obtained from the "Atlas of bird distribution in New Zealand" 1969-1978 and 1999-2004 (Robertson et al. 2007). Both editions can be found in the library and it might be possible to obtain the raw data by contacting the authors. 
+
+Need to ask Jason about Perry's objectives with the data. Might be dangeroulsy overlaping with my objectives.
+
 #### 16 October 2018
 
 Had a look at the intro of [Dependence Modeling with Copulas by Harry Joe](https://www.crcpress.com/Dependence-Modeling-with-Copulas/Joe/p/book/9781466583221). Just gives an overview of what copulas are, which I already. Won't be using copula theory for the chapter, as it's just a trick to get the multivariate methods working on non-continuous data. So there goes 260 dollars wasted. I could have used that money so much better...
