@@ -12,6 +12,16 @@ Plant ocurrence could be obtained from the national plant survey and other datab
 
 Need to ask Jason about Perry's objectives with the data. Might be dangeroulsy overlaping with my objectives.
 
+##### Meeting Daniel
+
+I meet Daniel to bring him up to the samep page in the progress of the project. Explained to him what a copula is and how it might work, so hopefully wer're doing better there. Also explained the idea of ussing Perry's data. He highlighted the relationship between birds and plants might not be strong enough to be detected in the species distribution. 
+
+Mentioned that there might actually be some interaction throphic data for the PISCO project. I'll email spencer about it.
+
+##### Group meeting
+
+Explained the copula approach to the lab and a brief idea of the project. Audrie mentioned that she's worked with copulas and warned that they might not work very well when there are big shifts in the predictor variables (for example when 
+
 #### 16 October 2018
 
 Had a look at the intro of [Dependence Modeling with Copulas by Harry Joe](https://www.crcpress.com/Dependence-Modeling-with-Copulas/Joe/p/book/9781466583221). Just gives an overview of what copulas are, which I already. Won't be using copula theory for the chapter, as it's just a trick to get the multivariate methods working on non-continuous data. So there goes 260 dollars wasted. I could have used that money so much better...
