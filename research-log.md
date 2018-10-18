@@ -2,6 +2,12 @@
 
 *Fernando Cagua*
 
+#### 18 October 2018
+
+Had a meeting with Jason. Seems like Perry is not planning to use the data for a similar project to mine, which is good. Will get in touch with him. 
+
+Jason was also very insistent on checking wether the the interactions between species are different at the fringes of the distributions or not. Do they interact with core species or do they expand to interact with other species. He suggested using data from the web of live worldwide to check that.
+
 #### 17 October 2018
 
 Had a skype with Lupe regarding Perry's data. It looks like something that might be perfect for the project. But there is the danger that Perry is using it for exactly the same thing. Need to discuss. 
