@@ -15,7 +15,8 @@ read_data_plan <- drake::drake_plan(
 )
 
 exploration_plan <- drake::drake_plan(
-  species_list = get_species_list(networks, metadata)
+  species_list = get_species_list(networks, metadata), 
+  interaction_list = get_interaction_list(networks, metadata)
 )
 
 full_plan <- rbind(
