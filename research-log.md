@@ -2,6 +2,28 @@
 
 *Fernando Cagua*
 
+#### 23 October 2018
+
+##### Skype with Gordana
+
+Looks like the current method might work nicely for the perspective of checking wether interactions match species associations but not the other way arround. She said one nice way to test is to check wether the AIC of the Gaussian Graphical Model is higher when the graph is constrained by the interactions to when it isnt. It's not clear however how that could be made. Althouhg Gordana said there should be something there too. 
+
+Gordana said that to go from the dependencies to the marginals is something that interest her and could be potentially be done using something called "Profile Likelihood". I should check what that is. It's not done and it's not something I see myself doing. Also, regarding using species abundances/occurrences as predictors for the species distribution model is, in her experience, not very helpful. Often much better results could be achieved by including the spatial autocorrelation in the models. 
+
+She is going to send me a draft of a paper for the method aimed for ecologists and some preliminary package sometime next week. 
+
+##### Chat with Mathias
+
+Had a brief chat with Mathias about the Andes dataset. Includes 2 networks from Colombia, 2 from Ecuador, 2 from Peru, 1 from Bolivia, and 1 from Argentina. There is very little overlap for the birds and pretty much none for the plants. In that regard checking wether interactions change at the core or at the fringes of the distribution is harder. 
+
+That being said he said that something could be done by using "morphospecies"-- morphologically similar species. If tree A interacts with bird b. Even though A is not at a particular place, b interacts with AA which has very similar functional role as A. 
+
+Info about the data and species distributions can be found in the Thesis of Irene Bender at Frankfurt and Halle Uni. He's also going to send me a draft of a paper that looks into the future distributions of these species and how that reflects in the interactions. 
+
+##### Spencer e-mail
+
+Spencer is not available until October 29. Will have to wait for his response. 
+
 #### 18 October 2018
 
 Had a meeting with Jason. Seems like Perry is not planning to use the data for a similar project to mine, which is good. Will get in touch with him. 
