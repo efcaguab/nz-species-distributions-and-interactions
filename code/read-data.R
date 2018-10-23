@@ -37,3 +37,12 @@ read_metadata <- function(metadata_file){
                                 "lat", 
                                 "lon"))
 }
+
+# x is a dataframe
+remove_unknown_species <- function(x){
+  x %>% 
+    dplyr::filter_if(is.character, 
+                     dplyr::all_vars(!grepl(pattern = "undefined", x = ., ignore.case = TRUE))) %>% 
+    dplyr::filter_if(is.character, 
+                     dplyr::all_vars(!grepl(pattern = "unidentified", x = ., ignore.case = TRUE)))
+}
