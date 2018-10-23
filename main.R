@@ -13,11 +13,15 @@ read_data_plan <- drake::drake_plan(
   networks = read_networks(network_folder = "./data/raw/web-of-life_2018-10-23_042854"),
   metadata = read_metadata(drake::file_in("./data/raw/web-of-life_2018-10-23_042854/references.csv"))
 )
+
+exploration_plan <- drake::drake_plan(
+  species_list = get_species_list(networks, metadata)
 )
 
 full_plan <- rbind(
-  read_data_plan
+  read_data_plan, 
+  exploration_plan
 )
 
-drake::drake_config(full_plan)
+full_config <- drake::drake_config(full_plan)
 drake::make(full_plan)
