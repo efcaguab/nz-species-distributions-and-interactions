@@ -30,8 +30,8 @@ get_interaction_list <- function(networks, metadata){
   
   networks %>%
     purrr::map_df(interactions_as_df, .id = "net_name")  %>%
-    dplyr::mutate(plant_genus = get_first_word(pla), 
-                  pol_genus = get_first_word(pol))  %>%
+    dplyr::mutate(pla_genus = get_first_word(pla_name), 
+                  pol_genus = get_first_word(pol_name))  %>%
     dplyr::inner_join(locality_info, by = "net_name")
 }
 
@@ -39,5 +39,5 @@ interactions_as_df <- function(x){
   as.data.frame.table(x) %>% 
     dplyr::filter(Freq > 0) %>%
     dplyr::mutate_if(is.factor, as.character) %>% 
-    `names<-`(c("pla", "pol", "int_weight"))
+    `names<-`(c("pla_name", "pol_name", "int_weight"))
 }
