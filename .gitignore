@@ -38,3 +38,5 @@ rsconnect/
 
 research-log\.html
 packrat/lib*/
+
+*.DS_Store
