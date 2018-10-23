@@ -20,6 +20,10 @@ That being said he said that something could be done by using "morphospecies"-- 
 
 Info about the data and species distributions can be found in the Thesis of Irene Bender at Frankfurt and Halle Uni. He's also going to send me a draft of a paper that looks into the future distributions of these species and how that reflects in the interactions. 
 
+##### Spencer e-mail
+
+Spencer is not available until October 29. Will have to wait for his response. 
+
 #### 18 October 2018
 
 Had a meeting with Jason. Seems like Perry is not planning to use the data for a similar project to mine, which is good. Will get in touch with him. 
