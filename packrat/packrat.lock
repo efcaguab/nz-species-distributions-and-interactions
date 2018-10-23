@@ -134,6 +134,12 @@ Source: CRAN
 Version: 0.7
 Hash: 20757f5c393ed0ecf96c9e8e6d8d514c
 
+Package: hms
+Source: CRAN
+Version: 0.4.2
+Hash: b4096a4f6a6736138e9a825c2baaacf0
+Requires: pkgconfig, rlang
+
 Package: htmltools
 Source: CRAN
 Version: 0.3.6
@@ -204,6 +210,12 @@ Source: CRAN
 Version: 0.2.5
 Hash: 8b0c16db10c7e20b70cd37779a673a8b
 Requires: magrittr, rlang, tibble
+
+Package: readr
+Source: CRAN
+Version: 1.1.1
+Hash: 427f34296c2da0f1d24be2e9890f6964
+Requires: BH, R6, Rcpp, hms, tibble
 
 Package: rlang
 Source: CRAN
