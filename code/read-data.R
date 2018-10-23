@@ -8,6 +8,8 @@ read_networks <- function(network_folder){
   list.files(network_folder, full.names = T) %>%
     `[`(grepl("M_PL", .)) %>%
     purrr::map(readr::read_csv) %>%
+    # remove mistakes 
+    purrr::map(~dplyr::filter(., X1 != 'Abundance"')) %>%
     purrr::map(int_df_to_matrix) %>%
     `names<-`(net_names)
 }  
