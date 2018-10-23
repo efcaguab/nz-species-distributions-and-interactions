@@ -2,6 +2,10 @@
 
 *Fernando Cagua*
 
+#### 24 October 2018
+
+Started having a look at wether species & interactions overlap enough in the Web of Life dataset. The idea is to check wether species interact with core species or do they expand to interact with other species. As suggested by Jason. Exploration can be found [here](./paper/data-exploration/turnover.md)
+
 #### 23 October 2018
 
 ##### Skype with Gordana
