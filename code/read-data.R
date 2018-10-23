@@ -20,3 +20,18 @@ int_df_to_matrix <- function(x){
     `rownames<-`(row_names) %>%
     `colnames<-`(column_names)
 }
+
+# read metadata
+read_metadata <- function(metadata_file){
+  readr::read_csv(metadata_file, 
+                  col_names = c("net_name", 
+                                "n_spp", 
+                                "n_int",
+                                "c", 
+                                "int_type", 
+                                "data_type", 
+                                "reference", 
+                                "loc_name",
+                                "lat", 
+                                "lon"))
+}
