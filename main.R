@@ -16,7 +16,9 @@ read_data_plan <- drake::drake_plan(
 
 exploration_plan <- drake::drake_plan(
   species_list = get_species_list(networks, metadata), 
-  interaction_list = get_interaction_list(networks, metadata)
+  interaction_list = get_interaction_list(networks, metadata),
+  rmarkdown::render(input = drake::knitr_in("paper/data-exploration/turnover.Rmd"), 
+                    output_file = drake::file_out("paper/data-exploration/turnover.md"))
 )
 
 full_plan <- rbind(

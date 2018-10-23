@@ -1,0 +1,102 @@
+---
+title: "Turnover of species and interactions"
+author: "Fernando Cagua"
+date: "10/23/2018"
+output:
+  md_document:
+    variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+The research question is to investigate whether species interact differently in the core of their range versus at the fringes of their distribution, where one would expect it to be harder.
+
+The aim of this document is to explore whetherthe interaction data available in the Bascompte's Web of Life is adequate to answer this question or not. 
+
+We start by checking wether species (and interactions) are reflected in enough localities to be able to detect a signal of change across the habitat. 
+
+# Species turnover
+
+```{r}
+require(ggplot2)
+drake::loadd(species_list)
+
+get_sp_freq_by_group <- function(species_list, group){
+  group_var <- dplyr::enquo(group)
+  species_list %>%
+    dplyr::group_by(!!group_var, guild) %>%
+    dplyr::summarise(n_net = dplyr::n_distinct(net_name), 
+                     n_loc = dplyr::n_distinct(loc_name)) %>%
+    dplyr::group_by(guild) %>%
+    dplyr::mutate(n_net_rank = dplyr::row_number(dplyr::desc(n_net)),
+                  n_loc_rank = dplyr::row_number(dplyr::desc(n_loc)))
+}
+
+plot_freq_step <- function(freq_df){
+  if ("guild" %in% names(freq_df)){
+    p <- freq_df %>%
+      ggplot(aes(x = n_loc_rank, y = n_loc, colour = guild)) 
+  } else {
+    p <- freq_df %>%
+      ggplot(aes(x = n_loc_rank, y = n_loc)) 
+  }
+  p +
+  geom_step(size = 1) +
+  scale_x_log10() +
+  theme_bw() +
+  scale_color_brewer(palette = "Paired", 
+                     labels = c("plants", "pollinators")) +
+  labs(x = "rank", 
+       y = "# locations") +
+  theme(legend.position = c(0.99, 0.99), 
+        legend.justification = c(1,1))
+}
+species_list %>%
+  remove_unknown_species() %>% 
+  get_sp_freq_by_group(sp_name) %>% 
+  plot_freq_step() +
+  ggtitle("number of locations per species")
+
+species_list %>%
+  remove_unknown_species() %>% 
+  get_sp_freq_by_group(genus) %>%
+  plot_freq_step()+
+  ggtitle("number of locations per genus")
+```
+
+
+
+```{r}
+require(ggplot2)
+drake::loadd(interaction_list)
+
+get_int_freq_by_group <- function(interaction_list, pla_group, pol_group){
+  pla_group_var <- dplyr::enquo(pla_group)
+  pol_group_var <- dplyr::enquo(pol_group)
+  
+  interaction_list %>%
+    dplyr::group_by(!!pla_group_var, !!pol_group_var) %>%
+    dplyr::summarise(n_net = dplyr::n_distinct(net_name), 
+                     n_loc = dplyr::n_distinct(loc_name)) %>%
+    dplyr::group_by() %>%
+    dplyr::mutate(n_net_rank = dplyr::row_number(dplyr::desc(n_net)),
+                  n_loc_rank = dplyr::row_number(dplyr::desc(n_loc)))
+}
+
+interaction_list %>%
+  remove_unknown_species() %>% 
+  get_int_freq_by_group(pla_name, pol_name) %>% 
+  plot_freq_step() +
+  ggtitle("locations per interactions (species)")
+
+interaction_list %>% 
+  remove_unknown_species() %>% 
+  get_int_freq_by_group(pla_genus, pol_genus) %>% 
+  plot_freq_step() +
+  ggtitle("locations per interactions (genus)")
+```
+
+# Interactions turnover
+
