@@ -147,8 +147,8 @@ sp_deg_rank %>%
   geom_label_repel(data = dplyr::filter(sp_deg_rank, selected), 
                   aes(label = sp_name), size = 3, fontface =  "italic",
                   color = RColorBrewer::brewer.pal(3, "Paired")[2]) +
-  # scale_x_log10() +
-  scale_y_log10() +
+  scale_x_log10() +
+  # scale_y_log10() +
   scale_fill_manual(values = c(NA, RColorBrewer::brewer.pal(3, "Paired")[2])) +
   scale_color_brewer(palette = "Paired") +
   scale_shape_manual(values = c(21, 24)) +
