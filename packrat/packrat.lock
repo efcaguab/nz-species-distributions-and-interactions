@@ -147,6 +147,12 @@ Hash: 8332448b76ff31472a1bf6dd31fcddb1
 Requires: digest, gtable, lazyeval, plyr, reshape2, rlang, scales,
     tibble, viridisLite, withr
 
+Package: ggrepel
+Source: CRAN
+Version: 0.8.0
+Hash: 993bab3c01354e541f6c718ced72d88a
+Requires: Rcpp, ggplot2, scales
+
 Package: globals
 Source: CRAN
 Version: 0.12.4
