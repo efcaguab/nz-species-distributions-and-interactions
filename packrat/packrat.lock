@@ -325,6 +325,13 @@ Version: 1.4.2
 Hash: 83895360ce4f8d2ce92eee00526b5b0b
 Requires: cli, crayon, pillar, rlang
 
+Package: tidyr
+Source: CRAN
+Version: 0.8.1
+Hash: 3b67391a922e482f233a29ad48e7ed0f
+Requires: Rcpp, dplyr, glue, magrittr, purrr, rlang, stringi, tibble,
+    tidyselect
+
 Package: tidyselect
 Source: CRAN
 Version: 0.2.5
