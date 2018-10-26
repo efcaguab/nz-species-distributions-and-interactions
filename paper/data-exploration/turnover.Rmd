@@ -23,17 +23,6 @@ We start by checking wether species (and interactions) are reflected in enough l
 require(ggplot2)
 drake::loadd(species_list)
 
-get_sp_freq_by_group <- function(species_list, group){
-  group_var <- dplyr::enquo(group)
-  species_list %>%
-    dplyr::group_by(!!group_var, guild) %>%
-    dplyr::summarise(n_net = dplyr::n_distinct(net_name), 
-                     n_loc = dplyr::n_distinct(loc_name)) %>%
-    dplyr::group_by(guild) %>%
-    dplyr::mutate(n_net_rank = dplyr::row_number(dplyr::desc(n_net)),
-                  n_loc_rank = dplyr::row_number(dplyr::desc(n_loc)))
-}
-
 plot_freq_step <- function(freq_df){
   if ("guild" %in% names(freq_df)){
     p <- freq_df %>%
@@ -72,10 +61,7 @@ species_list %>%
 require(ggplot2)
 drake::loadd(interaction_list)
 
-get_int_freq_by_group <- function(interaction_list, pla_group, pol_group){
-  pla_group_var <- dplyr::enquo(pla_group)
-  pol_group_var <- dplyr::enquo(pol_group)
-  
+
   interaction_list %>%
     dplyr::group_by(!!pla_group_var, !!pol_group_var) %>%
     dplyr::summarise(n_net = dplyr::n_distinct(net_name), 

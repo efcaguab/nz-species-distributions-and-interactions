@@ -41,3 +41,29 @@ interactions_as_df <- function(x){
     dplyr::mutate_if(is.factor, as.character) %>% 
     `names<-`(c("pla_name", "pol_name", "int_weight"))
 }
+
+# get frequency of group (eg sp_name or genus)
+get_sp_freq_by_group <- function(species_list, group){
+  group_var <- dplyr::enquo(group)
+  species_list %>%
+    dplyr::group_by(!!group_var, guild) %>%
+    dplyr::summarise(n_net = dplyr::n_distinct(net_name), 
+                     n_loc = dplyr::n_distinct(loc_name)) %>%
+    dplyr::group_by(guild) %>%
+    dplyr::mutate(n_net_rank = dplyr::row_number(dplyr::desc(n_net)),
+                  n_loc_rank = dplyr::row_number(dplyr::desc(n_loc)))
+}
+
+# get frequency of interactions by group (eg pla_name & pol_name or pla_genus $pol_genus)
+get_int_freq_by_group <- function(interaction_list, pla_group, pol_group){
+  pla_group_var <- dplyr::enquo(pla_group)
+  pol_group_var <- dplyr::enquo(pol_group)
+  
+  interaction_list %>%
+    dplyr::group_by(!!pla_group_var, !!pol_group_var) %>%
+    dplyr::summarise(n_net = dplyr::n_distinct(net_name), 
+                     n_loc = dplyr::n_distinct(loc_name)) %>%
+    dplyr::group_by() %>%
+    dplyr::mutate(n_net_rank = dplyr::row_number(dplyr::desc(n_net)),
+                  n_loc_rank = dplyr::row_number(dplyr::desc(n_loc)))
+}
