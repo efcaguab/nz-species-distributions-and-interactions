@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE)
 ```
 
 We want to investigate whether species interact differently at the core of their range compared to the fringes of their distribution. 
@@ -86,12 +86,88 @@ int_rank %>%
 ```
 
 ```{r}
-interaction_list %>%
-  remove_unknown_species() %>% 
-  get_int_freq_by_group(pla_name, pol_name)  %>%
+int_rank %>%
   dplyr::filter(n_loc_rank <= 20) %>% 
   dplyr::select(n_loc_rank, pla_name, pol_name, n_loc) %>%
   dplyr::arrange(n_loc_rank) %>%
   knitr::kable(col.names = c("", "plant", "pollinator", "# locations"), 
                caption = 'Top 20 most "widespread" interactions')
 ```
+
+### Degree vs. widespread
+
+```{r}
+degrees <- interaction_list %>%
+  dplyr::group_by(pla_name) %>%
+  dplyr::mutate(pla_deg = dplyr::n_distinct(pol_name)) %>%
+  dplyr::group_by(pol_name) %>%
+  dplyr::mutate(pol_deg = dplyr::n_distinct(pla_name))%>%
+  dplyr::group_by()
+
+guilds <- c("pla", "pol")
+
+sp_degree <- guilds %>%
+  purrr::map(~dplyr::select_at(degrees, dplyr::vars(dplyr::starts_with(.)))) %>%
+  purrr::map(~dplyr::distinct(.)) %>%
+  purrr::map_df(~`names<-`(., c("sp_name", "genus", "deg")), .id = "guild") %>%
+  dplyr::mutate(guild = factor(guild, labels = guilds), 
+                guild = as.character(guild)) %>%
+  remove_unknown_species()
+
+threshold <- 3
+# select species with interactions that occur in 3 locations or more
+sp_int_thres <- int_rank %>%
+  dplyr::filter(n_loc >= threshold) %>%
+  dplyr::select_at(dplyr::vars(dplyr::ends_with("name"))) %>%
+  tidyr::gather("guild", "sp_name", pla_name, pol_name) %>%
+  dplyr::mutate(guild = substr(guild, 1,3)) %>%
+  dplyr::distinct() 
+
+# select species that occur in 3 locations or more
+sp_thres <- sp_rank %>%
+  dplyr::filter(n_loc >= 5) %>%
+  dplyr::select(guild, sp_name)
+
+selected_species <- dplyr::inner_join(sp_int_thres, sp_thres) %>%
+  dplyr::mutate(selected = TRUE)
+
+sp_deg_rank <- sp_rank %>%
+  dplyr::inner_join(sp_degree) %>% 
+  dplyr::left_join(selected_species) %>%
+  dplyr::mutate(selected = dplyr::if_else(is.na(selected), FALSE, selected)) 
+```
+
+```{r}
+require(ggplot2)
+require(ggrepel)
+
+sp_deg_rank %>%
+  ggplot(aes(x = deg, y = n_loc)) +
+  geom_point(aes(colour = selected, fill = selected, shape = guild)) +
+  geom_label_repel(data = dplyr::filter(sp_deg_rank, selected), 
+                  aes(label = sp_name), size = 3, fontface =  "italic",
+                  color = RColorBrewer::brewer.pal(3, "Paired")[2]) +
+  # scale_x_log10() +
+  scale_y_log10() +
+  scale_fill_manual(values = c(NA, RColorBrewer::brewer.pal(3, "Paired")[2])) +
+  scale_color_brewer(palette = "Paired") +
+  scale_shape_manual(values = c(21, 24)) +
+  guides(color = guide_legend("focal species"), 
+         fill = guide_legend("focal species")) +
+  theme_bw() +
+  theme(legend.position = c(0.02,0.98), 
+        legend.justification = c(0,1), 
+        legend.box = "horizontal") +
+  labs(title = "species degree vs. number of locations", 
+       subtitle = "there are 16 focal species, mostly generalist pollinators",
+       caption = "focal species are those that have the same interaction in >= 3 locations and are present >= 5 locations", 
+       y = "# locations", 
+       x = "species degree")
+
+sp_deg_rank %>%
+  dplyr::filter(selected) %>% 
+  dplyr::select(guild, sp_name, n_loc, deg) %>%
+  dplyr::arrange(guild, deg, n_loc) %>%
+  knitr::kable(col.names = c("guild", "species", "# locations", "degree"))
+```
+

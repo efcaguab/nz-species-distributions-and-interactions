@@ -60,3 +60,26 @@ Species & interaction turnover
 | 18  | Fuchsia regia         | Clytolaema rubricauda    |             3|
 | 19  | Galactites tomentosa  | Apis mellifera           |             3|
 | 20  | Galium propinquum     | Heteria appendiculata    |             3|
+
+### Degree vs. widespread
+
+![](turnover_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+| guild | species               |  \# locations|  degree|
+|:------|:----------------------|-------------:|-------:|
+| pla   | Fuchsia regia         |             5|       6|
+| pla   | Ixeris dentata        |             6|      38|
+| pla   | Hypochoeris radicata  |             6|      72|
+| pla   | Cirsium arvense       |             5|      83|
+| pol   | Andrena Knuthi        |             5|       9|
+| pol   | Clytolaema rubricauda |             5|      16|
+| pol   | Helophilus virgatus   |             6|      24|
+| pol   | Maniola jurtina       |             7|      30|
+| pol   | Thalurania glaucopis  |             5|      31|
+| pol   | Bombus lapidarius     |             6|      33|
+| pol   | Bombus terrestris     |             8|      42|
+| pol   | Eristalis cerealis    |             6|      49|
+| pol   | Bombus pascuorum      |             6|      55|
+| pol   | Eristalis tenax       |            20|     107|
+| pol   | Episyrphus balteatus  |            13|     143|
+| pol   | Apis mellifera        |            34|     444|
