@@ -46,24 +46,21 @@ plot_freq_step <- function(freq_df){
           legend.justification = c(1,1))
 }
 
-species_list %>%
+sp_rank <- species_list %>%
   remove_unknown_species() %>% 
-  get_sp_freq_by_group(sp_name) %>% 
-  plot_freq_step() +
-  labs(title = "number of locations per species", 
-       subtitle = "species turnover in the Web of Life database")
+  get_sp_freq_by_group(sp_name) 
 
-# species_list %>%
-#   remove_unknown_species() %>% 
-#   get_sp_freq_by_group(genus) %>%
-#   plot_freq_step()+
-#   ggtitle("number of locations per genus")
+sp_rank %>%
+  plot_freq_step() +
+  geom_hline(yintercept = 4.5, size = 0.5, linetype = 2) +
+  labs(title = "number of locations per species", 
+       subtitle = "species turnover in the Web of Life database", 
+       caption = "dashed line indicates the (arbitrary) threshold for selecting focal species")
+
 ```
 
 ```{r}
-species_list %>%
-  remove_unknown_species() %>% 
-  get_sp_freq_by_group(sp_name) %>%
+sp_rank %>% 
   dplyr::filter(n_loc_rank <= 10) %>%
   dplyr::select(n_loc_rank, guild, sp_name, n_loc) %>%
   dplyr::arrange(guild, n_loc_rank) %>%
@@ -76,18 +73,16 @@ species_list %>%
 require(ggplot2)
 drake::loadd(interaction_list)
 
-interaction_list %>%
+int_rank <- interaction_list %>%
   remove_unknown_species() %>% 
-  get_int_freq_by_group(pla_name, pol_name) %>% 
+  get_int_freq_by_group(pla_name, pol_name) 
+
+int_rank %>%
   plot_freq_step() +
+  geom_hline(yintercept = 2.9, size = 0.5, linetype = 2) +
   labs(title = "locations per interactions", 
-       subtitle = "interactions turnover in the Web of Life database")
-# 
-# interaction_list %>% 
-#   remove_unknown_species() %>% 
-#   get_int_freq_by_group(pla_genus, pol_genus) %>% 
-#   plot_freq_step() +
-#   ggtitle("locations per interactions (genus)")
+       subtitle = "interactions turnover in the Web of Life database", 
+       caption = "dashed line indicates the (arbitrary) threshold for selecting focal species")
 ```
 
 ```{r}
