@@ -51,7 +51,7 @@ species_list %>%
   get_sp_freq_by_group(sp_name) %>% 
   plot_freq_step() +
   labs(title = "number of locations per species", 
-       subtitle = "turnover of species in the Web of Life database")
+       subtitle = "species turnover in the Web of Life database")
 
 # species_list %>%
 #   remove_unknown_species() %>% 
@@ -80,8 +80,8 @@ interaction_list %>%
   remove_unknown_species() %>% 
   get_int_freq_by_group(pla_name, pol_name) %>% 
   plot_freq_step() +
-  labs(litle = "locations per interactions", 
-       subtitle = "turnover of interactions in the Web of Life database")
+  labs(title = "locations per interactions", 
+       subtitle = "interactions turnover in the Web of Life database")
 # 
 # interaction_list %>% 
 #   remove_unknown_species() %>% 

@@ -9,7 +9,7 @@ Species & interaction turnover
 
 ### Species turnover
 
-![](/Users/efc29/github/nz-species-distributions-and-networks/paper/data-exploration/turnover_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](turnover_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 |     | guild | species               |  \# locations|
 |-----|:------|:----------------------|-------------:|
@@ -36,7 +36,7 @@ Species & interaction turnover
 
 ### Interaction turnover
 
-![](/Users/efc29/github/nz-species-distributions-and-networks/paper/data-exploration/turnover_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](turnover_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 |     | plant                 | pollinator               |  \# locations|
 |-----|:----------------------|:-------------------------|-------------:|
