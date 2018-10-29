@@ -93,6 +93,22 @@ Source: CRAN
 Version: 1.3.4
 Hash: ff2840dd9b0d563fc80377a5a45510cd
 
+Package: crul
+Source: CRAN
+Version: 0.6.0
+Hash: c974cb4fd4d3b55fa3fcc4200846ce3c
+Requires: R6, curl, httpcode, mime, urltools
+
+Package: curl
+Source: CRAN
+Version: 3.2
+Hash: e3318ec2d42d15a38485bab047d114ba
+
+Package: data.table
+Source: CRAN
+Version: 1.11.8
+Hash: 67c877937c790a0cadb71284febb6b34
+
 Package: digest
 Source: CRAN
 Version: 0.6.18
@@ -140,6 +156,12 @@ Version: 1.10.0
 Hash: c94516aa2b90d8ab5df46e5a03ead6e4
 Requires: digest, globals, listenv
 
+Package: geoaxe
+Source: CRAN
+Version: 0.1.0
+Hash: 7344fe415b9a6e7716f4e4b8c4dace93
+Requires: jsonlite, rgeos, sp
+
 Package: ggplot2
 Source: CRAN
 Version: 3.0.0
@@ -184,6 +206,17 @@ Source: CRAN
 Version: 0.3.6
 Hash: bd3273390b4c6499014589c2920f3152
 Requires: Rcpp, digest
+
+Package: httpcode
+Source: CRAN
+Version: 0.2.0
+Hash: 368cd36e433bc92585482ce49b7028ab
+
+Package: httr
+Source: CRAN
+Version: 1.3.1
+Hash: 2d32e01e53d532c812052e27a1021441
+Requires: R6, curl, jsonlite, mime, openssl
 
 Package: igraph
 Source: CRAN
@@ -239,6 +272,17 @@ Version: 0.5.0
 Hash: 247d1c1d72f3072563912ef860758624
 Requires: colorspace
 
+Package: oai
+Source: CRAN
+Version: 0.2.2
+Hash: 0941ef1b52592e0f723b408646af4a71
+Requires: httr, plyr, stringr, tibble, xml2
+
+Package: openssl
+Source: CRAN
+Version: 1.0.2
+Hash: 12a42cbd5aecdb887782247856ccbafd
+
 Package: packrat
 Source: CRAN
 Version: 0.4.9-3
@@ -284,6 +328,19 @@ Version: 1.4.3
 Hash: f50582f9059ab381cd38dd02697d8a88
 Requires: Rcpp, plyr, stringr
 
+Package: rgbif
+Source: CRAN
+Version: 1.0.2
+Hash: d0b170c6aa7e74ade7cc95dd2028bb0b
+Requires: crul, data.table, geoaxe, ggplot2, jsonlite, lazyeval,
+    magrittr, oai, tibble, whisker, wicket, xml2
+
+Package: rgeos
+Source: CRAN
+Version: 0.4-1
+Hash: 7246f934d817008c96bd36a7d47f6686
+Requires: sp
+
 Package: rlang
 Source: CRAN
 Version: 0.3.0
@@ -307,6 +364,11 @@ Source: CRAN
 Version: 1.0.0
 Hash: dd78d3c916916877f6d319b27534795e
 Requires: R6, RColorBrewer, Rcpp, labeling, munsell, viridisLite
+
+Package: sp
+Source: CRAN
+Version: 1.3-1
+Hash: 01decf1327caff54d7822434d07fa959
 
 Package: storr
 Source: CRAN
@@ -350,6 +412,18 @@ Version: 0.8
 Hash: bf76759350cd2bfec401d8861a61ad66
 Requires: xfun
 
+Package: triebeard
+Source: CRAN
+Version: 0.3.0
+Hash: 0306489f3d3e3be97a6bb84c3e57064a
+Requires: Rcpp
+
+Package: urltools
+Source: CRAN
+Version: 1.7.1
+Hash: 5440bdd1880bfc9edadf9d388b4e4b98
+Requires: Rcpp, triebeard
+
 Package: utf8
 Source: CRAN
 Version: 1.1.4
@@ -360,6 +434,17 @@ Source: CRAN
 Version: 0.3.0
 Hash: 78bb072c4f9e729a283d4c40ec93f9c6
 
+Package: whisker
+Source: CRAN
+Version: 0.3-2
+Hash: 803d662762e532705c2c066a82d066e7
+
+Package: wicket
+Source: CRAN
+Version: 0.4.0
+Hash: 94b1d6fd39b33899ef854269917d9d66
+Requires: BH, Rcpp
+
 Package: withr
 Source: CRAN
 Version: 2.1.2
@@ -369,6 +454,12 @@ Package: xfun
 Source: CRAN
 Version: 0.3
 Hash: 3b1cb5fdcfb96c88e3f9ab0239fbd048
+
+Package: xml2
+Source: CRAN
+Version: 1.2.0
+Hash: f6170ae6632040144a2379e6d714e251
+Requires: Rcpp
 
 Package: yaml
 Source: CRAN
