@@ -138,3 +138,37 @@ gather_pla_pol <- function(x){
     tidyr::gather("guild", "sp_name", pla_name, pol_name) %>%
     dplyr::mutate(guild = substr(guild, 1,3))
 }
+
+# get a list of species for which extra GBIF information will be downloaded
+get_sp_extra_info <- function(focal_species_options, threshold){
+  focal_species_options %>%
+    dplyr::group_by(guild, sp_name) %>%
+    dplyr::summarise(n = n()) %>%
+    dplyr::filter(n > threshold) %>% 
+    dplyr::group_by() %>%
+    dplyr::arrange(desc(n))
+  }
+
+# get sp backbones
+get_sp_backbones <- function(sp_list_extra_info){
+  backbones <- sp_list_extra_info %>%
+    split(.$sp_name) %>%
+    purrr::map_df(~ tibble::data_frame(backbones = list(rgbif::name_backbone(.$sp_name))), .id = "sp_name") 
+  
+  dplyr::right_join(
+    sp_list_extra_info, 
+    backbones)
+}
+
+# get sp n_ocurrences
+get_n_ocurrences <- function(backbones){
+  n_occurences <- backbones %>% {
+    x <- . ; 
+    extract2(x, "backbones") %>%
+      purrr::map(~ .$speciesKey) %>%
+      `names<-`(x$sp_name)
+  } %>%
+    purrr::map_df(~ tibble::data_frame(n_occurrences = rgbif::occ_count(., georeferenced = TRUE)), .id = "sp_name")
+  
+  dplyr::right_join(backbones, n_occurences) 
+}

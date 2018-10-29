@@ -33,8 +33,22 @@ Now let's have a little look at how these numbers depend on the chosen threshold
 
 ![](turnover_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-### Degree vs. widespread
+Degree vs. widespread
+---------------------
 
 Let's have a closer look at the chosen thresholds of 5 and 3. I'm a bit worried that we're only selecting super generalist species and hence results might be biased. We can see that indeed the overall species degree of the focal species is considerably larger than that of non-focal. We have still a decent range between 6 for *Fuchia regia* and like 400 for *Apis melifera*.
 
 ![](turnover_files/figure-markdown_github/unnamed-chunk-5-1.png)
+
+Data completeness
+-----------------
+
+    ## Warning: Grouping rowwise data frame strips rowwise nature
+
+    ## Warning: Transformation introduced infinite values in continuous y-axis
+
+    ## Warning: Removed 2 rows containing missing values (geom_point).
+
+    ## Warning: Removed 2 rows containing missing values (geom_segment).
+
+![](turnover_files/figure-markdown_github/unnamed-chunk-6-1.png)

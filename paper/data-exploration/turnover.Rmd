@@ -188,7 +188,7 @@ focal_species_options %>%
        caption = "dashed box indicate thresholds used here")
 ```
 
-### Degree vs. widespread
+## Degree vs. widespread
 
 Let's have a closer look at the chosen thresholds of 5 and 3. 
 I'm a bit worried that we're only selecting super generalist species and hence results might be biased. 
@@ -281,5 +281,33 @@ sp_deg_rank %>%
        caption = "focal species are those that have the same interaction in >= 3 locations and are present >= 5 locations", 
        y = "# locations", 
        x = "species degree")
+```
+
+## Data completeness
+
+```{r}
+drake::loadd(n_occurrences)
+
+n_occurrences %>%
+  dplyr::group_by(sp_name, n, guild, n_occurrences) %>%
+  dplyr::do(canon_name = unlist(.$backbones[[1]]$canonicalName)) %>% 
+  dplyr::group_by() %>%
+  dplyr::mutate(sp_name = forcats::fct_reorder(sp_name, n), 
+                n_occurrences = dplyr::if_else(sp_name != canon_name, 
+                                               NA_integer_, 
+                                               as.integer(n_occurrences))) %>%
+  humanize() %>%
+  ggplot(aes(y = n_occurrences, x = sp_name, colour = guild)) +
+  geom_point() +
+  geom_segment(aes(xend = sp_name, yend = 0)) +
+  scale_y_log10() +
+  coord_flip() +
+  scale_color_brewer(palette = "Paired") +
+  theme_bw() +
+  theme(axis.text.y = element_text(face = "italic", size = 6)) +
+  labs(x = "", y = "# occurrences", 
+       title = "GBIF occurrences", 
+       subtitle = "number of GBIF georeferenced records per species", 
+       caption = "species ordered by how likely they are to be included as focal species")
 ```
 
