@@ -310,6 +310,11 @@ Version: 1.8.4
 Hash: d1f100e0dbbf8d3f55aa701b07c62e35
 Requires: Rcpp
 
+Package: png
+Source: CRAN
+Version: 0.1-7
+Hash: 421d7d6e0fb4bd885ecbd909b6456b8b
+
 Package: purrr
 Source: CRAN
 Version: 0.2.5
