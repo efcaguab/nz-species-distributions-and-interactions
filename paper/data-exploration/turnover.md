@@ -22,6 +22,19 @@ With this threshold we have 44 interactions that repeat over at least three loca
 
 ![](turnover_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
+Combining these two thresholds
+
+-   Only species with interactions that were sampled in three locations or more
+-   Only species sampled in 5 locations or more
+
+we have 16 focal species for which enough interaction data could be obtained from Bascompte's Web of Life. Four plants and 12 pollinators.
+
+Now let's have a little look at how these numbers depend on the chosen threshold.
+
+![](turnover_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
 ### Degree vs. widespread
+
+Let's have a closer look at the chosen thresholds of 5 and 3. I'm a bit worried that we're only selecting super generalist species and hence results might be biased. We can see that indeed the overall species degree of the focal species is considerably larger than that of non-focal. We have still a decent range between 6 for *Fuchia regia* and like 400 for *Apis melifera*.
 
 ![](turnover_files/figure-markdown_github/unnamed-chunk-5-1.png)

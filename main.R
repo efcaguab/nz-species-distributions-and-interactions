@@ -17,6 +17,8 @@ read_data_plan <- drake::drake_plan(
 exploration_plan <- drake::drake_plan(
   species_list = get_species_list(networks, metadata), 
   interaction_list = get_interaction_list(networks, metadata),
+  # the thresholds are specificied on the number of locations a species is
+  focal_species_options = get_focal_species_options(species_list, interaction_list, categ = "loc"), 
   my_render(drake::knitr_in("./paper/data-exploration/turnover.Rmd"), 
             drake::file_out("./paper/data-exploration/turnover.md"))
 )

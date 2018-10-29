@@ -10,7 +10,7 @@ output:
 # Interactions at the fringes, data exploration
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, dpi = 300)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, dpi = 300, fig.asp = 10/16)
 ```
 
 We want to investigate whether species interact differently at the core of their range compared to the fringes of their distribution. 
@@ -140,31 +140,59 @@ int_rank %>%
        caption = "we select as focal species those with the same interaction in 3 or more locations")
 ```
 
-```{r, eval = F}
-selected <- int_rank %>%
-  dplyr::select(pla_name, pol_name, n_loc, focal) %>% 
-  tidyr::gather("guild", "sp_name", pla_name, pol_name) %>% 
-  dplyr::mutate(guild = substr(guild, 1,3),
-                focal_int = TRUE) %>% 
-  dplyr::group_by(guild, sp_name) %>%
-  dplyr::summarise(n_loc_int = mean(n_loc), 
-                   n_loc_max = max(n_loc),
-                   focal_int = any(focal), 
-                   n = n()) %>% 
-  dplyr::distinct() %>%
-  dplyr::left_join(sp_rank) 
+Combining these two thresholds
 
-selected %>% 
-  # dplyr::filter(focal, focal_int) %>%
-  ggplot(aes(x = n_loc, y = n_loc_int)) +
-  geom_point(aes(colour = log(n))) +
-  geom_label_repel(data = dplyr::filter(selected, focal, focal_int),
-                  aes(label = sp_name), size = 3, fontface =  "italic",
-                  color = RColorBrewer::brewer.pal(3, "Paired")[2]) 
+ * Only species with interactions that were sampled in three locations or more
+ * Only species sampled in 5 locations or more
+
+we have 16 focal species for which enough interaction data could be obtained from Bascompte's Web of Life. Four plants and 12 pollinators. 
+
+Now let's have a little look at how these numbers depend on the chosen threshold. 
+
+```{r}
+drake::loadd(focal_species_options)
+
+focal_species_options %>%
+  dplyr::group_by(int_threshold, sp_threshold, guild) %>%
+  dplyr::summarise(n = n()) %>% 
+  dplyr::group_by(int_threshold, sp_threshold) %>%
+  dplyr::mutate(n_total = sum(n), 
+                label = paste(format(n_total, big.mark = ","), "spp."),
+                label2 = paste(format(n, big.mark = ","), guild), 
+                label2 = paste(label2, collapse = "+")) %>%
+  dplyr::select(-guild) %>%
+  dplyr::distinct() %>%
+  humanize() %>%
+  ggplot(aes(x = int_threshold, y = sp_threshold)) +
+  geom_tile(aes(fill = n_total)) +
+  geom_text(aes(label = label), 
+            size = 3, 
+            fontface = "bold", 
+            nudge_y = 0.2, 
+            color = "white") +
+  geom_text(aes(label = label2), 
+            size = 3, 
+            nudge_y = -0.2, 
+            color = "white") +
+  geom_tile(aes(x = 3, y = 5), fill = NA, colour = "white", linetype = 2) +
+  scale_fill_continuous(trans = "log10") +
+  coord_cartesian(ylim = c(1,10)) +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(breaks = 1:10) +
+  theme_bw() +
+  labs(title = "number of focal species", 
+       subtitle = "number of plants and pollinators using different thresholds", 
+       x = "repeated interaction threshold", 
+       y = "species location threshold", 
+       fill = "# spp.", 
+       caption = "dashed box indicate thresholds used here")
 ```
 
-
 ### Degree vs. widespread
+
+Let's have a closer look at the chosen thresholds of 5 and 3. 
+I'm a bit worried that we're only selecting super generalist species and hence results might be biased. 
+We can see that indeed the overall species degree of the focal species is considerably larger than that of non-focal. We have still a decent range between 6 for *Fuchia regia* and like 400 for *Apis melifera*. 
 
 ```{r}
 degrees <- interaction_list %>%
@@ -246,7 +274,8 @@ sp_deg_rank %>%
   theme_bw() +
   theme(legend.position = c(0.02,0.98), 
         legend.justification = c(0,1), 
-        legend.box = "horizontal") +
+        legend.box = "horizontal", 
+        legend.direction = "horizontal") +
   labs(title = "species degree vs. number of locations", 
        subtitle = "there are 16 focal species, mostly generalist pollinators",
        caption = "focal species are those that have the same interaction in >= 3 locations and are present >= 5 locations", 

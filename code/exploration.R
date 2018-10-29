@@ -67,3 +67,74 @@ get_int_freq_by_group <- function(interaction_list, pla_group, pol_group){
     dplyr::mutate(n_net_rank = dplyr::row_number(dplyr::desc(n_net)),
                   n_loc_rank = dplyr::row_number(dplyr::desc(n_loc)))
 }
+
+#x is a dataframe
+humanize <- function(x){
+  if ("guild" %in% names(x)) {
+    x %<>%
+      dplyr::mutate(guild = dplyr::case_when(
+        guild == "pla" ~ "plants", 
+        TRUE ~ "pollinators"
+      ))
+  }
+  if ("focal" %in% names(x)) {
+    x %<>%
+      dplyr::mutate(focal = dplyr::if_else(focal, 
+                                           "selected", 
+                                           "not-selected"))
+  }
+  x
+}
+
+get_focal_species_options <- function(species_list, interaction_list, categ = "loc") {
+  filter_var <- paste0("n_", categ)
+  
+  sp_rank <- species_list %>%
+    remove_unknown_species() %>% 
+    get_sp_freq_by_group(sp_name) 
+  
+  sp_values <- sp_rank %>%
+  {x <- .; unique(x[filter_var])} %>%
+    extract2(1)
+  
+  int_rank <- interaction_list %>%
+    remove_unknown_species() %>% 
+    get_int_freq_by_group(pla_name, pol_name)
+  
+  int_values <- int_rank %>%
+  {x <- .; unique(x[filter_var])} %>%
+    extract2(1)
+  
+  list(sp_threshold = sp_values, int_threshold = int_values) %>%
+    purrr::cross() %>%
+    purrr::map_df(purrr::lift(get_focal_species), 
+                  sp_rank = sp_rank, int_rank = int_rank, filter_var = filter_var)
+}
+
+# get focal
+get_focal_species <- function(sp_threshold, int_threshold, sp_rank, int_rank, filter_var){
+  
+  sp <- sp_rank %>%
+    dplyr::group_by() %>%
+    {d <- . ; d[d[filter_var] >= sp_threshold, ]} %>% 
+    dplyr::select(guild, sp_name)
+  
+  int <- int_rank %>%
+    dplyr::group_by() %>%
+    {d <- . ; d[d[filter_var] >= int_threshold, ]} %>% 
+    dplyr::select(pla_name, pol_name) %>%
+    gather_pla_pol() %>% 
+    dplyr::distinct()
+  
+  dplyr::intersect(sp, int) %>%
+    dplyr::mutate(sp_threshold = sp_threshold, 
+                  int_threshold = int_threshold, 
+                  scale = filter_var) 
+}
+
+# gather pla_name and pol_name into guild and sp_name
+gather_pla_pol <- function(x){
+  x %>%
+    tidyr::gather("guild", "sp_name", pla_name, pol_name) %>%
+    dplyr::mutate(guild = substr(guild, 1,3))
+}
