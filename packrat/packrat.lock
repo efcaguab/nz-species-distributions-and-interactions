@@ -82,6 +82,12 @@ Version: 0.3.0
 Hash: 6b91cdc34646f6784ce6835036d9fc75
 Requires: Rcpp
 
+Package: RgoogleMaps
+Source: CRAN
+Version: 1.4.2
+Hash: b838cc0eef43688a42620bc1d895fb11
+Requires: png
+
 Package: SQUAREM
 Source: CRAN
 Version: 2017.10-1
@@ -274,6 +280,13 @@ Version: 1.5-7
 Hash: 006396aaed8f45b60f39b9a31537859d
 Requires: sp
 
+Package: ggmap
+Source: CRAN
+Version: 2.6.1
+Hash: 3e5545418aab1ad8e47c218236dd4f0b
+Requires: RgoogleMaps, digest, geosphere, ggplot2, jpeg, mapproj, plyr,
+    png, proto, reshape2, rjson, scales
+
 Package: ggplot2
 Source: CRAN
 Version: 3.0.0
@@ -352,6 +365,11 @@ Source: CRAN
 Version: 1.0.10
 Hash: 9f8af91e4a3487a282d7dea67513e519
 
+Package: jpeg
+Source: CRAN
+Version: 0.1-8
+Hash: 189af3df9864c6aa8546033f08ba9358
+
 Package: jsonlite
 Source: CRAN
 Version: 1.5
@@ -405,6 +423,17 @@ Package: magrittr
 Source: CRAN
 Version: 1.5
 Hash: bdc4d48c3135e8f3b399536ddf160df4
+
+Package: mapproj
+Source: CRAN
+Version: 1.2.6
+Hash: 011f720efaa747ef7acfe36d74983e44
+Requires: maps
+
+Package: maps
+Source: CRAN
+Version: 3.3.0
+Hash: 0815ed94aca05c7aeb177ebddd4ee23b
 
 Package: markdown
 Source: CRAN
@@ -487,6 +516,11 @@ Version: 2018.04.18
 Hash: be749a51bf9236d2b86e00293787732e
 Requires: Rcpp, lava
 
+Package: proto
+Source: CRAN
+Version: 1.0.0
+Hash: f9a2528572320c1e0bc8783dfd6e0fae
+
 Package: psych
 Source: CRAN
 Version: 1.8.4
@@ -543,6 +577,11 @@ Source: CRAN
 Version: 0.4-1
 Hash: 7246f934d817008c96bd36a7d47f6686
 Requires: sp
+
+Package: rjson
+Source: CRAN
+Version: 0.2.20
+Hash: 44ee331003bf03b92e97b3089461dd2f
 
 Package: rlang
 Source: CRAN
