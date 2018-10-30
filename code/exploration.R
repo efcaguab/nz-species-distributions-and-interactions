@@ -153,7 +153,7 @@ get_sp_extra_info <- function(focal_species_options, threshold){
 get_sp_backbones <- function(sp_list_extra_info){
   backbones <- sp_list_extra_info %>%
     split(.$sp_name) %>%
-    purrr::map_df(~ tibble::data_frame(backbones = list(rgbif::name_backbone(.$sp_name))), .id = "sp_name") 
+    purrr::map_df(~ tibble::data_frame(backbone = list(rgbif::name_backbone(.$sp_name))), .id = "sp_name") 
   
   dplyr::right_join(
     sp_list_extra_info, 
@@ -164,7 +164,7 @@ get_sp_backbones <- function(sp_list_extra_info){
 get_n_ocurrences <- function(backbones){
   n_occurences <- backbones %>% {
     x <- . ; 
-    extract2(x, "backbones") %>%
+    extract2(x, "backbone") %>%
       purrr::map(~ .$speciesKey) %>%
       `names<-`(x$sp_name)
   } %>%
@@ -172,3 +172,28 @@ get_n_ocurrences <- function(backbones){
   
   dplyr::right_join(backbones, n_occurences) 
 }
+
+# get a dataframe of the map info for a taxon key
+get_gbif_map <- function(taxonKey, srs = "EPSG:3857"){
+  require(RStoolbox)
+  query <- rgbif:::rgbif_compact(list(srs = srs, taxonKey = taxonKey))
+  cli <- crul::HttpClient$new(url = "https://api.gbif.org")
+  path <- file.path("v2/map/occurrence", "density", 0, 0, paste0(0, "@1x.png"))
+  res <- cli$get(path, query = query)
+  map_png <- png::readPNG(res$content)
+  map <- raster::raster(map_png[, , 2])
+  raster::extent(map) <- rgbif:::switch_extent(srs)
+  raster::crs(map) <- rgbif:::crs_string(srs)
+  fortify(map)
+}
+
+# fetch maps for all backbones in the data frame
+fetch_maps <- function(backbones){
+  backbones %>%
+    split(.$sp_name) %>%
+    purrr::map(~ .$backbone[[1]]$usageKey) %>% 
+    # filter out null elements
+    `[`(sapply(., function(x) not(is.null(x)))) %>%
+    purrr::map_df(get_gbif_map, .id = "sp_name")
+}
+

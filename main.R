@@ -22,6 +22,7 @@ exploration_plan <- drake::drake_plan(
   sp_list_extra_info = get_sp_extra_info(focal_species_options, 10),
   backbones = get_sp_backbones(sp_list_extra_info),
   n_occurrences = get_n_ocurrences(backbones),
+  maps = fetch_maps(backbones),
   my_render(drake::knitr_in("./paper/data-exploration/turnover.Rmd"), 
             drake::file_out("./paper/data-exploration/turnover.md"))
 )

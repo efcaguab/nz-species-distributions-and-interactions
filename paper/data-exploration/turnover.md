@@ -43,12 +43,6 @@ Let's have a closer look at the chosen thresholds of 5 and 3. I'm a bit worried 
 Data completeness
 -----------------
 
-    ## Warning: Grouping rowwise data frame strips rowwise nature
-
-    ## Warning: Transformation introduced infinite values in continuous y-axis
-
-    ## Warning: Removed 2 rows containing missing values (geom_point).
-
-    ## Warning: Removed 2 rows containing missing values (geom_segment).
-
 ![](turnover_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
+![](turnover_files/figure-markdown_github/unnamed-chunk-7-1.png)

@@ -10,7 +10,7 @@ output:
 # Interactions at the fringes, data exploration
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, dpi = 300, fig.asp = 10/16)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, dpi = 300, fig.asp = 10/16, warning = FALSE)
 ```
 
 We want to investigate whether species interact differently at the core of their range compared to the fringes of their distribution. 
@@ -290,7 +290,7 @@ drake::loadd(n_occurrences)
 
 n_occurrences %>%
   dplyr::group_by(sp_name, n, guild, n_occurrences) %>%
-  dplyr::do(canon_name = unlist(.$backbones[[1]]$canonicalName)) %>% 
+  dplyr::do(canon_name = unlist(.$backbone[[1]]$canonicalName)) %>% 
   dplyr::group_by() %>%
   dplyr::mutate(sp_name = forcats::fct_reorder(sp_name, n), 
                 n_occurrences = dplyr::if_else(sp_name != canon_name, 
@@ -309,5 +309,24 @@ n_occurrences %>%
        title = "GBIF occurrences", 
        subtitle = "number of GBIF georeferenced records per species", 
        caption = "species ordered by how likely they are to be included as focal species")
+```
+
+
+```{r, fig.asp=3}
+drake::loadd(maps)
+
+selected_sp_map <- n_occurrences %>%
+  dplyr::slice(1:28) %>%
+  extract2("sp_name")
+maps %>% 
+  dplyr::filter(layer != 0, 
+                sp_name %in% selected_sp_map) %>%
+  ggplot(aes(x,y)) +
+  # mapWorld +
+  geom_tile(aes(fill = layer)) +
+  coord_quickmap() +
+  theme_bw() +
+  facet_wrap(~ sp_name, ncol = 2) +
+  theme(legend.position = "none")
 ```
 
