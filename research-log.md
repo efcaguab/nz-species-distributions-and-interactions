@@ -2,6 +2,14 @@
 
 *Fernando Cagua*
 
+#### 7 May 2019
+
+Long hiatus. Briefly chatted with Daniel and he suggested looking for more networks appart from those in the Web of Life. Options include ICONS, MANGAL, and some networks by Beno Seemens. 
+
+Also I had a look at "Biogeography of species interactions: partner fidelity and asymmetric specialization" a paper submitted by Fortuna et al. 
+Briefly, the paper looks at all the networks in the Web of Life database calculates partner fidelity and checks wether mutualistic or antagonistic interactions show any difference. 
+That's basically it. 
+
 #### 30 October 2018
 
 The last week I've continued checking wether it's OK to use data from Bascompte's Web of Life. 
