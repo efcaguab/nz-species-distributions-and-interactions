@@ -37,3 +37,9 @@ rsconnect/
 .Rproj.user
 
 research-log\.html
+packrat/lib*/
+
+*.DS_Store
+
+# drake
+.drake/*

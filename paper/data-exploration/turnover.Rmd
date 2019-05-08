@@ -1,0 +1,332 @@
+---
+title: "Turnover of species and interactions"
+author: "Fernando Cagua"
+date: "10/23/2018"
+output:
+  md_document:
+    variant: markdown_github
+---
+
+# Interactions at the fringes, data exploration
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, dpi = 300, fig.asp = 10/16, warning = FALSE)
+```
+
+We want to investigate whether species interact differently at the core of their range compared to the fringes of their distribution. 
+One could expect species to diversify their interactions as interaction parters become less common/available. Alternatively, one could expect species to interact with only a subset of the interaction partners, as they cannot develop new interactions when environemntal conditions are close to the limits of where possitive groth rates occur. 
+
+The aim of this document is to explore whether the interaction data available in the Bascompte's Web of Life could be adequate to answer this question or not. 
+
+## Species & interaction turnover
+
+We start by checking wether species and interactions occur in enough localities. 
+Unknown and unindentified species are excluded from the final numbers. 
+
+If species turnover is too high the data might not be adequate to answer the research question. 
+At first we set an arbitrary, but reasonable threshold of **five** locations. 
+We need species to be present in at least this number of locations to have a relatively OK coverage across their range. 
+
+With this threshold of five we have 13 plants and 41 pollination species that could be candidates to be focal species. 
+
+```{r}
+require(ggplot2)
+drake::loadd(species_list)
+
+th <- 5
+
+plot_freq_step <- function(freq_df, th = 5){
+  if ("guild" %in% names(freq_df)){
+    p <- freq_df %>%
+      ggplot(aes(x = n_loc_rank, y = n_loc, colour = guild)) 
+  } else {
+    p <- freq_df %>%
+      ggplot(aes(x = n_loc_rank, y = n_loc)) 
+  }
+  p +
+    geom_step(size = 1) +
+    scale_x_log10() +
+    theme_bw() +
+    scale_color_brewer(palette = "Paired", 
+                       aesthetics = c("colour", "fill")) +
+    scale_alpha_manual(values = c(0.5, 1)) +
+    scale_size_manual(values = c(0.5, 1)) +
+    labs(x = "rank", 
+         y = "# locations") +
+    theme(legend.position = c(0.98,0.98), 
+          legend.justification = c(1,1), 
+          legend.direction = "horizontal")
+}
+
+sp_rank <- species_list %>%
+  remove_unknown_species() %>% 
+  get_sp_freq_by_group(sp_name)  %>%
+  dplyr::mutate(focal = n_loc >= th) 
+
+n_sp <- sp_rank %>%
+  dplyr::group_by(guild, focal) %>%
+  dplyr::summarise(n_sp = dplyr::n_distinct(sp_name)) %>%
+  dplyr::mutate(label = paste(format(n_sp, big.mark = ","), guild)) %>%
+  dplyr::group_by() %>%
+  humanize()
+
+sp_rank %>%
+  dplyr::group_by() %>%
+  humanize() %>%
+  plot_freq_step() +
+  geom_vline(data = n_sp, aes(xintercept = n_sp, 
+                              linetype = focal), 
+             size = 0.25, colour = "grey50") +
+  geom_text(data = n_sp, 
+            aes(label = label, x = n_sp, y = 15),
+            size = 3.5,
+            angle = 90, 
+            nudge_x = -0.05, show.legend = FALSE) +
+  geom_text(data = n_sp,
+            aes(label = focal, x = n_sp, y = 15), 
+            angle = 90, nudge_x = 0.05, colour = "grey30", 
+            size = 3) +
+  scale_linetype_manual(values = c(3,2)) +
+  guides(size = "none", linetype = "none") +
+  labs(title = "number of locations per species", 
+       subtitle = "species turnover in the Web of Life database", 
+       caption = "we select as focal species those in 5 or more locations")
+
+```
+
+We then check the turnover of the interactions. 
+We expect a large degree of turnover here, but if we are to compare interactions at the fringes of a species distributions with those at the core, we need at some of the interactions to be sampled at several locations. These  would compose the "core" of the species interactions.
+At first we set an arbitrary, but reasonable threshold of **three** locations.
+
+With this threshold we have 44 interactions that repeat over at least three locations or more. 
+Specifically 22 plants and 31 pollinators are involved in these interactions. 
+
+```{r}
+require(ggplot2)
+drake::loadd(interaction_list)
+
+int_rank <- interaction_list %>%
+  remove_unknown_species() %>% 
+  get_int_freq_by_group(pla_name, pol_name) %>%
+  dplyr::mutate(focal = n_loc >= 3)
+
+n_int <- int_rank %>%
+  dplyr::group_by(focal) %>%
+  dplyr::summarise(n_int = dplyr::n_distinct(paste(pla_name, pol_name))) %>%
+  dplyr::mutate(label = paste(format(n_int, big.mark = ","), "int."))
+
+n_int_sp <- int_rank %>%
+  dplyr::filter(focal) %>%
+  dplyr::select_at(dplyr::vars(dplyr::contains("name"))) %>%
+  tidyr::gather("guild", "sp_name") %>%
+  dplyr::mutate(guild = substr(guild, 1,3)) %>%
+  dplyr::group_by(guild) %>%
+  dplyr::summarise(n_sp = dplyr::n_distinct(sp_name)) %>% {
+    l <- .
+    as.list(extract2(l, 2)) %>%
+      `names<-`(extract2(l, 1))
+  }
+
+int_rank %>%
+  plot_freq_step() +
+  # geom_hline(yintercept = 2.9, size = 0.5, linetype = 2) +
+  geom_vline(data = n_int, aes(xintercept = n_int, 
+                                linetype = focal), 
+             size = 0.25, colour = "grey50", show.legend = F) +
+    scale_linetype_manual(values = c(3,2)) +
+  annotate(geom = "text", x = 46, y = 3.5, label = paste(n_int_sp[[1]], "plants and", n_int_sp[[2]], "pollinators with the\nsame int. in more than 3 locations"), size = 3, hjust = 0, colour = "grey30") +
+  labs(title = "locations per interactions", 
+       subtitle = "interactions turnover in the Web of Life database", 
+       caption = "we select as focal species those with the same interaction in 3 or more locations")
+```
+
+Combining these two thresholds
+
+ * Only species with interactions that were sampled in three locations or more
+ * Only species sampled in 5 locations or more
+
+we have 16 focal species for which enough interaction data could be obtained from Bascompte's Web of Life. Four plants and 12 pollinators. 
+
+Now let's have a little look at how these numbers depend on the chosen threshold. 
+
+```{r}
+drake::loadd(focal_species_options)
+
+focal_species_options %>%
+  dplyr::group_by(int_threshold, sp_threshold, guild) %>%
+  dplyr::summarise(n = n()) %>% 
+  dplyr::group_by(int_threshold, sp_threshold) %>%
+  dplyr::mutate(n_total = sum(n), 
+                label = paste(format(n_total, big.mark = ","), "spp."),
+                label2 = paste(format(n, big.mark = ","), guild), 
+                label2 = paste(label2, collapse = "+")) %>%
+  dplyr::select(-guild) %>%
+  dplyr::distinct() %>%
+  humanize() %>%
+  ggplot(aes(x = int_threshold, y = sp_threshold)) +
+  geom_tile(aes(fill = n_total)) +
+  geom_text(aes(label = label), 
+            size = 3, 
+            fontface = "bold", 
+            nudge_y = 0.2, 
+            color = "white") +
+  geom_text(aes(label = label2), 
+            size = 3, 
+            nudge_y = -0.2, 
+            color = "white") +
+  geom_tile(aes(x = 3, y = 5), fill = NA, colour = "white", linetype = 2) +
+  scale_fill_continuous(trans = "log10") +
+  coord_cartesian(ylim = c(1,10)) +
+  scale_x_continuous(expand = c(0,0)) +
+  scale_y_continuous(breaks = 1:10) +
+  theme_bw() +
+  labs(title = "number of focal species", 
+       subtitle = "number of plants and pollinators using different thresholds", 
+       x = "repeated interaction threshold", 
+       y = "species location threshold", 
+       fill = "# spp.", 
+       caption = "dashed box indicate thresholds used here")
+```
+
+## Degree vs. widespread
+
+Let's have a closer look at the chosen thresholds of 5 and 3. 
+I'm a bit worried that we're only selecting super generalist species and hence results might be biased. 
+We can see that indeed the overall species degree of the focal species is considerably larger than that of non-focal. We have still a decent range between 6 for *Fuchia regia* and like 400 for *Apis melifera*. 
+
+```{r}
+degrees <- interaction_list %>%
+  dplyr::group_by(pla_name) %>%
+  dplyr::mutate(pla_deg = dplyr::n_distinct(pol_name)) %>%
+  dplyr::group_by(pol_name) %>%
+  dplyr::mutate(pol_deg = dplyr::n_distinct(pla_name))%>%
+  dplyr::group_by()
+
+guilds <- c("pla", "pol")
+
+sp_degree <- guilds %>%
+  purrr::map(~dplyr::select_at(degrees, dplyr::vars(dplyr::starts_with(.)))) %>%
+  purrr::map(~dplyr::distinct(.)) %>%
+  purrr::map_df(~`names<-`(., c("sp_name", "genus", "deg")), .id = "guild") %>%
+  dplyr::mutate(guild = factor(guild, labels = guilds), 
+                guild = as.character(guild)) %>%
+  remove_unknown_species()
+
+threshold <- 3
+# select species with interactions that occur in 3 locations or more
+sp_int_thres <- int_rank %>%
+  dplyr::filter(n_loc >= threshold) %>%
+  dplyr::select_at(dplyr::vars(dplyr::ends_with("name"))) %>%
+  tidyr::gather("guild", "sp_name", pla_name, pol_name) %>%
+  dplyr::mutate(guild = substr(guild, 1,3)) %>%
+  dplyr::distinct() 
+
+# select species that occur in 3 locations or more
+sp_thres <- sp_rank %>%
+  dplyr::filter(n_loc >= 5) %>%
+  dplyr::select(guild, sp_name)
+
+selected_species <- dplyr::inner_join(sp_int_thres, sp_thres) %>%
+  dplyr::mutate(selected = TRUE)
+
+sp_deg_rank <- sp_rank %>%
+  dplyr::inner_join(sp_degree) %>% 
+  dplyr::left_join(selected_species) %>%
+  dplyr::mutate(selected = dplyr::if_else(is.na(selected), FALSE, selected)) 
+```
+
+```{r}
+require(ggplot2)
+require(ggrepel)
+
+median_deg <- sp_deg_rank %>%
+  dplyr::group_by(selected, guild) %>%
+  dplyr::summarise(deg = median(deg)) %>%
+  dplyr::mutate(focal = selected) %>%
+  dplyr::group_by() %>%
+  humanize()
+
+sp_deg_rank %>%
+  dplyr::group_by() %>%
+  humanize() %>%
+  ggplot(aes(x = deg, y = n_loc)) +
+  geom_vline(data = median_deg, aes(xintercept = deg, colour = selected), 
+             size = 0.25, 
+             linetype = 2) +
+  geom_text(data = median_deg, 
+            aes(y = 20, 
+                label = paste("median", guild, "-", deg), 
+                color = selected),
+            nudge_x = -0.05,
+            angle = 90, 
+            size = 3) +
+  geom_point(aes(colour = selected, fill = selected, shape = guild)) +
+  geom_label_repel(data = dplyr::filter(sp_deg_rank, selected), 
+                  aes(label = sp_name), size = 3, fontface =  "italic",
+                  color = RColorBrewer::brewer.pal(3, "Paired")[2]) +
+  scale_x_log10() +
+  # scale_y_log10() +
+  scale_fill_manual(values = c(NA, RColorBrewer::brewer.pal(3, "Paired")[2])) +
+  scale_color_brewer(palette = "Paired") +
+  scale_shape_manual(values = c(21, 24)) +
+  guides(color = guide_legend("focal species"), 
+         fill = guide_legend("focal species")) +
+  theme_bw() +
+  theme(legend.position = c(0.02,0.98), 
+        legend.justification = c(0,1), 
+        legend.box = "horizontal", 
+        legend.direction = "horizontal") +
+  labs(title = "species degree vs. number of locations", 
+       subtitle = "there are 16 focal species, mostly generalist pollinators",
+       caption = "focal species are those that have the same interaction in >= 3 locations and are present >= 5 locations", 
+       y = "# locations", 
+       x = "species degree")
+```
+
+## Data completeness
+
+```{r}
+drake::loadd(n_occurrences)
+
+n_occurrences %>%
+  dplyr::group_by(sp_name, n, guild, n_occurrences) %>%
+  dplyr::do(canon_name = unlist(.$backbone[[1]]$canonicalName)) %>% 
+  dplyr::group_by() %>%
+  dplyr::mutate(sp_name = forcats::fct_reorder(sp_name, n), 
+                n_occurrences = dplyr::if_else(sp_name != canon_name, 
+                                               NA_integer_, 
+                                               as.integer(n_occurrences))) %>%
+  humanize() %>%
+  ggplot(aes(y = n_occurrences, x = sp_name, colour = guild)) +
+  geom_point() +
+  geom_segment(aes(xend = sp_name, yend = 0)) +
+  scale_y_log10() +
+  coord_flip() +
+  scale_color_brewer(palette = "Paired") +
+  theme_bw() +
+  theme(axis.text.y = element_text(face = "italic", size = 6)) +
+  labs(x = "", y = "# occurrences", 
+       title = "GBIF occurrences", 
+       subtitle = "number of GBIF georeferenced records per species", 
+       caption = "species ordered by how likely they are to be included as focal species")
+```
+
+
+```{r, fig.asp=3}
+drake::loadd(maps)
+
+selected_sp_map <- n_occurrences %>%
+  dplyr::slice(1:28) %>%
+  extract2("sp_name")
+maps %>% 
+  dplyr::filter(layer != 0, 
+                sp_name %in% selected_sp_map) %>%
+  ggplot(aes(x,y)) +
+  # mapWorld +
+  geom_tile(aes(fill = layer)) +
+  coord_quickmap() +
+  theme_bw() +
+  facet_wrap(~ sp_name, ncol = 2) +
+  theme(legend.position = "none")
+```
+

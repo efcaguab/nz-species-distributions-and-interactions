@@ -2,6 +2,21 @@
 
 *Fernando Cagua*
 
+#### 30 October 2018
+
+The last week I've continued checking wether it's OK to use data from Bascompte's Web of Life. 
+Now it includes [species and interactions turnover](https://github.com/efcaguab/nz-species-distributions-and-networks/blob/web-of-life/paper/data-exploration/turnover.md#species--interaction-turnover), the impact on the [degree bias](https://github.com/efcaguab/nz-species-distributions-and-networks/blob/web-of-life/paper/data-exploration/turnover.md#degree-vs-widespread), and wether in principle occurrence [data is available from GBIF](https://github.com/efcaguab/nz-species-distributions-and-networks/blob/web-of-life/paper/data-exploration/turnover.md#data-completeness). 
+Results look promising after a meeting with Jason and I have the feeling this is the project I'll end up doing, need to talk to Daniel about it when he comes back. 
+
+Next steps are to get the species distribution. I checked if we could get that from an already published source but a quick look has not provided results. 
+IUCN has range maps for species included in the Red List but a random set of species in the dataset shows that most of them are not assessed. 
+
+Also talked about including some habitat suitability alongside climatic suitability for the final model. Aparently data on habitat suitability could be obtained from the PREDICT database which is described in [this paper](http://www.nature.com/articles/srep31153). 
+
+#### 24 October 2018
+
+Started having a look at wether species & interactions overlap enough in the Web of Life dataset. The idea is to check wether species interact with core species or do they expand to interact with other species. As suggested by Jason. Exploration can be found [here](./paper/data-exploration/turnover.md)
+
 #### 23 October 2018
 
 ##### Skype with Gordana
