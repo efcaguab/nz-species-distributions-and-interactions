@@ -176,6 +176,7 @@ get_n_ocurrences <- function(backbones){
 # get a dataframe of the map info for a taxon key
 get_gbif_map <- function(taxonKey, srs = "EPSG:3857"){
   require(RStoolbox)
+  require(ggplot2)
   query <- rgbif:::rgbif_compact(list(srs = srs, taxonKey = taxonKey))
   cli <- crul::HttpClient$new(url = "https://api.gbif.org")
   path <- file.path("v2/map/occurrence", "density", 0, 0, paste0(0, "@1x.png"))

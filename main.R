@@ -1,6 +1,5 @@
 # Prepare workspace -------------------------------------------------------
 
-if(!packrat:::isPackratModeOn()) packrat::on()
 pkgconfig::set_config("drake::strings_in_dots" = "literals")
 
 library(magrittr)
