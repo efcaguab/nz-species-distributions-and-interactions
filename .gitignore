@@ -4,42 +4,57 @@
 
 # Session Data files
 .RData
-
 # Example code in package build process
 *-Ex.R
-
 # Output files from R CMD build
 /*.tar.gz
-
 # Output files from R CMD check
 /*.Rcheck/
-
 # RStudio files
 .Rproj.user/
-
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
-
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
 .httr-oauth
-
 # knitr and R markdown default cache directories
 /*_cache/
 /cache/
-
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-
-# Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
-rsconnect/
 .Rproj.user
-
-research-log\.html
+paper/proposal\.html
+paper/drafts_and_submissions/\.DS_Store
+*\.DS_Store
+paper/rsconnect/
+# Tex files
+*.aux
+*.log
+*.out
+manuscript.tex
+supp-info.tex
+draft-info.tex
+paper/cover-letter.pdf
+*.synctex.gz
+*.toc
+\.drake/
+.drake_abc/
 packrat/lib*/
+paper/manuscript_files/
+paper/manuscript\.pdf
+paper/questions_observations_todo\.pdf
+paper/supp-info\.pdf
+paper/supp-info_files/
+# Temporary Docx files
+*~$*.docx
 
-*.DS_Store
+paper/draft-info\.pdf
 
-# drake
-.drake/*
+draft\.pdf
+
+paper/cover-letter\.tex
+
+paper/cover-letter-blx\.bib
+
+paper/manuscript\.docx
