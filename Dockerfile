@@ -6,7 +6,7 @@ RUN apt-get update \
 # Workflow manager
 RUN R -e "install.packages('drake', repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 # Extra packages for paper writing
-RUN R -e "install.packages(c('kableExtra', 'cowplot'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+RUN R -e "install.packages(c('bookdown','kableExtra', 'cowplot'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 # Other packages
 RUN apt-get update \
   && apt-get -y --no-install-recommends install libgeos-dev libgeos++-dev libgdal-dev libproj-dev
