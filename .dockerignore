@@ -1,0 +1,4 @@
+
+# ignore .git .drake folders
+.git
+.drake
