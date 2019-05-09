@@ -29,6 +29,10 @@ exploration_plan <- drake_plan(
 
 
 reporting_plan <- drake_plan(
+  bibliography = target(
+    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm.bib", 
+                               file_out("paper/bibliography.bib"))
+  ),
   abstract = readLines(file_in("./paper/abstract.md")),
   keywords = process_keywords(file_in("./paper/keywords.md")),
   acknowledgements = readLines(file_in("./paper/acknowledgements.md")),

@@ -140,3 +140,10 @@ compile_pdf <- function(file_in, file_out, clean) {
                    pdf_file = file_out,
                    clean = clean)
 }
+
+
+get_bibliography <- function(filename_in, filename_out){
+  readLines(filename_in) %>%
+    writeLines(filename_out)
+  
+}
