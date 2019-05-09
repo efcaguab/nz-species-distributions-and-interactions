@@ -2,6 +2,13 @@
 
 *Fernando Cagua*
 
+#### 8 May 2019
+
+Looks like Mangal has many datasets too and it's not a complete duplicate of WebOfLife. 
+Perhaps it's worth to take data from both sites. 
+
+ICON has only the same ones that can be found in NCEAS, which I think most of them are in Web of Life anyways, need to check that. No idea how to find Beno Seemens though...
+
 #### 7 May 2019
 
 Long hiatus. Briefly chatted with Daniel and he suggested looking for more networks appart from those in the Web of Life. Options include ICONS, MANGAL, and some networks by Beno Seemens. 
