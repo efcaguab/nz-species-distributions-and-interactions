@@ -1,0 +1,36 @@
+---
+title: "Draft information"
+subtitle: "version: draft-0.0"
+date: "20xx"
+# bibliography: phd-bibliography/pollen-competition.bib
+csl: ecology-letters.csl
+output:
+  bookdown::pdf_document2:
+    # base_format: rticles::peerj_article
+    keep_tex: yes
+    number_sections: false
+toc: false
+geometry: 
+  - textwidth=33em
+  - textheight=48\baselineskip
+# classoption: twocolumn
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{setspace}
+  - \usepackage{lineno}
+  - \usepackage{xr}
+  - \usepackage[utf8]{inputenc}
+  - \newcommand{\R}[1]{\label{#1}\linelabel{#1}}
+  - \newcommand{\lr}[1]{page~\pageref{#1}, line~\lineref{#1}}
+  - \externaldocument[M-]{manuscript}
+
+---
+
+\onehalfspacing
+
+## Requests to coauthors
+
+* Specify grant numbers in the Acknowledgements and make sure the ones stated there now are correct. 
+* Suggestions to bring the abstract down to 150 words.
+* Approve (or not) for submission.
+

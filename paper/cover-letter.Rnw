@@ -1,0 +1,52 @@
+%-----------------------------------------------------------------------------%
+% Letter class
+\documentclass[11pt]{letter}
+\usepackage{hyperref}
+\usepackage[backend=bibtex,style=verbose,doi=false,isbn=false,url=false]{biblatex}
+% \addbibresource{phd-bibliography/pollen-competition.bib}
+\usepackage{geometry}
+\geometry{textwidth=43em, textheight=52\baselineskip}
+% Name of sender
+\name{Fernando Cagua}
+% Signature of sender
+\signature{Fernando Cagua}
+% Address of sender
+\address
+{
+    Fernando Cagua\\
+    \href{mailto:efc29@uclive.ac.nz}{efc29@uclive.ac.nz} \\
+    University of Canterbury, \\
+    New Zealand
+}
+\date{May 7, 2019}
+%-----------------------------------------------------------------------------%
+\begin{document}
+% Name and address of receiver
+\begin{letter}
+{
+    Prof.\ XX,\\
+    Editorial Office,\\
+    XX
+}
+% Opening statement
+\opening{Dear Professor XX,}
+% Letter body
+
+<<my-label, eval=TRUE, echo=FALSE>>=
+drake::loadd(msc_title)
+@
+
+We are submitting the manuscript entitled ``\Sexpr{msc_title}'' to be considered for publication in \emph{Ecology Letters}.
+
+Thank you for your consideration.
+\vfill
+
+\hfill
+Fernando Cagua
+
+\medskip
+% Closing statement
+% \closing{ }
+\end{letter}
+\end{document}
+%-----------------------------------------------------------------------------%

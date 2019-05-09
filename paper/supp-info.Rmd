@@ -1,0 +1,47 @@
+---
+title: "The pollination trade-off"
+# DBS: The title above needs editing to match the final version in the paper
+subtitle: "Supplementary information"
+author: "E. Fernando Cagua, Hugo J. Marrero, Jason M. Tylianakis, Daniel B. Stouffer"
+# bibliography: references.bib
+csl: ecology-letters.csl
+documentclass: book
+output: 
+  bookdown::pdf_document2: 
+    keep_tex: yes
+    toc: false
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- To add an S before each figure and table -->
+\renewcommand\thefigure{S\arabic{figure}}    
+\setcounter{figure}{0}   
+
+\renewcommand\thetable{S\arabic{table}}    
+\setcounter{table}{0}   
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
+                      warning = FALSE)
+options(xtable.comment = FALSE, 
+        xtable.caption.placement = 'bottom',
+        xtable.size = 'small',
+        booktabs = TRUE, 
+        knitr.kable.NA = "-")
+```
