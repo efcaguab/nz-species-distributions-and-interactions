@@ -8,6 +8,9 @@ library(drake)
 # load functions
 f <- lapply(list.files("code", full.names = T), source)
 
+# Download data from MANGAL
+
+
 
 read_data_plan <- drake_plan(
   networks = read_networks(network_folder = "./data/raw/web-of-life_2018-10-23_042854"),

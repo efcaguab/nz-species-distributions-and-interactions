@@ -11,3 +11,7 @@ RUN R -e "install.packages(c('bookdown','kableExtra', 'cowplot'), repos = c(CRAN
 RUN apt-get update \
   && apt-get -y --no-install-recommends install libgeos-dev libgeos++-dev libgdal-dev libproj-dev
 RUN R -e "install.packages(c('rgbif', 'png', 'raster', 'RStoolbox', 'ggrepel'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+# Install development version of Rmangal
+RUN apt-get update \
+  && apt-get -y --no-install-recommends install libjq-dev libprotobuf-dev
+RUN R -e "remotes::install_github('mangal-wg/rmangal', ref = 'v0.5')"
