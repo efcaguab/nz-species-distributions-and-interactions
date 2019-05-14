@@ -21,7 +21,7 @@ get_wol_networks <- function(int_type = "plant-pollinator", download_date = NULL
 }
 
 # downloads the a zip file containing the network data and the metadata of the
-# respective wol_network, returns a string with the path of the zip file
+# networks specified in the zip file
 download_wol_network_zip <- function(nets, out_file, species_name = TRUE){
   
   # Variables used to build the query url

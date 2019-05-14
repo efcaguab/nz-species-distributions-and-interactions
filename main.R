@@ -22,7 +22,7 @@ get_web_of_life_pollination_networks_plan <- drake_plan(
   wol_pol_networks = get_wol_networks(int_type = "plant-pollinator",
                                       download_date = data_download_date), 
   wol_zip_file = download_wol_network_zip(wol_pol_networks, 
-                                          file_out("data/web-of-life.zip"))
+                                          file_out("data/web-of-life_plant-pollinator.zip"))
 )
 
 
