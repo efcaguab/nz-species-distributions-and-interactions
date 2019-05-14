@@ -8,8 +8,22 @@ library(drake)
 # load functions
 f <- lapply(list.files("code", full.names = T), source)
 
-# Download data from MANGAL
+# Configuration -----------------------------------------------------------
 
+configuration_plan <- drake_plan(
+  config = yaml::read_yaml(file_in("config.yaml")), 
+  data_download_date = config$raw_data_retrieved
+)
+
+# Get network data ---------------------------------------------------
+
+get_web_of_life_pollination_networks_plan <- drake_plan(
+  # the targed gets reevaluated if the date in the config file is changed
+  wol_pol_networks = get_wol_networks(int_type = "plant-pollinator",
+                                      download_date = data_download_date), 
+  wol_zip_file = download_wol_network_zip(wol_pol_networks, 
+                                          file_out("data/web-of-life.zip"))
+)
 
 
 read_data_plan <- drake_plan(
@@ -18,22 +32,22 @@ read_data_plan <- drake_plan(
 )
 
 exploration_plan <- drake_plan(
-  species_list = get_species_list(networks, metadata), 
+  species_list = get_species_list(networks, metadata),
   interaction_list = get_interaction_list(networks, metadata),
   # the thresholds are specificied on the number of locations a species is
-  focal_species_options = get_focal_species_options(species_list, interaction_list, categ = "loc"), 
+  focal_species_options = get_focal_species_options(species_list, interaction_list, categ = "loc"),
   sp_list_extra_info = get_sp_extra_info(focal_species_options, 10),
   backbones = get_sp_backbones(sp_list_extra_info),
   n_occurrences = get_n_ocurrences(backbones),
   maps = fetch_maps(backbones),
-  turnover_exploration = my_render(knitr_in("./paper/data-exploration/turnover.Rmd"), 
+  turnover_exploration = my_render(knitr_in("./paper/data-exploration/turnover.Rmd"),
             file_out("./paper/data-exploration/turnover.md"))
 )
 
 
 reporting_plan <- drake_plan(
   bibliography = target(
-    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm.bib", 
+    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm.bib",
                                file_out("paper/bibliography.bib"))
   ),
   abstract = readLines(file_in("./paper/abstract.md")),
@@ -52,10 +66,17 @@ reporting_plan <- drake_plan(
 )
 
 full_plan <- rbind(
-  read_data_plan, 
-  exploration_plan, 
+  read_data_plan,
+  exploration_plan,
   reporting_plan
 )
 
-full_config <- drake_config(full_plan)
-make(full_plan)
+paper_plan <- rbind(
+  full_plan,
+  get_web_of_life_pollination_networks_plan
+)
+
+
+
+# full_config <- drake_config(full_plan)
+make(paper_plan)
