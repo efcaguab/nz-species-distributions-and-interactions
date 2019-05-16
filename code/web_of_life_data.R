@@ -43,3 +43,62 @@ download_wol_network_zip <- function(nets, out_file, species_name = TRUE){
          "&interactionsrange=&searchbox=&checked=") %>%
     download.file(out_file)
 }
+
+
+# get a zip file and return all the networks inside it with their metadata
+read_wol_data <- function(zip_file){
+  dir <- tempdir()
+  unzip(zip_file, exdir = dir)
+  list(
+    netwokrs = read_wol_networks(dir), 
+    metadata = read_wol_metadata(file.path(dir, "references.csv"))
+  )
+}
+
+
+# function to read all web of life netwokrks in a folder 
+read_wol_networks <- function(network_folder){
+  # get network names
+  net_names <- list.files(network_folder, 
+                          full.names = F, 
+                          pattern = "M_PL") %>%
+    tools::file_path_sans_ext()
+  
+  suppressMessages({
+    suppressWarnings({
+      list.files(network_folder, full.names = T, pattern = "M_PL") %>%
+        purrr::map(readr::read_csv) %>%
+        # remove mistakes 
+        purrr::map(~dplyr::filter(., X1 != 'Abundance"')) %>%
+        purrr::map(int_df_to_matrix) %>%
+        `names<-`(net_names)
+    })
+  })
+}  
+
+# function to get an intearction data frame to a matrix with proper column and row names
+int_df_to_matrix <- function(x){
+  column_names <- names(x)[-1]
+  row_names <- as.character(x$X1)
+  as.matrix(x[, -1]) %>%
+    `rownames<-`(row_names) %>%
+    `colnames<-`(column_names)
+}
+
+# read wol metadata
+read_wol_metadata <- function(metadata_file){
+  suppressMessages({
+    readr::read_csv(metadata_file, 
+                    col_names = c("net_name", 
+                                  "n_spp", 
+                                  "n_int",
+                                  "c", 
+                                  "int_type", 
+                                  "data_type", 
+                                  "reference", 
+                                  "loc_name",
+                                  "lat", 
+                                  "lon"))
+  })
+}
+

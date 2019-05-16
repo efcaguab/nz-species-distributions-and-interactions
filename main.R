@@ -15,7 +15,7 @@ configuration_plan <- drake_plan(
   data_download_date = config$raw_data_retrieved
 )
 
-# Get network data ---------------------------------------------------
+# Get data ---------------------------------------------------------------
 
 get_web_of_life_pollination_networks_plan <- drake_plan(
   # the targed gets reevaluated if the date in the config file is changed
@@ -25,6 +25,21 @@ get_web_of_life_pollination_networks_plan <- drake_plan(
                                           file_out("data/web-of-life_plant-pollinator.zip"))
 )
 
+get_data_plan <- rbind(
+  get_web_of_life_pollination_networks_plan
+)
+
+# Pre-process data ------------------------------------------------------
+
+pre_process_wol <- drake_plan(
+  wol_data = read_wol_data(file_in("data/web-of-life_plant-pollinator.zip"))
+)
+
+pre_process_data_plan <- rbind(
+  pre_process_wol
+)
+
+# exploration------
 
 read_data_plan <- drake_plan(
   networks = read_networks(network_folder = "./data/raw/web-of-life_2018-10-23_042854"),
@@ -73,7 +88,8 @@ full_plan <- rbind(
 
 paper_plan <- rbind(
   full_plan,
-  get_web_of_life_pollination_networks_plan
+  get_data_plan,
+  pre_process_data_plan
 )
 
 

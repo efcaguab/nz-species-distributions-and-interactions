@@ -10,7 +10,8 @@ RUN R -e "install.packages(c('bookdown','kableExtra', 'cowplot'), repos = c(CRAN
 # Other packages
 RUN apt-get update \
   && apt-get -y --no-install-recommends install libgeos-dev libgeos++-dev libgdal-dev libproj-dev
-RUN R -e "install.packages(c('rgbif', 'png', 'raster', 'RStoolbox', 'ggrepel'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+RUN R -e "install.packages(c('rgbif', 'png', 'raster', 'RStoolbox', 'ggrepel', 'rjson'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+
 # Install development version of Rmangal. Code at April 8 2019 Note: Rmangal is pretty shit at the moment (May 2019) won't use it for now
 # RUN apt-get update \
 #  && apt-get -y --no-install-recommends install libjq-dev libprotobuf-dev protobuf-compiler libudunits2-dev libv8-dev
