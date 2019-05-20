@@ -2,6 +2,12 @@
 
 *Fernando Cagua*
 
+#### 20 May 2019
+
+Meeting with Daniel. Check alyssas paper on sampling networks. Tad Dallas paper species are not more abundant in the middle of their range. 
+
+Check Stanichenko paper for phantom of nestedness for filling it abundances. 
+
 #### 8 May 2019
 
 Looks like Mangal has many datasets too and it's not a complete duplicate of WebOfLife. 
