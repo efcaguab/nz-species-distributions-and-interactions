@@ -12,10 +12,11 @@ f <- lapply(list.files("code", full.names = T), source)
 
 configuration_plan <- drake_plan(
   config = yaml::read_yaml(file_in("config.yaml")), 
-  data_download_date = config$raw_data_retrieved
+  data_download_date = config$raw_data_retrieved,
+  minimum_spp_locations = config$minimum_spp_locations
 )
 
-# Get data ---------------------------------------------------------------
+# Get interaction data ----------------------------------------------------
 
 get_web_of_life_pollination_networks_plan <- drake_plan(
   # the targed gets reevaluated if the date in the config file is changed
@@ -48,9 +49,12 @@ pre_process_int_plan <- rbind(
   merge_interaction_data_plan
 )
 
-pre_process_data_plan <- rbind(
-  pre_process_wol
+# Download occurrence data ------------------------------------------------
+
+download_ocurrence_data_plan <- drake_plan(
+  spp_to_download = select_species_to_download(spp, minimum_spp_locations)
 )
+
 
 # exploration------
 
@@ -101,8 +105,10 @@ full_plan <- rbind(
 
 paper_plan <- rbind(
   full_plan,
+  configuration_plan,
   get_data_plan,
-  pre_process_data_plan
+  pre_process_int_plan,
+  download_ocurrence_data_plan
 )
 
 
