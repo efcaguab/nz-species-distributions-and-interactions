@@ -50,7 +50,7 @@ read_wol_data <- function(zip_file){
   dir <- tempdir()
   unzip(zip_file, exdir = dir)
   list(
-    netwokrs = read_wol_networks(dir), 
+    networks = read_wol_networks(dir), 
     metadata = read_wol_metadata(file.path(dir, "references.csv"))
   )
 }
@@ -98,7 +98,90 @@ read_wol_metadata <- function(metadata_file){
                                   "reference", 
                                   "loc_name",
                                   "lat", 
-                                  "lon"))
+                                  "lon"), 
+                    skip = 1)
   })
+}
+
+pre_process_wol_data <- function(wol_data){
+  require(dplyr)
+  
+  # Add a column called loc_id, which will be used as the spatial unit of analysis
+  wol_data$metadata %<>%
+    arrange(net_name) %>%
+    mutate(loc_id = paste(lat, lon), 
+           loc_id = factor(loc_id), 
+           loc_id = as.numeric(loc_id), 
+           loc_id = paste("wol", loc_id, sep = "_"))
+  
+  wol_data
+}
+
+# get species lists by network and locality
+get_wol_species_list <- function(wol_data){
+  
+  require(dplyr)
+  
+  networks <- wol_data$networks
+  metadata <- wol_data$metadata
+  
+  locality_info <- metadata %>%
+    select(net_name, loc_id)
+  
+  plants <- networks %>%
+    purrr::discard(~length(.) == 0) %>%
+    purrr::map_df(~tibble::data_frame(sp_name = rownames(.)), .id = "net_name") %>%
+    mutate(guild = "pla")
+  
+  pollinators <- networks %>%
+    purrr::discard(~length(.) == 0) %>%
+    purrr::map_df(~tibble::data_frame(sp_name = colnames(.)), .id = "net_name") %>%
+    mutate(guild = "pol")
+  
+  bind_rows(plants, pollinators) %>%
+    mutate(genus = get_first_word(sp_name)) %>%
+    inner_join(locality_info, by = "net_name") %>%
+    distinct(sp_name, genus, loc_id)
+}
+
+
+
+get_wol_interaction_list <- function(wol_data){
+  
+  require(dplyr)
+
+  networks <- wol_data$networks
+  metadata <- wol_data$metadata
+    
+  locality_info <- metadata %>%
+    dplyr::select(net_name, loc_id)
+  
+  networks %>%
+    purrr::discard(~length(.) == 0) %>%
+    purrr::map_df(interactions_as_df, .id = "net_name")  %>%
+    mutate(pla_genus = get_first_word(pla_name), 
+                  pol_genus = get_first_word(pol_name))  %>%
+    inner_join(locality_info, by = "net_name") %>%
+    tibble::as_tibble() %>%
+    distinct(pla_name, pol_name, loc_id)
+}
+
+interactions_as_df <- function(x){
+  as.data.frame.table(x) %>% 
+    # dplyr::mutate(Freq = as.character(Freq),
+                  # Freq = as.numeric(Freq)) %>%
+    dplyr::filter(Freq > 0) %>%
+    dplyr::mutate_if(is.factor, as.character) %>% 
+    `names<-`(c("pla_name", "pol_name", "int_weight"))
+}
+
+
+### TESTS
+# Confirms that there is a set of coordinates per location, throws an error if it doesnt
+confirm_coordinates_per_net <- function(metadata) {
+  require(dplyr)
+  metadata %>% 
+    group_by(lon, lat) %>%
+    summarise(n_nets = n_distinct(net_name)) %>% View
 }
 

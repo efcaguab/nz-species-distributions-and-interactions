@@ -29,10 +29,23 @@ get_data_plan <- rbind(
   get_web_of_life_pollination_networks_plan
 )
 
-# Pre-process data ------------------------------------------------------
+# Pre-process interaction data --------------------------------------------
 
 pre_process_wol <- drake_plan(
-  wol_data = read_wol_data(file_in("data/web-of-life_plant-pollinator.zip"))
+  wol_data_raw = read_wol_data(file_in("data/web-of-life_plant-pollinator.zip")),
+  wol_data = pre_process_wol_data(wol_data_raw), 
+  wol_spp = get_wol_species_list(wol_data), 
+  wol_int = get_wol_interaction_list(wol_data)
+)
+
+merge_interaction_data_plan <- drake_plan(
+  spp = merge_spp(wol_spp), 
+  int = merge_int(wol_int)
+)
+
+pre_process_int_plan <- rbind(
+  pre_process_wol,
+  merge_interaction_data_plan
 )
 
 pre_process_data_plan <- rbind(
