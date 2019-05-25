@@ -57,6 +57,14 @@ download_ocurrence_data_plan <- drake_plan(
 )
 
 
+# Referencing -------------------------------------------------------------
+
+data_references_plan <- drake_plan(
+  interaction_references = get_int_ref_dois(int_metadata), 
+  dois_csv = readr::write_csv(interaction_references, 
+                              file_out("data/int_data_references.csv"))
+)
+
 # exploration------
 
 read_data_plan <- drake_plan(
@@ -109,7 +117,8 @@ paper_plan <- rbind(
   configuration_plan,
   get_data_plan,
   pre_process_int_plan,
-  download_ocurrence_data_plan
+  download_ocurrence_data_plan, 
+  data_references_plan
 )
 
 
