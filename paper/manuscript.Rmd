@@ -74,6 +74,18 @@ loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
 
 # Methods
 
+```{r}
+loadd(config)
+loadd(int_metadata)
+n_published_studies <- int_metadata$reference %>%
+  unique() %>%
+  stringr::str_detect(pattern = "unpubl", negate = TRUE) %>%
+  sum()
+```
+
+We downloaded plant pollinator networks from the Web of Life up to `r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")`. 
+This included pollination networks from `r n_published_studies` studies which included plant-pollinator interactions in `r dplyr::n_distinct(int_metadata$loc_id)` independent locations (Figure X). 
+
 # Results
 
 # Discussion 
