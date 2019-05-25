@@ -41,7 +41,8 @@ pre_process_wol <- drake_plan(
 
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp), 
-  int = merge_int(wol_int)
+  int = merge_int(wol_int), 
+  int_metadata = merge_metadata(wol_data)
 )
 
 pre_process_int_plan <- rbind(

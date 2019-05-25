@@ -7,3 +7,7 @@ merge_spp <- function(wol_spp){
 merge_int <- function(wol_int){
   wol_int
 }
+
+merge_metadata <- function(wol_data){
+  wol_data$metadata
+}
