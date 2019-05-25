@@ -22,8 +22,9 @@ get_web_of_life_pollination_networks_plan <- drake_plan(
   # the targed gets reevaluated if the date in the config file is changed
   wol_pol_networks = get_wol_networks(int_type = "plant-pollinator",
                                       download_date = data_download_date), 
-  wol_zip_file = download_wol_network_zip(wol_pol_networks, 
-                                          file_out("data/web-of-life_plant-pollinator.zip"))
+  wol_zip_file = download_wol_network_zip(
+    wol_pol_networks, 
+    file_out("data/web-of-life_plant-pollinator.zip"))
 )
 
 get_data_plan <- rbind(
@@ -33,7 +34,8 @@ get_data_plan <- rbind(
 # Pre-process interaction data --------------------------------------------
 
 pre_process_wol <- drake_plan(
-  wol_data_raw = read_wol_data(file_in("data/web-of-life_plant-pollinator.zip")),
+  wol_data_raw = read_wol_data(
+    file_in("data/web-of-life_plant-pollinator.zip")),
   wol_data = pre_process_wol_data(wol_data_raw), 
   wol_spp = get_wol_species_list(wol_data), 
   wol_int = get_wol_interaction_list(wol_data)
