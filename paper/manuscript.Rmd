@@ -93,13 +93,12 @@ We downloaded plant pollinator networks from the Web of Life up to `r format(as.
 This included pollination networks from `r n_published_studies` studies which included plant-pollinator interactions in `r dplyr::n_distinct(int_metadata$loc_id)` independent locations (Figure X). 
 
 ```{r, fig.cap=paste("Graph of", all_int_cites, "data points")}
-loadd(fig_worldmap)
+readd(fig_worldmap)
 
 all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
   glue::glue_collapse(sep = "; ") %>%
   paste0("[", ., "]")
 
-fig_worldmap
 ```
 
 Studies are 
