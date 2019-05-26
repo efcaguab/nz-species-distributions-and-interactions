@@ -67,6 +67,14 @@ data_references_plan <- drake_plan(
                               file_out("data/int_data_references.csv"))
 )
 
+
+# Figures -----------------------------------------------------------------
+
+figures_plan <- drake_plan(
+  world_land = rnaturalearth::ne_download(type = "land", category = "physical", returnclass = "sf"),
+  fig_worldmap = plot_worldmap(world_land, int_metadata)
+)
+
 # exploration------
 
 read_data_plan <- drake_plan(
@@ -125,7 +133,8 @@ paper_plan <- rbind(
   get_data_plan,
   pre_process_int_plan,
   download_ocurrence_data_plan, 
-  data_references_plan
+  data_references_plan, 
+  figures_plan
 )
 
 

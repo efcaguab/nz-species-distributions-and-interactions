@@ -37,7 +37,8 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
-                      warning = FALSE, dpi = 300)
+                      warning = FALSE, dpi = 300, 
+                      eval.after = "fig.cap")
 
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
 loadd(interaction_citations)
@@ -86,16 +87,22 @@ n_published_studies <- int_metadata$reference %>%
   stringr::str_detect(pattern = "unpubl", negate = TRUE) %>%
   sum()
 
-all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
-  glue::glue_collapse(sep = "; ") %>%
-  paste0("[", ., "]")
 ```
 
 We downloaded plant pollinator networks from the Web of Life up to `r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")`. 
 This included pollination networks from `r n_published_studies` studies which included plant-pollinator interactions in `r dplyr::n_distinct(int_metadata$loc_id)` independent locations (Figure X). 
 
+```{r, fig.cap=paste("Graph of", all_int_cites, "data points")}
+loadd(fig_worldmap)
 
-Studies are `r all_int_cites`
+all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
+  glue::glue_collapse(sep = "; ") %>%
+  paste0("[", ., "]")
+
+fig_worldmap
+```
+
+Studies are 
 
 # Results
 
