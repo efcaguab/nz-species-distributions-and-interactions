@@ -5,8 +5,10 @@ author:
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
   - "Daniel B. Stouffer^1^ ([daniel.stouffer@canterbury.ac.nz](daniel.stouffer@canterbury.ac.nz))"
-# bibliography: phd-bibliography/pollen-competition.bib
-csl: ecology-letters.csl
+bibliography: 
+  - bibliography.bib
+  - int-bibliography.bib
+# csl: ecology-letters.csl
 output: #word_document
   bookdown::pdf_document2:
     # base_format: rticles::peerj_article
@@ -77,14 +79,23 @@ loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
 ```{r}
 loadd(config)
 loadd(int_metadata)
+loadd(interaction_citations)
+
 n_published_studies <- int_metadata$reference %>%
   unique() %>%
   stringr::str_detect(pattern = "unpubl", negate = TRUE) %>%
   sum()
+
+all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
+  glue::glue_collapse(sep = "; ") %>%
+  paste0("[", ., "]")
 ```
 
 We downloaded plant pollinator networks from the Web of Life up to `r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")`. 
 This included pollination networks from `r n_published_studies` studies which included plant-pollinator interactions in `r dplyr::n_distinct(int_metadata$loc_id)` independent locations (Figure X). 
+
+
+Studies are `r all_int_cites`
 
 # Results
 

@@ -93,6 +93,11 @@ reporting_plan <- drake_plan(
     command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm.bib",
                                file_out("paper/bibliography.bib"))
   ),
+  interaction_bibliography = target(
+    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_interaction-data-references.bib", 
+                               file_out("paper/int-bibliography.bib"))
+  ),
+  interaction_citations = bib2df::bib2df(file_in("paper/int-bibliography.bib")),
   abstract = readLines(file_in("./paper/abstract.md")),
   keywords = process_keywords(file_in("./paper/keywords.md")),
   acknowledgements = readLines(file_in("./paper/acknowledgements.md")),
