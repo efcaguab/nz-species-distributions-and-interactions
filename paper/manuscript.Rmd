@@ -40,6 +40,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
                       warning = FALSE, dpi = 300)
 
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
+loadd(interaction_citations)
 ```
  
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
@@ -56,7 +57,7 @@ loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
 
 **Number of displays:** `r n_displays$figures` figures; `r n_displays$tables` tables; `r n_displays$text_boxes` text boxes.
 
-**Number of references:** `r n_references`
+**Number of references:** `r n_references + nrow(interaction_citations)`
 
 **Author for correspondence:** E. Fernando Cagua (+64 20 4026 8153).
 
@@ -79,7 +80,6 @@ loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
 ```{r}
 loadd(config)
 loadd(int_metadata)
-loadd(interaction_citations)
 
 n_published_studies <- int_metadata$reference %>%
   unique() %>%
