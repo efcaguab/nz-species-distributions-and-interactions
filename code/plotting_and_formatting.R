@@ -23,14 +23,15 @@ pub_theme <- function(){
 width <- function(type, unit=NULL){
   # Ecology letters has a paper width of 200 mm
   widths <- dplyr::case_when(
-    type == "single" ~ 3.57,
-    TRUE ~ 7.49
+    type == "single" ~ 3.23,
+    type == "double" ~ 6.81,
+    TRUE ~ 4.33
   )
   if(is.null(unit)) return(widths)
   else if (unit=="in") {
     widths %>%
       as.character() %>%
-      paste0("in")
+      paste0('in')
   }
 }
 
