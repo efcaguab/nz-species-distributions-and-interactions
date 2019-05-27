@@ -98,7 +98,7 @@ exploration_plan <- drake_plan(
 
 reporting_plan <- drake_plan(
   bibliography = target(
-    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm.bib",
+    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_manuscript.bib",
                                file_out("paper/bibliography.bib"))
   ),
   interaction_bibliography = target(
