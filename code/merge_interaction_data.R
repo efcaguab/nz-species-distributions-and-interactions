@@ -12,6 +12,7 @@ merge_metadata <- function(wol_data){
   wol_data$metadata
 }
 
+# Function writen by Scott Chamberlain https://github.com/ropensci/taxize/issues/533
 ### For each input, pick one name, either synonym if found, or same name
 ### that use gave if no synonyms found
 #' @export
