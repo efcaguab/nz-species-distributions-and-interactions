@@ -1,5 +1,5 @@
 ---
-title: "XX"
+title: "Flexibility of interactions depends on habitat suitability"
 author: 
   - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
@@ -89,8 +89,10 @@ n_published_studies <- int_metadata$reference %>%
 
 ```
 
-We downloaded plant pollinator networks from the Web of Life up to `r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")`. 
-This included pollination networks from `r n_published_studies` studies which included plant-pollinator interactions in `r dplyr::n_distinct(int_metadata$loc_id)` independent locations (Figure X). 
+We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014] on`r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")` (Figure \@ref(fig:fig-worldmap)). 
+Some studies included interaction data recorded at multiple points in time. 
+When this was the case, we combined them into one single interaction network per location. 
+All together, these networks included 
 
 ```{r fig-worldmap, fig.width = width('single'), fig.cap = paste("Worldwide distribution of pollination communities included in this study. We compile data from", length(interaction_citations$BIBTEXKEY), "published studies", all_int_cites, "which contain interaction information between plant and their pollinators at", dplyr::n_distinct(int_metadata$loc_id), "distinct locations.")}
 readd(fig_worldmap)
