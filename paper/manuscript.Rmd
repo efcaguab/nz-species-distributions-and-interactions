@@ -92,7 +92,7 @@ n_published_studies <- int_metadata$reference %>%
 We downloaded plant pollinator networks from the Web of Life up to `r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")`. 
 This included pollination networks from `r n_published_studies` studies which included plant-pollinator interactions in `r dplyr::n_distinct(int_metadata$loc_id)` independent locations (Figure X). 
 
-```{r, fig.cap=paste("Graph of", all_int_cites, "data points")}
+```{r fig-worldmap, fig.width = width('single'), fig.cap = paste("Worldwide distribution of pollination communities included in this study. We compile data from", length(interaction_citations$BIBTEXKEY), "published studies", all_int_cites, "which contain interaction information between plant and their pollinators at", dplyr::n_distinct(int_metadata$loc_id), "distinct locations.")}
 readd(fig_worldmap)
 
 all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
