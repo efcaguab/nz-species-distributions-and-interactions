@@ -130,18 +130,18 @@ get_wol_species_list <- function(wol_data){
   
   plants <- networks %>%
     purrr::discard(~length(.) == 0) %>%
-    purrr::map_df(~tibble::data_frame(sp_name = rownames(.)), .id = "net_name") %>%
+    purrr::map_df(~tibble::tibble(sp_name = rownames(.)), .id = "net_name") %>%
     mutate(guild = "pla")
   
   pollinators <- networks %>%
     purrr::discard(~length(.) == 0) %>%
-    purrr::map_df(~tibble::data_frame(sp_name = colnames(.)), .id = "net_name") %>%
+    purrr::map_df(~tibble::tibble(sp_name = colnames(.)), .id = "net_name") %>%
     mutate(guild = "pol")
   
   bind_rows(plants, pollinators) %>%
     mutate(genus = get_first_word(sp_name)) %>%
     inner_join(locality_info, by = "net_name") %>%
-    distinct(sp_name, genus, loc_id)
+    distinct(guild, sp_name, genus, loc_id)
 }
 
 
