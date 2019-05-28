@@ -1,12 +1,15 @@
 # Prepare workspace -------------------------------------------------------
 
 pkgconfig::set_config("strings_in_dots" = "literals")
+# pararell environment
+options(clustermq.scheduler = "multicore")
 
 library(magrittr)
 library(drake)
 
 # load functions
 f <- lapply(list.files("code", full.names = T), source)
+config_h <- yaml::read_yaml(file_in("config.yaml"))
 
 # Configuration -----------------------------------------------------------
 
@@ -44,9 +47,9 @@ pre_process_wol <- drake_plan(
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp), 
   stored_synonym_dict = get_synonym_dic(file_in("data/sp_synonyms.csv")),
-  spp_chunks = parallel::splitIndices(nrow(spp), ncl = 999),
+  spp_chunks = parallel::splitIndices(nrow(spp), ncl = config_h$n_chunks),
   spp_synonyms = target(get_synonyms(stored_synonym_dict, spp[spp_chunks[[chunk_number]],]),
-                        transform = map(chunk_number = !!seq_len(6))), 
+                        transform = map(chunk_number = !!seq_len(config_h$n_chunks))), 
   all_new_sp_synonyms = target(
     dplyr::bind_rows(spp_synonyms), 
     transform = combine(spp_synonyms)
@@ -96,7 +99,5 @@ paper_plan <- rbind(
   figures_plan
 )
 
-
-
 # full_config <- drake_config(full_plan)
-make(paper_plan)
+make(paper_plan, parallelism = "clustermq", jobs = 4)

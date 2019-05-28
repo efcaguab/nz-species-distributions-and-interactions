@@ -11,7 +11,10 @@ RUN R -e "install.packages(c('bookdown','kableExtra', 'cowplot'), repos = c(CRAN
 RUN apt-get update \
   && apt-get -y --no-install-recommends install libudunits2-dev libgeos-dev libgeos++-dev libgdal-dev libproj-dev
 RUN R -e "install.packages(c('rgbif', 'png', 'raster', 'RStoolbox', 'ggrepel', 'rjson', 'rcrossref', 'bib2df', 'sf', 'rnaturalearth', 'rnaturalearthdata', 'taxize'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
-
+# For pararell processing
+RUN apt-get update \
+  && apt-get -y --no-install-recommends install libzmq3-dev
+RUN R -e "install.packages(c('clustermq'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 
 # Install development version of Rmangal. Code at April 8 2019 Note: Rmangal is pretty shit at the moment (May 2019) won't use it for now
 # RUN apt-get update \
