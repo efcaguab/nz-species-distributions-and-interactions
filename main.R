@@ -58,7 +58,7 @@ get_data_plan <- rbind(
 
 pre_process_wol <- drake_plan(
   wol_data_raw = read_wol_data(
-    file_in("data/web-of-life_plant-pollinator.zip")),
+    file_in("data/downloads/web-of-life_plant-pollinator.zip")),
   wol_data = pre_process_wol_data(wol_data_raw), 
   wol_spp = get_wol_species_list(wol_data), 
   wol_int = get_wol_interaction_list(wol_data)
@@ -66,18 +66,8 @@ pre_process_wol <- drake_plan(
 
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp), 
-  stored_synonym_dict = get_synonym_dic(file_in("data/sp_synonyms.csv")),
-  # spp_chunks = parallel::splitIndices(nrow(spp), ncl = config_h$n_chunks),
-  # spp_synonyms = target(get_synonyms(stored_synonym_dict, spp[spp_chunks[[chunk_number]],]),
-  #                       transform = map(chunk_number = !!seq_len(config_h$n_chunks))), 
-  # all_new_sp_synonyms = target(
-  #   dplyr::bind_rows(spp_synonyms), 
-  #   transform = combine(spp_synonyms)
-  # ),
-  # all_sp_synonyms = {
-  #   dplyr::bind_rows(stored_synonym_dict, all_new_sp_synonyms) %T>%
-  #     readr::write_csv("data/sp_synonyms.csv")
-  # }, 
+  synonym_info_first_round = get_synonyms("data/downloads/itis_sqlite.zip", spp), 
+  # spp_synonnym_replaced = 
   int = merge_int(wol_int), 
   int_metadata = merge_metadata(wol_data)
 )
