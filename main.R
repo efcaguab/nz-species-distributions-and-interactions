@@ -16,10 +16,12 @@ config_h <- yaml::read_yaml(file_in("config.yaml"))
 configuration_plan <- drake_plan(
   config = yaml::read_yaml(file_in("config.yaml")), 
   data_download_date = config$raw_data_retrieved,
-  minimum_spp_locations = config$minimum_spp_locations
+  minimum_spp_locations = config$minimum_spp_locations, 
+  itis_address = config$itis_address, 
+  ecoregions_address = config$ecoregions_address
 )
 
-# Get interaction data ----------------------------------------------------
+# Download data ----------------------------------------------------------
 
 get_web_of_life_pollination_networks_plan <- drake_plan(
   # the targed gets reevaluated if the date in the config file is changed
@@ -27,12 +29,30 @@ get_web_of_life_pollination_networks_plan <- drake_plan(
                                       download_date = data_download_date), 
   wol_zip_file = download_wol_network_zip(
     wol_pol_networks, 
-    file_out("data/web-of-life_plant-pollinator.zip"))
+    file_out("data/downloads/web-of-life_plant-pollinator.zip"))
+)
+
+get_itis_synonym_database <- drake_plan(
+  itis_db = get_file(
+    itis_address, 
+    file_out("data/downloads/itis_sqlite.zip"),
+    data_download_date)
+)
+
+get_ecoregions_database <- drake_plan(
+  ecoregions_shapefile = get_file(
+    ecoregions_address, 
+    file_out("data/downloads/terrestrial-ecoregions.zip")
+  )
 )
 
 get_data_plan <- rbind(
-  get_web_of_life_pollination_networks_plan
+  get_web_of_life_pollination_networks_plan, 
+  get_itis_synonym_database, 
+  get_ecoregions_database
 )
+
+
 
 # Pre-process interaction data --------------------------------------------
 

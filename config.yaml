@@ -1,4 +1,6 @@
 download_citations: yes
 raw_data_retrieved: 2019-05-14
 minimum_spp_locations: 4
-n_chunks: 100
+itis_address: https://www.itis.gov/downloads/itisSqlite.zip
+ecoregions_address: http://maps.tnc.org/files/shp/terr-ecoregions-TNC.zip
+n_chunks: 1000
