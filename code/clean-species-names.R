@@ -52,10 +52,18 @@ assess_sp_name <- function(this_sp_name, synonyms_db, verbose = TRUE){
     purrr::map_df(~check_itis(.$sp_name, synonyms_db))
   # integrate things together
   bind_rows(itis_results, itis_round_two) %>% 
-    full_join(gnr_results, by = "sp_name")
+    full_join(gnr_results, by = "sp_name") # %>% 
+    # Check the kingdom of the GNR result should be plant or animal
+    # mutate(ncbi_kingdom = get_possible_kindgoms(sp_name))
   
 }
 
+
+get_posible_kingdoms <- function(sp_names){
+  taxize::tax_name(sp_name, get = "kingdom", db = "ncbi", messages = F)$kingdom
+  taxize::get_uid_("Cerastium arvense", get = "kingdom", db = "ncbi", messages = F)
+  taxize::classification(48136, db = "ncbi")
+}
 # Check wether a tentative species name (string is in the itis database) if it 
 # is check for synonyms, returns a data frame
 check_itis <- function(sp_name, synonyms_db){
@@ -132,16 +140,9 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
     require(dplyr)
   })
   
-  # if file with previous assessments doesn't exist create one
-  if(!file.exists(prev_sp_name_assessments_path)){
-    tibble("queried_sp_name", "sp_name", "itis", "itis_reason", "itis_tsn", 
-           "gnr_score", "gnr_source") %>%
-      readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
-  }
-  
   # load previous assessments to filter species before 
   prev_sp_name_assessments <- readr::read_csv(prev_sp_name_assessments_path, 
-                                              col_types = "cccidc")
+                                              col_types = "ccccidcc")
   
   # species_level
   spp %>%
@@ -160,7 +161,7 @@ assess_sp_name_memoised <- function(this_sp_name,
                                     synonyms_db){
   
   prev_sp_name_assessments <- readr::read_csv(prev_sp_name_assessments_path, 
-                                              col_types = "cccidc")
+                                              col_types = "ccccidcc")
   
   previous_info <- prev_sp_name_assessments %>% 
     filter(queried_sp_name == this_sp_name)
