@@ -24,43 +24,21 @@ get_synonyms_db <- function(db_zip){
   tables <- list(taxonomic_units = collect(taxonomic_units), 
                  synonym_links = collect(synonym_links))
   
-  # # Frame to be used to merge when having accepted names
-  # taxonomic_unit_names <- taxonomic_units %>%
-  #   select(tsn, complete_name) %>%
-  #   rename(tsn_accepted = tsn, complete_name_accepted = complete_name)
-  # 
-  # # Species level
-  # spp_names <- spp %>%
-  #   filter(!sp_unidentified) %>%
-  #   distinct(sp_name) %$% sp_name
-  # by_species <- taxonomic_units %>%
-  #   filter(complete_name %in% spp_names) %>%
-  #   select(tsn, complete_name, n_usage, rank_id, unaccept_reason) %>%
-  #   left_join(synonym_links, by = "tsn") %>%
-  #   left_join(taxonomic_unit_names, by = "tsn_accepted") %>%
-  #   collect()
-  # 
-  # # By genus
-  # genus_names <- spp %>%
-  #   filter(!gen_unidentified, 
-  #          sp_unidentified) %>% 
-  #   distinct(genus) %$% genus
-  # by_genus <- taxonomic_units %>% 
-  #   filter(complete_name %in% genus_names) %>%
-  #   select(tsn, complete_name, n_usage, rank_id, unaccept_reason) %>%
-  #   left_join(synonym_links, by = "tsn") %>%
-  #   left_join(taxonomic_unit_names, by = "tsn_accepted") %>%
-  #   collect() 
-  
   dbDisconnect(db_con)
   tables
 }
 
-assess_sp_name <- function(this_sp_name, synonyms_db){
+# Assess a given species name. This function takes as argument the name of a
+# species and checks in the synonym database and the GNR one to see if its a
+# valid one
+assess_sp_name <- function(this_sp_name, synonyms_db, verbose = TRUE){
   suppressPackageStartupMessages({
     require(dplyr)
   })
-  message(this_sp_name)
+  if(verbose){
+    cat("Assessing species name:", this_sp_name, "\n")
+  }
+  
   # look for synonyms in the database
   itis_results <- check_itis(this_sp_name, synonyms_db)
   # confirm names in GNR
@@ -74,7 +52,7 @@ assess_sp_name <- function(this_sp_name, synonyms_db){
     purrr::map_df(~check_itis(.$sp_name, synonyms_db))
   # integrate things together
   bind_rows(itis_results, itis_round_two) %>% 
-    full_join(gnr_results, by = "sp_name") %>% print()
+    full_join(gnr_results, by = "sp_name")
   
 }
 
@@ -119,6 +97,7 @@ rename_itis_df <- function(df){
            itis_tsn = tsn) 
 }
 
+# Check wether a species name is available in the global names resolver system
 check_gnr <- function(sp_name){
   
   empty_gnr <- function(sp_name){
@@ -145,7 +124,56 @@ check_gnr <- function(sp_name){
   } 
   gnr_df
 }
+
+# With the list of species names assess them all. Uses a "cache" of names that
+# have been previoulsy assessed
+check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
+  suppressPackageStartupMessages({
+    require(dplyr)
+  })
+  
+  # if file with previous assessments doesn't exist create one
+  if(!file.exists(prev_sp_name_assessments_path)){
+    tibble("queried_sp_name", "sp_name", "itis", "itis_reason", "itis_tsn", 
+           "gnr_score", "gnr_source") %>%
+      readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
+  }
+  
+  # species_level
+  spp %>%
+    filter(!sp_unidentified) %>%
+    distinct(sp_name) %$% 
+    sp_name %>%
+    # extract(1:15) %>%
+    purrr::map_df(assess_sp_name_memoised, prev_sp_name_assessments_path, synonyms_db)
+}
+
+# Memoised version of assess_sp_name that checks a data frame with species names
+# before checking with online APIS (as it's much faster)
+assess_sp_name_memoised <- function(this_sp_name, 
+                                    prev_sp_name_assessments_path, 
+                                    synonyms_db){
+  
+  prev_sp_name_assessments <- readr::read_csv(prev_sp_name_assessments_path, 
+                                              col_types = "cccidc")
+  
+  previous_info <- prev_sp_name_assessments %>% 
+    filter(queried_sp_name == this_sp_name)
+  
+  # if there is no previous info
+  if(nrow(previous_info) == 0){
+    new_info <- assess_sp_name(this_sp_name, synonyms_db) %>%
+      tibble::add_column(queried_sp_name = this_sp_name, .before = 1)
+    readr::write_csv(new_info, 
+                     path = prev_sp_name_assessments_path, 
+                     append = TRUE)
+    return(new_info)
+  } else {
+    return(previous_info)
+  }
+  
+}
 # Phacelia secunda
 # Phacelia secunda
 
-# assess_sp_name_m <- memoise::memoise(assess_sp_name)
+# assess_sp_name_memoised <- memoise::memoise(assess_sp_name, )

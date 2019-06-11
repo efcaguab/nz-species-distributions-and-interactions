@@ -68,6 +68,7 @@ pre_process_wol <- drake_plan(
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp),
   synonyms_db = get_synonyms_db(file_in("data/downloads/itis_sqlite.zip")), 
+  checked_sp_names = check_spp_names(spp, synonyms_db, "data/sp_name_checks.csv"), 
   # spp_synonnym_replaced = 
   int = merge_int(wol_int), 
   int_metadata = merge_metadata(wol_data)
@@ -95,7 +96,9 @@ data_references_plan <- drake_plan(
 # Figures -----------------------------------------------------------------
 
 figures_plan <- drake_plan(
-  world_land = rnaturalearth::ne_download(type = "land", category = "physical", returnclass = "sf"),
+  world_land = rnaturalearth::ne_download(type = "land", 
+                                          category = "physical", 
+                                          returnclass = "sf"),
   fig_worldmap = plot_worldmap(world_land, int_metadata)
 )
 
