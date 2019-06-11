@@ -23,6 +23,9 @@ configuration_plan <- drake_plan(
 
 # Download data ----------------------------------------------------------
 
+# create download dir if not already there
+dir.create("data/downloads", showWarnings = FALSE)
+
 get_web_of_life_pollination_networks_plan <- drake_plan(
   # the targed gets reevaluated if the date in the config file is changed
   wol_pol_networks = get_wol_networks(int_type = "plant-pollinator",
@@ -52,8 +55,6 @@ get_data_plan <- rbind(
   get_ecoregions_database
 )
 
-
-
 # Pre-process interaction data --------------------------------------------
 
 pre_process_wol <- drake_plan(
@@ -65,8 +66,8 @@ pre_process_wol <- drake_plan(
 )
 
 merge_interaction_data_plan <- drake_plan(
-  spp = merge_spp(wol_spp), 
-  synonym_info_first_round = get_synonyms("data/downloads/itis_sqlite.zip", spp), 
+  spp = merge_spp(wol_spp),
+  synonyms_db = get_synonyms("data/downloads/itis_sqlite.zip"), 
   # spp_synonnym_replaced = 
   int = merge_int(wol_int), 
   int_metadata = merge_metadata(wol_data)
@@ -110,4 +111,5 @@ paper_plan <- rbind(
 )
 
 # full_config <- drake_config(full_plan)
-make(paper_plan, parallelism = "clustermq", jobs = 4)
+# make(paper_plan, parallelism = "clustermq", jobs = 4)
+make(paper_plan)
