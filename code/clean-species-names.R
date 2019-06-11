@@ -139,9 +139,14 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
       readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
   }
   
+  # load previous assessments to filter species before 
+  prev_sp_name_assessments <- readr::read_csv(prev_sp_name_assessments_path, 
+                                              col_types = "cccidc")
+  
   # species_level
   spp %>%
-    filter(!sp_unidentified) %>%
+    filter(!sp_unidentified, 
+           !sp_name %in% prev_sp_name_assessments$queried_sp_name) %>%
     distinct(sp_name) %$% 
     sp_name %>%
     # extract(1:15) %>%
