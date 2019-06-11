@@ -1,5 +1,5 @@
 # Get status of species and genus names, wether they are accepted or not if not wether they have a synonym
-get_synonyms <- function(db_zip){
+get_synonyms_db <- function(db_zip){
   
   suppressPackageStartupMessages({
     require(DBI)
