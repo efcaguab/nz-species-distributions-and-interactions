@@ -11,6 +11,16 @@ library(drake)
 f <- lapply(list.files("code", full.names = T), source)
 config_h <- yaml::read_yaml(file_in("config.yaml"))
 
+# cache of sp names
+prev_sp_name_assessments_path <- "data/sp_name_checks.csv"
+# if file with previous assessments doesn't exist create one
+if(!file.exists(prev_sp_name_assessments_path)){
+  tibble::tibble("queried_sp_name", "sp_name", "itis", "itis_reason", "itis_tsn", 
+         "gnr_score", "gnr_source", "ncbi_kingdom") %>%
+    readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
+}
+
+
 # Configuration -----------------------------------------------------------
 
 configuration_plan <- drake_plan(
@@ -68,7 +78,7 @@ pre_process_wol <- drake_plan(
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp),
   synonyms_db = get_synonyms_db(file_in("data/downloads/itis_sqlite.zip")), 
-  checked_sp_names = check_spp_names(spp, synonyms_db, "data/sp_name_checks.csv"), 
+  checked_sp_names = check_spp_names(spp, synonyms_db, file_in(prev_sp_name_assessments_path)), 
   # spp_synonnym_replaced = 
   int = merge_int(wol_int), 
   int_metadata = merge_metadata(wol_data)
