@@ -100,7 +100,7 @@ To alleviate this issue we restored to the following procedure.
 
 First, we used data from the Integrated Taxonomic Information System database (http://www.itis.gov) on `r format(as.Date(config$raw_data_retrieved), "%B %Y")` to find synonyms of species names recorded in the datasets. 
 Subsequently, we checked the spelling of species names using the Global Names Resolver (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
-Using the function `gnr_resolve` in the R package `taxize` [@chamberlain_taxize_2013; chamberlain_taxize_2019] and used fuzzy matching of the canonical names to obtain the most likely correct spelling of incorrect scientific names. 
+Using the function `gnr_resolve` in the R package `taxize` [@chamberlain_taxize_2013; @chamberlain_taxize_2019] and used fuzzy matching of the canonical names to obtain the most likely correct spelling of incorrect scientific names. 
 As, ocassionally, homonimus species or genus names can be found in different taxa, we retrieved higher taxonomic hierarchy to confirm that the correct spelling obtained using the Global Names Resolver matches our expectations. 
 This hierarchy was retrieved from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
 
