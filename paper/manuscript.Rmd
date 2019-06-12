@@ -91,14 +91,20 @@ n_published_studies <- int_metadata$reference %>%
 
 ```
 
-We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014] on`r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")` (Figure \@ref(fig:fig-worldmap)). 
+We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014] on `r format(as.Date(config$raw_data_retrieved), "%B %Y")` (Figure \@ref(fig:fig-worldmap)). 
 This database contains datasets originating from XX studies published in the primary literature between XX and XX. 
 Before assessing how habitat suitability affects interaction partners of plants and pollinators we need to link species across different datasets. 
 However, this task is complicated by the inacurracies often found in diverse data sources. 
 Most commonly, there are typos in the species names, species names have bee abbreviated or a single species might be recorded as different synonyms in different sources. 
 To alleviate this issue we restored to the following procedure. 
 
-First, to 
+First, we used data from the Integrated Taxonomic Information System database (http://www.itis.gov) on `r format(as.Date(config$raw_data_retrieved), "%B %Y")` to find synonyms of species names recorded in the datasets. 
+Subsequently, we checked the spelling of species names using the Global Names Resolver (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
+Using the function `gnr_resolve` in the R package `taxize` [@chamberlain_taxize_2013; chamberlain_taxize_2019] and used fuzzy matching of the canonical names to obtain the most likely correct spelling of incorrect scientific names. 
+As, ocassionally, homonimus species or genus names can be found in different taxa, we retrieved higher taxonomic hierarchy to confirm that the correct spelling obtained using the Global Names Resolver matches our expectations. 
+This hierarchy was retrieved from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
+
+all together we found XX instances of species that were included with a datab
 
 Some studies included interaction data recorded at multiple points in time. 
 When this was the case, we combined them into one single interaction network per location. 
