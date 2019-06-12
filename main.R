@@ -28,7 +28,8 @@ configuration_plan <- drake_plan(
   data_download_date = config$raw_data_retrieved,
   minimum_spp_locations = config$minimum_spp_locations, 
   itis_address = config$itis_address, 
-  ecoregions_address = config$ecoregions_address
+  ecoregions_address = config$ecoregions_address, 
+  biblio_download_date = config$bibliography_retrieved
 )
 
 # Download data ----------------------------------------------------------
@@ -118,11 +119,13 @@ figures_plan <- drake_plan(
 reporting_plan <- drake_plan(	
   bibliography = target(	
     command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_manuscript.bib",	
-                               file_out("paper/bibliography.bib"))	
+                               file_out("paper/bibliography.bib"), 
+                               bibliography_retrieved)	
   ),	
   interaction_bibliography = target(	
     command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_interaction-data-references.bib", 	
-                               file_out("paper/int-bibliography.bib"))	
+                               file_out("paper/int-bibliography.bib"), 
+                               bibliography_retrieved)	
   ),	
   interaction_citations = bib2df::bib2df(file_in("paper/int-bibliography.bib")),	
   abstract = readLines(file_in("./paper/abstract.md")),	
