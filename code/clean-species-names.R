@@ -51,18 +51,55 @@ assess_sp_name <- function(this_sp_name, synonyms_db, verbose = TRUE){
     split(.$sp_name) %>%
     purrr::map_df(~check_itis(.$sp_name, synonyms_db))
   # integrate things together
-  bind_rows(itis_results, itis_round_two) %>% 
-    full_join(gnr_results, by = "sp_name") # %>% 
-    # Check the kingdom of the GNR result should be plant or animal
-    # mutate(ncbi_kingdom = get_possible_kindgoms(sp_name))
   
+  bind_rows(itis_results, itis_round_two) %>% 
+      full_join(gnr_results, by = "sp_name")  %>% 
+      # Check the kingdom of the GNR result should be plant or animal
+      rowwise() %>%
+      mutate(ncbi_kingdom = definitely(get_possible_kingdoms, 10, 1/10, sp_name))
+  }
+
+# Function to try a function multiple times until it succeeds, especially useful
+# for http requests that might fail randomly
+definitely <- function(func, n_tries = 10, sleep = 1/10, ...){
+  
+  possibly_func = purrr::possibly(func, otherwise = NULL)
+  
+  result = NULL
+  try_number = 1
+  
+  while(is.null(result) && try_number <= n_tries){
+    message("Try number: ", try_number)
+    try_number = try_number + 1
+    result = possibly_func(...)
+    Sys.sleep(sleep)
+  }
+  
+  return(result)
 }
 
 
-get_posible_kingdoms <- function(sp_names){
-  taxize::tax_name(sp_name, get = "kingdom", db = "ncbi", messages = F)$kingdom
-  taxize::get_uid_("Cerastium arvense", get = "kingdom", db = "ncbi", messages = F)
-  taxize::classification(48136, db = "ncbi")
+get_possible_kingdoms <- function(this_sp_name){
+  
+  uids <- this_sp_name %>%
+    taxize::get_uid_(db = "ncbi", messages = F) %>%
+    purrr::map_df(function(x){x})
+  
+  # It it was not found in NCIB return NA
+  if(nrow(uids) == 0){
+    return(NA_character_)
+  } else {
+    uids %>%
+      split(.$uid) %>%
+      purrr::map_chr(~get_kingdom_of_uid(.$uid)) %>%
+      paste(collapse = "-")
+  }
+}
+
+get_kingdom_of_uid <- function(uid){
+  taxize::classification(uid, db = "ncbi")[[1]]  %>%
+    filter(rank == "kingdom") %$%
+    name
 }
 # Check wether a tentative species name (string is in the itis database) if it 
 # is check for synonyms, returns a data frame
