@@ -78,7 +78,7 @@ definitely <- function(func, n_tries = 10, sleep = 1/10, ...){
   return(result)
 }
 
-
+# Get the kindoms a species name (or genus might belong to)
 get_possible_kingdoms <- function(this_sp_name){
   
   uids <- this_sp_name %>%
@@ -96,6 +96,7 @@ get_possible_kingdoms <- function(this_sp_name){
   }
 }
 
+# Get the kingdom of a NCBI UID taxon
 get_kingdom_of_uid <- function(uid){
   taxize::classification(uid, db = "ncbi")[[1]]  %>%
     filter(rank == "kingdom") %$%
