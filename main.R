@@ -113,6 +113,34 @@ figures_plan <- drake_plan(
 )
 
 
+# Manuscript --------------------------------------------------------------
+
+reporting_plan <- drake_plan(	
+  bibliography = target(	
+    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_manuscript.bib",	
+                               file_out("paper/bibliography.bib"))	
+  ),	
+  interaction_bibliography = target(	
+    command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_interaction-data-references.bib", 	
+                               file_out("paper/int-bibliography.bib"))	
+  ),	
+  interaction_citations = bib2df::bib2df(file_in("paper/int-bibliography.bib")),	
+  abstract = readLines(file_in("./paper/abstract.md")),	
+  keywords = process_keywords(file_in("./paper/keywords.md")),	
+  acknowledgements = readLines(file_in("./paper/acknowledgements.md")),	
+  intro_line_number = get_line_number(file_in("paper/manuscript.Rmd"), "# Introduction"),	
+  abs_wordcount = count_words(file_in("paper/abstract.md")),	
+  msc_wordcount = count_words(file_in('paper/manuscript.Rmd'), lines_to_ignore = 1:intro_line_number),	
+  n_references = count_references(file_in('paper/manuscript.Rmd'), lines_to_ignore = 1:intro_line_number, refs_to_exclude = "@ref"),	
+  n_displays = count_displays(file_in('paper/manuscript.Rmd'), lines_to_ignore = 1:intro_line_number),	
+  msc_title = get_yaml_title(file_in('paper/manuscript.Rmd')),	
+  supp_info = render_pdf(knitr_in('paper/supp-info.Rmd'), file_out('paper/supp-info.pdf'), clean_md = FALSE),	
+  draft_info = render_pdf(file_in('paper/draft-info.Rmd'), file_out('paper/draft-info.pdf'), clean_md = FALSE),	
+  manuscript = render_pdf(knitr_in('paper/manuscript.Rmd'), file_out('paper/manuscript.pdf'), clean_md = FALSE),	
+  cover_letter = knitr::knit2pdf(knitr_in("paper/cover-letter.Rnw"), output = file_out("paper/cover-letter.tex"))	
+)	
+
+
 paper_plan <- rbind(
   # full_plan,
   configuration_plan,
