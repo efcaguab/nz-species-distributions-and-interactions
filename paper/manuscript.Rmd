@@ -1,10 +1,10 @@
 ---
 title: "Flexibility of interactions depends on habitat suitability"
 author: 
-  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
   - "Daniel B. Stouffer^1^ ([daniel.stouffer@canterbury.ac.nz](daniel.stouffer@canterbury.ac.nz))"
+  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
@@ -30,6 +30,8 @@ header-includes:
   - \newcommand{\lr}[1]{page~\pageref{#1}, line~\lineref{#1}}
   - \externaldocument[S-]{supp-info}
   - \usepackage[export]{adjustbox}
+editor_options: 
+  chunk_output_type: console
 ---
 
 \linenumbers
@@ -90,6 +92,14 @@ n_published_studies <- int_metadata$reference %>%
 ```
 
 We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014] on`r format(as.Date(config$raw_data_retrieved), "%b %d, %Y")` (Figure \@ref(fig:fig-worldmap)). 
+This database contains datasets originating from XX studies published in the primary literature between XX and XX. 
+Before assessing how habitat suitability affects interaction partners of plants and pollinators we need to link species across different datasets. 
+However, this task is complicated by the inacurracies often found in diverse data sources. 
+Most commonly, there are typos in the species names, species names have bee abbreviated or a single species might be recorded as different synonyms in different sources. 
+To alleviate this issue we restored to the following procedure. 
+
+First, to 
+
 Some studies included interaction data recorded at multiple points in time. 
 When this was the case, we combined them into one single interaction network per location. 
 All together, these networks included 
