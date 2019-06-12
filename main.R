@@ -148,7 +148,8 @@ paper_plan <- rbind(
   pre_process_int_plan,
   download_ocurrence_data_plan, 
   data_references_plan, 
-  figures_plan
+  figures_plan, 
+  reporting_plan
 )
 
 # full_config <- drake_config(full_plan)
