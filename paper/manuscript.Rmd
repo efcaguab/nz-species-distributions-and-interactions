@@ -42,6 +42,8 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
                       warning = FALSE, dpi = 300, 
                       eval.after = "fig.cap")
 
+library(dplyr)
+
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords)
 loadd(interaction_citations)
 ```
@@ -98,13 +100,49 @@ However, this task is complicated by the inacurracies often found in diverse dat
 Most commonly, there are typos in the species names, species names have bee abbreviated or a single species might be recorded as different synonyms in different sources. 
 To alleviate this issue we restored to the following procedure. 
 
+```{r scientific-names-cleaning-info}
+loadd(checked_sp_names, spp)
+
+checked_sp_names <- checked_sp_names %>%
+  mutate(sp_name_in_gnr = gnr_score >= 0.988, 
+         sp_name_itis_invalid = itis %in% c("invalid", "not accepted"), 
+         good_sp_name = sp_name_in_gnr & ! sp_name_itis_invalid, 
+         # good_sp_name = if_else(is.na(good_sp_name), FALSE, good_sp_name), 
+         good_queried_sp_name = good_sp_name & sp_name == queried_sp_name) 
+
+n_sp_names <- n_distinct(spp$sp_name)
+
+n_sp_names_sp_level <- filter(spp, !sp_unidentified) %$% 
+  n_distinct(sp_name)
+
+n_sp_names_gen_level <- filter(spp, sp_unidentified, !gen_unidentified) %$% 
+  n_distinct(sp_name)
+
+n_no_tax_info <- filter(spp, gen_unidentified) %$% n_distinct(sp_name) 
+
+n_sp_correct_in_data <- checked_sp_names %>%
+  filter(good_queried_sp_name) %$%
+  n_distinct(queried_sp_name)
+
+
+# n_sp_correct_in_data %>%
+#   group_by(queried_sp_name) %>%
+#   count(sort = TRUE)
+
+# sp_incorrect_in_data <- checked_sp_names %>%
+```
+
 First, we used data from the Integrated Taxonomic Information System database (http://www.itis.gov) on `r format(as.Date(config$raw_data_retrieved), "%B %Y")` to find synonyms of species names recorded in the datasets. 
 Subsequently, we checked the spelling of species names using the Global Names Resolver (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
 Using the function `gnr_resolve` in the R package `taxize` [@chamberlain_taxize_2013; @chamberlain_taxize_2019] and used fuzzy matching of the canonical names to obtain the most likely correct spelling of incorrect scientific names. 
 As, ocassionally, homonimus species or genus names can be found in different taxa, we retrieved higher taxonomic hierarchy to confirm that the correct spelling obtained using the Global Names Resolver matches our expectations. 
 This hierarchy was retrieved from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
 
-all together we found XX instances of species that were included with a datab
+All together, before correcting typos and synonyms, the data sources contained `r format(n_sp_names, big.mark = ",")` unique interacting species. 
+Out of those, `r format(n_sp_names_sp_level, big.mark = ",")` were originally identified to the species-level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, and no taxonomic information was avaliable for the restant `r format(n_no_tax_info, big.mark = ",")`. 
+We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the scientific names of organisms identified to the species level (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`).
+
+
 
 Some studies included interaction data recorded at multiple points in time. 
 When this was the case, we combined them into one single interaction network per location. 
