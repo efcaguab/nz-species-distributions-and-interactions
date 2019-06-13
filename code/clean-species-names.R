@@ -69,7 +69,7 @@ definitely <- function(func, n_tries = 10, sleep = 1/10, ...){
   try_number = 1
   
   while(is.null(result) && try_number <= n_tries){
-    message("Try number: ", try_number)
+    # message("Try number: ", try_number)
     try_number = try_number + 1
     result = possibly_func(...)
     Sys.sleep(sleep)
@@ -83,7 +83,9 @@ get_possible_kingdoms <- function(this_sp_name){
   
   uids <- this_sp_name %>%
     taxize::get_uid_(db = "ncbi", messages = F) %>%
-    purrr::map_df(function(x){x})
+    purrr::map_df(function(x){x}) %>%
+    # because it could match random shit eg. Anthrax could max Bacilus anthracis anthrax
+    filter(scientificname == this_sp_name)
   
   # It it was not found in NCIB return NA
   if(nrow(uids) == 0){
@@ -98,10 +100,17 @@ get_possible_kingdoms <- function(this_sp_name){
 
 # Get the kingdom of a NCBI UID taxon
 get_kingdom_of_uid <- function(uid){
-  taxize::classification(uid, db = "ncbi")[[1]]  %>%
+  kingdom <- taxize::classification(uid, db = "ncbi")[[1]] %>%
     filter(rank == "kingdom") %$%
     name
+  
+  if(length(kingdom) == 0){
+    return("NoKingdomAvailable")
+  } else {
+    return(kingdom)
+  }
 }
+
 # Check wether a tentative species name (string is in the itis database) if it 
 # is check for synonyms, returns a data frame
 check_itis <- function(sp_name, synonyms_db){
