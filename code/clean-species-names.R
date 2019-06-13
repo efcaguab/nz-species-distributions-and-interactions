@@ -190,6 +190,10 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
     sp_name %>%
     # extract(1:15) %>%
     purrr::map_df(assess_sp_name_memoised, prev_sp_name_assessments_path, synonyms_db)
+  
+  # Once is done just read the assessment file from disk and return it
+  readr::read_csv(prev_sp_name_assessments_path, col_types = "ccccidcc")
+  
 }
 
 # Memoised version of assess_sp_name that checks a data frame with species names
