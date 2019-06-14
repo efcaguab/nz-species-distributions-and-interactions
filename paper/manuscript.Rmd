@@ -124,6 +124,14 @@ checked_sp_names <- checked_sp_names %>%
          alt_sp_name_found = n_spellings > 1 & any_sp_itis_invalid) %>%
   ungroup()
 
+spp %>%
+  distinct(sp_name, guild, loc_id) %>%
+  group_by(sp_name) %>%
+  mutate(n_guilds = n_distinct(guild)) %>% 
+  inner_join(checked_sp_names, by = c("sp_name" = "queried_sp_name")) %>% 
+  filter(n_guilds > 1) %>% View
+  n_distinct(sp_name)
+
 n_sp_names <- n_distinct(spp$sp_name)
 
 n_sp_names_sp_level <- filter(spp, !sp_unidentified) %$% 
@@ -170,7 +178,8 @@ We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark
 We assessed the validity of a scientific name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
 Specifically, we used the function `gnr_resolve` from the R package `taxize `r as.character(packageVersion('taxize'))`` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
 
-From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names, we were able to identify and the correct missspelling of `r format(n_sp_corrected_typos, big.mark = ",")` organism names. 
+From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` scientific names we were unable to validate, we were able to identify and the correct `r format(n_sp_corrected_typos, big.mark = ",")` spelling mistakes. 
+These mistakes were corrected automatically used by fuzzy matching with the canonical names in the Global Names Resover database. 
 Furthermore we found alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` species. 
 Most commonly, due to the name being an invalid or not accepted synonym of a species, subspecies, or plant variety (\@ref(tab:tab-sp-synonym-reasons)). 
 We were unable to automatically correct `r format(n_sp_not_found, big.mark = ",")` names in the databases. 
