@@ -293,3 +293,33 @@ get_manual_name_corrections <- function(manual_name_corrections_file){
     tibble(queried_sp_name = character(), sp_name = character(), sp_unidentified = logical())
   }
 }
+
+get_final_name_list <- 
+  function(spp, 
+           checked_sp_names,
+           manual_name_corrections, 
+           checked_manual_name_corrections) {
+  
+  # rename stuff in spp to match the fixed names
+  spp_reformated <- spp %>%
+    dplyr::mutate(queried_sp_name = sp_name)
+  
+  # remove manual correction that arent actually one
+  actual_manual_name_corrections <- manual_name_corrections %>%
+    dplyr::filter(!is.na(sp_name))
+  
+  checked_sp_names %>%
+    # remove stuff that asks to get only genus
+    dplyr::filter(sp_name_rank != "genus") %>%
+    dplyr::bind_rows(actual_manual_name_corrections) %>%
+    dplyr::bind_rows(spp_reformated) %>%
+    dplyr::distinct(queried_sp_name, sp_name) %>% 
+    # make into a graph to detect components
+    igraph::graph_from_data_frame(directed = FALSE) %>%
+    igraph::components() %>%
+    igraph::groups() %>%
+    purrr::map_df(~tibble::tibble(sp_name = .), .id = "sp_id") %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(sp_id = stringr::str_pad(sp_id, 5, pad = "0"), 
+           sp_id = paste("sp", sp_id, sep = "_"))
+}
