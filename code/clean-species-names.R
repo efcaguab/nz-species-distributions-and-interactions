@@ -284,3 +284,12 @@ detect_problematic_networks <- function(checked_sp_names, spp){
     filter(n_guilds > 1) %$%
     unique(loc_id)
 }
+
+get_manual_name_corrections <- function(manual_name_corrections_file){
+  if(file.exists(manual_name_corrections_file)){
+    readr::read_csv(manual_name_corrections_file, col_types = "cc") %>%
+      dplyr::mutate(sp_unidentified = FALSE)
+  } else {
+    tibble(queried_sp_name = character(), sp_name = character(), sp_unidentified = logical())
+  }
+}
