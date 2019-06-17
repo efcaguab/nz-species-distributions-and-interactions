@@ -30,7 +30,13 @@ header-includes:
 
 ## Requests to coauthors
 
-* Specify grant numbers in the Acknowledgements and make sure the ones stated there now are correct. 
-* Suggestions to bring the abstract down to 150 words.
-* Approve (or not) for submission.
+* Should I include more data?
 
+## Done
+
+* Downloaded network data from the Web of Life and cleaned it. I didn't anticipated data needed SO MUCH work! I estimated three days to do this but took roughly 3 weeks to do it propperly and there is still some work to do. Quite a mess...
+
+## To-do
+
+* Manually fix the remaining species names that are incorrect and were not picked up by the automatic procedure
+* Fix references. There are lots of mistakes re. author, years and publication venue.
