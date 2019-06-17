@@ -28,7 +28,7 @@ header-includes:
   - \usepackage[utf8]{inputenc}
   - \newcommand{\R}[1]{\label{#1}\linelabel{#1}}
   - \newcommand{\lr}[1]{page~\pageref{#1}, line~\lineref{#1}}
-  - \externaldocument[S-]{supp-info}
+  - \externaldocument{supp-info}
   - \usepackage[export]{adjustbox}
 editor_options: 
   chunk_output_type: console
@@ -82,6 +82,10 @@ loadd(interaction_citations)
 
 # Methods
 
+## Data aquisition
+
+### Species interactions
+
 ```{r}
 loadd(config)
 loadd(int_metadata)
@@ -91,46 +95,15 @@ n_published_studies <- int_metadata$reference %>%
   stringr::str_detect(pattern = "unpubl", negate = TRUE) %>%
   sum()
 
+all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
+  glue::glue_collapse(sep = "; ") %>%
+  paste0("[", ., "]")
+
+int_citations_year_range <- range(interaction_citations$YEAR)
 ```
 
-We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014] on `r format(as.Date(config$raw_data_retrieved), "%B %Y")` (Figure \@ref(fig:fig-worldmap)). 
-This database contains datasets originating from XX studies published in the primary literature between XX and XX. 
-Before assessing how habitat suitability affects interaction partners of plants and pollinators we need to link species across different datasets. 
-However, this task is complicated by the inacurracies often found in diverse data sources. 
-Most commonly, there are typos in the species names, species names have bee abbreviated or a single species might be recorded as different synonyms in different sources. 
-To alleviate this issue we restored to the following procedure. 
-
 ```{r scientific-names-cleaning-info}
-loadd(checked_sp_names, spp)
-
-checked_sp_names <- checked_sp_names %>%
-  # remove variant and subspecies abbreviations from the retrieved species
-  # names, it is clear that they are one when there is 3 words or more in there
-  mutate(sp_name = stringr::str_replace_all(sp_name,"var. ", ""),
-         sp_name = stringr::str_replace_all(sp_name,"ssp. ", ""),
-         sp_name_in_gnr = !is.na(gnr_score), 
-         sp_name_itis_invalid = itis %in% c("invalid", "not accepted"), 
-         # good species name has been found and its not invalid
-         good_sp_name = sp_name_in_gnr & ! sp_name_itis_invalid, 
-         good_queried_sp_name = good_sp_name & sp_name == queried_sp_name, 
-         sp_name_rank = get_name_rank(sp_name), 
-         queried_sp_name_rank = get_name_rank(queried_sp_name)) %>%
-  group_by(queried_sp_name) %>%
-  mutate(corrected_typo = any(gnr_score == 0.750) & all(sp_name_rank == queried_sp_name_rank),
-         corrected_typo = tidyr::replace_na(corrected_typo, FALSE),
-         good_queried_sp_name = any(good_queried_sp_name), 
-         n_spellings = n_distinct(sp_name), 
-         any_sp_itis_invalid = any(sp_name_itis_invalid), 
-         alt_sp_name_found = n_spellings > 1 & any_sp_itis_invalid) %>%
-  ungroup()
-
-spp %>%
-  distinct(sp_name, guild, loc_id) %>%
-  group_by(sp_name) %>%
-  mutate(n_guilds = n_distinct(guild)) %>% 
-  inner_join(checked_sp_names, by = c("sp_name" = "queried_sp_name")) %>% 
-  filter(n_guilds > 1) %>% View
-  n_distinct(sp_name)
+loadd(checked_sp_names, spp, manual_name_corrections, problematic_networks)
 
 n_sp_names <- n_distinct(spp$sp_name)
 
@@ -156,59 +129,89 @@ sp_with_synonyms <- checked_sp_names %>%
 n_sp_with_synonyms <- sp_with_synonyms %$%
   n_distinct(queried_sp_name)
 
-n_sp_not_found <- checked_sp_names %>%
+sp_not_found <- checked_sp_names %>%
   filter(!good_queried_sp_name) %>% 
-  filter(!alt_sp_name_found, !corrected_typo) %$%
+  filter(!alt_sp_name_found, !corrected_typo) 
+
+n_sp_not_found <- sp_not_found %$%
   n_distinct(queried_sp_name)
 
+n_sp_manual_corrections <- manual_name_corrections %>%
+  filter(!is.na(sp_name)) %$%
+  n_distinct(queried_sp_name)
 
-checked_sp_names %>%
-  filter(!good_queried_sp_name, !alt_sp_name_found) %$% n_distinct(queried_sp_name)
+study_per_location <- int_metadata %>%
+  distinct(loc_id, reference)
+
+n_names_in_multiple_references_orig <- spp %>%
+  left_join(study_per_location, by = "loc_id") %>%
+  group_by(sp_name) %>%
+  summarise(n_net = n_distinct(loc_id), 
+            n_ref = n_distinct(reference)) %>%
+  filter(n_ref > 1) %$%
+  n_distinct(sp_name)
 ```
 
-First, we used data from the Integrated Taxonomic Information System database (http://www.itis.gov) on `r format(as.Date(config$raw_data_retrieved), "%B %Y")` to find synonyms of species names recorded in the datasets. 
-Subsequently, we checked the spelling of species names using the Global Names Resolver (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
-Using the function `gnr_resolve` in the R package `taxize` [@chamberlain_taxize_2013; @chamberlain_taxize_2019] and used fuzzy matching of the canonical names to obtain the most likely correct spelling of incorrect scientific names. 
-As, ocassionally, homonimus species or genus names can be found in different taxa, we retrieved higher taxonomic hierarchy to confirm that the correct spelling obtained using the Global Names Resolver matches our expectations. 
-This hierarchy was retrieved from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
-
-All together, before correcting typos and synonyms, the data sources contained `r format(n_sp_names, big.mark = ",")` unique interacting species. 
-From that total, `r format(n_sp_names_sp_level, big.mark = ",")` were originally identified to the species-level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, and no taxonomic information was avaliable for the remaining `r format(n_no_tax_info, big.mark = ",")` organims. 
-We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the scientific names used to identify organisms to the species level (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
+We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014]. 
+This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]` `r all_int_cites`. 
+All together, these data sources contained `r format(n_sp_names, big.mark = ",")` unique organism names; `r format(n_names_in_multiple_references_orig, big.mark = ",")` of them in more than one data source.  
+Because assessing how habitat suitability affects interaction partners of plants and pollinators requires linking of species across different datasets, it was important to ensure that the cannnonical names used to identify species were as accurate as possible.
+From the total number of organisms, `r format(n_sp_names_sp_level, big.mark = ",")` were originally identified to the species-level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, and no taxonomic information was avaliable for the remaining `r format(n_no_tax_info, big.mark = ",")`. 
+ 
+We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the cannonical names used to identify organisms to the species level (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
 We assessed the validity of a scientific name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
 Specifically, we used the function `gnr_resolve` from the R package `taxize `r as.character(packageVersion('taxize'))`` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
 
-From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` scientific names we were unable to validate, we were able to identify and the correct `r format(n_sp_corrected_typos, big.mark = ",")` spelling mistakes. 
-These mistakes were corrected automatically used by fuzzy matching with the canonical names in the Global Names Resover database. 
-Furthermore we found alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` species. 
-Most commonly, due to the name being an invalid or not accepted synonym of a species, subspecies, or plant variety (\@ref(tab:tab-sp-synonym-reasons)). 
-We were unable to automatically correct `r format(n_sp_not_found, big.mark = ",")` names in the databases. 
+From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, we were able to identify and correct `r format(n_sp_corrected_typos, big.mark = ",")` spelling mistakes. 
+These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with tgose in the Global Names Resover database. 
+In rare occasions, the fuzzy matching algorithm can suggest a cannonical name that has similar spelling but that correspond to an organism in a completely different taxonomic group, often in a different kingdom. 
+We, therefore, checked the taxonomic hierarchy of suggested names to confirm that it corresponded to our expectations. 
+We retrieved all taxonomic hierarchies from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
 
-```{r tab-sp-synonym-reasons}
-sp_with_synonyms %>%
-  filter(!is.na(itis_reason)) %>%
-  group_by(queried_sp_name) %>%
-  summarise(itis_reason = first(itis_reason)) %>%
-  group_by(itis_reason) %>%
-  count(sort = T) %>%
-  knitr::kable(col.names = c("reason of species alternative name", "n"), 
-               caption = "tablesita", 
-               booktabs = TRUE) %>%
-  kableExtra::kable_styling(font_size = 8) 
+Subsequently, we checked for possible synonyms of the canonnical names in our data sources. 
+Using data from the Integrated Taxonomic Information System database (http://www.itis.gov), we found synonyms and alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` of those in our data sources.
+Finding these alternative names was important due to two reasons. 
+First, because we wanted to be able to identify the cases in which the same organism might have been recorded with different cannonical names in different data sources. This can ocurr not only with synonyms but also when the cannonical name has been changed or when there are widely used ortographic variants.
+Second, because retrieving occurrence data is often only possible using the latest accepted/valid name for a particular species.
+
+All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct `r format(n_sp_not_found, big.mark = ",")` of them. 
+We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for cannonical names that resembled the unvalidated names and matched the geographic and taxonomic spectations. 
+We were able to further correct `r n_sp_manual_corrections` names in this fashion.
+Most manual corrections were of species names that have been abbreviated or had more than two spelling mistakes. 
+A complete list of manual name corrections can bee seen in Table \@ref(tab:tab-manual-name-corrections).
+
+```{r}
+loadd(recoded_interactions, clean_interactions)
+
+n_sp_ids <- recoded_interactions %>%
+  select(-loc_id) %>%
+  purrr::map(n_distinct) %>%
+  unlist() %>% sum()
+
+n_names_in_multiple_references_after <- recoded_interactions %>%
+  tidyr::gather(key = "guild", "sp_id", pla_id, ani_id) %>%
+  left_join(study_per_location, by = "loc_id") %>%
+  group_by(sp_id) %>%
+  summarise(n_ref = n_distinct(reference)) %>%
+  filter(n_ref > 1) %$%
+  n_distinct(sp_id)
+
+stats_clean_int <- clean_interactions %>%
+  purrr::map(n_distinct)
 ```
 
-Some studies included interaction data recorded at multiple points in time. 
+This cleaning process allowed us to match further `r n_sp_names - n_sp_ids` names across data sources and, by doing so, identify another `r n_names_in_multiple_references_after - n_names_in_multiple_references_orig` species that were present in more than one study. 
+It also allowed us to identify `r numbers2words(length(problematic_networks))` problematic networks in which some names were included as both plants and pollinators. 
+These networks were removed from further analysis. 
+Sometimes interaction data was recorded at multiple points in time within or across our data sources. 
 When this was the case, we combined them into one single interaction network per location. 
-All together, these networks included 
+The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap)).
 
 ```{r fig-worldmap, fig.width = width('single'), fig.cap = paste("Worldwide distribution of pollination communities included in this study. We compile data from", length(interaction_citations$BIBTEXKEY), "published studies", all_int_cites, "which contain interaction information between plant and their pollinators at", dplyr::n_distinct(int_metadata$loc_id), "distinct locations.")}
 readd(fig_worldmap)
-
-all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
-  glue::glue_collapse(sep = "; ") %>%
-  paste0("[", ., "]")
-
 ```
+
+### Climatic and habitat
 
 <!-- These data are for use in research projects only. A 'research project' is any project carried out by an individual or organized by a university, a scientific institute, or similar organization (private or public) for non-commercial research purposes only. Results based on these data must be submitted for publication in the open literature without any delay linked to commercial objectives. An additional restriction is that the UK Met. Office/Hadley Centre requires strict adherence to the conditions set forth in their "License Statement", which applies to their model output: "These data are licensed for use in Research Projects only. A 'Research Project' is any project organised by a university, a scientific institute, or similar organisation (private or public), for non-commercial research purposes only. A necessary condition of the recognition of non-commercial purposes is that all the results obtained are openly available at delivery costs only, without any delay linked to commercial objectives, and that the research itself is submitted for open publication. -->
 
