@@ -193,7 +193,8 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
   
   # species_level
   spp %>%
-    filter(!sp_unidentified, 
+    filter(!is.na(sp_name), 
+           !sp_unidentified, 
            !sp_name %in% prev_sp_name_assessments$queried_sp_name) %>%
     distinct(sp_name) %$% 
     sp_name %>%
