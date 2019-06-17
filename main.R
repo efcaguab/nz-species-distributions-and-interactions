@@ -79,8 +79,9 @@ pre_process_wol <- drake_plan(
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp),
   synonyms_db = get_synonyms_db(file_in("data/downloads/itis_sqlite.zip")), 
-  checked_sp_names = check_spp_names(spp, synonyms_db, file_in(prev_sp_name_assessments_path)), 
-  # spp_synonnym_replaced = 
+  checked_sp_names = check_spp_names(spp, 
+                                     synonyms_db, 
+                                     file_in(prev_sp_name_assessments_path)), 
   int = merge_int(wol_int), 
   int_metadata = merge_metadata(wol_data)
 )

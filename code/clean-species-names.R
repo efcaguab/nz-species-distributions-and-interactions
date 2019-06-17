@@ -200,8 +200,32 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
     # extract(1:15) %>%
     purrr::map_df(assess_sp_name_memoised, prev_sp_name_assessments_path, synonyms_db)
   
-  # Once is done just read the assessment file from disk and return it
-  readr::read_csv(prev_sp_name_assessments_path, col_types = "ccccidcc")
+  # Once is done just read the assessment file from disk and calculate helpful stats
+  readr::read_csv(prev_sp_name_assessments_path, col_types = "ccccidcc") %>%
+    filter(queried_sp_name %in% unique(spp$sp_name)) %>%
+    # remove variant and subspecies abbreviations from the retrieved species
+    # names, it is clear that they are one when there is 3 words or more in there
+    mutate(sp_name = stringr::str_replace_all(sp_name,"var. ", ""),
+           sp_name = stringr::str_replace_all(sp_name,"ssp. ", ""),
+           sp_name_in_gnr = !is.na(gnr_score), 
+           sp_name_itis_invalid = itis %in% c("invalid", "not accepted"), 
+           # good species name has been found and its not invalid
+           good_sp_name = sp_name_in_gnr & ! sp_name_itis_invalid, 
+           good_queried_sp_name = good_sp_name & sp_name == queried_sp_name, 
+           sp_name_rank = get_name_rank(sp_name), 
+           queried_sp_name_rank = get_name_rank(queried_sp_name)) %>%
+    group_by(queried_sp_name) %>%
+    mutate(corrected_typo = (any(gnr_score == 0.750) & 
+                               all(sp_name_rank == queried_sp_name_rank)) | 
+             (any(gnr_score >= 0.988) & 
+                queried_sp_name != sp_name & all(is.na(itis_reason))),
+           corrected_typo = tidyr::replace_na(corrected_typo, FALSE),
+           corrected_typo = any(corrected_typo), 
+           good_queried_sp_name = any(good_queried_sp_name), 
+           n_spellings = n_distinct(sp_name), 
+           any_sp_itis_invalid = any(sp_name_itis_invalid), 
+           alt_sp_name_found = n_spellings > 1 & any_sp_itis_invalid) %>%
+    ungroup()
   
 }
 
