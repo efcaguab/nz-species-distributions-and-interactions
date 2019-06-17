@@ -270,3 +270,17 @@ get_name_rank <- function(x){
     TRUE ~ "subspecies"
   )
 }
+
+detect_problematic_networks <- function(checked_sp_names, spp){
+  suppressPackageStartupMessages({
+    require(dplyr)
+  })
+  
+  spp %>%
+    distinct(sp_name, guild, loc_id) %>%
+    group_by(loc_id, sp_name) %>%
+    mutate(n_guilds = n_distinct(guild)) %>%
+    inner_join(checked_sp_names, by = c("sp_name" = "queried_sp_name")) %>% 
+    filter(n_guilds > 1) %$%
+    unique(loc_id)
+}

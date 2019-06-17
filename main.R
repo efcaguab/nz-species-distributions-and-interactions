@@ -82,6 +82,7 @@ merge_interaction_data_plan <- drake_plan(
   checked_sp_names = check_spp_names(spp, 
                                      synonyms_db, 
                                      file_in(prev_sp_name_assessments_path)), 
+  problematic_networks = detect_problematic_networks(checked_sp_names, spp), 
   int = merge_int(wol_int), 
   int_metadata = merge_metadata(wol_data)
 )
