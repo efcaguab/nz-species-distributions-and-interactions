@@ -332,3 +332,9 @@ recode_interactions <- function(species_ids, int){
     dplyr::rename(ani_id = sp_id) %>%
     dplyr::select(-pla_name, -pol_name)
 }
+
+
+remove_problematic_networks <- function(recoded_interactions, problematic_networks){
+  recoded_interactions %>%
+    dplyr::filter(!loc_id %in% problematic_networks)
+}

@@ -94,6 +94,7 @@ merge_interaction_data_plan <- drake_plan(
                                     checked_manual_corrections),
   int = merge_int(wol_int),
   recoded_interactions = recode_interactions(species_ids, int),
+  clean_interactions = remove_problematic_networks(recoded_interactions, problematic_networks), 
   int_metadata = merge_metadata(wol_data)
 )
 
