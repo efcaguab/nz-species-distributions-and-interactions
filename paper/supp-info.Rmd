@@ -44,4 +44,39 @@ options(xtable.comment = FALSE,
         xtable.size = 'small',
         booktabs = TRUE, 
         knitr.kable.NA = "-")
+library(dplyr)
+```
+
+
+```{r tab-manual-name-corrections}
+loadd(spp, manual_name_corrections)
+manual_name_corrections %>%
+  inner_join(spp, by = c("queried_sp_name" = "sp_name")) %>%
+  distinct(queried_sp_name, sp_name, guild) %>%
+  filter(!is.na(sp_name)) %>%
+  arrange(guild, queried_sp_name, sp_name) %>%
+  mutate(sp_name = tidyr::replace_na(sp_name, "no replacement found"), 
+         sp_name = kableExtra::cell_spec(sp_name, italic = TRUE), 
+         guild = if_else(guild == "pla", "plant", "pollinator")) %>%
+  knitr::kable(caption = "Manually corrected canonnical names. More than one correct name have been included when an accepted/valid synonym the cannonical name exists.", 
+               col.names = c("incorrect name", "corrected name", "guild"),
+               booktabs = TRUE, 
+               escape = F) %>%
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::collapse_rows(1, latex_hline = "none", valign = "top")
+```
+
+```{r eval = FALSE, tab-sp-synonym-reasons}
+sp_with_synonyms %>%
+  filter(!is.na(itis_reason)) %>%
+  group_by(queried_sp_name) %>%
+  summarise(itis_reason = first(itis_reason)) %>%
+  group_by(itis_reason) %>%
+  count(sort = T) %>%
+  knitr::kable("latex", 
+               col.names = c("reason of species alternative name", "n"), 
+               caption = "tablesita", 
+               booktabs = TRUE) %>%
+  kableExtra::kable_styling(font_size = 8) %>%
+  kableExtra::collapse_rows(columns = 1)
 ```
