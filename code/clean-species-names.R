@@ -323,3 +323,12 @@ get_final_name_list <-
     dplyr::mutate(sp_id = stringr::str_pad(sp_id, 5, pad = "0"), 
            sp_id = paste("sp", sp_id, sep = "_"))
 }
+
+recode_interactions <- function(species_ids, int){
+  int %>%
+    dplyr::left_join(species_ids, by = c("pla_name" = "sp_name")) %>%
+    dplyr::rename(pla_id = sp_id) %>%
+    dplyr::left_join(species_ids, by = c("pol_name" = "sp_name")) %>%
+    dplyr::rename(ani_id = sp_id) %>%
+    dplyr::select(-pla_name, -pol_name)
+}

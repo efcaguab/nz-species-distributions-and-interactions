@@ -92,7 +92,8 @@ merge_interaction_data_plan <- drake_plan(
   species_ids = get_final_name_list(spp, checked_sp_names, 
                                     manual_name_corrections, 
                                     checked_manual_corrections),
-  int = merge_int(wol_int), 
+  int = merge_int(wol_int),
+  recoded_interactions = recode_interactions(species_ids, int),
   int_metadata = merge_metadata(wol_data)
 )
 
