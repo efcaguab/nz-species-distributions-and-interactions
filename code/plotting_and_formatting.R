@@ -11,7 +11,7 @@ pub_theme <- function(){
           legend.title = element_text(hjust = 0.5),
           legend.key.size = unit(3, "mm"),
           legend.margin = margin(),
-          axis.ticks.x = element_line(colour = "grey30", size = 0.05),
+          axis.ticks.x = element_line(colour = "grey30", size = 0.25),
           axis.ticks.y = element_line(colour = "grey30", size = 0.25),
           # panel.border = element_blank(),
           # axis.line.y = element_line(),
