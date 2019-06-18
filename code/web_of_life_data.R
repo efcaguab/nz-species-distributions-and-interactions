@@ -168,8 +168,13 @@ get_wol_interaction_list <- function(wol_data){
 
 interactions_as_df <- function(x){
   as.data.frame.table(x) %>% 
-    # dplyr::mutate(Freq = as.character(Freq),
-                  # Freq = as.numeric(Freq)) %>%
+    # Some networks (at least M_PL_063) have weird columns and rows that need to
+    # be removed
+    dplyr::filter_all(
+      function(x) !x %in% c('Frequency of occurrences"', 'Numbers of flowers')) %>%
+    # Frequency in some networks was enconded as character or vectors
+    dplyr::mutate(Freq = as.character(Freq),
+                  Freq = as.numeric(Freq)) %>% 
     dplyr::filter(Freq > 0) %>%
     dplyr::mutate_if(is.factor, as.character) %>% 
     `names<-`(c("pla_name", "pol_name", "int_weight"))
