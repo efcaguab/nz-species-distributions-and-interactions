@@ -123,7 +123,10 @@ figures_plan <- drake_plan(
   world_land = rnaturalearth::ne_download(type = "land", 
                                           category = "physical", 
                                           returnclass = "sf"),
-  fig_worldmap = plot_worldmap(world_land, int_metadata)
+  fig_worldmap = plot_worldmap(world_land, int_metadata, clean_interactions), 
+  fig_dist_species_multiple_locations = plot_species_location_distribution(
+    clean_interactions, checked_sp_names, species_ids
+  )
 )
 
 
