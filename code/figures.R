@@ -25,7 +25,7 @@ plot_worldmap <- function(world_land, int_metadata, clean_interactions){
 }
 
 # plot distribution of number of species per number of locations
-plot_species_location_distribution <- function(clean_interactions, checked_sp_names, species_ids){
+plot_species_location_distribution <- function(dist_species_multiple_locations_data){
   
   suppressPackageStartupMessages({
     require(ggplot2)
@@ -33,33 +33,8 @@ plot_species_location_distribution <- function(clean_interactions, checked_sp_na
   })
   
   pal <- cgm()$pal_el_green[c(4,7)]
-
-  distribution_data <- clean_interactions %>%
-    tidyr::gather("guild", "sp_id", pla_id, ani_id) %>%
-    dplyr::group_by(guild, sp_id) %>%
-    dplyr::summarise(n_locations = dplyr::n_distinct(loc_id)) %>%
-    dplyr::group_by(guild, n_locations) %>%
-    dplyr::summarise(n_species = dplyr::n_distinct(sp_id), 
-                     sp_id = paste(sp_id, collapse = "."))
   
-  sp_id_to_highlight <- distribution_data %>%
-    dplyr::group_by(guild) %>%
-    dplyr::filter(n_species == 1, 
-                  n_locations == max(n_locations)
-                  ) %$%
-    sp_id
-  
-  species_to_highlight <- species_ids %>%
-    dplyr::filter(sp_id %in% sp_id_to_highlight)
-  
-  distribution_data_highlight <- distribution_data %>%
-    dplyr::inner_join(species_to_highlight, by = "sp_id") %>%
-    dplyr::inner_join(checked_sp_names, by = "sp_name") %>%
-    dplyr::filter(gnr_score >= 0.98)
-  
-   p <- distribution_data %>%
-    dplyr::left_join(distribution_data_highlight, 
-                     by = c("guild", "n_locations", "n_species", "sp_id")) %>%
+   p <- dist_species_multiple_locations_data %>%
     ggplot(aes(x = n_locations, y = n_species, fill = guild)) +
     geom_line(aes(colour = guild), linetype = 3, size = 0.5) +
     geom_point(shape = 21, size = 1) +
@@ -85,9 +60,42 @@ plot_species_location_distribution <- function(clean_interactions, checked_sp_na
           legend.justification = c(1,1), 
           legend.title = element_blank()) +
     labs(x = "number of locations", 
-         y = "numver of species",
-         title = "distribution of species per locations")
+         y = "frequency (# species)",
+         title = "number of species at multiple locations", 
+         subtitle = "frequency distribution")
     
-  # ggsave("plot.pdf", p,  width = unit(width("single"), "in"), height = unit(2, "in"))
+  # ggsave("plot.pdf", p,  width = unit(width("single"), "in"), height = unit(2.2, "in"))
    p
+}
+
+
+get_dist_species_multiple_locations_data <- function(clean_interactions, checked_sp_names, species_ids){
+  
+  distribution_data <- clean_interactions %>%
+    tidyr::gather("guild", "sp_id", pla_id, ani_id) %>%
+    dplyr::group_by(guild, sp_id) %>%
+    dplyr::summarise(n_locations = dplyr::n_distinct(loc_id)) %>%
+    dplyr::group_by(guild, n_locations) %>%
+    dplyr::summarise(n_species = dplyr::n_distinct(sp_id), 
+                     sp_id = paste(sp_id, collapse = "."))
+  
+  sp_id_to_highlight <- distribution_data %>%
+    dplyr::group_by(guild) %>%
+    dplyr::filter(n_species == 1, 
+                  n_locations == max(n_locations)
+    ) %$%
+    sp_id
+  
+  species_to_highlight <- species_ids %>%
+    dplyr::filter(sp_id %in% sp_id_to_highlight)
+  
+  distribution_data_highlight <- distribution_data %>%
+    dplyr::inner_join(species_to_highlight, by = "sp_id") %>%
+    dplyr::inner_join(checked_sp_names, by = "sp_name") %>%
+    dplyr::filter(gnr_score >= 0.98)
+  
+  distribution_data %>%
+    dplyr::left_join(distribution_data_highlight, 
+                     by = c("guild", "n_locations", "n_species", "sp_id")) 
+  
 }

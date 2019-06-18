@@ -124,8 +124,11 @@ figures_plan <- drake_plan(
                                           category = "physical", 
                                           returnclass = "sf"),
   fig_worldmap = plot_worldmap(world_land, int_metadata, clean_interactions), 
-  fig_dist_species_multiple_locations = plot_species_location_distribution(
+  fig_dist_species_multiple_locations_data = get_dist_species_multiple_locations_data(
     clean_interactions, checked_sp_names, species_ids
+  ),
+  fig_dist_species_multiple_locations = plot_species_location_distribution(
+    fig_dist_species_multiple_locations_data
   )
 )
 
