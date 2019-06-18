@@ -148,8 +148,6 @@ get_wol_species_list <- function(wol_data){
 
 get_wol_interaction_list <- function(wol_data){
   
-  require(dplyr)
-
   networks <- wol_data$networks
   metadata <- wol_data$metadata
     
@@ -159,11 +157,11 @@ get_wol_interaction_list <- function(wol_data){
   networks %>%
     purrr::discard(~length(.) == 0) %>%
     purrr::map_df(interactions_as_df, .id = "net_name")  %>%
-    mutate(pla_genus = get_first_word(pla_name), 
+    dplyr::mutate(pla_genus = get_first_word(pla_name), 
                   pol_genus = get_first_word(pol_name))  %>%
-    inner_join(locality_info, by = "net_name") %>%
+    dplyr::inner_join(locality_info, by = "net_name") %>%
     tibble::as_tibble() %>%
-    distinct(pla_name, pol_name, loc_id)
+    dplyr::distinct(pla_name, pol_name, loc_id)
 }
 
 interactions_as_df <- function(x){
