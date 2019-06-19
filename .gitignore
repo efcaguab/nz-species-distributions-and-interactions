@@ -68,3 +68,9 @@ data/downloads/itis_sqlite\.zip
 data/downloads/terrestrial-ecoregions\.zip
 
 \.Renviron
+
+data/downloads/envirem_2-5m\.zip
+
+data/downloads/envirem_topo_2-5m\.zip
+
+data/downloads/wordclim_2-5m\.zip
