@@ -234,24 +234,12 @@ readd(fig_dist_species_multiple_locations)
 
 ### Climatic and habitat
 
-<!-- These data are for use in research projects only. A 'research project' is any project carried out by an individual or organized by a university, a scientific institute, or similar organization (private or public) for non-commercial research purposes only. Results based on these data must be submitted for publication in the open literature without any delay linked to commercial objectives. An additional restriction is that the UK Met. Office/Hadley Centre requires strict adherence to the conditions set forth in their "License Statement", which applies to their model output: "These data are licensed for use in Research Projects only. A 'Research Project' is any project organised by a university, a scientific institute, or similar organisation (private or public), for non-commercial research purposes only. A necessary condition of the recognition of non-commercial purposes is that all the results obtained are openly available at delivery costs only, without any delay linked to commercial objectives, and that the research itself is submitted for open publication. -->
-
-<!-- Proper citation and acknowledgement -->
-<!-- In first making reference to the data obtained from the CliMond archive, please include the phrase "the CliMond dataset (Kriticos et al. 2012)". Subsequent references within the same publication might refer to the data with terms such as " CliMond data", "the CliMond multi-model dataset", "the CliMond archive", or the " CliMond dataset". Please note the following critical references: -->
-
-<!-- CliMond: -->
-<!-- Kriticos DJ, Webber BL, Leriche A, Ota N, Bathols J, Macadam I, Scott JK (2012) CliMond: global high resolution historical and future scenario climate surfaces for bioclimatic modelling. Methods in Ecology and Evolution, 3, 53-64.  -->
-<!-- WorldClim: -->
-<!-- Hijmans RJ, Cameron SE, Parra JL, Jones PG, Jarvis A (2005) Very high resolution interpolated climate surfaces for global land areas. International Journal of Climatology, 25, 1965-1978.  -->
-<!-- CRU: -->
-<!-- Mitchell TD, Carter TR, Jones PD, Hulme M, New M (2004) A comprehensive set of climate scenarios for Europe and the globe: the observed record (1900-2000) and 16 scenarios (2000-2100).University of East Anglia, Norwich,UK, pp. 30.  -->
-<!-- CMIP3: -->
-<!-- Meehl, G. A., C. Covey, T. Delworth, M. Latif, B. McAvaney, J. F. B. Mitchell, R. J. Stouffer, and K. E. Taylor (2007) The WCRP CMIP3 multi-model dataset: A new era in climate change research, Bulletin of the American Meteorological Society, 88, 1383-1394.  -->
-<!-- CSIRO Mk 3.0: -->
-<!-- Collier MA, Dix MR, Hirst AC (2007) CSIRO Mk3 climate system model and meeting the strict IPCC AR4 data requirements. MODSIM07 International Congress on Modelling and Simulation : Land, water & environmental management : integrated systems for sustainability, 10-13 December [2007] : proceedings (eds Oxley L, Kulasiri D), Christchurch, pp. 582-588. Modelling and Simulation Society of Australia and New Zealand.  -->
-<!-- Miroc-H: -->
-<!-- Hasumi H, Emori S (2004) K-1 coupled model (MIROC) description, K-1 technical report, 1. Center for Climate System Research, University of Tokyo, Tokyo, 34 pp. -->
-
+First we downloaded climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
+These bioclimatic variables were complemented with 16 of bioclimatic and topographic variables available in ENVIREM [@title_envirem_2018]. 
+This additional set of variables have been shown to be relevant to ecological or physiological processes and as such have the potential to improve species distribition models.
+All climatic data was obtained with a 2.5 arc-minuteresolution which provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come from museum collections. 
+Furthermore, we obtained habitat data from the 
+ 
 
 See topography data from Species distribution model transferability and model grain size – finer may not always be better
 
