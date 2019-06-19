@@ -19,7 +19,14 @@ if(!file.exists(prev_sp_name_assessments_path)){
          "gnr_score", "gnr_source", "ncbi_kingdom") %>%
     readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
 }
-
+# chache of sp ocurrences
+prev_sp_ocurrences_path <- "data/downloads/sp_ocurrences.zip"
+if(!file.exists(prev_sp_ocurrences_path)){
+  system("touch emptyfile")
+  system(paste("zip", prev_sp_ocurrences_path, "emptyfile"))
+  system(paste("zip -d", prev_sp_ocurrences_path, "emptyfile"))
+  system("rm emptyfile")
+}
 
 # Configuration -----------------------------------------------------------
 
@@ -117,7 +124,8 @@ merge_interaction_data_plan <- drake_plan(
                                     checked_manual_corrections),
   int = merge_int(wol_int),
   recoded_interactions = recode_interactions(species_ids, int),
-  clean_interactions = remove_problematic_networks(recoded_interactions, problematic_networks), 
+  clean_interactions = remove_problematic_networks(recoded_interactions,
+                                                   problematic_networks), 
   int_metadata = merge_metadata(wol_data)
 )
 
