@@ -19,7 +19,14 @@ if(!file.exists(prev_sp_name_assessments_path)){
          "gnr_score", "gnr_source", "ncbi_kingdom") %>%
     readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
 }
-
+# chache of sp ocurrences
+prev_sp_ocurrences_path <- "data/downloads/sp_ocurrences.zip"
+if(!file.exists(prev_sp_ocurrences_path)){
+  system("touch emptyfile")
+  system(paste("zip", prev_sp_ocurrences_path, "emptyfile"))
+  system(paste("zip -d", prev_sp_ocurrences_path, "emptyfile"))
+  system("rm emptyfile")
+}
 
 # Configuration -----------------------------------------------------------
 
@@ -29,6 +36,9 @@ configuration_plan <- drake_plan(
   minimum_spp_locations = config$minimum_spp_locations, 
   itis_address = config$itis_address, 
   ecoregions_address = config$ecoregions_address, 
+  worldclim_address = config$worldclim_address,
+  envirem_address = config$envirem_address,
+  envirem_topo_address = config$envirem_topo_address,
   biblio_download_date = config$bibliography_retrieved
 )
 
@@ -56,14 +66,34 @@ get_itis_synonym_database <- drake_plan(
 get_ecoregions_database <- drake_plan(
   ecoregions_shapefile = get_file(
     ecoregions_address, 
-    file_out("data/downloads/terrestrial-ecoregions.zip")
+    file_out("data/downloads/terrestrial-ecoregions.zip"), 
+    data_download_date
+  )
+)
+
+get_climate_data <- drake_plan(
+  worldclim = get_file(
+    worldclim_address, 
+    file_out("data/downloads/wordclim_2-5m.zip"), 
+    data_download_date
+  ),
+  envirem = get_file(
+    envirem_address, 
+    file_out("data/downloads/envirem_2-5m.zip"), 
+    data_download_date
+  ),
+  envirem_topo = get_file(
+    envirem_topo_address, 
+    file_out("data/downloads/envirem_topo_2-5m.zip"), 
+    data_download_date
   )
 )
 
 get_data_plan <- rbind(
   get_web_of_life_pollination_networks_plan, 
   get_itis_synonym_database, 
-  get_ecoregions_database
+  get_ecoregions_database, 
+  get_climate_data
 )
 
 # Pre-process interaction data --------------------------------------------
@@ -94,7 +124,8 @@ merge_interaction_data_plan <- drake_plan(
                                     checked_manual_corrections),
   int = merge_int(wol_int),
   recoded_interactions = recode_interactions(species_ids, int),
-  clean_interactions = remove_problematic_networks(recoded_interactions, problematic_networks), 
+  clean_interactions = remove_problematic_networks(recoded_interactions,
+                                                   problematic_networks), 
   int_metadata = merge_metadata(wol_data)
 )
 
@@ -139,12 +170,12 @@ reporting_plan <- drake_plan(
   bibliography = target(	
     command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_manuscript.bib",	
                                file_out("paper/bibliography.bib"), 
-                               bibliography_retrieved)	
+                               biblio_download_date)	
   ),	
   interaction_bibliography = target(	
     command = get_bibliography("https://raw.githubusercontent.com/efcaguab/phd-bibliography/master/interactions%2Bsdm_interaction-data-references.bib", 	
                                file_out("paper/int-bibliography.bib"), 
-                               bibliography_retrieved)	
+                               biblio_download_date)	
   ),	
   interaction_citations = bib2df::bib2df(file_in("paper/int-bibliography.bib")),	
   abstract = readLines(file_in("./paper/abstract.md")),	
