@@ -22,9 +22,25 @@ download_sp_ocurrences <- function(this_sp_names){
   data_fields <- c('key', 'scientificName', 'decimalLatitude', 'decimalLongitude', 'geodeticDatum', 'countryCode', 'country', 'individualCount', 'coordinateUncertaintyInMeters', 'year', 'basisOfRecord')
   
   system.time({
-    b <- rgbif::occ_search(scientificName = 'Stachys albi', limit = 1000000) 
+    c <- rgbif::occ_data(scientificName = c('Phacelia secunda'), 
+                           hasCoordinate = TRUE,
+                           limit = 1000000) 
+  })
+  
+  system.time({
+    c('Phacelia secunda', 'Phacelia secunda') %>%
+      purrr::map(~rgbif::occ_search(scientificName = ., 
+                                    hasCoordinate = TRUE,
+                                    limit = 1000000) )
   })
  
+  
+  system.time({
+    rgbif::occ_search(scientificName = 'Stachys albicaulis', 
+                                    hasCoordinate = TRUE,
+                                    limit = 1000000) 
+  })
+  
   a <- rgbif::occ_download('taxonKey=7316195', 'hasCoordinate = true') 
   rgbif::occ_download_meta(a)
   f <- rgbif::occ_download_get(a, overwrite = T)
