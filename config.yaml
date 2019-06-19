@@ -4,4 +4,7 @@ bibliography_retrieved: 2019-06-19
 minimum_spp_locations: 4
 itis_address: https://www.itis.gov/downloads/itisSqlite.zip
 ecoregions_address: http://maps.tnc.org/files/shp/terr-ecoregions-TNC.zip
+worldclim_address: http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_2.5m_bio.zip
+envirem_topo_address: https://deepblue.lib.umich.edu/data/downloads/37720c880?locale=en
+envirem_address: https://deepblue.lib.umich.edu/data/downloads/ms35t870p?locale=en
 n_chunks: 1000

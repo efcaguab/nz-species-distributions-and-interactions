@@ -29,6 +29,9 @@ configuration_plan <- drake_plan(
   minimum_spp_locations = config$minimum_spp_locations, 
   itis_address = config$itis_address, 
   ecoregions_address = config$ecoregions_address, 
+  worldclim_address = config$worldclim_address,
+  envirem_address = config$envirem_address,
+  envirem_topo_address = config$envirem_topo_address,
   biblio_download_date = config$bibliography_retrieved
 )
 
@@ -56,14 +59,34 @@ get_itis_synonym_database <- drake_plan(
 get_ecoregions_database <- drake_plan(
   ecoregions_shapefile = get_file(
     ecoregions_address, 
-    file_out("data/downloads/terrestrial-ecoregions.zip")
+    file_out("data/downloads/terrestrial-ecoregions.zip"), 
+    data_download_date
+  )
+)
+
+get_climate_data <- drake_plan(
+  worldclim = get_file(
+    worldclim_address, 
+    file_out("data/downloads/wordclim_2-5m.zip"), 
+    data_download_date
+  ),
+  envirem = get_file(
+    envirem_address, 
+    file_out("data/downloads/envirem_2-5m.zip"), 
+    data_download_date
+  ),
+  envirem_topo = get_file(
+    envirem_topo_address, 
+    file_out("data/downloads/envirem_topo_2-5m.zip"), 
+    data_download_date
   )
 )
 
 get_data_plan <- rbind(
   get_web_of_life_pollination_networks_plan, 
   get_itis_synonym_database, 
-  get_ecoregions_database
+  get_ecoregions_database, 
+  get_climate_data
 )
 
 # Pre-process interaction data --------------------------------------------
