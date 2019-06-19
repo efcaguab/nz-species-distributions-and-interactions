@@ -30,13 +30,15 @@ header-includes:
 
 ## Requests to coauthors
 
-* Should I include more data?
+* Should I include more networks? Easy to get some more from other published studies. Could improve the manuscript but every new data set has to be cleaned independently and might take one to half a day per network.
+* Should I increase the resolution of the bioclimatic variables? Currently working with 2.5' (~5km). Increasing to 30'' (~1km) might improve the analysis but we're talking about working with ~25GB+ of data instead of the 1GB used now. 
 
 ## Done
 
 * Downloaded network data from the Web of Life and cleaned it. I didn't anticipated data needed SO MUCH work! I estimated three days to do this but took roughly 3 weeks to do it propperly and there is still some work to do. Quite a mess...
+* Downloaded bioclimatic and habitat data
 
 ## To-do
 
-* Manually fix the remaining species names that are incorrect and were not picked up by the automatic procedure
+* Manually fix the remaining species names that are incorrect and were not picked up by the automatic procedure. Doing 5-10 per day, so should be done in a couple months
 * Fix references. There are lots of mistakes re. author, years and publication venue.
