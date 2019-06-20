@@ -19,20 +19,7 @@ if(!file.exists(prev_sp_name_assessments_path)){
          "gnr_score", "gnr_source", "ncbi_kingdom") %>%
     readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
 }
-# chache of sp ocurrences
-data_fields <- c('key', 'scientificName', 'decimalLatitude', 
-                 'decimalLongitude', 'geodeticDatum', 'countryCode',
-                 'individualCount', 
-                 'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
-                 'issues', 'datasetKey', 'taxonRank')
-prev_sp_ocurrences_path <- "data/sp_ocurrences.csv"
-# if file with previous assessments doesn't exist create one
-if(!file.exists(prev_sp_ocurrences_path)){
-  tibble::tibble %>%
-    purrr::lift_dv() %>%
-    purrr::invoke(c(data_fields, "sp_name")) %>%
-    readr::write_csv(path = prev_sp_ocurrences_path, col_names = FALSE)
-}
+
 
 # Configuration -----------------------------------------------------------
 
@@ -142,11 +129,31 @@ pre_process_int_plan <- rbind(
 
 # Download occurrence data ------------------------------------------------
 
+ocurrences_dir <- "data/downloads/spp_ocurrences"
+# create download dir if not already there
+dir.create(ocurrences_dir, showWarnings = FALSE)
+
+# chache of sp ocurrences
+prev_sp_ocurrences_path <- "data/sp_ocurrences.csv"
+# if file with previous assessments doesn't exist create one
+if(!file.exists(prev_sp_ocurrences_path)){
+  tibble::tibble %>%
+    purrr::lift_dv() %>%
+    purrr::invoke(c("sp_name", "n_ocurrences", "date_time")) %>%
+    readr::write_csv(path = prev_sp_ocurrences_path, col_names = FALSE)
+}
+
 download_ocurrence_data_plan <- drake_plan(
+  data_fields =  c('key', 'scientificName', 'decimalLatitude', 
+                   'decimalLongitude', 'geodeticDatum', 'countryCode',
+                   'individualCount', 
+                   'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
+                   'issues', 'datasetKey', 'taxonRank'),
   spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations), 
   species_ocurrences = download_species_ocurrences(spp_to_download, 
                                                    data_fields, 
-                                                   prev_sp_ocurrences_path)
+                                                   prev_sp_ocurrences_path, 
+                                                   ocurrences_dir)
 )
 
 # Referencing -------------------------------------------------------------
