@@ -137,7 +137,7 @@ pre_process_int_plan <- rbind(
 # Download occurrence data ------------------------------------------------
 
 download_ocurrence_data_plan <- drake_plan(
-  spp_to_download = select_species_to_download(spp, minimum_spp_locations)
+  spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations)
 )
 
 # Referencing -------------------------------------------------------------
