@@ -1,94 +1,96 @@
 # get list of species to which download data from rgbif
-select_species_to_download <- function(spp, minimum_spp_locations){
-  spp %>% 
-    dplyr::count(sp_name, sort = T) %>%  
-    dplyr::filter(n >= minimum_spp_locations)
+select_species_to_download <- function(species_ids, clean_interactions, minimum_spp_locations){
+  sp_id_to_download <- clean_interactions %>%
+    tidyr::gather("guild", "sp_id", pla_id, ani_id) %>%
+    dplyr::group_by(sp_id) %>%
+    dplyr::summarise(n_loc = dplyr::n_distinct(loc_id)) %>%
+    dplyr::filter(n_loc >= minimum_spp_locations) %$%
+    sp_id
+  
+  species_ids %>%
+    dplyr::filter(sp_id %in% sp_id_to_download)
 }
+
+download_species_ocurrences <- function(spp_to_download, 
+                                        data_fields, 
+                                        prev_sp_ocurrences_path){
+  
+  # load previous assessments to filter species before 
+  prev_sp_ocurrences <- readr::read_csv(prev_sp_ocurrences_path, 
+                                        col_types = "dcddccidiccccc")
+  
+  # species_level
+  spp_to_download %>%
+    dplyr::filter(!is.na(sp_name), 
+                  !sp_name %in% unique(prev_sp_ocurrences$sp_name)) %>%
+    dplyr::distinct(sp_name) %$% 
+    sp_name %>%
+    extract(1:15) %>%
+    purrr::map_df(download_sp_ocurrences_memoised, data_fields, prev_sp_ocurrences_path)
+  
+}
+
 
 download_sp_ocurrences_memoised <- function(this_sp_names, 
-                                             prev_sp_ocurrences_path){
+                                            data_fields,
+                                            prev_sp_ocurrences_path){
   
-  prev_sp_ocurrences <- readr::read_csv(prev_sp_ocurrences_path)
+  prev_sp_ocurrences <- readr::read_csv(prev_sp_ocurrences_path, 
+                                        col_types = "dcddccidiccccc")
   
+  sp_to_query_index <- !this_sp_names %in% unique(prev_sp_ocurrences$sp_name)
+  sp_to_query <- this_sp_names[sp_to_query_index]
+  
+  if (length(sp_to_query) == 0){
+    previous_info <- prev_sp_ocurrences %>% 
+      filter(sp_name %in% this_sp_names)
+    return(previous_info)
+  } else {
+    new_info <- sp_to_query %>%
+      purrr::map_dfr(download_sp_ocurrences, data_fields)
+    readr::write_csv(new_info, 
+                     path = prev_sp_ocurrences_path, 
+                     append = TRUE)
+    return(new_info)
+  }
 }
 
-download_sp_ocurrences <- function(this_sp_names){
-  this_sp_names <- c("Phacelia secunda", "Stachys alba")
-  # this_sp_names <- 
-  # rgbif::name_lookup(this_sp_names[2], rank = "species")$data
-  # rgbif::name_lookup('Phacelia secunda', rank = "species")$data %>% View
-  # 
-  # rgbif::name_suggest(q=this_sp_names[2], rank='species')
-  # rgbif::name_suggest(q='Phacelia secunda', rank='species')
-  data_fields <- c('key', 'scientificName', 'decimalLatitude', 
-                   'decimalLongitude', 'geodeticDatum', 'countryCode',
-                   'individualCount', 
-                   'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
-                   'issues', 'datasetKey', 'taxonRank')
-  
-  ocurrences_list <- this_sp_names %>%
-    magrittr::set_names(this_sp_names) %>%
-    purrr::map(~ rgbif::occ_data(scientificName = ., 
-                                 hasCoordinate = TRUE,
-                                 limit = 1000000))
-  
+download_sp_ocurrences <- function(this_sp_name, data_fields, verbose = TRUE){
+
   format_successful_ocurrences <- function(x){
     dplyr::select(x$data, !!data_fields) %>%
       dplyr::mutate(sp_name = attributes(x)$args$scientificName)
   }
   
-  ocurrence_data <- ocurrences_list %>%
-    purrr::map_if(~!is.null(.$data), 
-                  format_successful_ocurrences, 
-                  .else = ~ tibble::tibble(sp_name = attributes(.)$args$scientificName)) %>%
-    purrr::map_dfr(~.)
-    
-  unique(ocurrence_data$datasetKey) %>%
-    na.omit() %>%
-    purrr::map(rgbif::gbif_citation)
-  
-  system.time({
-    c('Phacelia secunda', 'Phacelia secunda') %>%
-      purrr::map(~rgbif::occ_search(scientificName = ., 
-                                    hasCoordinate = TRUE,
-                                    limit = 1000000) )
-  })
- 
-  
-  system.time({
-    rgbif::occ_search(scientificName = 'Stachys albicaulis', 
-                                    hasCoordinate = TRUE,
-                                    limit = 1000000) 
-  })
-  
-  a <- rgbif::occ_download('taxonKey=7316195', 'hasCoordinate = true') 
-  rgbif::occ_download_meta(a)
-  f <- rgbif::occ_download_get(a, overwrite = T)
-  f %>% rgbif::occ_download_import()
-  f %>% rgbif::gbif_citation()
-}
-
-
-assess_sp_name_memoised <- function(this_sp_name, 
-                                    prev_sp_name_assessments_path, 
-                                    synonyms_db){
-  
-  prev_sp_name_assessments <- readr::read_csv(prev_sp_name_assessments_path, 
-                                              col_types = "ccccidcc")
-  
-  previous_info <- prev_sp_name_assessments %>% 
-    filter(queried_sp_name == this_sp_name)
-  
-  # if there is no previous info
-  if(nrow(previous_info) == 0){
-    new_info <- assess_sp_name(this_sp_name, synonyms_db) %>%
-      tibble::add_column(queried_sp_name = this_sp_name, .before = 1)
-    readr::write_csv(new_info, 
-                     path = prev_sp_name_assessments_path, 
-                     append = TRUE)
-    return(new_info)
-  } else {
-    return(previous_info)
+  if(verbose){
+    cat("Downloading ocurrences for:", glue::glue_collapse(this_sp_name, sep = ", ", last = " and "), "\n")
   }
   
+  ocurrences_list <- rgbif::occ_data(scientificName = this_sp_name, 
+                                     hasCoordinate = TRUE,
+                                     limit = 1000000)
+  
+  if(!is.null(ocurrences_list$data)){
+    ocurrences_df <- format_successful_ocurrences(ocurrences_list)
+  } else {
+    ocurrences_df <- tibble::tibble(
+      key = NA_real_, 
+      scientificName = NA_character_, 
+      decimalLatitude = NA_real_, 
+      decimalLongitude = NA_real_,
+      geodeticDatum = NA_character_, 
+      countryCode = NA_character_, 
+      individualCount = NA_integer_, 
+      coordinateUncertaintyInMeters = NA_real_, 
+      year = NA_integer_, 
+      basisOfRecord = NA_character_, 
+      issues = NA_character_, 
+      datasetKey = NA_character_, 
+      taxonRank = NA_character_,
+      sp_name = attributes(ocurrences_list)$args$scientificName)
+  }
+  "dcddccidiccccc"
+  ocurrences_df
+  
 }
+
