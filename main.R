@@ -20,12 +20,18 @@ if(!file.exists(prev_sp_name_assessments_path)){
     readr::write_csv(path = prev_sp_name_assessments_path, col_names = FALSE)
 }
 # chache of sp ocurrences
-prev_sp_ocurrences_path <- "data/downloads/sp_ocurrences.zip"
+data_fields <- c('key', 'scientificName', 'decimalLatitude', 
+                 'decimalLongitude', 'geodeticDatum', 'countryCode',
+                 'individualCount', 
+                 'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
+                 'issues', 'datasetKey', 'taxonRank')
+prev_sp_ocurrences_path <- "data/sp_ocurrences.csv"
+# if file with previous assessments doesn't exist create one
 if(!file.exists(prev_sp_ocurrences_path)){
-  system("touch emptyfile")
-  system(paste("zip", prev_sp_ocurrences_path, "emptyfile"))
-  system(paste("zip -d", prev_sp_ocurrences_path, "emptyfile"))
-  system("rm emptyfile")
+  tibble::tibble %>%
+    purrr::lift_dv() %>%
+    purrr::invoke(c(data_fields, "sp_name")) %>%
+    readr::write_csv(path = prev_sp_ocurrences_path, col_names = FALSE)
 }
 
 # Configuration -----------------------------------------------------------
