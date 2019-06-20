@@ -13,19 +13,39 @@ download_sp_ocurrences_memoised <- function(this_sp_names,
 }
 
 download_sp_ocurrences <- function(this_sp_names){
-  this_sp_names <- c("Stachys albi", "Stachys alba")
-  rgbif::name_lookup(this_sp_names[2], rank = "species")$data
-  rgbif::name_lookup('Phacelia secunda', rank = "species")$data %>% View
+  this_sp_names <- c("Phacelia secunda", "Stachys alba")
+  # this_sp_names <- 
+  # rgbif::name_lookup(this_sp_names[2], rank = "species")$data
+  # rgbif::name_lookup('Phacelia secunda', rank = "species")$data %>% View
+  # 
+  # rgbif::name_suggest(q=this_sp_names[2], rank='species')
+  # rgbif::name_suggest(q='Phacelia secunda', rank='species')
+  data_fields <- c('key', 'scientificName', 'decimalLatitude', 
+                   'decimalLongitude', 'geodeticDatum', 'countryCode',
+                   'individualCount', 
+                   'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
+                   'issues', 'datasetKey', 'taxonRank')
   
-  rgbif::name_suggest(q=this_sp_names[2], rank='species')
-  rgbif::name_suggest(q='Phacelia secunda', rank='species')
-  data_fields <- c('key', 'scientificName', 'decimalLatitude', 'decimalLongitude', 'geodeticDatum', 'countryCode', 'country', 'individualCount', 'coordinateUncertaintyInMeters', 'year', 'basisOfRecord')
+  ocurrences_list <- this_sp_names %>%
+    magrittr::set_names(this_sp_names) %>%
+    purrr::map(~ rgbif::occ_data(scientificName = ., 
+                                 hasCoordinate = TRUE,
+                                 limit = 1000000))
   
-  system.time({
-    c <- rgbif::occ_data(scientificName = c('Phacelia secunda'), 
-                           hasCoordinate = TRUE,
-                           limit = 1000000) 
-  })
+  format_successful_ocurrences <- function(x){
+    dplyr::select(x$data, !!data_fields) %>%
+      dplyr::mutate(sp_name = attributes(x)$args$scientificName)
+  }
+  
+  ocurrence_data <- ocurrences_list %>%
+    purrr::map_if(~!is.null(.$data), 
+                  format_successful_ocurrences, 
+                  .else = ~ tibble::tibble(sp_name = attributes(.)$args$scientificName)) %>%
+    purrr::map_dfr(~.)
+    
+  unique(ocurrence_data$datasetKey) %>%
+    na.omit() %>%
+    purrr::map(rgbif::gbif_citation)
   
   system.time({
     c('Phacelia secunda', 'Phacelia secunda') %>%
