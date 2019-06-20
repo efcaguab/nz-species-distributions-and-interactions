@@ -30,7 +30,8 @@ download_species_ocurrences <- function(spp_to_download,
     furrr::future_map_dfr(download_sp_ocurrences_memoised, 
                           data_fields,
                           prev_sp_ocurrences_path, 
-                          ocurrences_dir)
+                          ocurrences_dir, 
+                          .progress = TRUE)
 }
 
 
@@ -38,6 +39,8 @@ download_sp_ocurrences_memoised <- function(this_sp_names,
                                             data_fields,
                                             prev_sp_ocurrences_path, 
                                             ocurrences_dir){
+  
+  require(magrittr)
   
   prev_sp_ocurrences <- readr::read_csv(prev_sp_ocurrences_path, 
                                         col_types = "ccc")
@@ -90,10 +93,10 @@ download_sp_ocurrences <- function(this_sp_name, data_fields, verbose = TRUE){
         "ocurrences of", glue::glue_collapse(this_sp_name, sep = ", ", last = " and "), "\n")
   }
   
-  ocurrences_list <- rgbif::occ_data(scientificName = this_sp_name, 
-                                     hasCoordinate = TRUE,
-                                     limit = 1000000)
-  
+  ocurrences_list <- definitely(rgbif::occ_data, n_tries = 10, sleep = 1/10, 
+                                scientificName = this_sp_name, 
+                                hasCoordinate = TRUE,
+                                limit = 1000000)
   
   if (!is.null(ocurrences_list$data)) {
     ocurrences_df <- format_successful_ocurrences(ocurrences_list)
