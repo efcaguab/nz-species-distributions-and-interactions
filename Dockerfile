@@ -16,6 +16,9 @@ RUN apt-get update \
   && apt-get -y --no-install-recommends install libzmq3-dev
 RUN R -e "install.packages(c('clustermq'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 RUN R -e "install.packages(c('ggforce'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+RUN R -e "install.packages(c('furrr', 'future.callr', 'filelock), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+
+
 
 # Install development version of Rmangal. Code at April 8 2019 Note: Rmangal is pretty shit at the moment (May 2019) won't use it for now
 # RUN apt-get update \

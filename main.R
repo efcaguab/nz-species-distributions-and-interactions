@@ -2,7 +2,8 @@
 
 pkgconfig::set_config("strings_in_dots" = "literals")
 # pararell environment
-options(clustermq.scheduler = "multicore")
+# options(clustermq.scheduler = "multicore")
+# future::plan(future::multicore)
 
 library(magrittr)
 library(drake)
@@ -223,4 +224,5 @@ paper_plan <- rbind(
 
 # full_config <- drake_config(full_plan)
 # make(paper_plan, parallelism = "clustermq", jobs = 4)
+future::plan(future.callr::callr)
 make(paper_plan)

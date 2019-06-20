@@ -26,12 +26,11 @@ download_species_ocurrences <- function(spp_to_download,
                   !sp_name %in% unique(prev_sp_ocurrences$sp_name)) %>%
     dplyr::distinct(sp_name) %$% 
     sp_name %>%
-    extract(1:15) %>%
-    purrr::map_df(download_sp_ocurrences_memoised, 
-                  data_fields,
-                  prev_sp_ocurrences_path, 
-                  ocurrences_dir)
-  
+    # extract(15:20) %>%
+    furrr::future_map_dfr(download_sp_ocurrences_memoised, 
+                          data_fields,
+                          prev_sp_ocurrences_path, 
+                          ocurrences_dir)
 }
 
 
@@ -61,9 +60,11 @@ download_sp_ocurrences_memoised <- function(this_sp_names,
     new_info <- tibble::tibble(sp_name = this_sp_names, 
                                n_ocurrences = n_ocurrences, 
                                date_time = Sys.time())
+    lck <- filelock::lock(paste0(prev_sp_ocurrences_path, ".lck"))
     readr::write_csv(new_info, 
                      path = prev_sp_ocurrences_path, 
                      append = T)
+    filelock::unlock(lck)
     return(new_info)
   }
 }
