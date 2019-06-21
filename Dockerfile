@@ -16,7 +16,7 @@ RUN apt-get update \
   && apt-get -y --no-install-recommends install libzmq3-dev
 RUN R -e "install.packages(c('clustermq'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 RUN R -e "install.packages(c('ggforce'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
-RUN R -e "install.packages(c('furrr', 'future.callr', 'filelock), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+RUN R -e "install.packages(c('furrr', 'future.callr', 'filelock'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 
 
 
