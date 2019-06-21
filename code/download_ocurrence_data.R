@@ -74,11 +74,33 @@ download_sp_ocurrences_memoised <- function(this_sp_names,
 
 download_sp_ocurrences <- function(this_sp_name, data_fields, verbose = TRUE){
 
-  format_successful_ocurrences <- function(x){
-    dplyr::select(x$data, !!data_fields) %>%
-      dplyr::mutate(sp_name = attributes(x)$args$scientificName)
+  # An epmpty dataframe with the desired output structure
+  empty_ocurrences_df <- tibble::tibble(
+    key = NA_real_, 
+    scientificName = NA_character_, 
+    decimalLatitude = NA_real_, 
+    decimalLongitude = NA_real_,
+    geodeticDatum = NA_character_, 
+    countryCode = NA_character_, 
+    individualCount = NA_integer_, 
+    coordinateUncertaintyInMeters = NA_real_, 
+    year = NA_integer_, 
+    basisOfRecord = NA_character_, 
+    issues = NA_character_, 
+    datasetKey = NA_character_, 
+    taxonRank = NA_character_,
+    sp_name = this_sp_name)
+  
+  format_successful_ocurrences <- function(x, empty_ocurrences_df){
+    # Sometimes the data downloaded doesn't include all expected columns so need
+    # to merge it with an empty one to make sure all the required ones are there
+    dplyr::bind_rows(empty_ocurrences_df, x$data) %>%
+      dplyr::select(!!data_fields) %>%
+      dplyr::mutate(sp_name = attributes(x)$args$scientificName) %>%
+      dplyr::slice(-1)
   }
   
+  # Get number of ocurrences in advance
   n_ocurrences <- purrr::possibly(~rgbif::occ_search(scientificName = ., 
                                                     hasCoordinate = TRUE, 
                                                     # hasGeospatialIssue = FALSE, 
@@ -90,7 +112,8 @@ download_sp_ocurrences <- function(this_sp_name, data_fields, verbose = TRUE){
   if (verbose) {
     cat("Downloading", 
         format(n_ocurrences, big.mark = ","),
-        "ocurrences of", glue::glue_collapse(this_sp_name, sep = ", ", last = " and "), "\n")
+        "ocurrences of", 
+        glue::glue_collapse(this_sp_name, sep = ", ", last = " and "), "\n")
   }
   
   ocurrences_list <- definitely(rgbif::occ_data, n_tries = 10, sleep = 1/10, 
@@ -99,25 +122,12 @@ download_sp_ocurrences <- function(this_sp_name, data_fields, verbose = TRUE){
                                 limit = 1000000)
   
   if (!is.null(ocurrences_list$data)) {
-    ocurrences_df <- format_successful_ocurrences(ocurrences_list)
+    ocurrences_df <- format_successful_ocurrences(ocurrences_list,
+                                                  empty_ocurrences_df)
   } else {
-    ocurrences_df <- tibble::tibble(
-      key = NA_real_, 
-      scientificName = NA_character_, 
-      decimalLatitude = NA_real_, 
-      decimalLongitude = NA_real_,
-      geodeticDatum = NA_character_, 
-      countryCode = NA_character_, 
-      individualCount = NA_integer_, 
-      coordinateUncertaintyInMeters = NA_real_, 
-      year = NA_integer_, 
-      basisOfRecord = NA_character_, 
-      issues = NA_character_, 
-      datasetKey = NA_character_, 
-      taxonRank = NA_character_,
-      sp_name = attributes(ocurrences_list)$args$scientificName)
+    ocurrences_df <- empty_ocurrences_df
   }
-  # attr(ocurrences_df, "n_ocurrences") <- n_ocurrences
-  ocurrences_df
+
+    ocurrences_df
 }
 
