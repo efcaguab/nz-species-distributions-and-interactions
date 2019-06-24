@@ -145,16 +145,24 @@ if(!file.exists(prev_sp_ocurrences_path)){
 }
 
 download_ocurrence_data_plan <- drake_plan(
+  spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations),
+  gbif_key_fields = c('queried_sp_name', 'key', 'canonicalName', 'rank'), 
+  prev_gbif_keys_path = "data/gbif_keys.csv", 
+  init_gbif_keys_frame = create_empty_csv_if_unexistent(prev_gbif_keys_path, 
+                                                        gbif_key_fields),
+  gbif_keys = get_gbif_keys(spp_to_download, 
+                            rgbif_key_fields, 
+                            prev_gbif_keys_path),
+  gbif_queries = build_gbif_queries(gbif_keys),
   data_fields =  c('key', 'scientificName', 'decimalLatitude', 
                    'decimalLongitude', 'geodeticDatum', 'countryCode',
                    'individualCount', 
                    'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
-                   'issues', 'datasetKey', 'taxonRank'),
-  spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations), 
-  species_ocurrences = download_species_ocurrences(spp_to_download, 
-                                                   data_fields, 
-                                                   prev_sp_ocurrences_path, 
-                                                   ocurrences_dir)
+                   'issues', 'datasetKey', 'taxonRank')
+  # species_ocurrences = download_species_ocurrences(spp_to_download, 
+                                                   # data_fields, 
+                                                   # prev_sp_ocurrences_path, 
+                                                   # ocurrences_dir)
 )
 
 # Referencing -------------------------------------------------------------
