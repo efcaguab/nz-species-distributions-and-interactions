@@ -252,3 +252,21 @@ check_query_length <- function(x){
     as.character() %>%
     nchar()
 }
+
+download_gbif_ocurrences <- function(gbif_queries, path = download_path, verbose = TRUE){
+  if (verbose){
+    cat("Requesting datasets to GBIF")
+  }
+  # miniquery <- list(construct_query(keys))
+  download_info <- rgbif::occ_download_queue(.list = gbif_queries)
+  download_details <- rgbif::occ_download_list()
+  
+  if (verbose){
+    cat("Downloading datasets from GBIF")
+  }
+  
+  download_info %>%
+    purrr::map(rgbif::occ_download_get, path = download_path, overwrite = TRUE)
+  
+  list(download_info, download_details)
+}

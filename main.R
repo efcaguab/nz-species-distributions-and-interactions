@@ -154,15 +154,16 @@ download_ocurrence_data_plan <- drake_plan(
                             rgbif_key_fields, 
                             prev_gbif_keys_path),
   gbif_queries = build_gbif_queries(gbif_keys),
-  data_fields =  c('key', 'scientificName', 'decimalLatitude', 
-                   'decimalLongitude', 'geodeticDatum', 'countryCode',
-                   'individualCount', 
-                   'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
-                   'issues', 'datasetKey', 'taxonRank')
-  # species_ocurrences = download_species_ocurrences(spp_to_download, 
-                                                   # data_fields, 
-                                                   # prev_sp_ocurrences_path, 
-                                                   # ocurrences_dir)
+  occ_downloads_info = download_gbif_ocurrences(gbif_queries, path = ocurrences_dir)
+  # data_fields =  c('key', 'scientificName', 'decimalLatitude', 
+  #                  'decimalLongitude', 'geodeticDatum', 'countryCode',
+  #                  'individualCount', 
+  #                  'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
+  #                  'issues', 'datasetKey', 'taxonRank')
+  # species_ocurrences = download_species_ocurrences(spp_to_download,
+  #                                                  data_fields,
+  #                                                  prev_sp_ocurrences_path,
+  #                                                  ocurrences_dir)
 )
 
 # Referencing -------------------------------------------------------------
