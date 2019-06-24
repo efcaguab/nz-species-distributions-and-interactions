@@ -77,4 +77,8 @@ data/downloads/wordclim_2-5m\.zip
 
 data/downloads/
 
+*.lck
+
+data/sp_ocurrences\.csv
+
 data/sp_name_checks\.csv
