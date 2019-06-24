@@ -144,12 +144,13 @@ if(!file.exists(prev_sp_ocurrences_path)){
     readr::write_csv(path = prev_sp_ocurrences_path, col_names = FALSE)
 }
 
+
+prev_gbif_keys_path <- "data/gbif_keys.csv"
+gbif_key_fields <- c('queried_sp_name', 'key', 'canonicalName', 'rank')
+create_empty_csv_if_unexistent(prev_gbif_keys_path,  gbif_key_fields)
+
 download_ocurrence_data_plan <- drake_plan(
   spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations),
-  gbif_key_fields = c('queried_sp_name', 'key', 'canonicalName', 'rank'), 
-  prev_gbif_keys_path = "data/gbif_keys.csv", 
-  init_gbif_keys_frame = create_empty_csv_if_unexistent(prev_gbif_keys_path, 
-                                                        gbif_key_fields),
   gbif_keys = get_gbif_keys(spp_to_download, 
                             rgbif_key_fields, 
                             prev_gbif_keys_path),
