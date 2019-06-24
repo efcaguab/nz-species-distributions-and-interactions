@@ -154,8 +154,17 @@ download_ocurrence_data_plan <- drake_plan(
   species_ocurrences = download_species_ocurrences(spp_to_download, 
                                                    data_fields, 
                                                    prev_sp_ocurrences_path, 
-                                                   ocurrences_dir)
+                                                   ocurrences_dir), 
+  land_data = rnaturalearth::ne_download(type = "land", 
+                                         category = "physical", 
+                                         returnclass = "sp", 
+                                         scale = 10)
 )
+
+# Clean ocurrence data -----------------------------------------------------
+
+
+
 
 # Referencing -------------------------------------------------------------
 
