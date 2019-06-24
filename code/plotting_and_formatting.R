@@ -40,6 +40,7 @@ remove_legend <- function(x){
   x + theme(legend.position = 'none')
 }
 
+# new palettes here https://gka.github.io/palettes
 common_graphic_metrics <- function(){
   list(
     pal_rb3 = RColorBrewer::brewer.pal(4, "Greys")[c(3,1,2)],
