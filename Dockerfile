@@ -17,7 +17,7 @@ RUN apt-get update \
 RUN R -e "install.packages(c('clustermq'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 RUN R -e "install.packages(c('ggforce'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 RUN R -e "install.packages(c('furrr', 'future.callr', 'filelock'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
-
+RUN R -e "install.packages(c('countrycode', 'maps'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 # Versions before 2019-04-02 (2.0-9 or lower) had a weird bug
 RUN R -e "install.packages(c('CoordinateCleaner'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-06-01'))"
 
