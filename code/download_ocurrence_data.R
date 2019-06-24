@@ -211,7 +211,7 @@ build_gbif_queries <- function(gbif_keys){
                   only_subspecies = all(rank_canonical > rank_queried)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(necessary_name = (queried_found & same_name) | (!queried_found), 
-                  include = same_rank & necessary_name | only_subspecies) %>% View
+                  include = same_rank & necessary_name | only_subspecies) %>% 
     dplyr::filter(include) %$% 
     key
   
@@ -239,10 +239,7 @@ construct_query <- function(keys){
   
   rgbif::occ_download_prep(taxon_query, 
                     'hasCoordinate = true',
-                    'hasGeospatialIssue = false', 
-                    user = 'efcaguab', 
-                    pwd = 'SkC*8Dmh', 
-                    email = 'efcaguab@gmail.com')
+                    'hasGeospatialIssue = false')
 }
 
 check_query_length <- function(x){
