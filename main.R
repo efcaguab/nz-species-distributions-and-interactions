@@ -130,7 +130,7 @@ pre_process_int_plan <- rbind(
 
 # Download occurrence data ------------------------------------------------
 
-ocurrences_dir <- "data/downloads/spp_ocurrences"
+ocurrences_dir <- "data/downloads/spp_occurrences"
 # create download dir if not already there
 dir.create(ocurrences_dir, showWarnings = FALSE)
 
@@ -155,7 +155,7 @@ download_ocurrence_data_plan <- drake_plan(
                             rgbif_key_fields, 
                             prev_gbif_keys_path),
   gbif_queries = build_gbif_queries(gbif_keys),
-  occ_downloads_info = download_gbif_ocurrences(gbif_queries, path = ocurrences_dir)
+  occ_downloads_info = download_gbif_ocurrences(gbif_queries, ocurrences_dir)
   # data_fields =  c('key', 'scientificName', 'decimalLatitude', 
   #                  'decimalLongitude', 'geodeticDatum', 'countryCode',
   #                  'individualCount', 
