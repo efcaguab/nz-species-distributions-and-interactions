@@ -158,7 +158,8 @@ download_ocurrence_data_plan <- drake_plan(
   land_data = rnaturalearth::ne_download(type = "land", 
                                          category = "physical", 
                                          returnclass = "sp", 
-                                         scale = 10)
+                                         scale = 10),
+  country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10)
 )
 
 # Clean ocurrence data -----------------------------------------------------
