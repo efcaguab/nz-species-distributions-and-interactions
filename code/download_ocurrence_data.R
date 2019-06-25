@@ -252,7 +252,6 @@ check_query_length <- function(x){
 
 download_gbif_ocurrences <- function(gbif_queries, download_path, verbose = TRUE){
   # If things fail cancel downloads so another one can be started without waiting
-  on.exit(rgbif::occ_download_cancel_staged())
   
   downloaded_files <- list.files(download_path, pattern = "zip")
   n_downloaded_files <- downloaded_files %>% length()
@@ -264,6 +263,7 @@ download_gbif_ocurrences <- function(gbif_queries, download_path, verbose = TRUE
     message("New occurrences won't be downloaded from GBIF. To get new ocurrences delete these zip files. ")
     download_details <- rgbif::occ_download_list()
   } else {
+    on.exit(rgbif::occ_download_cancel_staged())
     
     if (verbose){
       cat("Requesting datasets to GBIF\n")
