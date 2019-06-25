@@ -130,7 +130,7 @@ pre_process_int_plan <- rbind(
 
 # Download occurrence data ------------------------------------------------
 
-ocurrences_dir <- "data/downloads/spp_ocurrences"
+ocurrences_dir <- "data/downloads/spp_occurrences"
 # create download dir if not already there
 dir.create(ocurrences_dir, showWarnings = FALSE)
 
@@ -144,18 +144,29 @@ if(!file.exists(prev_sp_ocurrences_path)){
     readr::write_csv(path = prev_sp_ocurrences_path, col_names = FALSE)
 }
 
+
+prev_gbif_keys_path <- "data/gbif_keys.csv"
+gbif_key_fields <- c('queried_sp_name', 'key', 'canonicalName', 'rank')
+create_empty_csv_if_unexistent(prev_gbif_keys_path,  gbif_key_fields)
+
 download_ocurrence_data_plan <- drake_plan(
-  data_fields =  c('key', 'scientificName', 'decimalLatitude', 
-                   'decimalLongitude', 'geodeticDatum', 'countryCode',
-                   'individualCount', 
-                   'coordinateUncertaintyInMeters', 'year', 'basisOfRecord', 
-                   'issues', 'datasetKey', 'taxonRank'),
-  spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations), 
-  species_ocurrences = download_species_ocurrences(spp_to_download, 
-                                                   data_fields, 
-                                                   prev_sp_ocurrences_path, 
-                                                   ocurrences_dir)
+  spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations),
+  gbif_keys = get_gbif_keys(spp_to_download, 
+                            rgbif_key_fields, 
+                            prev_gbif_keys_path),
+  gbif_queries = build_gbif_queries(gbif_keys),
+  occ_downloads_info = download_gbif_ocurrences(gbif_queries, ocurrences_dir), 
+  land_data = rnaturalearth::ne_download(type = "land", 
+                                         category = "physical", 
+                                         returnclass = "sp", 
+                                         scale = 10),
+  country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10)
 )
+
+# Clean ocurrence data -----------------------------------------------------
+
+
+
 
 # Referencing -------------------------------------------------------------
 
