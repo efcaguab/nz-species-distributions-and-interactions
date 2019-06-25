@@ -128,29 +128,20 @@ pre_process_int_plan <- rbind(
   merge_interaction_data_plan
 )
 
-# Download occurrence data ------------------------------------------------
+# Download and clean occurrence data ---------------------------------------
 
 ocurrences_dir <- "data/downloads/spp_occurrences"
 # create download dir if not already there
 dir.create(ocurrences_dir, showWarnings = FALSE)
-
-# chache of sp ocurrences
-prev_sp_ocurrences_path <- "data/sp_ocurrences.csv"
-# if file with previous assessments doesn't exist create one
-if(!file.exists(prev_sp_ocurrences_path)){
-  tibble::tibble %>%
-    purrr::lift_dv() %>%
-    purrr::invoke(c("sp_name", "n_ocurrences", "date_time")) %>%
-    readr::write_csv(path = prev_sp_ocurrences_path, col_names = FALSE)
-}
-
 
 prev_gbif_keys_path <- "data/gbif_keys.csv"
 gbif_key_fields <- c('queried_sp_name', 'key', 'canonicalName', 'rank')
 create_empty_csv_if_unexistent(prev_gbif_keys_path,  gbif_key_fields)
 
 download_ocurrence_data_plan <- drake_plan(
-  spp_to_download = select_species_to_download(species_ids, clean_interactions, minimum_spp_locations),
+  spp_to_download = select_species_to_download(species_ids, 
+                                               clean_interactions, 
+                                               minimum_spp_locations),
   gbif_keys = get_gbif_keys(spp_to_download, 
                             rgbif_key_fields, 
                             prev_gbif_keys_path),
@@ -164,9 +155,6 @@ download_ocurrence_data_plan <- drake_plan(
 )
 
 # Clean ocurrence data -----------------------------------------------------
-
-
-
 
 # Referencing -------------------------------------------------------------
 
