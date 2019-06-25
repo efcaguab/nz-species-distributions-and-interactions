@@ -274,12 +274,19 @@ download_gbif_ocurrences <- function(gbif_queries, download_path, verbose = TRUE
       cat("Downloading datasets from GBIF\n")
     }
     
-    downloads %>%
-      purrr::map(rgbif::occ_download_get, path = download_path, overwrite = TRUE)
-    
     download_details <- rgbif::occ_download_list()
-    downloaded_files <- list.files(download_path, pattern = "zip")
     
+    these_downloads <- download_details$results %>%
+      dplyr::filter(key %in% as.character(downloads)) %>%
+      dplyr::mutate(filename = basename(downloadLink))
+    
+    these_downloads %>%
+      split(.$key) %>%
+      purrr::map(~ definitely(func = download.file, n_tries = 10, sleep = 1/10, 
+                              url = .$downloadLink,
+                              destfile = file.path(download_path, .$filename)))
+    
+    downloaded_files <- list.files(download_path, pattern = "zip")
   }
   
   download_details$results %>%
