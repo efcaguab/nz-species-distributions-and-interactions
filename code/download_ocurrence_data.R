@@ -250,23 +250,39 @@ check_query_length <- function(x){
     nchar()
 }
 
-download_gbif_ocurrences <- function(gbif_queries, path = download_path, verbose = TRUE){
+download_gbif_ocurrences <- function(gbif_queries, download_path, verbose = TRUE){
   # If things fail cancel downloads so another one can be started without waiting
   on.exit(rgbif::occ_download_cancel_staged())
   
-  if (verbose){
-    cat("Requesting datasets to GBIF\n")
+  downloaded_files <- list.files(download_path, pattern = "zip")
+  n_downloaded_files <- downloaded_files %>% length()
+  
+  if(n_downloaded_files > 0){
+    if (n_downloaded_files != length(gbif_queries)) {
+      warning("Found zip files in the spp_occurrences folder but its number doesn't match the number of requests")
+    }
+    message("New occurrences won't be downloaded from GBIF. To get new ocurrences delete these zip files. ")
+    download_details <- rgbif::occ_download_list()
+  } else {
+    
+    if (verbose){
+      cat("Requesting datasets to GBIF\n")
+    }
+    downloads <- rgbif::occ_download_queue(.list = gbif_queries)
+    
+    if (verbose){
+      cat("Downloading datasets from GBIF\n")
+    }
+    
+    downloads %>%
+      purrr::map(rgbif::occ_download_get, path = download_path, overwrite = TRUE)
+    
+    download_details <- rgbif::occ_download_list()
+    downloaded_files <- list.files(download_path, pattern = "zip")
+    
   }
-  # miniquery <- list(construct_query(keys))
-  download_info <- rgbif::occ_download_queue(.list = gbif_queries)
-  download_details <- rgbif::occ_download_list()
   
-  if (verbose){
-    cat("Downloading datasets from GBIF\n")
-  }
-  
-  download_info %>%
-    purrr::map(rgbif::occ_download_get, path = download_path, overwrite = TRUE)
-  
-  list(download_info, download_details)
+  download_details$results %>%
+    dplyr::mutate(file_name = basename(downloadLink)) %>%
+    dplyr::filter(file_name %in% downloaded_files)
 }
