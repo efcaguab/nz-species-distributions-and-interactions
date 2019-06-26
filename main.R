@@ -177,6 +177,7 @@ download_ocurrence_data_plan <- drake_plan(
   occurrences = read_ocurrences(ocurrences_dir, occ_data_fields, 
                                 file_in(occ_extraction_success_file)),
   n_ocurrences = count_occurrences_per_taxon(occurrences),
+  dataset_keys = get_occurrences_datasets(occurrences),
   land_data = rnaturalearth::ne_download(type = "land", 
                                          category = "physical", 
                                          returnclass = "sp", 

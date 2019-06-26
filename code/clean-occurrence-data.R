@@ -22,6 +22,8 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf){
   
   cleaned_occurrences <- dirty_occurrences %>%
     dplyr::mutate(.sea_manual = cc_sea(., ref = land_data,
+                                       lon = "decimalLongitude", 
+                                       lat = "decimalLatitude",
                                        scale = 10, 
                                        value = "flagged", 
                                        verbose = FALSE)) %>%
@@ -31,6 +33,8 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf){
                                 "gbif", 
                                 "institutions", 
                                 "zeros"),
+                      lon = "decimalLongitude", 
+                      lat = "decimalLatitude",
                       species = "taxonKey",
                       countries = "country_code_iso3c",
                       verbose = FALSE)
@@ -99,5 +103,8 @@ read_ocurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE)
 count_occurrences_per_taxon <- function(occurrences){
   occurrences[, .N, by = taxonKey]
 }
-# read_ocurrences_file <- function(file, data_fields)
+
+get_occurrences_datasets <- function(occurrences){
+  unique(occurrences, by = "datasetKey")[, datasetKey]
+}
 
