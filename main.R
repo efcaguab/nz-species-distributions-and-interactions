@@ -132,7 +132,8 @@ pre_process_int_plan <- rbind(
 # Download and clean occurrence data ---------------------------------------
 
 ocurrences_dir <- "data/downloads/spp_occurrences"
-success_file <- file.path(ocurrences_dir, "success_file")
+occ_download_success_file <- file.path(ocurrences_dir, "download_successful")
+occ_extraction_success_file <- file.path(ocurrences_dir, "extraction_successful")
 # create download dir if not already there
 dir.create(ocurrences_dir, showWarnings = FALSE)
 
@@ -151,9 +152,10 @@ download_ocurrence_data_plan <- drake_plan(
   gbif_download_keys = prepare_gbif_downloads(gbif_queries, 
                                               prev_occ_download_keys),
   gbif_download_info = get_gbif_download_info(gbif_download_keys),
-  occ_download_success = download_gbif_ocurrences(gbif_download_info, 
-                                                  ocurrences_dir, 
-                                                  file_out(success_file)), 
+  occ_download = download_gbif_ocurrences(
+    gbif_download_info, 
+    ocurrences_dir, 
+    file_out(occ_download_success_file)), 
   land_data = rnaturalearth::ne_download(type = "land", 
                                          category = "physical", 
                                          returnclass = "sp", 
