@@ -36,8 +36,21 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf){
                       lon = "decimalLongitude", 
                       lat = "decimalLatitude",
                       species = "taxonKey",
-                      countries = "country_code_iso3c",
+                      countries = "countryCode",
                       verbose = FALSE)
+  cleaned_occurrences <- as.data.table(cleaned_occurrences)
+  cleaned_occurrences[, !c(".val", 
+                           ".equ", 
+                           ".zer", 
+                           ".cap", 
+                           ".cen", 
+                           ".gbf", 
+                           ".inst", 
+                           "individualCount", 
+                           "coordinateUncertaintyInMeters", 
+                           "year", 
+                           "basisOfRecord", 
+                           "datasetKey")]
   # library(ggplot2)
   # cleaned_occurrences %>%
   #   ggplot(aes(x = decimallongitude, y = decimallatitude)) +
