@@ -182,7 +182,8 @@ download_ocurrence_data_plan <- drake_plan(
                                          category = "physical", 
                                          returnclass = "sp", 
                                          scale = 10),
-  country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10)
+  country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10), 
+  cleaned_occurrences = clean_occurrences(occurrences, land_data, country_data_sf)
 )
 
 # Clean ocurrence data -----------------------------------------------------
@@ -254,5 +255,5 @@ paper_plan <- rbind(
 
 # full_config <- drake_config(full_plan)
 # make(paper_plan, parallelism = "clustermq", jobs = 4)
-future::plan(future.callr::callr)
+# future::plan(future.callr::callr)
 make(paper_plan)
