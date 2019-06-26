@@ -63,14 +63,45 @@ extract_occurrence_files <- function(path, success_file, file_trigger){
   
   write(as.character(Sys.time()), success_file)
 }
+
+read_ocurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE){
+  
+  suppressPackageStartupMessages({
+    require(data.table)
+    require(countrycode)
+  })
+  
+  files <- list.files(path, full.names = T, recursive = T, 
+                      pattern = "occurrence.txt")
+  
+  if (verbose) cat("Reading files\n")
+  occurrences <- files %>%
+    purrr::map(data.table::fread, 
+               sep = "\t", 
+               select  = occ_data_fields, 
+               quote = "") %>%
+    data.table::rbindlist()
+  
+  
+  to_num <- function(x){
+    x %>%
+      as.character() %>%
+      as.numeric()
+  }
+  
+  if (verbose) cat("pre-processing occurrences\n")
+  occurrences[, ':='(decimalLatitude = to_num(decimalLatitude),
+                     decimalLongitude = to_num(decimalLongitude), 
+                     coordinateUncertaintyInMeters = to_num(coordinateUncertaintyInMeters), 
+                     year = to_num(year), 
+                     countryCode = countrycode(countryCode, 
+                                               origin = "iso2c", 
+                                               destination = "iso3c"))]
   
 }
 
-x <- function(){
-  drake::loadd(occ_downloads_info)
-  system.time({
-    small <- rgbif::occ_download_import(key = occ_downloads_info$key[2], 
-                                        path =  "data/downloads/spp_occurrences")
-  })
-  
+count_occurrences_per_taxon <- function(occurrences){
+  occurrences[, .N, by = taxonKey]
 }
+# read_ocurrences_file <- function(file, data_fields)
+
