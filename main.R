@@ -33,7 +33,8 @@ configuration_plan <- drake_plan(
   worldclim_address = config$worldclim_address,
   envirem_address = config$envirem_address,
   envirem_topo_address = config$envirem_topo_address,
-  biblio_download_date = config$bibliography_retrieved
+  biblio_download_date = config$bibliography_retrieved, 
+  prev_occ_download_keys = config$gbif_download_key
 )
 
 # Download data ----------------------------------------------------------
@@ -131,6 +132,7 @@ pre_process_int_plan <- rbind(
 # Download and clean occurrence data ---------------------------------------
 
 ocurrences_dir <- "data/downloads/spp_occurrences"
+success_file <- file.path(ocurrences_dir, "success_file")
 # create download dir if not already there
 dir.create(ocurrences_dir, showWarnings = FALSE)
 
@@ -146,7 +148,12 @@ download_ocurrence_data_plan <- drake_plan(
                             rgbif_key_fields, 
                             prev_gbif_keys_path),
   gbif_queries = build_gbif_queries(gbif_keys),
-  occ_downloads_info = download_gbif_ocurrences(gbif_queries, ocurrences_dir), 
+  gbif_download_keys = prepare_gbif_downloads(gbif_queries, 
+                                              prev_occ_download_keys),
+  gbif_download_info = get_gbif_download_info(gbif_download_keys),
+  occ_download_success = download_gbif_ocurrences(gbif_download_info, 
+                                                  ocurrences_dir, 
+                                                  file_out(success_file)), 
   land_data = rnaturalearth::ne_download(type = "land", 
                                          category = "physical", 
                                          returnclass = "sp", 
@@ -215,7 +222,7 @@ paper_plan <- rbind(
   configuration_plan,
   get_data_plan,
   pre_process_int_plan,
-  download_ocurrence_data_plan, 
+  download_ocurrence_data_plan,
   data_references_plan, 
   figures_plan, 
   reporting_plan

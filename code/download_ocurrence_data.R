@@ -130,46 +130,54 @@ check_query_length <- function(x){
     nchar()
 }
 
-download_gbif_ocurrences <- function(gbif_queries, download_path, verbose = TRUE){
-  # If things fail cancel downloads so another one can be started without waiting
+prepare_gbif_downloads <- function(gbif_queries, prev_occ_download_keys){
+  if (is.null(prev_occ_download_keys)) {
+    message("No download keys found in config.yaml file. *New* datasets will be
+            requested from GBIF")
+    # If things fail cancel downloads so another one can be started without waiting
+    on.exit(rgbif::occ_download_cancel_staged())
+    download_keys <- rgbif::occ_download_queue(.list = gbif_queries)
+    config <- yaml::read_yaml("config.yaml")
+    config$gbif_download_key <- as.character(download_keys)
+    yaml::write_yaml(config, "config.yaml")
+    return(config$gbif_download_key)
+  } else {
+    message("Download keys found in config.yaml file. *No* datasets will be
+            requested from GBIF")
+    return(prev_occ_download_keys)
+  }
+}
+
+get_gbif_download_info <- function(gbif_download_keys){
+  
+  download_details <- rgbif::occ_download_list()
+  download_details$results %>%
+    dplyr::filter(key %in% gbif_download_keys) %>%
+    dplyr::mutate(filename = basename(downloadLink))
+}
+
+download_gbif_ocurrences <- function(gbif_download_info, download_path, success_file){
   
   downloaded_files <- list.files(download_path, pattern = "zip")
-  n_downloaded_files <- downloaded_files %>% length()
   
-  if(n_downloaded_files > 0){
-    if (n_downloaded_files != length(gbif_queries)) {
-      warning("Found zip files in the spp_occurrences folder but its number doesn't match the number of requests")
-    }
-    message("New occurrences won't be downloaded from GBIF. To get new ocurrences delete these zip files. ")
-    download_details <- rgbif::occ_download_list()
+  if (all(gbif_download_info$filename %in% downloaded_files)) {
+    message("All files have been already downloaded, no extra download necessary")
+    write(Sys.time(), success_file)
   } else {
-    on.exit(rgbif::occ_download_cancel_staged())
-    
-    if (verbose){
-      cat("Requesting datasets to GBIF\n")
+    if (length(downloaded_files) == 0) {
+      message("Downloading all files")
+      keys_to_download <- gbif_download_info
+    } else {
+      message("Downloading only some files")
+      keys_to_download <- gbif_download_info %>%
+        dplyr::filter(!filename %in% downloaded_files) 
     }
-    downloads <- rgbif::occ_download_queue(.list = gbif_queries)
-    
-    if (verbose){
-      cat("Downloading datasets from GBIF\n")
-    }
-    
-    download_details <- rgbif::occ_download_list()
-    
-    these_downloads <- download_details$results %>%
-      dplyr::filter(key %in% as.character(downloads)) %>%
-      dplyr::mutate(filename = basename(downloadLink))
-    
-    these_downloads %>%
+    keys_to_download %>%
       split(.$key) %>%
       purrr::map(~ definitely(func = download.file, n_tries = 10, sleep = 1/10, 
                               url = .$downloadLink,
                               destfile = file.path(download_path, .$filename)))
-    
-    downloaded_files <- list.files(download_path, pattern = "zip")
+    write(Sys.time(), success_file)
   }
-  
-  download_details$results %>%
-    dplyr::mutate(file_name = basename(downloadLink)) %>%
-    dplyr::filter(file_name %in% downloaded_files)
+  # these_downloads
 }
