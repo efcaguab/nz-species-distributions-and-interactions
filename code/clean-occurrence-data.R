@@ -48,14 +48,21 @@ clean_occurrences <- function(dirty_occurrence_df, land_data, country_data_sf){
   #   geom_point(aes(colour = .sea, shape = .otl))
 }
 
-extract_occurrence_files <- function(path){
-  files <- list.files(path, pattern = "zip", full.names = TRUE, recursive = FALSE)
-  keys <- basename(files) %>% tools::file_path_sans_ext()
+extract_occurrence_files <- function(path, success_file, file_trigger){
+  files <- list.files(path, 
+                      pattern = "zip",
+                      full.names = TRUE,
+                      recursive = FALSE)
+  
+  keys <- basename(files) %>% 
+    tools::file_path_sans_ext()
   
   purrr::map2(files, keys, 
               ~unzip(.x, files = "occurrence.txt", exdir = file.path(path, .y), 
                      unzip = "unzip"))
   
+  write(as.character(Sys.time()), success_file)
+}
   
 }
 

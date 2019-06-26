@@ -156,6 +156,10 @@ download_ocurrence_data_plan <- drake_plan(
     gbif_download_info, 
     ocurrences_dir, 
     file_out(occ_download_success_file)), 
+  occ_extraction = 
+    extract_occurrence_files(ocurrences_dir, 
+                             file_out(occ_extraction_success_file), 
+                             file_in(occ_download_success_file)), 
   land_data = rnaturalearth::ne_download(type = "land", 
                                          category = "physical", 
                                          returnclass = "sp", 
