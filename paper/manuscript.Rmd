@@ -231,9 +231,9 @@ fig_dist_species_multiple_locations_legend <-
 readd(fig_dist_species_multiple_locations)
 ```
 
-
 ### Climatic and habitat
 
+We then tried to retrieve occurrences for `r format(nrow(readd(spp_to_download)), big.mark = ',')` species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities in our dataset. 
 First we downloaded climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
 These bioclimatic variables were complemented with 16 of bioclimatic and topographic variables available in ENVIREM [@title_envirem_2018]. 
 This additional set of variables have been shown to be relevant to ecological or physiological processes and as such have the potential to improve species distribition models.
