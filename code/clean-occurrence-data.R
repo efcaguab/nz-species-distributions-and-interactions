@@ -7,18 +7,22 @@ clean_occurrences_chunked <- function(dirty_occurrences, land_data, country_data
   n_occurrences <- nrow(dirty_occurrences)
   dirty_occurrences <- dirty_occurrences[, cuts := cut(1:n_occurrences, future::availableCores())]
   split(dirty_occurrences, by = "cuts") %>%
-    furrr::future_map(clean_occurrences, land_data, country_data_sf, 
-                      .progress = TRUE) %>%
+    purrr::map(clean_occurrences, land_data, country_data_sf
+    ) %>%
     rbindlist()
 }
 
-clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf){
+clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf, verbose = TRUE){
   # dirty_occurrence_df <- readr::read_csv("data/downloads/spp_ocurrences/Adia cinerella.csv")
   suppressPackageStartupMessages({
     require(CoordinateCleaner)
     require(data.table)
   })
   
+  if (verbose) {
+     cat("cleaning occurrence chunk\n")
+  }
+   
   dirty_ocurrences <- na.omit(dirty_occurrences, 
                               cols = c("decimalLongitude", 
                                        "decimalLatitude", 
