@@ -183,7 +183,8 @@ download_ocurrence_data_plan <- drake_plan(
                                          returnclass = "sp", 
                                          scale = 10),
   country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10), 
-  cleaned_occurrences = clean_occurrences(occurrences, land_data, country_data_sf)
+  cleaned_occurrences = clean_occurrences_chunked(occurrences, land_data, country_data_sf),
+  n_cleaned_occurrences = count_occurrences_per_taxon(cleaned_occurrences)
 )
 
 # Clean ocurrence data -----------------------------------------------------
