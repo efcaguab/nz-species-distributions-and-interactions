@@ -21,7 +21,13 @@ RUN R -e "install.packages(c('countrycode', 'maps'), repos = c(CRAN = 'https://m
 # Versions before 2019-04-02 (2.0-9 or lower) had a weird bug
 RUN R -e "install.packages(c('CoordinateCleaner'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-06-01'))"
 RUN R -e "remotes::install_github('ropensci/rnaturalearthhires', ref = '7a3f0fc8d8d690fae044dd01eb2f14d3a75c92ed')"
-
+# Install NVIM
+RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> /etc/apt/sources.list.d/stretch-backports.list \ 
+  && apt-get update \
+  && apt-get -y --no-install-recommends -t stretch-backports install neovim
+RUN wget https://github.com/jalvesaq/Nvim-R/releases/download/v0.9.13/Nvim-R_0.9.13.zip
+RUN mkdir -p /root/.local/share/nvim/site/pack/R \
+  && unzip Nvim-R_0.9.13.zip -d root/.local/share/nvim/site/pack/R
 
 # Install development version of Rmangal. Code at April 8 2019 Note: Rmangal is pretty shit at the moment (May 2019) won't use it for now
 # RUN apt-get update \
