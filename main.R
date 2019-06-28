@@ -162,7 +162,7 @@ download_ocurrence_data_plan <- drake_plan(
                              file_out(occ_extraction_success_file), 
                              file_in(occ_download_success_file)), 
   occ_data_fields = c('taxonKey', 
-		      'acceptedTaxonKey',
+		      'speciesKey',
                       # 'scientificName', 
                       # 'acceptedScientificName',
                       'decimalLatitude', 
