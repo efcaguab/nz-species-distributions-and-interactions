@@ -57,7 +57,7 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf, ver
                       verbose = FALSE)
   cleaned_occurrences <- as.data.table(cleaned_occurrences)
   cleaned_occurrences[, !c(".val", 
-                           ".equ", 
+                          ".equ", 
                            ".zer", 
                            ".cap", 
                            ".cen", 
@@ -94,7 +94,7 @@ extract_occurrence_files <- function(path, success_file, file_trigger){
   write(as.character(Sys.time()), success_file)
 }
 
-read_ocurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE){
+read_occurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE){
   
   suppressPackageStartupMessages({
     require(data.table)
