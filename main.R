@@ -34,7 +34,8 @@ configuration_plan <- drake_plan(
   envirem_address = config$envirem_address,
   envirem_topo_address = config$envirem_topo_address,
   biblio_download_date = config$bibliography_retrieved, 
-  prev_occ_download_keys = config$gbif_download_key
+  prev_occ_download_keys = config$gbif_download_key,
+  n_chunks = config$n_chunks
 )
 
 # Download data ----------------------------------------------------------
@@ -184,7 +185,7 @@ download_ocurrence_data_plan <- drake_plan(
                                          returnclass = "sp", 
                                          scale = 10),
   country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10), 
-  flagged_occurrences  = clean_occurrences_chunked(occurrences, land_data, country_data_sf),
+  flagged_occurrences  = clean_occurrences_chunked(occurrences, land_data, country_data_sf, n_chunks),
   cleaned_occurrences =  flagged_occurrences[.sea_manual & .summary],
   gbif_key_groups = get_gbif_key_groups(cleaned_occurrences),
   n_cleaned_occurrences = count_occurrences_per_taxon(cleaned_occurrences)

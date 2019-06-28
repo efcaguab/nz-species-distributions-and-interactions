@@ -1,11 +1,11 @@
-clean_occurrences_chunked <- function(dirty_occurrences, land_data, country_data_sf){
+clean_occurrences_chunked <- function(dirty_occurrences, land_data, country_data_sf, n_chunks){
   suppressPackageStartupMessages({
     require(CoordinateCleaner)
     require(data.table)
   })
   
   n_occurrences <- nrow(dirty_occurrences)
-  dirty_occurrences <- dirty_occurrences[, cuts := cut(1:n_occurrences, future::availableCores())]
+  dirty_occurrences <- dirty_occurrences[, cuts := cut(1:n_occurrences, n_chunks)]
   split(dirty_occurrences, by = "cuts") %>%
     purrr::map(clean_occurrences, land_data, country_data_sf
     ) %>%
@@ -143,8 +143,8 @@ get_gbif_key_groups <- function(occurences){
     library(data.table)
   })
   
-  occurrences[, .(taxonKey, acceptedTaxonKey)] %>%
-    unique(by = c("taxonKey", "acceptedTaxonKey")) %>%
+  occurrences[, .(taxonKey, speciesKey)] %>%
+    unique(by = c("taxonKey", "speciesKey")) %>%
     # make into a graph to detect components
     igraph::graph_from_data_frame(directed = FALSE) %>%
     igraph::components() %>%
@@ -152,7 +152,8 @@ get_gbif_key_groups <- function(occurences){
     purrr::map_df(~tibble::tibble(taxonKey = .), .id = "key_id") %>%
     tibble::as_tibble() %>%
     dplyr::mutate(key_id = stringr::str_pad(key_id, 5, pad = "0"), 
-           key_id = paste("key", key_id, sep = "_"))
+                  key_id = paste("key", key_id, sep = "_"),
+                  taxonKey = as.integer(taxonKey))
 }
 
 test <- function(){
@@ -161,15 +162,19 @@ test <- function(){
   library(data.table)
 
   groups <- get_gbif_key_groups(occurrences)
-  occurrences %>%
-    dplyr::full_join(gbif_keys, by = c("acceptedTaxonKey" = "key")) %>%
-    dplyr::group_by(acceptedTaxonKey) %>%
+
+  inf_occurrences  <- dplyr::left_join(occurrences, groups)
+  inf_gbif_keys <- dplyr::left_join(gbif_keys, groups, by = c("key" = "taxonKey"))
+  
+  inf_occurrences %>%
+    dplyr::full_join(inf_gbif_keys, by = c("key_id")) %>%
+    dplyr::group_by(key_id) %>%
     dplyr::mutate(unknown_queried_sp_name = all(is.na(queried_sp_name))) %>% 
     dplyr::filter(unknown_queried_sp_name) %>%
-    dplyr::select(acceptedTaxonKey, taxonKey, scientificName, acceptedScientificName, queried_sp_name)
+    dplyr::select(taxonKey, scientificName, queried_sp_name)
 
 
   gbif_keys %>%
-    dplyr::filter(stringr::str_detect(canonicalName, "Austrocidaria"))
+    dplyr::filter(stringr::str_detect(canonicalName, "Coereba"))
 	  summary()
 }
