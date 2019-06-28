@@ -138,3 +138,38 @@ get_occurrences_datasets <- function(occurrences){
   unique(occurrences, by = "datasetKey")[, datasetKey]
 }
 
+get_gbif_key_groups <- function(occurences){
+  suppressPackageStartupMessages({
+    library(data.table)
+  })
+  
+  occurrences[, .(taxonKey, acceptedTaxonKey)] %>%
+    unique(by = c("taxonKey", "acceptedTaxonKey")) %>%
+    # make into a graph to detect components
+    igraph::graph_from_data_frame(directed = FALSE) %>%
+    igraph::components() %>%
+    igraph::groups() %>%
+    purrr::map_df(~tibble::tibble(taxonKey = .), .id = "key_id") %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(key_id = stringr::str_pad(key_id, 5, pad = "0"), 
+           key_id = paste("key", key_id, sep = "_"))
+}
+
+test <- function(){
+  drake::loadd(gbif_keys)
+  library(dplyr)
+  library(data.table)
+
+  groups <- get_gbif_key_groups(occurrences)
+  occurrences %>%
+    dplyr::full_join(gbif_keys, by = c("acceptedTaxonKey" = "key")) %>%
+    dplyr::group_by(acceptedTaxonKey) %>%
+    dplyr::mutate(unknown_queried_sp_name = all(is.na(queried_sp_name))) %>% 
+    dplyr::filter(unknown_queried_sp_name) %>%
+    dplyr::select(acceptedTaxonKey, taxonKey, scientificName, acceptedScientificName, queried_sp_name)
+
+
+  gbif_keys %>%
+    dplyr::filter(stringr::str_detect(canonicalName, "Austrocidaria"))
+	  summary()
+}
