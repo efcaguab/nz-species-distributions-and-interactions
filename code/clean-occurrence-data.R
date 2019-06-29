@@ -138,7 +138,7 @@ get_occurrences_datasets <- function(occurrences){
   unique(occurrences, by = "datasetKey")[, datasetKey]
 }
 
-get_gbif_key_groups <- function(occurences){
+get_gbif_key_groups <- function(occurrences){
   suppressPackageStartupMessages({
     library(data.table)
   })
