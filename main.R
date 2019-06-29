@@ -162,7 +162,7 @@ download_ocurrence_data_plan <- drake_plan(
                              file_out(occ_extraction_success_file), 
                              file_in(occ_download_success_file)), 
   occ_data_fields = c('taxonKey', 
-		      'speciesKey',
+		      # 'acceptedTaxonKey',
                       # 'scientificName', 
                       # 'acceptedScientificName',
                       'decimalLatitude', 
@@ -187,7 +187,7 @@ download_ocurrence_data_plan <- drake_plan(
   country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10), 
   flagged_occurrences  = clean_occurrences_chunked(occurrences, land_data, country_data_sf, n_chunks),
   cleaned_occurrences =  flagged_occurrences[.sea_manual & .summary],
-  gbif_key_groups = get_gbif_key_groups(cleaned_occurrences),
+  # gbif_key_groups = get_gbif_key_groups(cleaned_occurrences),
   n_cleaned_occurrences = count_occurrences_per_taxon(cleaned_occurrences)
 )
 
