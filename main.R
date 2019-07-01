@@ -104,8 +104,9 @@ pre_process_wol <- drake_plan(
 
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp),
+  spp_no_subspecies = downgrade_subspecies(spp), 
   synonyms_db = get_synonyms_db(file_in("data/downloads/itis_sqlite.zip")), 
-  checked_sp_names = check_spp_names(spp, 
+  checked_sp_names = check_spp_names(spp_no_subspecies, 
                                      synonyms_db, 
                                      file_in(prev_sp_name_assessments_path)), 
   manual_name_corrections = get_manual_name_corrections(
@@ -114,8 +115,8 @@ merge_interaction_data_plan <- drake_plan(
     manual_name_corrections, 
     synonyms_db, 
     file_in(prev_sp_name_assessments_path)), 
-  problematic_networks = detect_problematic_networks(checked_sp_names, spp), 
-  species_ids = get_final_name_list(spp, checked_sp_names, 
+  problematic_networks = detect_problematic_networks(checked_sp_names, spp_no_subspecies), 
+  species_ids = get_final_name_list(spp_no_subspecies, checked_sp_names, 
                                     manual_name_corrections, 
                                     checked_manual_corrections),
   int = merge_int(wol_int),
