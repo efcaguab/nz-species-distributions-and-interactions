@@ -35,6 +35,9 @@ get_gbif_keys <- function(spp_to_download,
     sp_name %>%
     purrr::map_dfr(get_gbif_key_memoised, 
                    prev_gbif_keys_path)
+  
+  # once is done just read it from disk
+  readr::read_csv(prev_gbif_keys_path, col_types = "cicc")
 }
 
 get_gbif_key_memoised <- function(this_sp_name,  
@@ -131,21 +134,21 @@ check_query_length <- function(x){
 }
 
 prepare_gbif_downloads <- function(gbif_queries, prev_occ_download_keys){
-  if (is.null(prev_occ_download_keys)) {
-    message("No download keys found in config.yaml file. *New* datasets will be
-            requested from GBIF")
-    # If things fail cancel downloads so another one can be started without waiting
-    on.exit(rgbif::occ_download_cancel_staged())
-    download_keys <- rgbif::occ_download_queue(.list = gbif_queries)
-    config <- yaml::read_yaml("config.yaml")
-    config$gbif_download_key <- as.character(download_keys)
-    yaml::write_yaml(config, "config.yaml")
-    return(config$gbif_download_key)
-  } else {
+  if (!is.null(prev_occ_download_keys) & length(prev_occ_download_keys) > 0) {
     message("Download keys found in config.yaml file. *No* datasets will be
             requested from GBIF")
     return(prev_occ_download_keys)
-  }
+  } 
+  
+  message("No download keys found in config.yaml file. *New* datasets will be
+            requested from GBIF")
+  # If things fail cancel downloads so another one can be started without waiting
+  on.exit(rgbif::occ_download_cancel_staged())
+  download_keys <- rgbif::occ_download_queue(.list = gbif_queries)
+  config <- yaml::read_yaml("config.yaml")
+  config$gbif_download_key <- as.character(download_keys)
+  yaml::write_yaml(config, "config.yaml")
+  return(config$gbif_download_key)
 }
 
 get_gbif_download_info <- function(gbif_download_keys){
