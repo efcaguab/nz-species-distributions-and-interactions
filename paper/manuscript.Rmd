@@ -238,13 +238,13 @@ readd(fig_dist_species_multiple_locations)
 ### Species suitability
 
 ```{r}
-loadd(spp_to_download, gbif_keys, n_occurrences)
+loadd(spp_to_download, gbif_keys, n_occurrences, n_cleaned_occurrences)
 n_species_with_occurrences <- dplyr::full_join(spp_to_download, gbif_keys, 
 		 by = c("sp_name" = "queried_sp_name")) %>%
   dplyr::inner_join(n_occurrences, by = c("key" = "taxonKey")) %$% 
   dplyr::n_distinct(sp_id)
 
-n_species_with_clean_occurrences <-  dplyr::full_join(spp_to_download, gbif_keys, 
+n_species_with_cleaned_occurrences <-  dplyr::full_join(spp_to_download, gbif_keys, 
 		 by = c("sp_name" = "queried_sp_name")) %>%
   dplyr::inner_join(n_cleaned_occurrences, by = c("key" = "taxonKey")) %$% 
   dplyr::n_distinct(sp_id)
@@ -252,6 +252,7 @@ n_species_with_clean_occurrences <-  dplyr::full_join(spp_to_download, gbif_keys
 ```
 
 Our next step was to determine the habitat suitability of the species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
+When organims were identified to the subspecies or varieties, we , 
 To do that we first fit a climatic envelope for each  of them which requires information about the climate and their known occurrences. 
 We retrieved occurrences from the Global Biodiversity Information Facility (https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
 We only requested occurrences that had geolocation information and no known geospatial issue.
@@ -263,7 +264,7 @@ We also removed occurrences in which the number of individuals recorded was zero
 We only kept occurrence records describing a human observation and preserved specimens as they are more reliable (Audrey: ref?why?). 
 After these filtering, we used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] to further identify (*i*) coordinates outside the borders of the country in which they were recorde, (*ii*) those arround a the country capital or the centroid of the country and province centroids, (*iii*) those arond a biodiversity institution, and (*iv*) those located within oceans. 
 We used land and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale. 
-This resulted in `r round(sum(n_cleaned_occurrences$N)/1000000, digits = 1)` million occurrences for `r n_species_with_cleaned_occurences` species. 
+This resulted in `r round(sum(n_cleaned_occurrences$N)/1000000, digits = 1)` million occurrences for `r n_species_with_cleaned_occurrences` species. 
 
 We then tried to retrieve occurrences for  species that were present in at least  communities in our dataset. 
 To do that we 
