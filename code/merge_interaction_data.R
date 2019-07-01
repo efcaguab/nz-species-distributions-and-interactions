@@ -13,6 +13,7 @@ merge_spp <- function(wol_spp){
            # remove unwanted abbreviations in cannonical names
            sp_name = stringr::str_replace(sp_name, stringr::fixed(" var."), ""), 
            sp_name = stringr::str_replace(sp_name, stringr::fixed(" aff."), ""),
+           sp_name = stringr::str_replace(sp_name, stringr::fixed(" cf."), ""), 
            is_subspecies = get_name_rank(sp_name), 
            is_subspecies = is_subspecies == "subspecies" & !sp_unidentified, 
            # simplify crosses
