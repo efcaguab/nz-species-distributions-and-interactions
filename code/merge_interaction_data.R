@@ -29,3 +29,12 @@ merge_int <- function(wol_int){
 merge_metadata <- function(wol_data){
   wol_data$metadata
 }
+
+downgrade_subspecies <- function(spp){
+  spp %>%
+    dplyr::mutate(sp_name = dplyr::if_else(
+      condition = is_subspecies, 
+      true = stringr::word(sp_name, 1, 2), 
+      false = sp_name
+    ))
+}
