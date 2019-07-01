@@ -84,14 +84,16 @@ extract_occurrence_files <- function(path, success_file, file_trigger){
                       full.names = TRUE,
                       recursive = FALSE)
   
-  keys <- basename(files) %>% 
-    tools::file_path_sans_ext()
-  
-  purrr::map2(files, keys, 
-              ~unzip(.x, files = "occurrence.txt", exdir = file.path(path, .y), 
-                     unzip = "unzip"))
-  
-  write(as.character(Sys.time()), success_file)
+  if(length(files) > 0){
+    keys <- basename(files) %>% 
+      tools::file_path_sans_ext()
+    
+    purrr::map2(files, keys, 
+                ~unzip(.x, files = "occurrence.txt", exdir = file.path(path, .y), 
+                       unzip = "unzip"))
+    
+    write(as.character(Sys.time()), success_file)
+  }
 }
 
 read_occurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE){
