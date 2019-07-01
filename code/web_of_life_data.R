@@ -160,9 +160,12 @@ get_wol_interaction_list <- function(wol_data){
     dplyr::mutate(pla_genus = get_first_word(pla_name), 
                   pol_genus = get_first_word(pol_name))  %>%
     # just in case 
-    dplyr::filter(sp_name %in% c('Frequency of occurrences"',
-                                 'Numbers of flowers',
-                                 'Number of flowers')) %>%
+    dplyr::filter(pla_name %in% c('Frequency of occurrences"',
+                                  'Numbers of flowers',
+                                  'Number of flowers'), 
+                  pol_name %in% c('Frequency of occurrences"',
+                                  'Numbers of flowers',
+                                  'Number of flowers')) %>%
     dplyr::inner_join(locality_info, by = "net_name") %>%
     tibble::as_tibble() %>%
     dplyr::distinct(pla_name, pol_name, loc_id)
