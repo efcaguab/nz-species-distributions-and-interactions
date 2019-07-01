@@ -182,7 +182,7 @@ check_gnr <- function(sp_name){
 
 # With the list of species names assess them all. Uses a "cache" of names that
 # have been previoulsy assessed
-check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
+check_spp_names <- function(spp_no_subspecies, synonyms_db, prev_sp_name_assessments_path){
   suppressPackageStartupMessages({
     require(dplyr)
   })
@@ -192,7 +192,7 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
                                               col_types = "ccccidcc")
   
   # species_level
-  spp %>%
+  spp_no_subspecies %>%
     filter(!is.na(sp_name), 
            !sp_unidentified, 
            !sp_name %in% prev_sp_name_assessments$queried_sp_name) %>%
@@ -203,7 +203,7 @@ check_spp_names <- function(spp, synonyms_db, prev_sp_name_assessments_path){
   
   # Once is done just read the assessment file from disk and calculate helpful stats
   readr::read_csv(prev_sp_name_assessments_path, col_types = "ccccidcc") %>%
-    filter(queried_sp_name %in% unique(spp$sp_name)) %>%
+    filter(queried_sp_name %in% unique(spp_no_subspecies$sp_name)) %>%
     # remove variant and subspecies abbreviations from the retrieved species
     # names, it is clear that they are one when there is 3 words or more in there
     mutate(sp_name = stringr::str_replace_all(sp_name,"var. ", ""),
@@ -296,13 +296,13 @@ get_manual_name_corrections <- function(manual_name_corrections_file){
 }
 
 get_final_name_list <- 
-  function(spp, 
+  function(spp_no_subspecies, 
            checked_sp_names,
            manual_name_corrections, 
            checked_manual_name_corrections) {
   
   # rename stuff in spp to match the fixed names
-  spp_reformated <- spp %>%
+  spp_reformated <- spp_no_subspecies %>%
     dplyr::mutate(queried_sp_name = sp_name)
   
   # remove manual correction that arent actually one
