@@ -1,6 +1,9 @@
 # merge species list from multiple interaction data sources
 merge_spp <- function(wol_spp){
-  require(dplyr)
+  suppressPackageStartupMessages({
+    require(dplyr)
+  })
+  
   wol_spp %>%
     mutate(original_name = sp_name, 
            sp_unidentified = stringr::str_detect(sp_name, "M_PL"), 
@@ -9,11 +12,11 @@ merge_spp <- function(wol_spp){
                                            "Unidentified"),
            # remove unwanted abbreviations in cannonical names
            sp_name = stringr::str_replace(sp_name, "var.", ""), 
-           sp_name = stringr::str_replace(sp_name, "aff.", "", 
+           sp_name = stringr::str_replace(sp_name, "aff.", ""), 
            is_subspecies = get_name_rank(sp_name), 
-           is_subspecies = is_subspecies == "subspecies" & !sp_unidentified), 
+           is_subspecies = is_subspecies == "subspecies" & !sp_unidentified, 
            # simplify crosses
-           sp_name = stringr::str_replace(sp_name, " x .+")) %>%
+           sp_name = stringr::str_replace(sp_name, " x .+", "")) %>%
     group_by(loc_id) %>%
     mutate(node_id = paste0(loc_id, "-", 
                             guild, "_",
