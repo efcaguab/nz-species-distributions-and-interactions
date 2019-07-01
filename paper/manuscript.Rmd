@@ -105,9 +105,12 @@ int_citations_year_range <- range(interaction_citations$YEAR)
 ```{r scientific-names-cleaning-info}
 loadd(checked_sp_names, spp, manual_name_corrections, problematic_networks)
 
-n_sp_names <- n_distinct(spp$sp_name)
+n_sp_names <- n_distinct(spp$sp_name) 
 
-n_sp_names_sp_level <- filter(spp, !sp_unidentified) %$% 
+n_sp_names_subsp_level <- filter(spp, is_subspecies) %$%
+  n_distinct(sp_name)
+
+n_sp_names_sp_level <- filter(spp, !sp_unidentified, !subspecies) %$% 
   n_distinct(sp_name)
 
 n_sp_names_gen_level <- filter(spp, sp_unidentified, !gen_unidentified) %$% 
@@ -155,9 +158,10 @@ n_names_in_multiple_references_orig <- spp %>%
 We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014]. 
 This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]` `r all_int_cites`.
 All together, these data sources contained `r format(n_sp_names, big.mark = ",")` unique organism names; `r format(n_names_in_multiple_references_orig, big.mark = ",")` of them in more than one data source.
-Because assessing how habitat suitability affects interaction partners of plants and pollinators requires linking of species across different datasets, it was important to ensure that the cannnonical names used to identify species were as accurate as possible.
-From the total number of organisms, `r format(n_sp_names_sp_level, big.mark = ",")` were originally identified to the species-level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, and no taxonomic information was avaliable for the remaining `r format(n_no_tax_info, big.mark = ",")`. 
- 
+Because assessing how habitat suitability affects interaction partners of plants and pollinators requires linking of species across different datasets, it was important to ensure that the names used to identify species were as accurate as possible.
+From the total number of organisms,`r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level, big.mark = ",")`  to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, and no taxonomic information was avaliable for the remaining `r format(n_no_tax_info, big.mark = ",")`. 
+As the species level was the most common taxonomic level available in our interaction datasets, for all further analysis, we consider only the species of organisms that were identified to the subspecies or variety level.
+
 We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the cannonical names used to identify organisms to the species level (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
 We assessed the validity of a scientific name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes taxonomic data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
 Specifically, we used the function `gnr_resolve` from the R package `taxize` `r as.character(packageVersion('taxize'))` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
