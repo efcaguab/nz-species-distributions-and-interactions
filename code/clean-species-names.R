@@ -264,7 +264,7 @@ assess_sp_name_memoised <- function(this_sp_name,
 
 get_name_rank <- function(x){
   sp_name_n_spaces <- stringr::str_count(x, " ")
-  case_when(
+  dplyr::case_when(
     sp_name_n_spaces == 0 ~ "genus", 
     sp_name_n_spaces == 1 ~ "species", 
     TRUE ~ "subspecies"
