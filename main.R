@@ -260,4 +260,6 @@ paper_plan <- rbind(
 # full_config <- drake_config(full_plan)
 # make(paper_plan, parallelism = "clustermq", jobs = 4)
 # future::plan(future.callr::callr)
+# plan_config <- drake_config(paper_plan)
+# vis_drake_graph(plan_config, targets_only = T)
 make(paper_plan)
