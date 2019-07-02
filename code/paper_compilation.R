@@ -102,7 +102,7 @@ process_keywords <- function(filename){
     purrr::discard(~ . == "") %>%
     purrr::map_chr(stringr::str_trim) %>%
     sort() %>%
-    glue::collapse(sep = ", ", last = ", and ")
+    glue::glue_collapse(sep = ", ", last = ", and ")
 }
 
 render_pdf <- function(rmd_file, output_file, clean_md = FALSE, clean_tex = FALSE, quiet = TRUE, params = NULL){
