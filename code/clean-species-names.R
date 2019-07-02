@@ -313,6 +313,11 @@ get_final_name_list <-
     # remove stuff that asks to get only genus
     dplyr::filter(sp_name_rank != "genus") %>%
     dplyr::bind_rows(actual_manual_name_corrections) %>%
+    dplyr::mutate(original_sp_name = sp_name, 
+                  is_subspecies = get_name_rank(sp_name), 
+                  is_subspecies = is_subspecies == "subspecies" &
+                    !sp_unidentified) %>%
+    downgrade_subspecies() %>%
     dplyr::bind_rows(spp_reformated) %>%
     dplyr::distinct(queried_sp_name, sp_name) %>% 
     # make into a graph to detect components
