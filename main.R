@@ -194,6 +194,12 @@ download_ocurrence_data_plan <- drake_plan(
 
 # Clean ocurrence data -----------------------------------------------------
 
+climatic_niche_plan <- drake_plan(
+  worldclim_stack = get_worldclim_stack(file_in("data/downloads/wordclim_2-5m.zip")), 
+  org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids),
+  thinned_occurrences = thin_occurrences_per_species(cleaned_occurrences)
+)
+
 # Referencing -------------------------------------------------------------
 
 data_references_plan <- drake_plan(
