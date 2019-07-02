@@ -8,7 +8,17 @@ worldclim_address: http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_
 envirem_topo_address: https://deepblue.lib.umich.edu/data/downloads/37720c880?locale=en
 envirem_address: https://deepblue.lib.umich.edu/data/downloads/ms35t870p?locale=en
 n_chunks: 100
-gbif_download_key: []
+gbif_download_key:
+- 0004918-190621201848488
+- 0004916-190621201848488
+- 0004917-190621201848488
+- 0004927-190621201848488
+- 0004929-190621201848488
+- 0004928-190621201848488
+- 0004935-190621201848488
+- 0004937-190621201848488
+- 0004939-190621201848488
+- 0004943-190621201848488
 old_gbif_download_key:
 - 0001522-190621201848488
 - 0001499-190621201848488
