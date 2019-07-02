@@ -161,7 +161,7 @@ download_ocurrence_data_plan <- drake_plan(
   occ_extraction = 
     extract_occurrence_files(ocurrences_dir, 
                              file_out(occ_extraction_success_file), 
-                             file_in(occ_download_success_file)), 
+                             occ_download), 
   occ_data_fields = c('taxonKey', 
 		      # 'acceptedTaxonKey',
                       # 'scientificName', 
@@ -178,7 +178,7 @@ download_ocurrence_data_plan <- drake_plan(
                       'datasetKey',
                       'taxonRank'),
   occurrences = read_occurrences(ocurrences_dir, occ_data_fields,
-                                file_in(occ_extraction_success_file)),
+                                occ_extraction),
   n_occurrences = count_occurrences_per_taxon(occurrences),
   dataset_keys = get_occurrences_datasets(occurrences),
   land_data = rnaturalearth::ne_download(type = "land", 
