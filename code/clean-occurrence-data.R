@@ -1,3 +1,4 @@
+# clean all occcurences downloaded. To do that chunk them in pieces and call clean_occurrences
 clean_occurrences_chunked <- function(dirty_occurrences, land_data, country_data_sf, n_chunks){
   suppressPackageStartupMessages({
     require(CoordinateCleaner)
@@ -12,6 +13,7 @@ clean_occurrences_chunked <- function(dirty_occurrences, land_data, country_data
     rbindlist()
 }
 
+# Remove occurrences with weird or incorrect coordinates
 clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf, verbose = TRUE){
   # dirty_occurrence_df <- readr::read_csv("data/downloads/spp_ocurrences/Adia cinerella.csv")
   suppressPackageStartupMessages({
@@ -78,6 +80,9 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf, ver
   #   geom_point(aes(colour = .sea, shape = .otl))
 }
 
+# Extract occurrence files that were just downloaded. Path is where zip files
+# are success file is an output to exit when successful and file trigger is just
+# a dummy input to maintain the dependcy from the download
 extract_occurrence_files <- function(path, success_file, file_trigger){
   files <- list.files(path, 
                       pattern = "zip",
@@ -96,6 +101,7 @@ extract_occurrence_files <- function(path, success_file, file_trigger){
   }
 }
 
+# Read the occurrences from the extracted files
 read_occurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE){
   
   suppressPackageStartupMessages({
@@ -132,6 +138,7 @@ read_occurrences <- function(path, occ_data_fields, file_trigger, verbose = TRUE
   
 }
 
+
 count_occurrences_per_taxon <- function(occurrences){
   occurrences[, .N, by = taxonKey]
 }
@@ -140,6 +147,7 @@ get_occurrences_datasets <- function(occurrences){
   unique(occurrences, by = "datasetKey")[, datasetKey]
 }
 
+# Group species by species key. This is needed for putting occurrences together
 get_gbif_key_groups <- function(occurrences){
   suppressPackageStartupMessages({
     library(data.table)
