@@ -39,6 +39,7 @@ downgrade_subspecies <- function(spp){
     dplyr::mutate(sp_name = dplyr::if_else(
       condition = is_subspecies, 
       true = stringr::word(sp_name, 1, 2), 
-      false = sp_name
+      false = sp_name, 
+      missing = sp_name
     ))
 }
