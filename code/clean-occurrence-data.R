@@ -188,3 +188,14 @@ test <- function(){
     dplyr::filter(stringr::str_detect(canonicalName, "Coereba"))
 	  summary()
 }
+
+get_n_dirty_occurrences <- function(n_occurrences, n_cleaned_occurrences){
+  n_occurrences %>%
+    dplyr::mutate(clean = "no") %>%
+    dplyr::bind_rows(dplyr::mutate(n_cleaned_occurrences, clean = "yes")) %>%
+    tidyr::spread(clean, N) %>%
+    dplyr::mutate(yes = dplyr::if_else(is.na(yes), 0L, yes), 
+                  loss = no - yes) %>%
+    dplyr::transmute(taxonKey, N = loss) %>%
+    dplyr::filter(N > 0)
+}

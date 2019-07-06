@@ -189,7 +189,8 @@ download_ocurrence_data_plan <- drake_plan(
   flagged_occurrences  = clean_occurrences_chunked(occurrences, land_data, country_data_sf, n_chunks),
   cleaned_occurrences =  flagged_occurrences[.sea_manual & .summary],
   gbif_key_groups = get_gbif_key_groups(cleaned_occurrences),
-  n_cleaned_occurrences = count_occurrences_per_taxon(cleaned_occurrences)
+  n_cleaned_occurrences = count_occurrences_per_taxon(cleaned_occurrences), 
+  n_dirty_occurrences = get_n_dirty_occurrences(n_occurrences, n_cleaned_occurrences)
 )
 
 # Clean ocurrence data -----------------------------------------------------
