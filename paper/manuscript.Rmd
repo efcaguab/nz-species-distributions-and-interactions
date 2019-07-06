@@ -110,7 +110,7 @@ n_sp_names <- n_distinct(spp$sp_name)
 n_sp_names_subsp_level <- filter(spp, is_subspecies) %$%
   n_distinct(sp_name)
 
-n_sp_names_sp_level_no_subsp <- filter(spp, !sp_unidentified, !subspecies) %$% 
+n_sp_names_sp_level_no_subsp <- filter(spp, !sp_unidentified, !is_subspecies) %$% 
   n_distinct(sp_name)
 
 n_sp_names_sp_level <- filter(spp, !sp_unidentified) %$% 
@@ -241,34 +241,31 @@ readd(fig_dist_species_multiple_locations)
 ### Species suitability
 
 ```{r}
-loadd(spp_to_download, gbif_keys, n_occurrences, n_cleaned_occurrences)
-n_species_with_occurrences <- dplyr::full_join(spp_to_download, gbif_keys, 
-		 by = c("sp_name" = "queried_sp_name")) %>%
-  dplyr::inner_join(n_occurrences, by = c("key" = "taxonKey")) %$% 
-  dplyr::n_distinct(sp_id)
+loadd(n_occurrences, n_cleaned_occurrences, n_dirty_occurrences, gbif_key_groups, org_ids)
 
-n_species_with_cleaned_occurrences <-  dplyr::full_join(spp_to_download, gbif_keys, 
-		 by = c("sp_name" = "queried_sp_name")) %>%
-  dplyr::inner_join(n_cleaned_occurrences, by = c("key" = "taxonKey")) %$% 
-  dplyr::n_distinct(sp_id)
+get_n_species <- . %>%
+  dplyr::inner_join(gbif_key_groups, by = "taxonKey") %>%
+  dplyr::inner_join(org_ids, by = c("key_id" = "sp_key_id")) %$%
+  dplyr::n_distinct(org_id)
 
+n_species_with_occurrences <- get_n_species(n_occurrences)
+n_species_with_cleaned_occurrences <- get_n_species(n_cleaned_occurrences) 
+n_species_with_dirty_occurrences <- get_n_species(n_dirty_occurrences)
 ```
 
-Our next step was to determine the habitat suitability of the species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
+Our next step was to determine the suitability of the species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
 When organims were identified to the subspecies or varieties, we , 
 To do that we first fit a climatic envelope for each  of them which requires information about the climate and their known occurrences. 
 We retrieved occurrences from the Global Biodiversity Information Facility (https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
-We only requested occurrences that had geolocation information and no known geospatial issue.
-This resulted into roughly `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for `r format(n_species_with_occurrences, big.mark = ",")` species.
-We were unable to find occurrences for the remaining `r dplyr::n_distinct(spp_to_download$sp_id) - n_species_with_occurrences` species. 
-We then filtered these occurrence and kept only those with higher quality information. 
-Specifically, we removed occurrences with a coordinate uncertainity larger than 100km and those recorded prior to 1945 (Audrey: ref? or why?).
-We also removed occurrences in which the number of individuals recorded was zero or more than 100 as such large counts are often erroneous (Audrey: ref? or why?). 
-We only kept occurrence records describing a human observation and preserved specimens as they are more reliable (Audrey: ref?why?). 
-After these filtering, we used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] to further identify (*i*) coordinates outside the borders of the country in which they were recorde, (*ii*) those arround a the country capital or the centroid of the country and province centroids, (*iii*) those arond a biodiversity institution, and (*iv*) those located within oceans. 
-We used land and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale. 
-This resulted in `r round(sum(n_cleaned_occurrences$N)/1000000, digits = 1)` million occurrences for `r n_species_with_cleaned_occurrences` species. 
+For each species, we downloaded occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
+Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for `r format(n_species_with_occurrences, big.mark = ",")` of the species of interest. 
+The occurrences obtained contain observations of mixed quality, so we applied a series of simple filters to remove those of lower quality. 
+Specifically, we removed all occurrences with (*i*) a coordinate uncertainity larger than 100km; (*ii*) those recorded prior to 1945 (ref? or why?); (*iii*) those in which the number of individuals recorded was either zero or more than 100 as such large counts are often erroneous (ref? or why?); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (ref? why?). 
+We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
+We removed occurrences in which their coordinates (*v*) fell outside the borders of the country in which they were recorded; (*vi*) those arround a the country capital or the centroid of the country and province centroids; (*vii*) those arond a biodiversity institution; and (*viii*) those located within oceans. 
+Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences accross `r n_species_with_dirty_occurrences` species. 
 
+Because some of the occurrences are clustered across 
 We then tried to retrieve occurrences for  species that were present in at least  communities in our dataset. 
 To do that we 
 First we downloaded climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
