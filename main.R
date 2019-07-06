@@ -198,7 +198,10 @@ download_ocurrence_data_plan <- drake_plan(
 climatic_niche_plan <- drake_plan(
   worldclim_stack = get_worldclim_stack(file_in("data/downloads/wordclim_2-5m.zip")), 
   org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids),
-  thinned_occurrences = thin_occurrences_per_species(cleaned_occurrences)
+  thinned_occurrences = thin_occurrences_per_species(cleaned_occurrences, 
+                                                     gbif_key_groups,
+                                                     org_ids, 
+                                                     worldclim_stack)
 )
 
 # Referencing -------------------------------------------------------------
@@ -259,6 +262,7 @@ paper_plan <- rbind(
   get_data_plan,
   pre_process_int_plan,
   download_ocurrence_data_plan,
+  climatic_niche_plan,
   data_references_plan, 
   figures_plan, 
   reporting_plan

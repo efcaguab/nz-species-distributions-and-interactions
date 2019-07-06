@@ -1,4 +1,4 @@
-thin_occurrences_per_species <- function(cleaned_occurrences){
+thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, org_ids, worldclim_stack){
   suppressPackageStartupMessages({
     library(data.table)
   })
@@ -8,7 +8,7 @@ thin_occurrences_per_species <- function(cleaned_occurrences){
     dplyr::inner_join(org_ids, by = c("key_id" = "sp_key_id")) %>%
     data.table::as.data.table() %>%
     split(by = "org_id") %>%
-    purrr::map(thin_occurrences) %>%
+    purrr::map(thin_occurrences, worldclim_stack) %>%
     rbindlist()
 }
 
@@ -28,7 +28,7 @@ get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids){
                   org_id = paste("org", org_id, sep = "_"))
 }
 
-thin_occurrences <- function(this_sp_occurrences){
+thin_occurrences <- function(this_sp_occurrences, worldclim_stack){
   # get latitudes and longitudes
   lon_lats <- this_sp_occurrences %>%
     .[, list(decimalLongitude, decimalLatitude)]
