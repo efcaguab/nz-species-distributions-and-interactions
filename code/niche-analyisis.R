@@ -41,9 +41,11 @@ thin_occurrences <- function(this_sp_occurrences, worldclim_stack){
     unique(by = c("wc_grid")) 
 }
 
-get_worldclim_stack <- function(worldclim_zip){
-  worldclim_zip <- "data/downloads/wordclim_2-5m.zip"
-  temp_dir <- file.path(tempdir(), "wordclim")
+remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences = 5){
+  thinned_occurrences[, n := .N, by = org_id][] %>%
+    .[n >= 5] %>%
+    .[, n := NULL]
+}
   unzip(worldclim_zip, exdir = temp_dir)
   file_names <- list.files(temp_dir, full.names = T)
   raster::stack(file_names)

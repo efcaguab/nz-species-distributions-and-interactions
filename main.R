@@ -202,6 +202,7 @@ climatic_niche_plan <- drake_plan(
                                                      gbif_key_groups,
                                                      org_ids, 
                                                      worldclim_stack)
+  good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
 )
 
 # Referencing -------------------------------------------------------------
