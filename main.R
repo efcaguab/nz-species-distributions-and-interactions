@@ -203,6 +203,7 @@ climatic_niche_plan <- drake_plan(
                                                      org_ids, 
                                                      worldclim_stack)
   good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
+  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
 # Referencing -------------------------------------------------------------

@@ -46,6 +46,14 @@ remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences = 5){
     .[n >= 5] %>%
     .[, n := NULL]
 }
+
+read_ecoregions <- function(shapefile_path){
+  extract_dir <- file.path(tempdir(), "ecoregion")
+  unzip(shapefile_path, exdir = extract_dir)
+  sf::st_read(extract_dir) %>% 
+    dplyr::select(ECO_NAME, WWF_MHTNAM, WWF_REALM2) %>% 
+    dplyr::transmute('ecoregion' = ECO_NAME, 'major_habitat_type' = WWF_MHTNAM, 'biogeographic_realm'= WWF_REALM2)
+}
   unzip(worldclim_zip, exdir = temp_dir)
   file_names <- list.files(temp_dir, full.names = T)
   raster::stack(file_names)
