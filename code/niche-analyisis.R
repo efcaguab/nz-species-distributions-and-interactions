@@ -54,7 +54,64 @@ read_ecoregions <- function(shapefile_path){
     dplyr::select(ECO_NAME, WWF_MHTNAM, WWF_REALM2) %>% 
     dplyr::transmute('ecoregion' = ECO_NAME, 'major_habitat_type' = WWF_MHTNAM, 'biogeographic_realm'= WWF_REALM2)
 }
+
+get_raster_stack <- function(worldclim_zip){
+  # worldclim_zip <- "data/downloads/wordclim_2-5m.zip"
+  temp_dir <- tempfile()
   unzip(worldclim_zip, exdir = temp_dir)
   file_names <- list.files(temp_dir, full.names = T)
   raster::stack(file_names)
+}
+
+merge_stacks <- function(worldclim_stack, envirem_stack, topo_stack){
+  extents <- raster_stacks %>%
+    purrr::map(raster::extent) 
+  
+  smallest_extents_index <- extents %>% 
+    purrr::map(as.vector) %>%
+    purrr::map(abs) %>% 
+    purrr::pmap(cbind) %>%
+    purrr::map(as.vector) %>%
+    purrr::map(which.min)
+  
+  smallest_extent <- extents %>%
+    purrr::map(as.vector) %>%
+    purrr::pmap(cbind) %>%
+    purrr::map2_dbl(smallest_extents_index, function(x,y) x[y]) %>%
+    raster::extent()
+  
+  worldclim_stack %>%
+    purrr::map(~raster::crop(raster::raster(.)), smallest_extent)
+  
+  stack_names <-     purrr
+
+  1:raster::nlayers(worldclim_stack) %>%
+    purrr::map(~raster::subset(worldclim_stack, .)) %>%
+    # purrr::map(raster::raster) %>%
+    purrr::map(raster::crop, smallest_extent) %>%
+    # purrr::map2(names(worldclim_stack), `names<-`) %>%
+    # purrr::map(class)
+    raster::stack()
+    # raster::crop(raster::raster(raster::subset(worldclim_stack, 1)), smallest_extent)
+}
+
+crop_raster_stack <- function(stack, extent){
+  
+}
+
+get_climate_species <- function(this_occurrences, ecoregions){
+  this_occurrences <- good_qual_occurrences[org_id == "org_00001"]
+  this_occurrences_sf <- sf::st_as_sf(this_occurrences, coords = c("decimalLongitude" ,  "decimalLatitude"), crs = 4326)
+  occurrence_ecoregion_overlap <- sf::st_join(this_occurrences_sf, ecoregions , join = sf::st_intersects)
+}
+
+
+
+tinker <- function(){
+  library(ggplot2)
+  thinned_occurrences %>% 
+    group_by(wc_grid) %>%
+    slice(1) %>%
+    ggplot() +
+    geom_point(aes(x = decimalLongitude, y = decimalLatitude))
 }
