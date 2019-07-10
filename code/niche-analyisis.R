@@ -71,36 +71,22 @@ get_raster_stack <- function(worldclim_zip){
   raster::stack(file_names)
 }
 
-merge_stacks <- function(worldclim_stack, envirem_stack, topo_stack){
-  extents <- raster_stacks %>%
-    purrr::map(raster::extent) 
-  
-  smallest_extents_index <- extents %>% 
-    purrr::map(as.vector) %>%
-    purrr::map(abs) %>% 
-    purrr::pmap(cbind) %>%
-    purrr::map(as.vector) %>%
-    purrr::map(which.min)
-  
-  smallest_extent <- extents %>%
-    purrr::map(as.vector) %>%
-    purrr::pmap(cbind) %>%
-    purrr::map2_dbl(smallest_extents_index, function(x,y) x[y]) %>%
-    raster::extent()
-  
-  worldclim_stack %>%
-    purrr::map(~raster::crop(raster::raster(.)), smallest_extent)
-  
-  stack_names <-     purrr
+get_climate <- function(){
+  worldclim_stack = get_raster_stack(file_in("data/downloads/wordclim_2-5m.zip"))
+  envirem_stack = get_raster_stack(file_in("data/downloads/envirem_2-5m.zip"))
+  topo_stack = get_raster_stack(file_in("data/downloads/envirem_topo_2-5m.zip"))
+  list(worldclim = worldclim_stack, 
+       envirem = envirem_stack, 
+       topo = topo_stack)
+}
 
-  1:raster::nlayers(worldclim_stack) %>%
-    purrr::map(~raster::subset(worldclim_stack, .)) %>%
-    # purrr::map(raster::raster) %>%
-    purrr::map(raster::crop, smallest_extent) %>%
-    # purrr::map2(names(worldclim_stack), `names<-`) %>%
-    # purrr::map(class)
-    raster::stack()
-    # raster::crop(raster::raster(raster::subset(worldclim_stack, 1)), smallest_extent)
+get_climate_for_occurrences <- function(this_occurrences, raster_stacks){
+  grids <- this_occurrences$wc_grid %>% 
+    unique()
+  raster_stacks %>%
+    purrr::map(raster::extract, grids) %>%
+    purrr::map_dfc(tibble::as_data_frame) %>%
+    dplyr::bind_cols(tibble::tibble(wc_grid = grids), .)
 }
 
 crop_raster_stack <- function(stack, extent){

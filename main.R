@@ -201,7 +201,8 @@ climatic_niche_plan <- drake_plan(
                                                      gbif_key_groups,
                                                      org_ids, 
                                                      get_climate()), 
-  good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
+  climate_in_occurrences = get_climate_for_occurrences(thinned_occurrences, get_climate()),
+  # good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
   ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
