@@ -1,4 +1,4 @@
-thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, org_ids, worldclim_stack){
+thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, org_ids, stacks){
   suppressPackageStartupMessages({
     library(data.table)
   })
@@ -8,7 +8,7 @@ thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, o
     dplyr::inner_join(org_ids, by = c("key_id" = "sp_key_id")) %>%
     data.table::as.data.table() %>%
     split(by = "org_id") %>%
-    purrr::map(thin_occurrences, worldclim_stack) %>%
+    purrr::map(thin_occurrences, stacks$worldclim) %>%
     rbindlist()
 }
 

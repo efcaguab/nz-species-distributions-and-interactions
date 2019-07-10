@@ -196,17 +196,11 @@ download_ocurrence_data_plan <- drake_plan(
 # Clean ocurrence data -----------------------------------------------------
 
 climatic_niche_plan <- drake_plan(
-  worldclim_stack = get_raster_stack(file_in("data/downloads/wordclim_2-5m.zip")), 
-  envirem_stack = get_raster_stack(file_in("data/downloads/envirem_2-5m.zip")),
-  topo_stack = get_raster_stack(file_in("data/downloads/envirem_topo_2-5m.zip")),
-  raster_stacks = list(worldclim = worldclim_stack, 
-                       envirem = envirem_stack, 
-                       topo = topo_stack),
-  org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids),
+ org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids),
   thinned_occurrences = thin_occurrences_per_species(cleaned_occurrences, 
                                                      gbif_key_groups,
                                                      org_ids, 
-                                                     worldclim_stack), 
+                                                     get_climate()), 
   good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
   ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
