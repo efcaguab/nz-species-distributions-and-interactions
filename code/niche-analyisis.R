@@ -89,17 +89,18 @@ get_climate_for_occurrences <- function(this_occurrences, raster_stacks){
     dplyr::bind_cols(tibble::tibble(wc_grid = grids), .)
 }
 
-crop_raster_stack <- function(stack, extent){
-  
+climatic_pca <- function(climatic_variables){
+  climatic_variables %>%
+    dplyr::select(-wc_grid) %>%
+    ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
 }
 
-get_climate_species <- function(this_occurrences, ecoregions){
-  this_occurrences <- good_qual_occurrences[org_id == "org_00001"]
-  this_occurrences_sf <- sf::st_as_sf(this_occurrences, coords = c("decimalLongitude" ,  "decimalLatitude"), crs = 4326)
-  occurrence_ecoregion_overlap <- sf::st_join(this_occurrences_sf, ecoregions , join = sf::st_intersects)
+explore_missing_values <- function(){
+  climate_in_occurrences %>%
+    dplyr::filter_if(is.na, dplyr::all_vars)
+    dplyr::select(tidyselect::starts_with("current")) %>%
+    naniar::gg_miss_upset(nsets = 40)
 }
-
-
 
 tinker <- function(){
   library(ggplot2)
