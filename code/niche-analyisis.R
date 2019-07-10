@@ -9,6 +9,8 @@ thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, o
     data.table::as.data.table() %>%
     split(by = "org_id") %>%
     purrr::map(thin_occurrences, stacks$worldclim) %>%
+    # envirem grid number is the same as wordclim so no need to add it independently
+    purrr::map(add_stack_grid, stacks$envirem, "en_grid") %>%
     rbindlist()
 }
 
@@ -30,15 +32,21 @@ get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids){
 
 thin_occurrences <- function(this_sp_occurrences, worldclim_stack){
   # get latitudes and longitudes
+ this_sp_occurrences %>%
+    add_stack_grid(worldclim_stack, "wc_grid") %>% 
+    # just keep one coordinate per grid
+    unique(by = c("wc_grid")) 
+}
+
+add_stack_grid <- function(this_sp_occurrences, stack, colname){
+  # get latitudes and longitudes
   lon_lats <- this_sp_occurrences %>%
     .[, list(decimalLongitude, decimalLatitude)]
   
   this_sp_occurrences %>%
     # figure out where each coordinate is 
-    .[ , wc_grid := raster::cellFromXY(
-      worldclim_stack, lon_lats)] %>% 
-    # just keep one coordinate per grid
-    unique(by = c("wc_grid")) 
+    .[ , (colname) := raster::cellFromXY(
+      stack, lon_lats)]
 }
 
 remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences = 5){
