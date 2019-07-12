@@ -35,7 +35,8 @@ configuration_plan <- drake_plan(
   envirem_topo_address = config$envirem_topo_address,
   biblio_download_date = config$bibliography_retrieved, 
   prev_occ_download_keys = config$gbif_download_key,
-  n_chunks = config$n_chunks
+  n_chunks = config$n_chunks, 
+  climate_buffer = config$climate_buffer
 )
 
 # Download data ----------------------------------------------------------
@@ -202,6 +203,10 @@ climatic_niche_plan <- drake_plan(
                                                      org_ids, 
                                                      get_climate()), 
   climate_in_occurrences = get_climate_for_occurrences(thinned_occurrences, get_climate()),
+  filled_climate_in_occurrences = fill_missing_values(climate_in_occurrences, 
+                                                      get_climate(), 
+                                                      n_chunks,
+                                                      climate_buffer),
   # good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
   ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )

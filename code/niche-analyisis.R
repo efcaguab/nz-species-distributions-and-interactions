@@ -51,7 +51,7 @@ add_stack_grid <- function(this_sp_occurrences, stack, colname){
 
 remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences = 5){
   thinned_occurrences[, n := .N, by = org_id][] %>%
-    .[n >= 5] %>%
+    .[n < 100] %>%
     .[, n := NULL]
 }
 
@@ -95,12 +95,122 @@ climatic_pca <- function(climatic_variables){
     ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
 }
 
-explore_missing_values <- function(){
+fill_missing_values <- function(climate_in_occurrences, raster_stacks, n_chunks, buffer, verbose = T){
+  
+  
+  if (verbose) cat("filling topographic values\n")
+  topo_averages <- average_climate_buffer(climate_in_occurrences, 
+                                          "topo", 
+                                          raster_stacks$topo, 
+                                          n_chunks, 
+                                          buffer, 
+                                          pattern2 = "tri")
+  
+  if (verbose) cat("filling worldclim values\n")
+  worldclim_averages <- average_climate_buffer(climate_in_occurrences, 
+                                               "wc", 
+                                               raster_stacks$worldclim, 
+                                               n_chunks, 
+                                               buffer)
+  
+  if (verbose) cat("filling envirem averages\n")
+  envirem_averages <- average_climate_buffer(climate_in_occurrences, 
+                                             "current", 
+                                             raster_stacks$envirem, 
+                                             n_chunks, 
+                                             buffer)
+
   climate_in_occurrences %>%
-    dplyr::filter_if(is.na, dplyr::all_vars)
-    dplyr::select(tidyselect::starts_with("current")) %>%
-    naniar::gg_miss_upset(nsets = 40)
+    fill_averages(topo_averages) %>%
+    fill_averages(worldclim_averages) %>%
+    fill_averages(envirem_averages)
+}  
+
+average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chunks, buffer, pattern2 = "9999"){
+
+  problematic_grids <- climate_in_occurrences %>%
+    dplyr::select(tidyselect::contains(pattern), wc_grid, tidyselect::contains(pattern2)) %>%
+    dplyr::filter_all(dplyr::any_vars(is.na(.))) %$%
+    wc_grid # %>% 
+    # extract(1:10)
+  
+  raster::xyFromCell(stack, problematic_grids) %>%
+    raster::extract(stack, ., buffer = buffer,
+                    cellnumbers = TRUE, 
+                    fun = mean) %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(wc_grid = problematic_grids)
 }
+
+fill_averages <- function(frame_with_na, averages){
+  
+  cols <- colnames(averages) %>% head(-1)
+  
+  for (i in cols) {
+    for (j in averages$wc_grid) {
+      frame_with_na[frame_with_na$wc_grid == j, i] <- 
+        averages[averages$wc_grid == j, i]
+    }
+  }
+  
+  return(frame_with_na)
+}
+
+  
+
+
+
+
+
+climatic_pca <- function(climatic_variables){
+  climatic_variables %>%
+    dplyr::select(-wc_grid) %>%
+    ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
+}
+
+explore_missing_values <- function(){
+  problematic_grids <- climate_in_occurrences %>%
+    # dplyr::select(tidyselect::starts_with("current")) %>%
+    dplyr::filter_all(dplyr::any_vars(is.na(.))) %$%
+    wc_grid
+  
+  thinned_occurrences[wc_grid %in% problematic_grids] %>%
+    ggplot() +
+    geom_point(aes(x = decimalLongitude, y = decimalLatitude), size = 0.25)
+  
+  system.time({
+    a <- thinned_occurrences[wc_grid %in% problematic_grids] %>%
+      .[1:1, c("decimalLongitude", "decimalLatitude")] %>%
+      raster::extract(worldclim_stack, ., buffer = 5000, cellnumbers = TRUE, fun = mean)
+  })
+  
+  library(data.table)
+  envirem_stack[[1]] %>% plot(col = "black", legend = F)
+  
+  
+  a %>%
+    purrr::map(~.[complete.cases(.), ]) %>% View
+  
+  sample_raster_NA <- function(r, xy){
+    apply(X = xy, MARGIN = 1, 
+          FUN = function(xy) r@data@values[which.min(replace(distanceFromPoints(r, xy), is.na(r), NA))])
+    
+  }
+  
+  
+  
+}
+
+tinker <- function(){
+  library(ggplot2)
+  thinned_occurrences %>% 
+    group_by(wc_grid) %>%
+    slice(1) %>%
+    ggplot() +
+    geom_point(aes(x = decimalLongitude, y = decimalLatitude))
+}
+
+
 
 tinker <- function(){
   library(ggplot2)
