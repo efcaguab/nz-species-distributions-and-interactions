@@ -142,7 +142,7 @@ average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chu
   raster::xyFromCell(stack, problematic_grids) %>%
     raster::extract(stack, ., buffer = buffer,
                     cellnumbers = TRUE, 
-                    fun = mean) %>%
+                    fun = function(x) mean(x, na.rm = TRUE)) %>%
     tibble::as_tibble() %>%
     dplyr::mutate(wc_grid = problematic_grids)
 }
