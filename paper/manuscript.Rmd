@@ -241,7 +241,7 @@ readd(fig_dist_species_multiple_locations)
 ### Species suitability
 
 ```{r}
-loadd(n_occurrences, n_cleaned_occurrences, n_dirty_occurrences, gbif_key_groups, org_ids)
+loadd(n_occurrences, n_cleaned_occurrences, n_dirty_occurrences, gbif_key_groups, org_ids, n_thinned_occurrences, complete_climate_cells, complete_filled_cells_1, complete_filled_cells_2)
 
 get_n_species <- . %>%
   dplyr::inner_join(gbif_key_groups, by = "taxonKey") %>%
@@ -251,12 +251,14 @@ get_n_species <- . %>%
 n_species_with_occurrences <- get_n_species(n_occurrences)
 n_species_with_cleaned_occurrences <- get_n_species(n_cleaned_occurrences) 
 n_species_with_dirty_occurrences <- get_n_species(n_dirty_occurrences)
+percent_thinned <- 1 - sum(n_thinned_occurrences$N) / sum(n_cleaned_occurrences$N)
+percent_filled_round_one <- 1-complete_filled_cells_1[1]/complete_climate_cells[1]
 ```
 
 Our next step was to determine the suitability of the species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
 To do that we first fit a climatic envelope for each  of them which requires information about the climate and habitat at the locations where the species occurrs. 
 We retrieved climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
-These bioclimatic variables were complemented with 16 of bioclimatic and topographic variables available in Envirem [@title_envirem_2018]. 
+These bioclimatic variables were complemented with 18 of bioclimatic and topographic variables available in Envirem [@title_envirem_2018]. 
 This additional set of variables have been shown to be relevant to ecological or physiological processes and as such have the potential to improve species distribition models.
 All climatic data was obtained as rasters composed by cells of 2.5 arc-minutes. 
 This resolution provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
@@ -271,8 +273,18 @@ We then used the R package `CoordinateCleaner` `r as.character(packageVersion('t
 We removed occurrences in which their coordinates (*v*) fell outside the borders of the country in which they were recorded; (*vi*) those arround a the country capital or the centroid of the country and province centroids; (*vii*) those arond a biodiversity institution; and (*viii*) those located within oceans. 
 Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
 
-Some species occurrences are heavily clustered close to each other a location We then removed the spatial autocorrelation bias 
-Because some of the occurrences are clustered close to each other, 
+Next, we overlapped the occurrence and our environmental rasters such that each occurrence location is characterized by a vector with information of our 37 bioclimatic and topographic variables . 
+If a species had more than one occurrence records within one of the cells of the bioclimatic raster we only included one of the occurrence records. 
+We did this to avoid giving more weight to areas with a high number of occurrences, a common scenario in occurrrence records collected opportunistically as the ones we use here. 
+Overall we removed `r scales::percent(percent_thinned)` of the occurrences which resulted in a total of `r round(sum(n_thinned_occurrences$N)/1000000, digits = 1)` million occurrences used in our niche analysis. 
+A common issue of terrestrial bioclimatic datasets is that the boundaries of the cells with information do not exactly match the land mass boundaries. 
+The result of this missmatch is that at least one of the environmental variables was not available for `r format(complete_climate_cells[1], big.mark = ",")` of the raster cells with occurrences (`r scales::percent(complete_climate_cells[1]/sum(complete_climate_cells), accuracy = 0.1)` of the total). 
+As expected a vast majority of these cells were close to the shore. 
+To address this issue, calculated average value of environmental variables within a `r config$climate_buffer/1000`km buffer of the center of the cell where the variable is missing, and used it to approximate the value of the variable in that cell. 
+In this fashion we were able to fill environmental variables for `r scales::percent(percent_filled_round_one, accuracy = 0.1)` of the cells were they were missing. 
+To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but using a `r config$climate_buffer*2/1000`km buffer. 
+We removed from further analyis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables. 
+
 
 
 See topography data from Species distribution model transferability and model grain size – finer may not always be better
