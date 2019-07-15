@@ -169,15 +169,53 @@ fill_averages <- function(frame_with_na, averages){
 count_occurrences_per_organism <- function(x){
   x[, .N, by = org_id]
 }
-
-
-
-
+  
+match_climate_occurrences <- function(){
+  # for testing
+  this_occurrences <- thinned_occurrences %>%
+    dplyr::filter(org_id == "org_00001")
+  
+  climatic_variables <- this_occurrences %>%
+    dplyr::select(wc_grid) %>%
+    dplyr::left_join(climate_in_occurrences, by = "wc_grid")
+}
 
 climatic_pca <- function(climatic_variables){
-  climatic_variables %>%
-    dplyr::select(-wc_grid) %>%
+  sp_clim_occ <- climatic_variables %>%
+    dplyr::filter_all(function(x) !is.na(x)) %>%
+    dplyr::select(-wc_grid) 
+  
+  all_clim <- climate_in_occurrences %>%
+    dplyr::filter_all(function(x) !is.na(x)) %>%
+    dplyr::select(-wc_grid) 
+  
+  pca <- all_clim %>%
     ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
+  
+  proj_occ <- ade4::suprow(pca, sp_clim_occ)
+  
+  grid <- adehabitatMA::ascgen(SpatialPoints(cbind((0:(R))/R, (0:(R)/R))), 
+                               nrcol = R - 2, count = FALSE)
+  
+  a <- ecospat::ecospat.grid.clim.dyn(proj_occ$lisup, proj_occ$lisup, proj_occ$lisup, 100) 
+  a %>%
+    ecospat::ecospat.plot.niche()
+  
+  library(ggplot2)
+  pca$li %>%
+    ggplot(aes(x = Axis1, y = Axis2)) +
+    # geom_point(alpha = 0.05) +
+    # geom_bin2d(aes(fill = stat(ndensity)), bins = 100) +
+    # geom_density_2d(aes(fill = stat(ndensity))) +
+    scale_fill_gradient(low = "white", high = "black") +
+    theme_bw()
+    
+    a <- proj_occ$lisup %>%
+      # sf::st_as_sf()
+      sp::SpatialPoints() %>%
+      adehabitatHR::kernelUD(kern = "bivnorm", grid = grid)
+    
+    raster::raster(a) %>% plot()
 }
 
 explore_missing_values <- function(){
