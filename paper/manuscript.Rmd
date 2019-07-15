@@ -258,8 +258,8 @@ To do that we first fit a climatic envelope for each  of them which requires inf
 We retrieved climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
 These bioclimatic variables were complemented with 16 of bioclimatic and topographic variables available in Envirem [@title_envirem_2018]. 
 This additional set of variables have been shown to be relevant to ecological or physiological processes and as such have the potential to improve species distribition models.
-All climatic data was obtained with a 2.5 arc-minute resolution. 
-This resilution provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
+All climatic data was obtained as rasters composed by cells of 2.5 arc-minutes. 
+This resolution provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
 Furthermore, we obtained habitat data from The Nature Conservation's terrestrial ecoregions of the world [@olson_global_2002].
 
 We retrieved occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
