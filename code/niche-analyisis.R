@@ -124,6 +124,7 @@ fill_missing_values <- function(climate_in_occurrences, raster_stacks, n_chunks,
 
   climate_in_occurrences %>%
     fill_averages(topo_averages) %>%
+    # dplyr::filter(wc_grid %in% problematic_grids) %>% View
     fill_averages(worldclim_averages) %>%
     fill_averages(envirem_averages)
 }  
@@ -164,7 +165,10 @@ fill_averages <- function(frame_with_na, averages){
   return(frame_with_na)
 }
 
-  
+
+count_occurrences_per_organism <- function(x){
+  x[, .N, by = org_id]
+}
 
 
 

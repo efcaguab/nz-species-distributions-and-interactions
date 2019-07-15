@@ -202,13 +202,19 @@ climatic_niche_plan <- drake_plan(
                                                      gbif_key_groups,
                                                      org_ids, 
                                                      get_climate()), 
-  climate_in_occurrences = get_climate_for_occurrences(thinned_occurrences, get_climate()),
+ n_thinned_occurrences = count_occurrences_per_organism(thinned_occurrences),
+ climate_in_occurrences = get_climate_for_occurrences(thinned_occurrences, get_climate()),
   filled_climate_in_occurrences = fill_missing_values(climate_in_occurrences, 
-                                                      get_climate(), 
-                                                      n_chunks,
-                                                      climate_buffer),
-  # good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
-  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
+ filled_climate_in_occurrences_1 = fill_missing_values(climate_in_occurrences, 
+                                                     get_climate(), 
+                                                     n_chunks,
+                                                     climate_buffer),
+ filled_climate_in_occurrences_2 = fill_missing_values(filled_climate_in_occurrences_1, 
+                                                     get_climate(), 
+                                                     n_chunks,
+                                                     climate_buffer*2),
+ # good_qual_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 5), 
+ ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
 # Referencing -------------------------------------------------------------
