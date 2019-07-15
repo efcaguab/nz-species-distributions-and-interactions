@@ -97,25 +97,27 @@ climatic_pca <- function(climatic_variables){
 
 fill_missing_values <- function(climate_in_occurrences, raster_stacks, n_chunks, buffer, verbose = T){
   
+  # subsample for testing
+  # climate_in_occurrences <- climate_in_occurrences %>%
+    # dplyr::sample_n(1000)
   
   if (verbose) cat("filling topographic values\n")
   topo_averages <- average_climate_buffer(climate_in_occurrences, 
-                                          "topo", 
+                                          names(raster_stacks$topo), 
                                           raster_stacks$topo, 
                                           n_chunks, 
-                                          buffer, 
-                                          pattern2 = "tri")
+                                          buffer)
   
   if (verbose) cat("filling worldclim values\n")
   worldclim_averages <- average_climate_buffer(climate_in_occurrences, 
-                                               "wc", 
+                                               names(raster_stacks$worldclim), 
                                                raster_stacks$worldclim, 
                                                n_chunks, 
                                                buffer)
   
   if (verbose) cat("filling envirem averages\n")
   envirem_averages <- average_climate_buffer(climate_in_occurrences, 
-                                             "current", 
+                                             names(raster_stacks$envirem), 
                                              raster_stacks$envirem, 
                                              n_chunks, 
                                              buffer)
@@ -126,10 +128,10 @@ fill_missing_values <- function(climate_in_occurrences, raster_stacks, n_chunks,
     fill_averages(envirem_averages)
 }  
 
-average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chunks, buffer, pattern2 = "9999"){
+average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chunks, buffer){
 
   problematic_grids <- climate_in_occurrences %>%
-    dplyr::select(tidyselect::contains(pattern), wc_grid, tidyselect::contains(pattern2)) %>%
+    dplyr::select(tidyselect::one_of(pattern), wc_grid) %>%
     dplyr::filter_all(dplyr::any_vars(is.na(.))) %$%
     wc_grid # %>% 
     # extract(1:10)
