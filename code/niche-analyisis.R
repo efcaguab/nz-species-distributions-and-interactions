@@ -14,8 +14,8 @@ thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, o
     rbindlist()
 }
 
-get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids){
-  gbif_key_groups %>%
+get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids, clean_interactions){
+  orgs_in_gbif <- gbif_key_groups %>%
     dplyr::full_join(gbif_keys, by = c("taxonKey"= "key")) %>%
     dplyr::full_join(species_ids, by = c("queried_sp_name" = "sp_name")) %>% 
     dplyr::distinct(sp_id, key_id) %>%
@@ -28,6 +28,26 @@ get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids){
     tibble::as_tibble() %>%
     dplyr::mutate(org_id = stringr::str_pad(org_id, 5, pad = "0"), 
                   org_id = paste("org", org_id, sep = "_"))
+  
+  used_org_ids <- orgs_in_gbif %>%
+      dplyr::distinct(org_id) %>%
+      tidyr::separate(org_id, c(NA, "org_number"), sep = "_") %>%
+      dplyr::mutate(org_number = as.numeric(org_number)) %$%
+      org_number %>% 
+      max
+  
+  other_orgs <- clean_interactions %>%
+      tidyr::gather(key = "guild", 
+                    value = "sp_id", 
+                    pla_id, ani_id) %>%
+      dplyr::filter(! sp_id %in% orgs_in_gbif$sp_key_id) %>%
+      dplyr::distinct(sp_id) %>%
+      dplyr::mutate(org_id = 1:dplyr::n() + used_org_ids,
+                    org_id = stringr::str_pad(org_id, 5, pad = "0"), 
+                    org_id = paste("org", org_id, sep = "_")) %>%
+      dplyr::rename(sp_key_id = sp_id)
+  
+  dplyr:::bind_rows(orgs_in_gbif, other_orgs) 
 }
 
 thin_occurrences <- function(this_sp_occurrences, worldclim_stack){

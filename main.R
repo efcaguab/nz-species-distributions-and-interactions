@@ -197,7 +197,7 @@ download_ocurrence_data_plan <- drake_plan(
 # Clean ocurrence data -----------------------------------------------------
 
 climatic_niche_plan <- drake_plan(
- org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids),
+ org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids, clean_interactions),
   thinned_occurrences = thin_occurrences_per_species(cleaned_occurrences, 
                                                      gbif_key_groups,
                                                      org_ids, 
