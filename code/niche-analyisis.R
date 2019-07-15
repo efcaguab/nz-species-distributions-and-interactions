@@ -136,6 +136,9 @@ average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chu
     wc_grid # %>% 
     # extract(1:10)
   
+  # if there are no NA values just don't return anything
+  if (length(problematic_grids) == 0) return(NULL)
+  
   raster::xyFromCell(stack, problematic_grids) %>%
     raster::extract(stack, ., buffer = buffer,
                     cellnumbers = TRUE, 
@@ -145,6 +148,9 @@ average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chu
 }
 
 fill_averages <- function(frame_with_na, averages){
+  
+  # If there are no averages return the same thing we got
+  if (is.null(averages)) return(frame_with_na)
   
   cols <- colnames(averages) %>% head(-1)
   
