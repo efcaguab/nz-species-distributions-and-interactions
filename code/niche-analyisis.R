@@ -225,14 +225,14 @@ calc_suitability_independently_all <- function(thinned_occurrences, interactions
   
   thinned_occurrences$org_id %>%
     unique() %>%
-    purrr::map_df(calc_suitability_independently, 
+    purrr::map_df(calc_suitability, 
                   thinned_occurrences, interactions_org, 
                   filled_climate_occ, filled_climate_net, grid_networks, R)
 }
 
-calc_suitability_independently <- function(
+calc_suitability <- function(
   this_sp, thinned_occurrences, interactions_org, 
-  filled_climate_occ, filled_climate_net, grid_networks, R, verbose = T){
+  filled_climate_occ, filled_climate_net, grid_networks, R, niche_space = NULL, verbose = T){
   
   if(verbose) cat("Calculating suitability for", this_sp, "\n")
   
@@ -257,7 +257,9 @@ calc_suitability_independently <- function(
     dplyr::filter(loc_id %in% this_net_locations) %>%
     get_climate_cells(filled_climate_net)
   
-  niche_space <- calc_niche_space(sp_locations_climate)
+  if(is.null(niche_space)){
+    niche_space <- calc_niche_space(sp_locations_climate)
+  }
   
   sp_niche <- project_locations_climate_to_space(sp_locations_climate, 
                                                  niche_space) %>%
@@ -296,3 +298,20 @@ calc_niche_space <- function(background_climate){
     dplyr::select(-wc_grid) %>%
     ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
 }
+
+calc_suitability_collectivelly_all <- function(thinned_occurrences, interactions_org, 
+                                               filled_climate_occ, filled_climate_net,grid_networks, R){
+  suppressPackageStartupMessages({
+    require(data.table)
+  })
+  
+  niche_space <- calc_niche_space(filled_climate_occ)
+  
+  thinned_occurrences$org_id %>%
+    unique() %>%
+    purrr::map_df(calc_suitability, 
+                  thinned_occurrences, interactions_org, 
+                  filled_climate_occ, filled_climate_net, grid_networks, R, 
+                  niche_space)
+}
+

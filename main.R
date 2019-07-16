@@ -237,6 +237,12 @@ climatic_niche_plan <- drake_plan(
    filled_climate_in_occurrences_2, 
    filled_climate_in_networks_2, grid_networks, 
    R = 200),
+ collective_suitability = calc_suitability_collectivelly_all(
+   enough_occurrences, 
+   interactions_org, 
+   filled_climate_in_occurrences_2, 
+   filled_climate_in_networks_2, grid_networks, 
+   R = 200),
  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
