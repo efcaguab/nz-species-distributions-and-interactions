@@ -116,7 +116,8 @@ merge_interaction_data_plan <- drake_plan(
     manual_name_corrections, 
     synonyms_db, 
     file_in(prev_sp_name_assessments_path)), 
-  problematic_networks = detect_problematic_networks(checked_sp_names, spp_no_subspecies), 
+  problematic_networks = detect_problematic_networks(checked_sp_names, 
+                                                     spp_no_subspecies), 
   species_ids = get_final_name_list(spp_no_subspecies, checked_sp_names, 
                                     manual_name_corrections, 
                                     checked_manual_corrections),
@@ -124,7 +125,10 @@ merge_interaction_data_plan <- drake_plan(
   recoded_interactions = recode_interactions(species_ids, int),
   clean_interactions = remove_problematic_networks(recoded_interactions,
                                                    problematic_networks), 
-  int_metadata = merge_metadata(wol_data)
+  manual_net_locations = readr::read_csv(
+    file_in("data/manual_net_locations.csv"), 
+    col_types = "cdd"), 
+  int_metadata = merge_metadata(wol_data, manual_net_locations)
 )
 
 pre_process_int_plan <- rbind(

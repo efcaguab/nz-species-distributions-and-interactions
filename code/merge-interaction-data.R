@@ -30,8 +30,13 @@ merge_int <- function(wol_int){
   wol_int
 }
 
-merge_metadata <- function(wol_data){
-  wol_data$metadata
+merge_metadata <- function(wol_data, manual_net_locations){
+  wol_data$metadata %>%
+    # if there is a manual coordinate available, replace it
+    dplyr::left_join(manual_net_locations, by = "net_name") %>% 
+    dplyr::mutate(lat = dplyr::if_else(is.na(lat.y), lat.x, lat.y), 
+                  lon = dplyr::if_else(is.na(lon.y), lon.x, lon.y)) %>% 
+    dplyr::select(-tidyselect::contains(".x"), -tidyselect::contains(".y"))
 }
 
 downgrade_subspecies <- function(spp){
