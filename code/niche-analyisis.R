@@ -189,104 +189,103 @@ fill_averages <- function(frame_with_na, averages){
 count_occurrences_per_organism <- function(x){
   x[, .N, by = org_id]
 }
-  
-match_climate_occurrences <- function(){
-  # for testing
-  this_occurrences <- thinned_occurrences %>%
-    dplyr::filter(org_id == "org_00001")
-  
-  climatic_variables <- this_occurrences %>%
-    dplyr::select(wc_grid) %>%
-    dplyr::left_join(climate_in_occurrences, by = "wc_grid")
+
+interactions_as_org_id <- function(clean_interactions, org_ids){
+  clean_interactions %>%
+    dplyr::left_join(org_ids, by = c("pla_id" = "sp_key_id")) %>% 
+    dplyr::left_join(org_ids, by = c("ani_id" = "sp_key_id")) %>%
+    dplyr::select(loc_id, pla_id = org_id.x, ani_id = org_id.y)
 }
 
-climatic_pca <- function(climatic_variables){
-  sp_clim_occ <- climatic_variables %>%
-    dplyr::filter_all(function(x) !is.na(x)) %>%
-    dplyr::select(-wc_grid) 
-  
-  all_clim <- climate_in_occurrences %>%
-    dplyr::filter_all(function(x) !is.na(x)) %>%
-    dplyr::select(-wc_grid) 
-  
-  pca <- all_clim %>%
-    ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
-  
-  proj_occ <- ade4::suprow(pca, sp_clim_occ)
-  
-  grid <- adehabitatMA::ascgen(SpatialPoints(cbind((0:(R))/R, (0:(R)/R))), 
-                               nrcol = R - 2, count = FALSE)
-  
-  a <- ecospat::ecospat.grid.clim.dyn(proj_occ$lisup, proj_occ$lisup, proj_occ$lisup, 100) 
-  a %>%
-    ecospat::ecospat.plot.niche()
-  
-  library(ggplot2)
-  pca$li %>%
-    ggplot(aes(x = Axis1, y = Axis2)) +
-    # geom_point(alpha = 0.05) +
-    # geom_bin2d(aes(fill = stat(ndensity)), bins = 100) +
-    # geom_density_2d(aes(fill = stat(ndensity))) +
-    scale_fill_gradient(low = "white", high = "black") +
-    theme_bw()
-    
-    a <- proj_occ$lisup %>%
-      # sf::st_as_sf()
-      sp::SpatialPoints() %>%
-      adehabitatHR::kernelUD(kern = "bivnorm", grid = grid)
-    
-    raster::raster(a) %>% plot()
-}
-
-explore_missing_values <- function(){
-  problematic_grids <- climate_in_occurrences %>%
-    # dplyr::select(tidyselect::starts_with("current")) %>%
-    dplyr::filter_all(dplyr::any_vars(is.na(.))) %$%
-    wc_grid
-  
-  thinned_occurrences[wc_grid %in% problematic_grids] %>%
-    ggplot() +
-    geom_point(aes(x = decimalLongitude, y = decimalLatitude), size = 0.25)
-  
-  system.time({
-    a <- thinned_occurrences[wc_grid %in% problematic_grids] %>%
-      .[1:1, c("decimalLongitude", "decimalLatitude")] %>%
-      raster::extract(worldclim_stack, ., buffer = 5000, cellnumbers = TRUE, fun = mean)
+get_grid_networks <- function(int_metadata, stacks){
+  suppressPackageStartupMessages({
+    require(data.table)
   })
   
-  library(data.table)
-  envirem_stack[[1]] %>% plot(col = "black", legend = F)
+  int_metadata %>%
+    dplyr::group_by(loc_id) %>% 
+    dplyr::summarise(decimalLongitude = mean(lon), 
+                     decimalLatitude = mean(lat)) %>%
+    dplyr::filter(!is.na(decimalLatitude), !is.na(decimalLongitude)) %>%
+    as.data.table() %>%
+    add_stack_grid(stacks$worldclim, "wc_grid") 
+}
+
+get_climate_cells <- function(locations, filled_climate){
+  locations %>%
+    dplyr::select(wc_grid) %>%
+    dplyr::left_join(filled_climate, by = "wc_grid")
+}
+
+calc_suitability_independently_all <- function(thinned_occurrences, interactions_org, 
+                                               filled_climate_occ, filled_climate_net,grid_networks, R = 100){
+  suppressPackageStartupMessages({
+    require(data.table)
+  })
   
+  thinned_occurrences$org_id %>%
+    unique() %>%
+    purrr::map_df(calc_suitability_independently, 
+                  thinned_occurrences, interactions_org, 
+                  filled_climate_occ, filled_climate_net, grid_networks, R = 200)
+}
+
+calc_suitability_independently <- function(
+  this_sp, thinned_occurrences, interactions_org, 
+  filled_climate_occ, filled_climate_net, grid_networks, R, verbose = T){
   
-  a %>%
-    purrr::map(~.[complete.cases(.), ]) %>% View
+  if(verbose) cat("Calculating suitability for", this_sp, "\n")
   
-  sample_raster_NA <- function(r, xy){
-    apply(X = xy, MARGIN = 1, 
-          FUN = function(xy) r@data@values[which.min(replace(distanceFromPoints(r, xy), is.na(r), NA))])
-    
+  this_occurrences <- thinned_occurrences[org_id == this_sp]
+  
+  this_net_locations <- interactions_org %>%
+    tidyr::gather("guild", "org_id", pla_id, ani_id) %>%
+    dplyr::filter(org_id == this_sp) %$%
+    unique(loc_id)
+  
+  sp_locations_climate <- this_occurrences %>%
+    get_climate_cells(filled_climate_occ) 
+  
+  net_locations_climate <- grid_networks %>%
+    dplyr::filter(loc_id %in% this_net_locations) %>%
+    get_climate_cells(filled_climate_net)
+  
+  niche_space <- calc_niche_space(sp_locations_climate)
+  
+  sp_niche <- project_locations_climate_to_space(sp_locations_climate, 
+                                                 niche_space) %>%
+    smooth_realised_niche(R)
+  
+  net_niche_space <- project_locations_climate_to_space(net_locations_climate, 
+                                                        niche_space)$lisup
+  
+  suitabiliy <- raster::cellFromXY(sp_niche$z, net_niche_space) %>%
+    raster::extract(sp_niche$z, .) 
+  w <- raster::cellFromXY(sp_niche$w, net_niche_space) %>%
+    raster::extract(sp_niche$w, .) 
+  
+  tibble::tibble(org_id = this_sp, 
+                 loc_id = this_net_locations, 
+                 suitability = suitabiliy, 
+                 w = w)
   }
-  
-  
-  
+
+project_locations_climate_to_space <- function(sp_locations_climate, niche_space){
+  sp_locations_climate %>%
+    dplyr::filter_all(function(x) !is.na(x)) %>%
+    dplyr::select(-wc_grid) %>%
+    ade4::suprow(niche_space, .) 
 }
 
-tinker <- function(){
-  library(ggplot2)
-  thinned_occurrences %>% 
-    group_by(wc_grid) %>%
-    slice(1) %>%
-    ggplot() +
-    geom_point(aes(x = decimalLongitude, y = decimalLatitude))
+smooth_realised_niche <- function(projection, R){
+  projection %$%
+    ecospat::ecospat.grid.clim.dyn(lisup, lisup, lisup, R) %$%
+    list(z = z.uncor, w = w)
 }
 
-
-
-tinker <- function(){
-  library(ggplot2)
-  thinned_occurrences %>% 
-    group_by(wc_grid) %>%
-    slice(1) %>%
-    ggplot() +
-    geom_point(aes(x = decimalLongitude, y = decimalLatitude))
+calc_niche_space <- function(background_climate){
+  background_climate %>%
+    dplyr::filter_all(function(x) !is.na(x)) %>%
+    dplyr::select(-wc_grid) %>%
+    ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
 }
