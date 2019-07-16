@@ -218,7 +218,7 @@ get_climate_cells <- function(locations, filled_climate){
 }
 
 calc_suitability_independently_all <- function(thinned_occurrences, interactions_org, 
-                                               filled_climate_occ, filled_climate_net,grid_networks, R = 100){
+                                               filled_climate_occ, filled_climate_net,grid_networks, R){
   suppressPackageStartupMessages({
     require(data.table)
   })
@@ -227,7 +227,7 @@ calc_suitability_independently_all <- function(thinned_occurrences, interactions
     unique() %>%
     purrr::map_df(calc_suitability_independently, 
                   thinned_occurrences, interactions_org, 
-                  filled_climate_occ, filled_climate_net, grid_networks, R = 200)
+                  filled_climate_occ, filled_climate_net, grid_networks, R)
 }
 
 calc_suitability_independently <- function(
@@ -242,6 +242,13 @@ calc_suitability_independently <- function(
     tidyr::gather("guild", "org_id", pla_id, ani_id) %>%
     dplyr::filter(org_id == this_sp) %$%
     unique(loc_id)
+  
+  if(length(this_net_locations) == 0) {
+    return(tibble::tibble(org_id = character(), 
+                          loc_id = character(), 
+                          suitability = double(), 
+                          w = double()))
+  }
   
   sp_locations_climate <- this_occurrences %>%
     get_climate_cells(filled_climate_occ) 
