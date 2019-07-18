@@ -1,3 +1,27 @@
+get_occurrences_from_networks <- function(org_ids, interactions_org, gbif_key_groups, int_metadata){
+  interactions_org %>%
+    tidyr::gather(key = "guild", 
+                  value = "org_id", 
+                  ani_id, pla_id) %>%
+    dplyr::distinct(loc_id, org_id) %>%
+    dplyr::inner_join(org_ids, by = "org_id") %>%
+    dplyr::filter(stringr::str_detect(sp_key_id, "key")) %>%
+    dplyr::rename(key_id = sp_key_id) %>%
+    dplyr::inner_join(gbif_key_groups, by = "key_id") %>%
+    # dplyr::distinct(loc_id, taxonKey) %>%
+    dplyr::inner_join(int_metadata, by = "loc_id") %>%
+    dplyr::select(taxonKey, decimalLatitude = lat, decimalLongitude = lon) %>%
+    dplyr::distinct()
+}
+
+merge_gbif_and_network_occurrences <- function(cleaned_occurrences, net_occurrences) {
+  suppressPackageStartupMessages({
+    library(data.table)
+  })
+  rbind(as.data.table(cleaned_occurrences), as.data.table(net_occurrences), 
+        fill = TRUE)
+}
+
 thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, org_ids, stacks){
   suppressPackageStartupMessages({
     library(data.table)

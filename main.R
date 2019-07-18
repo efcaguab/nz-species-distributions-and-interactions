@@ -203,7 +203,14 @@ download_ocurrence_data_plan <- drake_plan(
 climatic_niche_plan <- drake_plan(
  org_ids = get_organisms_ids(gbif_key_groups, gbif_keys, species_ids, clean_interactions),
  interactions_org = interactions_as_org_id(clean_interactions, org_ids),
- thinned_occurrences = thin_occurrences_per_species(cleaned_occurrences, 
+ net_occurrences = get_occurrences_from_networks(org_ids, interactions_org, 
+                                                 gbif_key_groups,
+                                                 int_metadata),
+ net_plus_gbif_occurrences = merge_gbif_and_network_occurrences(
+   cleaned_occurrences, 
+   net_occurrences
+ ),
+ thinned_occurrences = thin_occurrences_per_species(net_plus_gbif_occurrences, 
                                                     gbif_key_groups,
                                                     org_ids, 
                                                     get_climate()), 
