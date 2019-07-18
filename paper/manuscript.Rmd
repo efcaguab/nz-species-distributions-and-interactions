@@ -272,6 +272,7 @@ The occurrences obtained contain observations of mixed quality, so we applied a 
 We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
 We removed occurrences in which their coordinates (*v*) fell outside the borders of the country in which they were recorded; (*vi*) those arround a the country capital or the centroid of the country and province centroids; (*vii*) those arond a biodiversity institution; and (*viii*) those located within oceans. 
 Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
+We added the occurrences from our plant-pollinator networks to the cleaned occurrences retrieved from GBIF.
 
 Next, we overlapped the occurrence and our environmental rasters such that each occurrence location is characterized by a vector with information of our 37 bioclimatic and topographic variables . 
 If a species had more than one occurrence records within one of the cells of the bioclimatic raster we only included one of the occurrence records. 
