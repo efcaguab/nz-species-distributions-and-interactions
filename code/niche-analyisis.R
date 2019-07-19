@@ -95,7 +95,7 @@ add_stack_grid <- function(this_sp_occurrences, stack, colname){
 
 remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences = 5){
   thinned_occurrences[, n := .N, by = org_id][] %>%
-    .[n >= 5] %>%
+    .[n >= min_occurrences] %>%
     .[, n := NULL]
 }
 
