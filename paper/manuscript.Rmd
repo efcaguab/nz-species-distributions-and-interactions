@@ -284,6 +284,24 @@ As expected a vast majority of these cells were close to the shore.
 To address this issue, calculated average value of environmental variables within a `r config$climate_buffer/1000`km buffer of the center of the cell where the variable is missing, and used it to approximate the value of the variable in that cell. 
 In this fashion we were able to fill environmental variables for `r scales::percent(percent_filled_round_one, accuracy = 0.1)` of the cells were they were missing. 
 To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but using a `r config$climate_buffer*2/1000`km buffer. 
+
+Our main objective is to investigate wether the suitability of the environment was to obtain the suitability of the environment at the locations for which we have community data. 
+This involves two steps. 
+First, we determine the species' grinellian niche, the range of environmental conditions that are suitable for a positive growth rate. 
+We assume that the suitability of a particular set of environmental conditions (a point in the environmental space) can be inferred from the density of occurrences under these conditions. 
+This is, areas of the niche that have a higher density of occurrences have higher suitability and can be interpreted as the core of the species distribution in environental space. 
+Contrastingly, areas with a lower density are comparatively less suitable and represent the fringes of the species distribution. 
+The second step is to determine the location of our plant-pollinator communities (where the species is present) in the environmental space and calculate its corresponding environmental suitability.
+
+To determine the environmental niche of each species we use a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
+Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of 0 and a unit standard deviation. 
+We use the first two components to define the environmental space. 
+We then  The use of a kernel smoother makes the process of moving from geographical space to multivariate environmental space independent of both sam- pling effort and arbitrary choice of resolution in environmental space
+
+
+
+
+
 We removed from further analyis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables. 
 
 
