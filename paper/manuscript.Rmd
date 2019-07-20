@@ -293,10 +293,14 @@ This is, areas of the niche that have a higher density of occurrences have highe
 Contrastingly, areas with a lower density are comparatively less suitable and represent the fringes of the species distribution. 
 The second step is to determine the location of our plant-pollinator communities (where the species is present) in the environmental space and calculate its corresponding environmental suitability.
 
-To determine the environmental niche of each species we use a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
+To determine the environmental space of each species we use the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
 Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of 0 and a unit standard deviation. 
-We use the first two components to define the environmental space. 
-We then  The use of a kernel smoother makes the process of moving from geographical space to multivariate environmental space independent of both sam- pling effort and arbitrary choice of resolution in environmental space
+We then estimate a kernel density function to determine a smooth density of occurrences in the environmenta space. 
+The main advantage of using a kernel smoother is that it reduces the sensitivity of the niche to sampling effort and the resolution chosen for the environmental space grid [@broennimann_measuring_2012]. 
+To calculate the kernel we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@ecospat_citation] with a grid resolution of 200.
+We normalise the occurrence density such that our suitability ranges beetween 1 for the grids with environmental conditions in which the species was most commonly observed and 0 for the grids in which it was never observed.  
+We then determine the location in environmental space of the plant-pollinator communities where the species is present using the function `suprow` from `ade4` and calculate its corresponding suitability using the R package `raster` `r as.character(packageVersion('raster'))` [@raster_citation].
+
 
 
 
