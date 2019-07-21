@@ -9,6 +9,8 @@ envirem_topo_address: https://deepblue.lib.umich.edu/data/downloads/37720c880?lo
 envirem_address: https://deepblue.lib.umich.edu/data/downloads/ms35t870p?locale=en
 n_chunks: 100
 climate_buffer: 5000
+n_subsamples: 1000
+env_space_resolution: 200
 gbif_download_key:
 - 0004918-190621201848488
 - 0004916-190621201848488

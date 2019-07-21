@@ -36,7 +36,9 @@ configuration_plan <- drake_plan(
   biblio_download_date = config$bibliography_retrieved, 
   prev_occ_download_keys = config$gbif_download_key,
   n_chunks = config$n_chunks, 
-  climate_buffer = config$climate_buffer
+  climate_buffer = config$climate_buffer, 
+  env_space_resolution = config$env_space_resolution,
+  n_subsamples = config$n_subsamples
 )
 
 # Download data ----------------------------------------------------------
@@ -245,9 +247,9 @@ climatic_niche_plan <- drake_plan(
                                             interactions_org, 
                                             filled_climate_in_occurrences_2, 
                                             filled_climate_in_networks_2, grid_networks, 
-                                            R = 200, 
+                                            R = env_space_resolution, 
                                             sensitivity_species_ids[1], 
-                                            n = 1000),
+                                            n = n_subsamples),
  error_subsamples = calc_error_subsamples(suitability_subsamples),
  min_occurrences_factor = determine_min_occurrences(error_subsamples),
  enough_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences_factor),
@@ -256,13 +258,13 @@ climatic_niche_plan <- drake_plan(
    interactions_org, 
    filled_climate_in_occurrences_2, 
    filled_climate_in_networks_2, grid_networks, 
-   R = 200),
+   R = env_space_resolution),
  collective_suitability = calc_suitability_collectivelly_all(
-   enough_occurrences, 
-   interactions_org, 
-   filled_climate_in_occurrences_2, 
-   filled_climate_in_networks_2, grid_networks, 
-   R = 200),
+   enough_occurrences,
+   interactions_org,
+   filled_climate_in_occurrences_2,
+   filled_climate_in_networks_2, grid_networks,
+   R = env_space_resolution),
  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
