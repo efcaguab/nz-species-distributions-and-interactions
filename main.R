@@ -38,7 +38,8 @@ configuration_plan <- drake_plan(
   n_chunks = config$n_chunks, 
   climate_buffer = config$climate_buffer, 
   env_space_resolution = config$env_space_resolution,
-  n_subsamples = config$n_subsamples
+  n_subsamples = config$n_subsamples, 
+  min_suitability_error = config$min_suitability_error
 )
 
 # Download data ----------------------------------------------------------
@@ -251,7 +252,7 @@ climatic_niche_plan <- drake_plan(
                                             sensitivity_species_ids[1], 
                                             n = n_subsamples),
  error_subsamples = calc_error_subsamples(suitability_subsamples),
- min_occurrences_factor = determine_min_occurrences(error_subsamples),
+ min_occurrences_factor = determine_min_occurrences(error_subsamples, min_suitability_error),
  enough_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences_factor),
  independent_suitability = calc_suitability_independently_all(
    enough_occurrences, 

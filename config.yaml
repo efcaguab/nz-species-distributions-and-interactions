@@ -11,6 +11,7 @@ n_chunks: 100
 climate_buffer: 5000
 n_subsamples: 1000
 env_space_resolution: 200
+min_suitability_error: 0.1
 gbif_download_key:
 - 0004918-190621201848488
 - 0004916-190621201848488

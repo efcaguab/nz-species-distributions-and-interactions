@@ -91,7 +91,7 @@ mae <- function(x, y){
   sum(abs(x - y)) / length(x)
 }
 
-determine_min_occurrences <- function(error_subsamples){
+determine_min_occurrences <- function(error_subsamples, min_suitability_error){
   error_subsamples %>%
     dplyr::filter(niche_space == "single_species") %>%
     dplyr::mutate(prop_occ = n_occ/n_net_occurrences) %>%
@@ -102,7 +102,7 @@ determine_min_occurrences <- function(error_subsamples){
                                          max(error_subsamples$n_occ)/
                                            error_subsamples$n_net_occurrences[1],
                                          1000))) %$%
-    approx(x = .fitted, y = prop_occ, 0.1) %$%
+    approx(x = .fitted, y = prop_occ, min_suitability_error) %$%
     round_any(y, 5, ceiling)
 }
 
