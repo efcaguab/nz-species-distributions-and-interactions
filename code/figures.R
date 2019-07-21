@@ -101,16 +101,35 @@ get_dist_species_multiple_locations_data <- function(clean_interactions, checked
 }
 
 plot_sensitivity_analysis <- function(error_subsamples){
-  error_subsamples %>%
+  suppressPackageStartupMessages({
+    library(ggplot2)
+  })
+  
+  pal <- cgm()$pal_el_green[c(4,7)]
+  
+  p <- error_subsamples %>%
     dplyr::mutate(error = mae) %>%
-  ggplot(aes(x = n_occ/2, y = error, colour = niche_space, fill = niche_space)) +
-    geom_point(shape = 21, alpha = 0.1, colour = "black") +
+    ggplot(aes(x = n_occ/2, y = error, fill = niche_space)) +
+    geom_point(shape = 21, alpha = 1, size = 1) +
     geom_hline(yintercept = 0.1, size = 0.25, linetype = 2) +
     # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
-    geom_smooth(method = "gam" , method.args = list(family = "binomial"), 
+    geom_smooth(aes(colour = niche_space), method = "gam" , method.args = list(family = "binomial"), 
                 formula = y ~ s(x), se = F) +
     geom_vline(xintercept = 14, size = 0.25, linetype = 3) +
     # scale_x_continuous(limits = c(2,35)) +
     scale_x_log10() +
-    pub_theme()
+    scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
+                      labels = c("shared", "per species")) +
+    pub_theme() +
+    theme(legend.position = c(0.95,0.95), 
+          legend.justification = c(1,1), 
+          legend.title = element_blank()) +
+    labs(x = "occurrence to # communities ratio", 
+         y = "mean absolute error",
+         title = "number of species at multiple locations", 
+         subtitle = "frequency distribution")
+  
+  # ggsave("plot.pdf", p,  width = unit(width("single"), "in"), height = unit(2.2, "in"))
+  
+  p
 }
