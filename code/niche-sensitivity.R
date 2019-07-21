@@ -60,7 +60,7 @@ unique_rounded_logspace <- function(x, y, n){
   l
 }
 
-mse_subsamples <- function(suitability_subsamples){
+calc_error_subsamples <- function(suitability_subsamples){
   baseline <- 
     suitability_subsamples %>%
     dplyr::filter(n_occ == max(n_occ)) %>%
@@ -68,31 +68,19 @@ mse_subsamples <- function(suitability_subsamples){
     dplyr::select(-n_occ)
     # split(.$niche_space) %>%
 
-  suitability_subsamples %>%
-    ggplot(aes(x = n_occ, y = suitability, colour = niche_space, shape = loc_id)) +
-    # geom_line() +
-    # geom_point() +
-    geom_smooth(se = T) +
-    scale_x_log10()
+  # suitability_subsamples %>%
+  #   ggplot(aes(x = n_occ, y = suitability, colour = niche_space, shape = loc_id)) +
+  #   # geom_line() +
+  #   # geom_point() +
+  #   geom_smooth(se = T) +
+  #   scale_x_log10()
   
   dplyr::inner_join(suitability_subsamples, baseline) %>%
     dplyr::mutate(run = rep(seq(1, nrow(.)/2), each = 2)) %>%
-    dplyr::group_by(niche_space, n_occ, run) %>%
+    dplyr::group_by(niche_space, n_occ, run, n_net_occurrences) %>%
     dplyr::summarise(mse = mse(suitability, base_suitability), 
                      mse_logis = mse(qlogis(suitability), qlogis(base_suitability)), 
-                     mae = mae(suitability, base_suitability)) %>%
-    dplyr::rename(error = mae) %>%
-    ggplot(aes(x = n_occ/2, y = error, colour = niche_space, fill = niche_space)) +
-    geom_point(shape = 21, alpha = 0.1, colour = "black") +
-    geom_hline(yintercept = 0.1, size = 0.25, linetype = 2) +
-    # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
-    geom_smooth(method = "gam" , method.args = list(family = "binomial"), 
-                formula = y ~ splines::bs(x, 4), se = F) +
-    geom_vline(xintercept = 14, size = 0.25, linetype = 3) +
-    # scale_x_continuous(limits = c(2,35)) +
-    scale_x_log10() +
-    pub_theme()
-  
+                     mae = mae(suitability, base_suitability)) 
 }
 
 mse <- function(x, y){

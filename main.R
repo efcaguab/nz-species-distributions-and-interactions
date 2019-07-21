@@ -245,7 +245,7 @@ climatic_niche_plan <- drake_plan(
                                             R = 200, 
                                             sensitivity_species_ids[1], 
                                             n = 1000),
- enough_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences = 6),
+ error_subsamples = calc_error_subsamples(suitability_subsamples),
  independent_suitability = calc_suitability_independently_all(
    enough_occurrences, 
    interactions_org, 
