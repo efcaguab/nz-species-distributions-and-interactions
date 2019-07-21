@@ -344,3 +344,17 @@ remove_problematic_networks <- function(recoded_interactions, problematic_networ
   recoded_interactions %>%
     dplyr::filter(!loc_id %in% problematic_networks)
 }
+
+get_sp_name <- function(this_org_id, org_ids, gbif_key_groups, gbif_keys, species_ids) {
+  o <- org_ids %>%
+    dplyr::filter(org_id %in% this_org_id)
+  
+  from_gbif <- o %>% 
+    dplyr::inner_join(gbif_key_groups, by = c("sp_key_id" = "key_id")) %>% 
+    dplyr::inner_join(gbif_keys, by = c("taxonKey" = "key"))
+  
+  from_other_sources <- o %>%
+    dplyr::inner_join(species_ids, by = c("sp_key_id" = "sp_id"))
+  
+  dplyr::full_join(from_gbif, from_other_sources, by = "org_id")
+}
