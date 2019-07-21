@@ -44,7 +44,8 @@ niche_sensitivity <- function(thinned_occurrences, interactions_org,
                                  n_occ = nrow(.))) %>%
     dplyr::mutate(niche_space = "all_species")
   
-  dplyr::bind_rows(independent, collective)
+  dplyr::bind_rows(independent, collective) %>%
+    dplyr::mutate(n_net_occurrences = nrow(this_net_occurrences))
 }
 
 logspace <- function(x, y, n) exp(seq(log(x), log(y), length.out = n))
