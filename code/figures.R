@@ -99,3 +99,18 @@ get_dist_species_multiple_locations_data <- function(clean_interactions, checked
                      by = c("guild", "n_locations", "n_species", "sp_id")) 
   
 }
+
+plot_sensitivity_analysis <- function(error_subsamples){
+  error_subsamples %>%
+    dplyr::mutate(error = mae) %>%
+  ggplot(aes(x = n_occ/2, y = error, colour = niche_space, fill = niche_space)) +
+    geom_point(shape = 21, alpha = 0.1, colour = "black") +
+    geom_hline(yintercept = 0.1, size = 0.25, linetype = 2) +
+    # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
+    geom_smooth(method = "gam" , method.args = list(family = "binomial"), 
+                formula = y ~ s(x), se = F) +
+    geom_vline(xintercept = 14, size = 0.25, linetype = 3) +
+    # scale_x_continuous(limits = c(2,35)) +
+    scale_x_log10() +
+    pub_theme()
+}
