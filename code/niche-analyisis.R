@@ -123,10 +123,17 @@ add_stack_grid <- function(this_sp_occurrences, stack, colname){
 }
 
 # Remove species (org_id) with less occurrences than min_occurrences
-remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences = 5){
+remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences_factor){
+  suppressPackageStartupMessages({
+    library(data.table)
+  })
+  net_occ_per_sp <- thinned_occurrences[is.na(countryCode)] %>%
+    .[, .(n_net = .N), by = org_id] %>%
+    .[]
+  
   thinned_occurrences[, n := .N, by = org_id][] %>%
-    .[n >= min_occurrences] %>%
-    .[, n := NULL]
+    merge(., net_occ_per_sp, by = "org_id") %>%
+    .[n/n_net >= min_occurrences_factor]
 }
 
 # Function to read ecoregions from a zipped shapefile path and return as Spatial
