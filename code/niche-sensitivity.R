@@ -90,3 +90,21 @@ mse <- function(x, y){
 mae <- function(x, y){
   sum(abs(x - y)) / length(x)
 }
+
+determine_min_occurrences <- function(error_subsamples){
+  error_subsamples %>%
+    dplyr::filter(niche_space == "single_species") %>%
+    dplyr::mutate(prop_occ = n_occ/n_net_occurrences) %>%
+    mgcv::gam(mae ~ log(prop_occ), data = . , family = "binomial") %>% 
+    broom::augment(type.predict = "response", 
+                   newdata = tibble::tibble(
+                     prop_occ = logspace(1, 
+                                         max(error_subsamples$n_occ)/
+                                           error_subsamples$n_net_occurrences[1],
+                                         1000))) %$%
+    approx(x = .fitted, y = prop_occ, 0.1) %$%
+    round_any(y, 5, ceiling)
+}
+
+# Function by Holger Brandl https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr/46489816#46489816
+round_any = function(x, accuracy, f=round){f(x/ accuracy) * accuracy}
