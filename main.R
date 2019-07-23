@@ -263,9 +263,13 @@ climatic_niche_plan <- drake_plan(
  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
-# Explore niche -----------------------------------------------------------
+# Suitability vs. generalism  ----------------------------------------------
 
-# niche_exploration_plan <-
+suitability_vs_generalism_plan <- drake::drake_plan(
+  nets = ints_as_nets(interactions_org), 
+  possible_interactions = get_possible_interactions(interactions_org), 
+  org_degree = calc_org_degree(nets)
+)
 
 # Referencing -------------------------------------------------------------
 
@@ -330,6 +334,7 @@ paper_plan <- rbind(
   pre_process_int_plan,
   download_ocurrence_data_plan,
   climatic_niche_plan,
+  suitability_vs_generalism_plan,
   data_references_plan, 
   figures_plan, 
   reporting_plan
