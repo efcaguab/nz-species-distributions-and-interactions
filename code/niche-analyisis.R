@@ -399,7 +399,8 @@ calc_suitability <- function(
   # Put it all in a nice data frame format
   tibble::tibble(org_id = this_sp, 
                  suitability = suitabiliy, 
-                 w = w)
+                 w = w, 
+                 loc_id = this_net_locations)
 }
 
 # Gicen some locations (coded as a grid in the climate thingy) find their projection in niche space 
