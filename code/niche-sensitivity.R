@@ -94,16 +94,15 @@ mae <- function(x, y){
 determine_min_occurrences <- function(error_subsamples, min_suitability_error){
   error_subsamples %>%
     dplyr::filter(niche_space == "single_species") %>%
-    dplyr::mutate(prop_occ = n_occ/n_net_occurrences) %>%
-    mgcv::gam(mae ~ log(prop_occ), data = . , family = "binomial") %>% 
+    dplyr::mutate(prop_occ = n_occ/n_net_occurrences, 
+                  log_prop_occ = log(prop_occ)) %>% 
+    mgcv::gam(mae ~ s(log_prop_occ), data = . , family = "binomial") %>% 
     broom::augment(type.predict = "response", 
                    newdata = tibble::tibble(
-                     prop_occ = logspace(1, 
-                                         max(error_subsamples$n_occ)/
-                                           error_subsamples$n_net_occurrences[1],
-                                         1000))) %$%
-    approx(x = .fitted, y = prop_occ, min_suitability_error) %$%
-    round_any(y, 5, ceiling)
+                     log_prop_occ = seq(0.2, 5, length.out = 1000))) %$%
+    approx(x = .fitted, y = log_prop_occ, min_suitability_error) %$%
+    exp(y) %>%
+    round()
 }
 
 # Function by Holger Brandl https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr/46489816#46489816
