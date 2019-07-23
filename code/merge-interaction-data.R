@@ -11,13 +11,9 @@ merge_spp <- function(wol_spp){
                                            "Undefined", 
                                            "Unidentified"),
            # remove unwanted abbreviations in cannonical names
-           sp_name = stringr::str_replace(sp_name, stringr::fixed(" var."), ""), 
-           sp_name = stringr::str_replace(sp_name, stringr::fixed(" aff."), ""),
-           sp_name = stringr::str_replace(sp_name, stringr::fixed(" cf."), ""), 
+           sp_name = remove_abbreviations(sp_name), 
            is_subspecies = get_name_rank(sp_name), 
-           is_subspecies = is_subspecies == "subspecies" & !sp_unidentified, 
-           # simplify crosses
-           sp_name = stringr::str_replace(sp_name, " x .+", "")) %>%
+           is_subspecies = is_subspecies == "subspecies" & !sp_unidentified) %>%
     group_by(loc_id) %>%
     mutate(node_id = paste0(loc_id, "-", 
                             guild, "_",
@@ -28,6 +24,13 @@ merge_spp <- function(wol_spp){
 # merge interactions from multiple interaction data sources
 merge_int <- function(wol_int){
   wol_int
+# remove uncertainity abbreviations, varieties stuff and simplify crosses
+remove_abbreviations <- function(x){
+  x %>%
+    stringr::str_replace(stringr::fixed(" var."), "") %>%
+    stringr::str_replace(stringr::fixed(" aff."), "") %>%
+    stringr::str_replace(stringr::fixed(" cf."), "") %>%
+    stringr::str_replace(" x .+", "")
 }
 
 merge_metadata <- function(wol_data, manual_net_locations){
