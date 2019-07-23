@@ -116,14 +116,14 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
     dplyr::mutate(error = mae)
   p <- e %>%
     ggplot(aes(x = n_occ, y = error, fill = niche_space)) +
-    # geom_point(data = dplyr::sample_n(e, 500), 
-    #            shape = 21, alpha = 1, size = 1) +
-    geom_hline(yintercept = min_suitability_error, size = 0.25, linetype = 2) +
+    geom_point(data = dplyr::sample_n(e, 1000),
+               shape = 21, alpha = 1, size = 1) +
     # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
     geom_smooth(aes(colour = niche_space), method = "gam" , 
                 method.args = list(family = "binomial"), 
                 formula = y ~ s(x), se = T, 
                 size = 0.5) +
+    geom_hline(yintercept = min_suitability_error, size = 0.25, linetype = 2) +
     geom_vline(xintercept = min_occurrences_factor*n_nets, size = 0.25, linetype = 3) +
     # scale_x_continuous(limits = c(2,35)) +
     scale_x_log10() +
