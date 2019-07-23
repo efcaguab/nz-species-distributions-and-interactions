@@ -80,6 +80,25 @@ loadd(interaction_citations)
 
 # Introduction
 
+Interactions are selected by species depending on the relative benefit they provide. The assumption goes that species with a large number of interactions are benefit relatively little from each of them, and species with a small number benefit largely with them, this is they focus in more optimal pollinators.
+
+AND 
+
+We know that interactions are influenced by the environment. 
+
+BUT
+
+We don't know how exactly wether the enviroment influences the patterns of generalisation/specialization. 
+
+One option is that when species are in detrimental environmental conditions focus on most optimal partners and as such interact with a smaller number of species. 
+An alternative hypotheisis is that when species are in favourable environmental conditions they can afford to be more picky about their interactions and as such avoid those of less value, while individuals in unfavourable conditions must get rewards from whatever they can get. 
+
+THEREFORE
+
+We used a global dataset on plant pollinator interactions, species occurrence, and bioclimatic data to test these hypotheses. 
+If the first option is true we should see a negative relationship between environmental sutability and the relative degree of a species. 
+If the second option is true we should see the opposite, a positive relationship between environmental suitability and the relative degree of a species. 
+
 # Methods
 
 ## Data aquisition
