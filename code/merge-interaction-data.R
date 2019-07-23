@@ -23,7 +23,11 @@ merge_spp <- function(wol_spp){
 
 # merge interactions from multiple interaction data sources
 merge_int <- function(wol_int){
-  wol_int
+  wol_int %>%
+    dplyr::mutate_at(dplyr::vars(dplyr::contains("name")), remove_abbreviations) 
+  
+}
+
 # remove uncertainity abbreviations, varieties stuff and simplify crosses
 remove_abbreviations <- function(x){
   x %>%
