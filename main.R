@@ -255,14 +255,17 @@ climatic_niche_plan <- drake_plan(
  min_occurrences_factor = determine_min_occurrences(error_subsamples, min_suitability_error),
  enough_occurrences = remove_sp_few_occurrences(thinned_occurrences, min_occurrences_factor),
  n_enough_occurrences = count_occurrences_per_organism(enough_occurrences),
- independent_suitability = calc_suitability_independently_all(
-   enough_occurrences, 
-   interactions_org, 
-   filled_climate_in_occurrences_2, 
-   filled_climate_in_networks_2, grid_networks, 
-   R = env_space_resolution),
+ independent_suitability = calc_suitability_independently_all(enough_occurrences, 
+                                                              interactions_org, 
+                                                              filled_climate_in_occurrences_2, 
+                                                              filled_climate_in_networks_2, grid_networks, 
+                                                              R = env_space_resolution),
  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
+
+# Explore niche -----------------------------------------------------------
+
+# niche_exploration_plan <-
 
 # Referencing -------------------------------------------------------------
 
