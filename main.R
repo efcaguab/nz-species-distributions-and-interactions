@@ -108,7 +108,7 @@ pre_process_wol <- drake_plan(
 
 merge_interaction_data_plan <- drake_plan(
   spp = merge_spp(wol_spp),
-  spp_no_subspecies = downgrade_subspecies(spp), 
+  spp_no_subspecies = downgrade_subspecies(spp, sp_name), 
   synonyms_db = get_synonyms_db(file_in("data/downloads/itis_sqlite.zip")), 
   checked_sp_names = check_spp_names(spp_no_subspecies, 
                                      synonyms_db, 

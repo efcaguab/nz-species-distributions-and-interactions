@@ -42,12 +42,13 @@ merge_metadata <- function(wol_data, manual_net_locations){
     dplyr::select(-tidyselect::contains(".x"), -tidyselect::contains(".y"))
 }
 
-downgrade_subspecies <- function(spp){
+downgrade_subspecies <- function(spp, col_name){
+  col_name <- rlang::enquo(col_name)
   spp %>%
-    dplyr::mutate(sp_name = dplyr::if_else(
+    dplyr::mutate(!!col_name := dplyr::if_else(
       condition = is_subspecies, 
-      true = stringr::word(sp_name, 1, 2), 
-      false = sp_name, 
-      missing = sp_name
+      true = stringr::word(!!col_name, 1, 2), 
+      false = !!col_name, 
+      missing = !!col_name
     ))
 }
