@@ -100,34 +100,44 @@ get_dist_species_multiple_locations_data <- function(clean_interactions, checked
   
 }
 
-plot_sensitivity_analysis <- function(error_subsamples){
+plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error, 
+                                      min_occurrences_factor, 
+                                      suitability_subsamples){
   suppressPackageStartupMessages({
     library(ggplot2)
   })
   
   pal <- cgm()$pal_el_green[c(4,7)]
   
-  p <- error_subsamples %>%
-    dplyr::mutate(error = mae) %>%
-    ggplot(aes(x = n_occ/2, y = error, fill = niche_space)) +
-    geom_point(shape = 21, alpha = 1, size = 1) +
-    geom_hline(yintercept = 0.1, size = 0.25, linetype = 2) +
+  n_nets <- suitability_subsamples$n_net_occurrences[1]
+  
+  e <- error_subsamples %>%
+    dplyr::group_by(niche_space) %>%
+    dplyr::mutate(error = mae)
+  p <- e %>%
+    ggplot(aes(x = n_occ, y = error, fill = niche_space)) +
+    # geom_point(data = dplyr::sample_n(e, 500), 
+    #            shape = 21, alpha = 1, size = 1) +
+    geom_hline(yintercept = min_suitability_error, size = 0.25, linetype = 2) +
     # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
-    geom_smooth(aes(colour = niche_space), method = "gam" , method.args = list(family = "binomial"), 
-                formula = y ~ s(x), se = F) +
-    geom_vline(xintercept = 14, size = 0.25, linetype = 3) +
+    geom_smooth(aes(colour = niche_space), method = "gam" , 
+                method.args = list(family = "binomial"), 
+                formula = y ~ s(x), se = T, 
+                size = 0.5) +
+    geom_vline(xintercept = min_occurrences_factor*n_nets, size = 0.25, linetype = 3) +
     # scale_x_continuous(limits = c(2,35)) +
     scale_x_log10() +
     scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
-                      labels = c("shared", "per species")) +
+                      labels = c(" env. space based on all spp. occurrences", 
+                                 " env. space based on each spp. occurrences")) +
     pub_theme() +
     theme(legend.position = c(0.95,0.95), 
           legend.justification = c(1,1), 
           legend.title = element_blank()) +
-    labs(x = "occurrence to # communities ratio", 
+    labs(x = "number of GBIF occurrences", 
          y = "mean absolute error",
-         title = "number of species at multiple locations", 
-         subtitle = "frequency distribution")
+         title = "error of environmental suitability of communities", 
+         subtitle = "for a species present in two plant-pollinator communities ")
   
   # ggsave("plot.pdf", p,  width = unit(width("single"), "in"), height = unit(2.2, "in"))
   

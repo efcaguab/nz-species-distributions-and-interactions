@@ -283,7 +283,10 @@ figures_plan <- drake_plan(
   fig_dist_species_multiple_locations = plot_species_location_distribution(
     fig_dist_species_multiple_locations_data
   ), 
-  fig_sensitivity_analysis = plot_sensitivity_analysis(error_subsamples)
+  fig_sensitivity_analysis = plot_sensitivity_analysis(error_subsamples, 
+                                                       min_suitability_error, 
+                                                       min_occurrences_factor, 
+                                                       suitability_subsamples)
 )
 
 
