@@ -299,11 +299,16 @@ get_final_name_list <-
   function(spp_no_subspecies, 
            checked_sp_names,
            manual_name_corrections, 
-           checked_manual_name_corrections) {
+           checked_manual_name_corrections, spp) {
   
   # rename stuff in spp to match the fixed names
   spp_reformated <- spp_no_subspecies %>%
     dplyr::mutate(queried_sp_name = sp_name)
+  
+  
+  spp_reformated_subspecies <- spp %>%
+    dplyr::mutate(queried_sp_name = sp_name) %>%
+    downgrade_subspecies(sp_name)
   
   # remove manual correction that arent actually one
   actual_manual_name_corrections <- manual_name_corrections %>%
@@ -319,6 +324,7 @@ get_final_name_list <-
                     !sp_unidentified) %>%
     downgrade_subspecies(sp_name) %>%
     dplyr::bind_rows(spp_reformated) %>%
+    dplyr::bind_rows(spp_reformated_subspecies) %>%
     dplyr::distinct(queried_sp_name, sp_name) %>% 
     # make into a graph to detect components
     igraph::graph_from_data_frame(directed = FALSE) %>%

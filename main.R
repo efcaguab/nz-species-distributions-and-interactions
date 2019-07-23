@@ -123,7 +123,7 @@ merge_interaction_data_plan <- drake_plan(
                                                      spp_no_subspecies), 
   species_ids = get_final_name_list(spp_no_subspecies, checked_sp_names, 
                                     manual_name_corrections, 
-                                    checked_manual_corrections),
+                                    checked_manual_corrections, spp),
   int = merge_int(wol_int),
   recoded_interactions = recode_interactions(species_ids, int),
   clean_interactions = remove_problematic_networks(recoded_interactions,
