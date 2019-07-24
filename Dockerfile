@@ -28,7 +28,8 @@ RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> /etc/apt/s
 RUN wget https://github.com/jalvesaq/Nvim-R/releases/download/v0.9.13/Nvim-R_0.9.13.zip
 RUN mkdir -p /root/.local/share/nvim/site/pack/R \
  && unzip Nvim-R_0.9.13.zip -d root/.local/share/nvim/site/pack/R
-RUN R -e "install.packages(c('ecospat'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+RUN R -e "install.packages(c('ecospat', 'lme4), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+
 
 # Install development version of Rmangal. Code at April 8 2019 Note: Rmangal is pretty shit at the moment (May 2019) won't use it for now
 # RUN apt-get update \
