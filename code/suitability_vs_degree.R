@@ -6,27 +6,6 @@ ints_as_nets <- function(interactions_org){
 
 }
 
-calc_org_degree <- function(nets){
-  degree_per_net <- nets %>%
-    purrr::map(igraph::degree) %>%
-    purrr::map_dfr(~tibble::tibble(org_id = names(.), k = .), .id = "loc_id")
-  
-  global_degree <- purrr::lift_dl(igraph::union)(nets) %>%
-    igraph::degree() %>%
-    tibble::tibble(org_id = names(.), k_global = .)
-  
-  net_size <- nets %>%
-    purrr::map(igraph::V) %>%
-    purrr::map(length) %>%
-    purrr::imap_dfr(~tibble(loc_id = .y, n = .x))
-  
-  degree_per_net %>%
-    dplyr::full_join(global_degree, by = "org_id") %>%
-    dplyr::full_join(net_size, by = "loc_id") %>% 
-    dplyr::mutate(normalised_k = k/n, 
-                  proportion_k = k/k_global)
-}
-
 get_possible_interactions <- function(interactions_org){
   interactions_org %>%
     dplyr::distinct() %>%
@@ -36,7 +15,7 @@ get_possible_interactions <- function(interactions_org){
     dplyr::mutate(int = !is.na(int)) 
 }
 
-get_realised_to_possible <- function(possible_interactions){
+calc_org_degree <- function(possible_interactions, interactions_orgs){
   
   possible_interactions <-interactions_org %>%
     dplyr::distinct() %>%
@@ -53,14 +32,33 @@ get_realised_to_possible <- function(possible_interactions){
                   ani_id, pla_id) %>%
     dplyr::group_by(org_id) %>%
     dplyr::group_by(loc_id, org_id) %>%
-    dplyr::summarise(k_possible = dplyr::n(), 
-                     k = sum(int)) 
+    dplyr::summarise(n_possible_partners = dplyr::n(), 
+                     n_partners = sum(int)) 
   
   global_degree <- interactions_org %>% 
     dplyr::distinct() %>%
     tidyr::gather(key = "guild", 
                   value = "org_id", 
                   ani_id, pla_id) %>%
+    dplyr::group_by(guild, org_id) %>%
+    dplyr::summarise(n_partners_global = dplyr::n())
+  
+  n_species_guild <- interactions_org %>%
+    dplyr::distinct() %>%
+    dplyr::group_by(loc_id) %>%
+    dplyr::summarise_all(dplyr::n_distinct) %>%
+    dplyr::rename_at(dplyr::vars(dplyr::contains("pla"), dplyr::contains("ani")), 
+                     function(x) paste0("n_", x))
+
+  global_degree %>%
+    dplyr::inner_join(possible_degree, by = "org_id") %>%
+    dplyr::inner_join(n_species_guild, by = "loc_id") %>%
+    dplyr::mutate(n_opposite_guild = dplyr::if_else(guild == "ani_id", 
+                                                    n_pla_id, n_ani_id), 
+                  n_this_guild = dplyr::if_else(guild == "ani_id", 
+                                                n_ani_id, n_pla_id)) %>%
+    dplyr::select(-n_pla_id, -n_ani_id)
+}
     dplyr::group_by(org_id) %>%
     dplyr::summarise(k_global = dplyr::n())
 }
