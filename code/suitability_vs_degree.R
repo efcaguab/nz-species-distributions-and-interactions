@@ -59,6 +59,43 @@ calc_org_degree <- function(possible_interactions, interactions_orgs){
                                                 n_ani_id, n_pla_id)) %>%
     dplyr::select(-n_pla_id, -n_ani_id)
 }
+
+
+tinker <- function(){
+  mod <- org_degree %>%
+    dplyr::right_join(independent_suitability) %>% 
     dplyr::group_by(org_id) %>%
-    dplyr::summarise(k_global = dplyr::n())
+    dplyr::mutate(n_obs = dplyr::n()) %>% 
+    # dplyr::group_by(org_id) %>%
+    # dplyr::filter(any(n_partners != n_possible_partners)) %>%
+    dplyr::filter(n_obs > 5) %>%
+    glm(n_partners ~scale(suitability) + 
+          # guild + 
+          scale(n_obs) ,
+          # scale(log(n_partners_global)) + 
+          # scale(n_possible_partners),
+                family = "poisson",
+                data = .)
+    # lme4::glmer(n_partners ~ suitability + 
+    #               # scale(log(n_partners_global)) +
+    #               # scale(n_possible_partners) +
+    #               (suitability | guild),
+    #             family = "poisson", 
+    #             data = .) 
+  broom::glance(mod)
+  summary(mod)
+  
+  mod %>%
+    lme4::ranef() %>%
+    as.data.frame() %>% 
+    ggplot(aes(y = condval, x = grp)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = condval - 2 * condsd, 
+                       ymax = condval + 2 * condsd, 
+                      colour = sign(condval - 2 * condsd) == sign(condval + 2 * condsd)), 
+                   width = 0) +
+    facet_wrap(~term, ncol = 1, scales = "free") +
+    theme(legend.position = "none")
+    lm(n_partners ~ suitability + log(n_partners_global) + n_opposite_guild + n_possible_partners, data = .) %>% 
+    summary()
 }
