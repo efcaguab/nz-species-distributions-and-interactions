@@ -99,6 +99,20 @@ We used a global dataset on plant pollinator interactions, species occurrence, a
 If the first option is true we should see a negative relationship between environmental sutability and the relative degree of a species. 
 If the second option is true we should see the opposite, a positive relationship between environmental suitability and the relative degree of a species. 
 
+Notes:
+
+**From donoso et al 2017: ** Intro: It is generally agreed that both neutral and niche-driven processes contribute to the occurrence of pairwise mutualistic interactions and network structure. That is, whether or not two species interact can be thought of as the result of two sequential processes. First, there is a stochastic (neutral) process driven by the local abundances of interacting species, such that abundant species are more likely to encounter each other than are rare ones. Secondly, there is a deterministic process driven by a matching of traits (e.g., phenology, morphology, behavior, etc.) that finally permits the interaction between co- occurring species. 
+
+Intro: Mutualistic interactions are fundamentally dynamic, such that there is a turnover of species and individuals in space and time (Carnicer et al., 2009; Laliberté and Tylianakis, 2010; Hagen et al., 2012). 
+
+I would then add a thrird one that is dictated by the rewards provided by an interaction. Maybe?
+
+Conclusion: Overall we found that the assemblage of pairwise interactions depended on the neutral effects of interacting species abundances (the more abundant the species of fruit and frugivore, the more frequent their pairwise interaction) and on the local context of ecological neighborhoods.
+
+**From Boulangeat et al 2012:** Intro: These drivers of species distributions may act at different spatial scales. For instance, frequent consideration is given to abiotic variables acting at large spatial scales. On the other hand, biotic interactions and consumer-resource dynamics are assumed to occur at smaller spatial scales.
+
+Conclusion: Biotic inetractions are def important at determining abundace. They observed positive effects of biotic interactions at colder climates (low suitability for plants) -- suggest facilitation. and negative effects of interactions at warmer climates (high suitability) suggesting competition. *Should I calculate the suitability of other species?*
+
 # Methods
 
 ## Data aquisition
@@ -357,6 +371,16 @@ See topography data from Species distribution model transferability and model gr
 # Results
 
 # Discussion 
+
+We focus suitability in abiotic factors but can also be influenced by dispersal and species interactions themselves (e.g. competition and facilitation, Lortie et al. 2004). 
+We learnt that there is a trade-off pollination dynamics (Cagua in review?).
+This means that species with more environemntal favours are better prepared to deal with the trade-offs that pollination can convey. Cool!
+
+Suitability is not a meric of abbundances across sites (Pearce & Ferrier 2001; Sagarin et al. 2006) (Taken from Boulangeat)
+
+Add the suitability of possible competitors? I mean they are not really competitors so maybe not. 
+
+
 
 # Acknowledgements
 
