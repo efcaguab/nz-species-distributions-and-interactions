@@ -113,6 +113,10 @@ Conclusion: Overall we found that the assemblage of pairwise interactions depend
 
 Conclusion: Biotic inetractions are def important at determining abundace. They observed positive effects of biotic interactions at colder climates (low suitability for plants) -- suggest facilitation. and negative effects of interactions at warmer climates (high suitability) suggesting competition. *Should I calculate the suitability of other species?*
 
+**From Dormann et al 2018:** Intro: Sometimes, an organism will be little affected by com- petitors, mutualists, pathogens or predators; a mature tree may appear to grow unfettered by its neighbours for decades. In other cases, an individual may struggle to survive the pressure of its community during every hour of its life; for example, a fish preying and escaping predators in a small river. Biotic interactions such as these can have major effects on local processes and population dynamics, and some, but not neces- sarily all, scale up to co-determining the range of a species (reviewed, e.g., by Wisz et al., 2013).
+
+Most BI-SDMs assume that biotic interactions are constant in space and time. It is more likely, however, that interaction strengths are modulated by the biotic and abiotic environment. Experimental studies showed that rates of biological interactions depend on environmental conditions: rates of herbivory are temperature dependent (Burnside, Erhardt, Hammond, & Brown, 2014); mycorrhizal symbioses change with resource availability (Cox, Barsoum, Lilleskov, & Bidartondo, 2010; Johnson, Wilson, Bowker, Wilson, & Miller, 2010); and plant–plant interactions can shift from competitive to facilitative along a stress gra- dient (Bertness & Callaway, 1994). Additionally, environmental change can modulate biotic interactions via phenological mismatches, such as for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007). In these conditions, the model must also allow for the interplay of envi- ronmental and biotic interactions (Clark et al., 2011), which has only recently started to be explored in BI-SDMs (Tikhonov, Abrego, Dunson, & Ovaskainen, 2017).
+
 # Methods
 
 ## Data aquisition
