@@ -99,6 +99,14 @@ We used a global dataset on plant pollinator interactions, species occurrence, a
 If the first option is true we should see a negative relationship between environmental sutability and the relative degree of a species. 
 If the second option is true we should see the opposite, a positive relationship between environmental suitability and the relative degree of a species. 
 
+**Is my central topic turnover of interactions**?
+
+**Continuation: compare the suitability of the species that species do not interact with vs those that interact (when a possible interaction occurs but is not realised)?**
+
+**Continuation: average suitability of all species. If avg. competitors suitability is low, species, facilitation more common and resource sharing should increase. If avg. suitability is high, the opposite should happen?**
+
+**SHould I use relative suitability instead of absolute? Is not total suitability what matters but that relative to other species?** 
+
 Notes:
 
 **From donoso et al 2017: ** Intro: It is generally agreed that both neutral and niche-driven processes contribute to the occurrence of pairwise mutualistic interactions and network structure. That is, whether or not two species interact can be thought of as the result of two sequential processes. First, there is a stochastic (neutral) process driven by the local abundances of interacting species, such that abundant species are more likely to encounter each other than are rare ones. Secondly, there is a deterministic process driven by a matching of traits (e.g., phenology, morphology, behavior, etc.) that finally permits the interaction between co- occurring species. 
@@ -111,11 +119,19 @@ Conclusion: Overall we found that the assemblage of pairwise interactions depend
 
 **From Boulangeat et al 2012:** Intro: These drivers of species distributions may act at different spatial scales. For instance, frequent consideration is given to abiotic variables acting at large spatial scales. On the other hand, biotic interactions and consumer-resource dynamics are assumed to occur at smaller spatial scales.
 
-Conclusion: Biotic inetractions are def important at determining abundace. They observed positive effects of biotic interactions at colder climates (low suitability for plants) -- suggest facilitation. and negative effects of interactions at warmer climates (high suitability) suggesting competition. *Should I calculate the suitability of other species?*
+Conclusion: Biotic inetractions are def important at determining abundace. They observed positive effects of biotic interactions at colder climates (low suitability for plants) -- suggest facilitation. and negative effects of interactions at warmer climates (high suitability) suggesting competition. *Should I calculate the suitability of other species and test this?*
 
 **From Dormann et al 2018:** Intro: Sometimes, an organism will be little affected by com- petitors, mutualists, pathogens or predators; a mature tree may appear to grow unfettered by its neighbours for decades. In other cases, an individual may struggle to survive the pressure of its community during every hour of its life; for example, a fish preying and escaping predators in a small river. Biotic interactions such as these can have major effects on local processes and population dynamics, and some, but not neces- sarily all, scale up to co-determining the range of a species (reviewed, e.g., by Wisz et al., 2013).
 
-Most BI-SDMs assume that biotic interactions are constant in space and time. It is more likely, however, that interaction strengths are modulated by the biotic and abiotic environment. Experimental studies showed that rates of biological interactions depend on environmental conditions: rates of herbivory are temperature dependent (Burnside, Erhardt, Hammond, & Brown, 2014); mycorrhizal symbioses change with resource availability (Cox, Barsoum, Lilleskov, & Bidartondo, 2010; Johnson, Wilson, Bowker, Wilson, & Miller, 2010); and plant–plant interactions can shift from competitive to facilitative along a stress gra- dient (Bertness & Callaway, 1994). Additionally, environmental change can modulate biotic interactions via phenological mismatches, such as for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007). In these conditions, the model must also allow for the interplay of envi- ronmental and biotic interactions (Clark et al., 2011), which has only recently started to be explored in BI-SDMs (Tikhonov, Abrego, Dunson, & Ovaskainen, 2017).
+Most BI-SDMs assume that biotic interactions are constant in space and time. It is more likely, however, that interaction strengths are modulated by the biotic and abiotic environment. Experimental studies showed that rates of biological interactions depend on environmental conditions: rates of herbivory are temperature dependent (Burnside, Erhardt, Hammond, & Brown, 2014); mycorrhizal symbioses change with resource availability (Cox, Barsoum, Lilleskov, & Bidartondo, 2010; Johnson, Wilson, Bowker, Wilson, & Miller, 2010); and plant–plant interactions can shift from competitive to facilitative along a stress gra- dient (Bertness & Callaway, 1994). Additionally, environmental change can modulate biotic interactions via phenological mismatches, such as for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007). In these conditions, the model must also allow for the interplay of environmental and biotic interactions (Clark et al., 2011), which has only recently started to be explored in BI-SDMs (Tikhonov, Abrego, Dunson, & Ovaskainen, 2017).
+
+**From Gravel et al. 2018**: We apply this framework to host–parasite interactions across Europe and ind that two aspects of the environment (temperature and precipitation) exert a strong imprint on species co-occurrence, but not on species interactions. Even where species co-occur, interaction proves to be stochastic rather than deterministic, adding to variation in realized network structure. *Bingo: I show it's not completely stochastic and is likely to be determined by the suitability hehe*
+
+There is, however, ample evidence that interaction networks vary in space and time (Laliberté and Tylianakis 2010, Poisot et al. 2012, 2016c, Schleuning et al. 2012, Albouy et al. 2014, Trøjelsgaard et al. 2015), even though there is no common framework with which to generalize these results.
+
+he occurrence and intensity of interactions could vary because of the environment, species abundance, and higher- order ecological interactions (Poisot et al. 2015). *Well do I show that could vary because of more stuff?*
+
+Variation in community composition can be independent of variation of ecological interactions, suggesting that species and inter- action distribution may well respond to diferent drivers (Poisot et al. 2012).
 
 # Methods
 
