@@ -99,13 +99,17 @@ We used a global dataset on plant pollinator interactions, species occurrence, a
 If the first option is true we should see a negative relationship between environmental sutability and the relative degree of a species. 
 If the second option is true we should see the opposite, a positive relationship between environmental suitability and the relative degree of a species. 
 
-**Is my central topic turnover of interactions**?
+**Is my central topic turnover of interactions**? If yes then I should quanitify turnover accross high and low suitability areas. 
 
 **Continuation: compare the suitability of the species that species do not interact with vs those that interact (when a possible interaction occurs but is not realised)?**
 
 **Continuation: average suitability of all species. If avg. competitors suitability is low, species, facilitation more common and resource sharing should increase. If avg. suitability is high, the opposite should happen?**
 
-**SHould I use relative suitability instead of absolute? Is not total suitability what matters but that relative to other species?** 
+**Continuation: Should I use relative suitability instead of absolute? Is not total suitability what matters but that relative to other species?** 
+
+**Is smaller degree a smaller Eltonian niche?** Should I frame this as the relationship between Grinellian and Eltonian. A better position in the grinellian niche allows for a larger Realised Eltonian niche.
+
+
 
 Notes:
 
@@ -125,13 +129,21 @@ Conclusion: Biotic inetractions are def important at determining abundace. They 
 
 Most BI-SDMs assume that biotic interactions are constant in space and time. It is more likely, however, that interaction strengths are modulated by the biotic and abiotic environment. Experimental studies showed that rates of biological interactions depend on environmental conditions: rates of herbivory are temperature dependent (Burnside, Erhardt, Hammond, & Brown, 2014); mycorrhizal symbioses change with resource availability (Cox, Barsoum, Lilleskov, & Bidartondo, 2010; Johnson, Wilson, Bowker, Wilson, & Miller, 2010); and plant–plant interactions can shift from competitive to facilitative along a stress gra- dient (Bertness & Callaway, 1994). Additionally, environmental change can modulate biotic interactions via phenological mismatches, such as for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007). In these conditions, the model must also allow for the interplay of environmental and biotic interactions (Clark et al., 2011), which has only recently started to be explored in BI-SDMs (Tikhonov, Abrego, Dunson, & Ovaskainen, 2017).
 
-**From Gravel et al. 2018**: We apply this framework to host–parasite interactions across Europe and ind that two aspects of the environment (temperature and precipitation) exert a strong imprint on species co-occurrence, but not on species interactions. Even where species co-occur, interaction proves to be stochastic rather than deterministic, adding to variation in realized network structure. *Bingo: I show it's not completely stochastic and is likely to be determined by the suitability hehe*
+**From Gravel et al. 2018**: We apply this framework to host–parasite interactions across Europe and ind that two aspects of the environment (temperature and precipitation) exert a strong imprint on species co-occurrence, but not on species interactions. Even where species co-occur, interaction proves to be stochastic rather than deterministic, adding to variation in realized network structure. *Bingo: I show it's not completely stochastic and is likely to be determined by the suitability hehe* -- for real ( They test prob. of two co-occurring species to interact does not depend on environment. I test single species thingy). Should I do that? suit sp.1 and suit sp. 2? It;s not about the environment, but about how the environment affect the species involved. Buya!
 
 There is, however, ample evidence that interaction networks vary in space and time (Laliberté and Tylianakis 2010, Poisot et al. 2012, 2016c, Schleuning et al. 2012, Albouy et al. 2014, Trøjelsgaard et al. 2015), even though there is no common framework with which to generalize these results.
 
 he occurrence and intensity of interactions could vary because of the environment, species abundance, and higher- order ecological interactions (Poisot et al. 2015). *Well do I show that could vary because of more stuff?*
 
 Variation in community composition can be independent of variation of ecological interactions, suggesting that species and inter- action distribution may well respond to diferent drivers (Poisot et al. 2012).
+
+Ecological interactions could also vary with the environment, P(Lijy | Ey ). Although it is rare to see a con- ditional representation of pairwise ecological interactions, experimental studies have frequently revealed interactions to be sensitive to the environment. For instance, McKinnon et al. (2010) showed that predation risks of shorebirds vary at the continental scale, decreasing from the south to the north. It is also common to see increasing top-down control with temperature (Shurin et al. 2012, Gray et al. 2016). Efects of the environment on interactions (Gibert and DeLong 2014) also propagate up the community and inluence net- work structure (Tylianakis et al. 2007, Petchey et al. 2010, Woodward et al. 2010).
+
+In terms of species interacting with each other, our analysis suggests that the environment leaves a detectable imprint on species co-occurrence, but only a slight mark on the occurrence of realized links among species in a speciic place: the prob- ability of inding a given combination of species at a higher and a lower trophic level at the same site was clearly afected by the environment, whereas the probability of observing an interaction between the two was, given co-occurrence, not signiicantly so. 
+
+This does not imply that species will always interact when they meet – **although this is a basic assumption in most documented metawebs to date** (Havens 1992, Wood et al. 2015). 
+
+Evidence that the structure of ecological networks does vary across habitats (Tylianakis et al. 2007), over environmental gradients (Lurgi et al. 2012) and in time (Simanonok and Burkle 2014) is accumulating rapidly. 
 
 # Methods
 
@@ -397,6 +409,8 @@ We learnt that there is a trade-off pollination dynamics (Cagua in review?).
 This means that species with more environemntal favours are better prepared to deal with the trade-offs that pollination can convey. Cool!
 
 Suitability is not a meric of abbundances across sites (Pearce & Ferrier 2001; Sagarin et al. 2006) (Taken from Boulangeat)
+
+Remarkable that we found a consistent signal of suitability given our relatively small number of communities and the multitude of processes that shape n. interactions Eltonian niche. We didn;t even account for traits. Interactions can influence co-occurrence (indirect and third order too see refs in Gravel 2018)
 
 Add the suitability of possible competitors? I mean they are not really competitors so maybe not. 
 
