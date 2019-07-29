@@ -107,7 +107,7 @@ If the second option is true we should see the opposite, a positive relationship
 
 **Continuation: Should I use relative suitability instead of absolute? Is not total suitability what matters but that relative to other species?** 
 
-**Is smaller degree a smaller Eltonian niche?** Should I frame this as the relationship between Grinellian and Eltonian. A better position in the grinellian niche allows for a larger Realised Eltonian niche.
+**Is smaller degree a smaller Eltonian niche?** Should I frame this as the relationship between Grinellian and Eltonian. A better position in the grinellian niche allows for a larger Realised Eltonian niche. A problem of stating the hypothesis in terms of niches is that there are many definitions of niche and people is picky
 
 *Previous state of the world: We know interactions change with the environment but we don't know beyond co-occurrence patterns*
 
@@ -146,6 +146,8 @@ This does not imply that species will always interact when they meet – **altho
 Evidence that the structure of ecological networks does vary across habitats (Tylianakis et al. 2007), over environmental gradients (Lurgi et al. 2012) and in time (Simanonok and Burkle 2014) is accumulating rapidly. 
 
 **Devictor 2010:** I can use degree to quantify realised eltonian niche
+
+**Godsoe 2017**: Biogeographers and community ecologists have long debated the importance of biotic interactions (see Glossary) for species distributions and range limits [1–5].*But seldom the other way arround?*
 
 # Methods
 
