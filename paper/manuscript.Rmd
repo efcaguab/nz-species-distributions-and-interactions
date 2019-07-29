@@ -109,7 +109,7 @@ If the second option is true we should see the opposite, a positive relationship
 
 **Is smaller degree a smaller Eltonian niche?** Should I frame this as the relationship between Grinellian and Eltonian. A better position in the grinellian niche allows for a larger Realised Eltonian niche.
 
-
+*Previous state of the world: We know interactions change with the environment but we don't know beyond co-occurrence patterns*
 
 Notes:
 
@@ -144,6 +144,8 @@ In terms of species interacting with each other, our analysis suggests that the 
 This does not imply that species will always interact when they meet – **although this is a basic assumption in most documented metawebs to date** (Havens 1992, Wood et al. 2015). 
 
 Evidence that the structure of ecological networks does vary across habitats (Tylianakis et al. 2007), over environmental gradients (Lurgi et al. 2012) and in time (Simanonok and Burkle 2014) is accumulating rapidly. 
+
+**Devictor 2010:** I can use degree to quantify realised eltonian niche
 
 # Methods
 
