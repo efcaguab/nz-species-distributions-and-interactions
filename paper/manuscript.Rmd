@@ -149,6 +149,14 @@ Evidence that the structure of ecological networks does vary across habitats (Ty
 
 **Godsoe 2017**: Biogeographers and community ecologists have long debated the importance of biotic interactions (see Glossary) for species distributions and range limits [1–5].*But seldom the other way arround?*
 
+**Tylianakis 2017**: Interactions can change because of environment because environment and habitat can change encounter rate. 
+
+Specialist species (that lack flexibility in their choice of interaction partner) should theoretically be most vulnerable to phenological decoupling. However, one study of pollinator communities along an elevational gradient found that apparently specialized pollinators were facultatively more generalist than they appeared and could adapt their visitation patterns across sites as much as generalists to avoid phenological asynchrony (Benadi et al. 2014). Similarly, duration of the fruiting season has been shown to predict the degree and strength of seed-dispersal interactions (Gonza ́ lez- Castro et al. 2012), and a long-term study found no difference between specialist and generalist plant species in their interannual fluctuations in phenology and pollinator richness (Petanidou et al. 2014). Although these findings suggest that the facultative generalism of pollination mutualisms may confer robustness to these networks in the face of altered phenology (see also discussion on rewiring above), this robustness may depend on the climate context and the diversity and specialization within the network (Hoiss et al. 2015). Moreover, less-generalized interactions such as those between parasites and hosts may show less flexibility.
+
+many trophic and mutualistic interactions are relatively generalized and potentially opportunistic (Pimm et al. 1991). Thus, we may expect that ecological networks will comprise a mixture of interactions that persist over the long-term owing to trait matching of partners through coevolution (Go ́ mez et al. 2010, Guimaraes et al. 2011) and those that occur opportunistically, perhaps with inferior long-term fitness benefits (Aizen et al. 2016). Increases in the frequency of the former will strengthen any pattern of phylogenetic congruence, whereas increases in the latter will erode it.
+
+For example, environmental stressors could cause species to narrow their trophic breadth by increasing the search time to find alternative partners (Gauld 1987) or by imposing limits on the quality of interaction partners that can be used (i.e., using only resources to which a species is best adapted). Phylogenetic congruence becomes stronger in parasitoid–host networks with increasing temperature (Lavandero & Tylianakis 2013) and in plantation versus native forests (Peralta et al. 2015), and such patterns appear consistent with a hy- pothesis of stress-induced reduction in trophic (phylogenetic) breadth (in the case of Lavandero & Tylianakis 2013, this occurred on genotype relatedness rather than between-species phylogenies). However, evidence for the hypothesized mechanism is still lacking, as experiments have revealed no change in the proportionate use of good or bad hosts when parasitoids are nutritionally stressed (Hopper et al. 2013) or even decreased selectivity toward high-quality hosts under high levels of nutritional stress (Crespo et al. 2015).
+
 # Methods
 
 ## Data aquisition
@@ -418,7 +426,7 @@ Remarkable that we found a consistent signal of suitability given our relatively
 
 Add the suitability of possible competitors? I mean they are not really competitors so maybe not. 
 
-
+Discuss implications for network rewiring?
 
 # Acknowledgements
 
