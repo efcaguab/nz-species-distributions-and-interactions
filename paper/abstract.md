@@ -1,1 +1,6 @@
-Abstract here
+It has been long clear that species interactions and consequently the structure of ecological networks can be heavily influenced by the habitat and environmental gradiets (Tylianakis 2017). 
+The central paradigm has been that the link between between environmental variation and network structure is based on changes on species composition which in turn determine co-occurrence.
+But despite theoretical predictions, the link between evironmental variation and wether two co-occurring species interact has been elusive and, to date, chiefly attributed to stochastic processes. 
+Using a global dataset of plant-pollinator interactions, occurrences, and bioclimatic variables, we show that this process is not completely stochastic but is instead mediated by how the environmental suitability interacts with the coevolutionary processes that underpin species interactions. 
+Specifically, we provide evidence to the hypothesis that environmental suitability could cause species to broaden their trophic breadth by removing limits on the quality of interaction partners that can be used. 
+A current challenge of By showing that it is not the environment per-se but how the environment affect what determines wether two co-occurring specie interact or not but  
