@@ -15,7 +15,7 @@ get_possible_interactions <- function(interactions_org){
     dplyr::mutate(int = !is.na(int)) 
 }
 
-calc_org_degree <- function(possible_interactions, interactions_orgs){
+calc_org_degree <- function(possible_interactions, interactions_org){
   
   possible_interactions <-interactions_org %>%
     dplyr::distinct() %>%
@@ -68,21 +68,21 @@ tinker <- function(){
     dplyr::mutate(n_obs = dplyr::n()) %>% 
     # dplyr::group_by(org_id) %>%
     # dplyr::filter(any(n_partners != n_possible_partners)) %>%
-    dplyr::filter(n_obs > 5) %>%
-    glm(n_partners ~scale(suitability) + 
+    # dplyr::filter(n_obs > 5) %>%
+    # glm(n_partners ~scale(suitability)* guild + 
           # guild + 
-          scale(n_obs) ,
-          # scale(log(n_partners_global)) + 
+          # scale(n_obs) +
+          # scale(log(n_partners_global)) +
           # scale(n_possible_partners),
+                # family = "poisson",
+                # data = .)
+    lme4::glmer(n_partners ~ suitability*guild +
+                  scale(log(n_partners_global)) +
+                  # scale(n_possible_partners) +
+                  (suitability | org_id : guild),
                 family = "poisson",
                 data = .)
-    # lme4::glmer(n_partners ~ suitability + 
-    #               # scale(log(n_partners_global)) +
-    #               # scale(n_possible_partners) +
-    #               (suitability | guild),
-    #             family = "poisson", 
-    #             data = .) 
-  broom::glance(mod)
+  broom::glance(mod)$AIC
   summary(mod)
   
   mod %>%
@@ -94,8 +94,9 @@ tinker <- function(){
                        ymax = condval + 2 * condsd, 
                       colour = sign(condval - 2 * condsd) == sign(condval + 2 * condsd)), 
                    width = 0) +
-    facet_wrap(~term, ncol = 1, scales = "free") +
-    theme(legend.position = "none")
+    facet_wrap(~term, ncol = 2, scales = "free") +
+    theme(legend.position = "none") +
+    coord_flip()
     lm(n_partners ~ suitability + log(n_partners_global) + n_opposite_guild + n_possible_partners, data = .) %>% 
     summary()
 }
