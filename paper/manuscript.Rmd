@@ -422,6 +422,64 @@ readd(fig_sensitivity_analysis)
 
 # Results
 
+We found a positive association between environmental suitability and the niche breath. 
+This relationship was maintained when we account for the overall generality of a species and even in extremely conservative model parametrization when we include the number of possible interacting species as an independent variable. 
+We define "possible" interacting species as one with which the species interacts in any of our ecological communities. 
+
+No interaction significant between guild and relationship which highlights that differences are rooted in eco-evolutionary processes rather than behaviour. 
+
+Relationship is even stronger when we only include species for which we have more info. i.e. in more that 5 communities. 
+
+```
+Call:
+glm(formula = n_partners ~ scale(suitability) * guild, family = "poisson", 
+    data = .)
+
+Coefficients:
+                               Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                     1.79092    0.02360  75.886  < 2e-16 ***
+scale(suitability)              0.07750    0.02454   3.158  0.00159 ** 
+guildpla_id                     0.64345    0.04361  14.756  < 2e-16 ***
+scale(suitability):guildpla_id  0.07645    0.03631   2.106  0.03524 *  
+---
+AIC: 3739.6
+```
+
+```
+Call:
+glm(formula = n_partners ~ scale(suitability) * guild + scale(log(n_partners_global)), 
+    family = "poisson", data = .)
+
+Coefficients:
+                               Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                     1.70709    0.02541  67.172  < 2e-16 ***
+scale(suitability)              0.17021    0.02481   6.860 6.88e-12 ***
+guildpla_id                     0.61872    0.04378  14.132  < 2e-16 ***
+scale(log(n_partners_global))   0.42074    0.01970  21.362  < 2e-16 ***
+scale(suitability):guildpla_id -0.02134    0.03657  -0.584     0.56    
+---
+
+AIC: 3302.1
+```
+
+```
+Call:
+glm(formula = n_partners ~ scale(suitability) * guild + scale(log(n_partners_global)) + 
+    scale(n_possible_partners), family = "poisson", data = .)
+
+Coefficients:
+                               Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                    1.667769   0.025701  64.892  < 2e-16 ***
+scale(suitability)             0.088729   0.024121   3.679 0.000235 ***
+guildpla_id                    0.423815   0.043904   9.653  < 2e-16 ***
+scale(log(n_partners_global))  0.138837   0.022829   6.082 1.19e-09 ***
+scale(n_possible_partners)     0.351851   0.008547  41.167  < 2e-16 ***
+scale(suitability):guildpla_id 0.010224   0.036728   0.278 0.780718    
+---
+
+AIC: 2141.5
+```
+
 # Discussion 
 
 <!-- We focus suitability in abiotic factors but can also be influenced by dispersal and species interactions themselves (e.g. competition and facilitation, Lortie et al. 2004).  -->
