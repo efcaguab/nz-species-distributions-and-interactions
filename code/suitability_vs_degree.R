@@ -66,13 +66,24 @@ build_analysis_frame <- function(org_degree, independent_suitability){
     dplyr::right_join(independent_suitability,
                       by = c("loc_id", "org_id")) 
 }
+
+sample_baseline_population <- function(analysis_frame){
+  analysis_frame %$%
+    list(N = NROW(.), 
+         K = n_partners, )
+  dat = list(N = NROW(analysis_frame), 
+             K = d$total_tools, P = d$population, C = d$contact_high)
+  fit10_10 <- sampling(m10_10, data = dat, iter = 1000, chains = 2, cores = 2)
+  
+}
+
 tinker <- function(){
-  mod <- org_degree %>%
-    dplyr::right_join(independent_suitability) %>% 
+  library(brms)
+  mod <- analysis_frame %>% 
     dplyr::group_by(org_id) %>%
     dplyr::mutate(n_obs = dplyr::n()) %>% 
-    # dplyr::group_by(org_id) %>%
-    # dplyr::filter(any(n_partners != n_possible_partners)) %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::filter(any(n_partners != n_possible_partners)) %>%
     # dplyr::filter(n_obs > 5) %>%
     # glm(n_partners ~scale(suitability)* guild + 
           # guild + 
@@ -81,11 +92,12 @@ tinker <- function(){
           # scale(n_possible_partners),
                 # family = "poisson",
                 # data = .)
-    lme4::glmer(n_partners ~ suitability*guild +
-                  scale(log(n_partners_global)) +
+    brm(cbind(n_partners, n_opposite_guild) ~ 
+                   suitability * guild +
+                  # scale(log(n_partners_global)) +
                   # scale(n_possible_partners) +
-                  (suitability | org_id : guild),
-                family = "poisson",
+                  (suitability | org_id) + (1 | loc_id),
+                family = "binomial",
                 data = .)
   broom::glance(mod)$AIC
   summary(mod)
