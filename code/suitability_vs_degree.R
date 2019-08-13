@@ -61,6 +61,11 @@ calc_org_degree <- function(possible_interactions, interactions_org){
 }
 
 
+build_analysis_frame <- function(org_degree, independent_suitability){
+  org_degree %>%
+    dplyr::right_join(independent_suitability,
+                      by = c("loc_id", "org_id")) 
+}
 tinker <- function(){
   mod <- org_degree %>%
     dplyr::right_join(independent_suitability) %>% 

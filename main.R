@@ -268,7 +268,8 @@ climatic_niche_plan <- drake_plan(
 suitability_vs_generalism_plan <- drake::drake_plan(
   nets = ints_as_nets(interactions_org), 
   possible_interactions = get_possible_interactions(interactions_org), 
-  org_degree = calc_org_degree(possible_interactions, interactions_orgs)
+  org_degree = calc_org_degree(possible_interactions, interactions_org), 
+  analysis_frame = build_analysis_frame(org_degree, independent_suitability)
 )
 
 # Referencing -------------------------------------------------------------
