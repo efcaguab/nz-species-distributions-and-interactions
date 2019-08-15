@@ -210,14 +210,14 @@ tinker <- function(){
           # scale(n_possible_partners),
                 # family = "poisson",
                 # data = .)
-    brm(cbind(n_partners, n_opposite_guild) ~ 
+    lme4::glmer(cbind(n_partners, n_opposite_guild - n_partners) ~ 
                    suitability * guild +
-                  # scale(log(n_partners_global)) +
-                  # scale(n_possible_partners) +
+                  scale(log(n_partners_global)) +
+                  scale(n_possible_partners) +
                   (suitability | org_id) + (1 | loc_id),
                 family = "binomial",
                 data = .)
-  broom::glance(mod)$AIC
+  # broom::glance(mod)$AIC
   summary(mod)
   
   mod %>%
