@@ -414,6 +414,23 @@ readd(fig_sensitivity_analysis)
 
 ## Model
 
+We then used a series of bayesian multilevel models to evaluate the impact of environmental suitability on the number of interacting species. 
+These models differed on the predictors included and allowed us to evaluate the relative importance of suitability. 
+Our response variable was the number of species it interacts with in a community, the species degree. 
+We modelled degree using a logarithmic link function and a Poisson distribution. 
+Nevertheless results were qualitatively the same if instead we model the normalised degree (REF Martin Gonzalez 2010) using a binomial distribution in which degree is the number of successes and the number of species in the opposite guild is the number of trials (Supp info). 
+
+Briefly, our baseline model included suitability and guild as population effects and two groups, species and the community. 
+Our main predictor, the environmental suitability of the species in that particular location, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
+As we are particularly intrested on understanding wether the effect of species suitability is conditional on the species guild (plant or pollinator), we also included guild and its interaction with suitability in the model. 
+We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate the extent to which suitability is a population or a group level effect. 
+Finally, to account for unmeasured differences between communities, like sampling effort, sampling method, or richness, we calculated an intercept for each community in our study.
+
+We calculated three more alternative models. 
+The first alternative model accounted for the overall generalism of a species by including among the predictors the magnitude of the number of species it interacts with across networks. 
+The second alternative model, is highly prescriptive and accounts 
+
+
 <!-- We then investigated  -->
 
 <!-- See topography data from Species distribution model transferability and model grain size – finer may not always be better -->
