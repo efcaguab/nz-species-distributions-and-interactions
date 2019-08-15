@@ -8,6 +8,7 @@ worldclim_address: http://biogeo.ucdavis.edu/data/worldclim/v2.0/tif/base/wc2.0_
 envirem_topo_address: https://deepblue.lib.umich.edu/data/downloads/37720c880?locale=en
 envirem_address: https://deepblue.lib.umich.edu/data/downloads/ms35t870p?locale=en
 n_chunks: 100
+brm_cores: 4
 climate_buffer: 5000
 n_subsamples: 1000
 env_space_resolution: 200

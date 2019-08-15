@@ -39,7 +39,8 @@ configuration_plan <- drake_plan(
   climate_buffer = config$climate_buffer, 
   env_space_resolution = config$env_space_resolution,
   n_subsamples = config$n_subsamples, 
-  min_suitability_error = config$min_suitability_error
+  min_suitability_error = config$min_suitability_error, 
+  brm_cores = config$brm_cores
 )
 
 # Download data ----------------------------------------------------------
