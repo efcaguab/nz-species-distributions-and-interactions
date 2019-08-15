@@ -347,4 +347,4 @@ paper_plan <- rbind(
 # future::plan(future.callr::callr)
 # plan_config <- drake_config(paper_plan)
 # vis_drake_graph(plan_config, targets_only = T)
-make(paper_plan)
+make(paper_plan, lock_envir = FALSE)
