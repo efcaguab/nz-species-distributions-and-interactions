@@ -60,21 +60,34 @@ calc_org_degree <- function(possible_interactions, interactions_org){
     dplyr::select(-n_pla_id, -n_ani_id)
 }
 
-
-build_analysis_frame <- function(org_degree, independent_suitability){
-  org_degree %>%
+# Get a data frame that can be used to fit the models
+build_analysis_frame <- function(org_degree, 
+                                 independent_suitability, 
+                                 filter_same_partners = FALSE, 
+                                 min_obs = 0){
+  af <- org_degree %>%
     dplyr::right_join(independent_suitability,
-                      by = c("loc_id", "org_id")) 
-}
-
-sample_baseline_population <- function(analysis_frame){
-  analysis_frame %$%
-    list(N = NROW(.), 
-         K = n_partners, )
-  dat = list(N = NROW(analysis_frame), 
-             K = d$total_tools, P = d$population, C = d$contact_high)
-  fit10_10 <- sampling(m10_10, data = dat, iter = 1000, chains = 2, cores = 2)
+                      by = c("loc_id", "org_id")) %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::mutate(n_obs = dplyr::n()) 
   
+  if(filter_same_partners) {
+    af %<>% dplyr::filter(any(n_partners != n_possible_partners))
+  }
+  
+  af <- af %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(n_obs > min_obs) %>%
+    dplyr::mutate(scaled_suitability = scale(suitability), 
+                  log_n_partners_global = log(n_partners_global), 
+                  scaled_log_n_partners_global = scale(log_n_partners_global), 
+                  scaled_n_possible_partners = scale(n_possible_partners))
+  
+  # add scale attributes to main frame
+  attr(af, "scale_attributes") <- lapply(af, attributes)
+  
+  af %>%
+    dplyr::filter(!is.na(suitability))
 }
 
 define_binomial_models <- function(){
