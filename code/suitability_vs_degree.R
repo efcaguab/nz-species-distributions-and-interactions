@@ -139,7 +139,7 @@ define_alternative_models <- function(formula_base){
   
   formula_global_possible <- update(
     formula_base, 
-    ~ . + scaled_n_partners_global + scaled_log_n_possible_partners
+    ~ . + scaled_log_n_partners_global + scaled_n_possible_partners
   )
   
   formula_no_suitability <- update(
