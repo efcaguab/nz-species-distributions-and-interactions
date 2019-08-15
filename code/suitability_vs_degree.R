@@ -77,6 +77,68 @@ sample_baseline_population <- function(analysis_frame){
   
 }
 
+define_binomial_models <- function(){
+  require(brms)
+  
+  formula_base <- brmsformula(
+    n_partners | trials(n_opposite_guild) ~ 
+      scaled_suitability * guild +
+      (1 + scaled_suitability | org_id) + (1 | loc_id), 
+    family = binomial, 
+    center = TRUE
+  )
+ 
+  define_alternative_models(formula_base)
+}
+
+define_poisson_models <- function(){
+  require(brms)
+  
+  formula_base <- brmsformula(
+    n_partners ~ 
+      scaled_suitability * guild +
+      (1 + scaled_suitability | org_id) + (1 | loc_id), 
+    family = poisson, 
+    center = TRUE
+  )
+  
+  define_alternative_models(formula_base)
+}
+
+define_alternative_models <- function(formula_base){
+  
+  formula_global <- update(
+    formula_base, 
+    ~ . + scaled_log_n_partners_global
+  )
+  
+  formula_possible <- update(
+    formula_base, 
+    ~ . + scaled_n_possible_partners
+  )
+  
+  formula_global_possible <- update(
+    formula_base, 
+    ~ . + scaled_n_partners_global + scaled_log_n_possible_partners
+  )
+  
+  formula_no_suitability <- update(
+    formula_global_possible, 
+    ~ . - scaled_suitability - scaled_suitability:guild -
+      (1 + scaled_suitability | org_id) +
+      (1 | org_id)
+  )
+  
+  list(
+    formula_base = formula_base, 
+    formula_global = formula_global, 
+    formula_possible = formula_possible, 
+    formula_global_possible = formula_global_possible, 
+    formula_no_suitability = formula_no_suitability
+  )
+  
+}
+
 tinker <- function(){
   library(brms)
   mod <- analysis_frame %>% 
