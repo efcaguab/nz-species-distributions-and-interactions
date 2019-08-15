@@ -139,6 +139,42 @@ define_alternative_models <- function(formula_base){
   
 }
 
+fit_model <- function(formulas, analysis_frame, cores = 1L){
+  suppressPackageStartupMessages({
+    library(brms)
+    library(future)
+  })
+  
+  plan(multiprocess)
+  
+  formulas %>%
+    purrr::map(brm, 
+               data = analysis_frame, 
+               prior = c(
+                 set_prior("normal(0,10)", class = "b"), 
+                 set_prior("normal(0,10)", class = "Intercept"), 
+                 set_prior("lkj(2)", class = "cor"), 
+                 set_prior("cauchy(0, 2)", class = "sd")
+                 ),
+               chains = 4, 
+               iter = 4000,
+               warmup = 2000, 
+               cores = cores,
+               # future = TRUE,
+               control = list(adapt_delta = 0.99, 
+                              max_treedepth =12))
+}
+
+sample_baseline_population <- function(analysis_frame){
+  analysis_frame %$%
+    list(N = NROW(.), 
+         K = n_partners, )
+  dat = list(N = NROW(analysis_frame), 
+             K = d$total_tools, P = d$population, C = d$contact_high)
+  fit10_10 <- sampling(m10_10, data = dat, iter = 1000, chains = 2, cores = 2)
+  
+}
+
 tinker <- function(){
   library(brms)
   mod <- analysis_frame %>% 
