@@ -90,8 +90,11 @@ build_analysis_frame <- function(org_degree,
     dplyr::filter(!is.na(suitability))
 }
 
+# Return a list of forumlas for the binomial models
 define_binomial_models <- function(){
-  require(brms)
+  suppressPackageStartupMessages({
+    require(brms)
+  })
   
   formula_base <- brmsformula(
     n_partners | trials(n_opposite_guild) ~ 
@@ -104,8 +107,11 @@ define_binomial_models <- function(){
   define_alternative_models(formula_base)
 }
 
+# Return a list of formulas for the poisson models
 define_poisson_models <- function(){
-  require(brms)
+  suppressPackageStartupMessages({
+    require(brms)
+  })  
   
   formula_base <- brmsformula(
     n_partners ~ 
@@ -118,6 +124,7 @@ define_poisson_models <- function(){
   define_alternative_models(formula_base)
 }
 
+# Given a base formula with suitability return a list of alternative formulas
 define_alternative_models <- function(formula_base){
   
   formula_global <- update(
