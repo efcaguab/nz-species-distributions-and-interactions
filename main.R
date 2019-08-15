@@ -270,7 +270,11 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   nets = ints_as_nets(interactions_org), 
   possible_interactions = get_possible_interactions(interactions_org), 
   org_degree = calc_org_degree(possible_interactions, interactions_org), 
-  analysis_frame = build_analysis_frame(org_degree, independent_suitability)
+  analysis_frame = build_analysis_frame(org_degree, independent_suitability), 
+  poisson_formulas = define_poisson_models(), 
+  binomial_formulas = define_binomial_models(), 
+  binomial_models = fit_model(binomial_formulas, analysis_frame, brm_cores), 
+  poisson_models = fit_model(poisson_formulas, analysis_frame, brm_cores)
 )
 
 # Referencing -------------------------------------------------------------
