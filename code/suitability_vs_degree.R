@@ -173,12 +173,12 @@ fit_model <- function(formulas, analysis_frame, cores = 1L){
                prior = c(
                  set_prior("normal(0,10)", class = "b"), 
                  set_prior("normal(0,10)", class = "Intercept"), 
-                 set_prior("lkj(2)", class = "cor"), 
+                 # set_prior("lkj(2)", class = "cor"), 
                  set_prior("cauchy(0, 2)", class = "sd")
                  ),
                chains = 4, 
-               iter = 4000,
-               warmup = 2000, 
+               iter = 2000,
+               # warmup = 2000, 
                cores = cores,
                # future = TRUE,
                control = list(adapt_delta = 0.99, 
