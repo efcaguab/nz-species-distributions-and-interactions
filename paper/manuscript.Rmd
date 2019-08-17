@@ -427,15 +427,19 @@ We allowed the intercept of degree and slope of the suitability-degree relations
 Finally, to account for unmeasured differences between communities, like sampling effort, sampling method, or richness, we calculated an intercept for each community in our study.
 
 We calculated three more alternative models. 
-The first alternative model accounted for the overall generalism of a species by including among the predictors the magnitude of the number of species it interacts with across networks. 
-The second alternative model, is highly prescriptive and accounts 
+The first alternative model accounted for the overall generalism of a species by also including among the predictors the magnitude of the total number of interacting species across networks. 
+In the second alternative model, we included as a predictor the number of known possible interacting species. 
+We calculated this predictor as the number of interacting species across networks that were present in the community. 
+Accounting for the number of possible interacting species is a particularly stringent way to test the effect of environmental suitability as for many species populations, the number of possible interacting species is the same or very similar to the number of species it actually interacts with. 
+The third alternative model included both the overall species generalism and the possible number of interacting species. 
+Finally, the fourth model included both of the aforementioned predictors but excluded the effect of environmental suitability both at the population and the species level. 
+To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
-
-<!-- We then investigated  -->
-
-<!-- See topography data from Species distribution model transferability and model grain size – finer may not always be better -->
-
-<!-- Induced by latitude (more generalism in tropics) or diversity (more generalism with high diversity or the opposite), See Baiser 2019 for refsuse network as a random effect. -->
+All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
+All models were fitted using four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
+We used weakly informative priors for all model parameters. 
+Specifically we used normal priors of mean zero and standard deviation ten for the population level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 2\) for the correlation matrix between group-level parameters. 
+We used the Wanatabe-Akaike information criterion (WAIC) to compare the out-of sample performance of the different models. 
 
 # Results
 
