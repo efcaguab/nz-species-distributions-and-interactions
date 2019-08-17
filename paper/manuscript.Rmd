@@ -418,7 +418,7 @@ We then used a series of bayesian multilevel models to evaluate the impact of en
 These models differed on the predictors included and allowed us to evaluate the relative importance of suitability. 
 Our response variable was the number of species it interacts with in a community, the species degree. 
 We modelled degree using a logarithmic link function and a Poisson distribution. 
-Nevertheless results were qualitatively the same if instead we model the normalised degree (REF Martin Gonzalez 2010) using a binomial distribution in which degree is the number of successes and the number of species in the opposite guild is the number of trials (Supp info). 
+Nevertheless results were qualitatively the same if instead we model the normalised degree [@martin_gonzalez_centrality_2010] using a binomial distribution in which degree is the number of successes and the number of species in the opposite guild is the number of trials (Supp info). 
 
 Briefly, our baseline model included suitability and guild as population effects and two groups, species and the community. 
 Our main predictor, the environmental suitability of the species in that particular location, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
