@@ -414,34 +414,36 @@ readd(fig_sensitivity_analysis)
 
 ## Model
 
-We then used a series of bayesian multilevel models to evaluate the impact of environmental suitability on the number of interacting species. 
-These models differed on the predictors included and allowed us to evaluate the relative importance of suitability. 
-Our response variable was the number of species it interacts with in a community, the species degree. 
-We modelled degree using a logarithmic link function and a Poisson distribution. 
-Nevertheless results were qualitatively the same if instead we model the normalised degree [@martin_gonzalez_centrality_2010] using a binomial distribution in which degree is the number of successes and the number of species in the opposite guild is the number of trials (Supp info). 
+We then used a two sets of bayesian multilevel models to evaluate the impact of environmental suitability on the size of the realised Eltonian niche. 
+We measure the size of the Eltonian niche using the normalised degree of species, this is, the number of species it interacts with given the number of possible partners. 
+In the first set of models, we use a *naive* version of the normalised degree [@martin_gonzalez_centrality_2010] in which the number of possible partners is defined by the number of species in the opposite guild.
+This definition is the one commonly used in the ecological network literature. 
+In the second set of models, we use an *informed* version of the normalised degree in which the number of possible partners is defined by the number of species in the community with which the focal species is known to interact in any other location in our dataset.
+Measuring the size of the Eltonian niche using the informed version of normalised degree is a particularly stringent test of the effect of environmental suitability as for many species populations in our dataset, the number of possible interacting species is the same or very similar to the number of species it actually interacts with. 
 
-Briefly, our baseline model included suitability and guild as population effects and two groups, species and the community. 
-Our main predictor, the environmental suitability of the species in that particular location, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
+In all models normalised degree was modelled using a logit link function and a binomial distribution in which the number of species interacts with is the number of successes and the number of possible partners is the number of trials. 
+We are aware that wether species intreacts or not is not a bernoulli process as species interactions are not independent from each other, however a binomial distribution allow us to indirectly account for the differences in species richness across communities. 
+Importantly, results are qualitatively the similar when we model species degree directly using a Poisson distribution and a logarithmic link function and include the number of possible partners as predictors (Supp info).
+
+Within each model set we evaluate several candidate models in order to evaluate the relative importance of suitability. 
+A first model included suitability and guild as population effects and two grouping levels, species and the community. 
+Our main predictor, the environmental suitability of the species in that particular community, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
 As we are particularly intrested on understanding wether the effect of species suitability is conditional on the species guild (plant or pollinator), we also included guild and its interaction with suitability in the model. 
 We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate the extent to which suitability is a population or a group level effect. 
-Finally, to account for unmeasured differences between communities, like sampling effort, sampling method, or richness, we calculated an intercept for each community in our study.
-
-We calculated three more alternative models. 
-The first alternative model accounted for the overall generalism of a species by also including among the predictors the magnitude of the total number of interacting species across networks. 
-In the second alternative model, we included as a predictor the number of known possible interacting species. 
-We calculated this predictor as the number of interacting species across networks that were present in the community. 
-Accounting for the number of possible interacting species is a particularly stringent way to test the effect of environmental suitability as for many species populations, the number of possible interacting species is the same or very similar to the number of species it actually interacts with. 
-The third alternative model included both the overall species generalism and the possible number of interacting species. 
-Finally, the fourth model included both of the aforementioned predictors but excluded the effect of environmental suitability both at the population and the species level. 
+Finally, to account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
+A second model accounted for the overall generalism of a species by also including among the predictors the magnitude of the total number of interacting species across networks. 
+Finally, a third alternative model included the overall species generalism but excluded the effect of environmental suitability both at the population and the species level. 
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
 All models were fitted using four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
 We used weakly informative priors for all model parameters. 
-Specifically we used normal priors of mean zero and standard deviation ten for the population level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 2\) for the correlation matrix between group-level parameters. 
+Specifically we used normal priors of mean zero and standard deviation ten for the population level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters. 
 We used the Wanatabe-Akaike information criterion (WAIC) to compare the out-of sample performance of the different models. 
 
 # Results
+
+We found that environmental suitability is an important variable 
 
 We found a positive association between environmental suitability and the niche breath. 
 This relationship was maintained when we account for the overall generality of a species and even in extremely conservative model parametrization when we include the number of possible interacting species as an independent variable. 
