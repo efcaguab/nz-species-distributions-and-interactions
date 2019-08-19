@@ -196,7 +196,7 @@ fit_model <- function(formulas, analysis_frame, cores = 1L){
                  set_prior("cauchy(0, 2)", class = "sd")
                  ),
                chains = 4, 
-               iter = 2000,
+               iter = 4000,
                # warmup = 2000, 
                cores = cores,
                # future = TRUE,
@@ -253,4 +253,44 @@ tinker <- function(){
     coord_flip()
     lm(n_partners ~ suitability + log(n_partners_global) + n_opposite_guild + n_possible_partners, data = .) %>% 
     summary()
+    
+    loo(poisson_models[[1]], poisson_models[[2]], poisson_models[[3]], poisson_models[[4]], poisson_models[[5]])
+    loo(binomial_models[[1]], binomial_models[[2]], binomial_models[[3]], binomial_models[[4]], binomial_models[[5]])
+    waic(binomial_constrained_models[[1]], binomial_constrained_models[[2]], binomial_constrained_models[[3]], binomial_constrained_models[[4]], binomial_models[[5]])
+    
+    ## extract fitted values
+    fit <- binomial_constrained_models[[4]]
+    fitted_values <- predict(fit) %>%
+      tibble::as.tibble() %>%
+      dplyr::mutate(trials = standata(fit)$trials)
+    # head(fitted_values)
+    
+    # inverse_logit_trans <- trans_new("inverse logit",
+    #                                  transform = plogis,
+    #                                  inverse = qlogis)
+    # 
+    # logit_trans <- trans_new("logit",
+    #                          transform = qlogis,
+    #                          inverse = plogis)
+    # 
+    
+    ## plot fitted means against actual response
+    dat <- as.data.frame(cbind(Y = standata(fit)$Y, fitted_values)) %>%
+      dplyr::mutate(trials = 1)
+    
+    ggplot(dat, aes(y = Estimate/trials, x = Y/trials, group = Y/trials)) + 
+      geom_point(alpha = 0.5, shape = 21) +
+      # scale_x_continuous(trans = logit_trans) +
+      # scale_y_continuous(trans = logit_trans) +
+      # coord_trans(x = inverse_logit_trans)
+      scale_y_log10() +
+      scale_x_log10() +
+        geom_ribbon(aes(ymin = Q2.5/trials, ymax = Q97.5/trials), 
+                     size = 0.25, alpha = 0.25) +
+      # coord_equal(xlim = c(0,1), ylim = c(0,1)) +
+      coord_equal() +
+      geom_abline(intercept = 0, slope = 1, linetype = 2 ) +
+      pub_theme()# +
+      # labs(x = "estimated", 
+      #      y = "")
 }
