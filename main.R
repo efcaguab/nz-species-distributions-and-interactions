@@ -195,7 +195,7 @@ download_ocurrence_data_plan <- drake_plan(
                                          returnclass = "sp", 
                                          scale = 10),
   country_data_sf = rnaturalearth::ne_countries(returnclass = "sf", scale = 10), 
-  flagged_occurrences  = clean_occurrences_chunked(occurrences, land_data, country_data_sf, n_chunks),
+  flagged_occurrences = clean_occurrences_chunked(occurrences, land_data, country_data_sf, n_chunks),
   cleaned_occurrences =  flagged_occurrences[.sea_manual & .summary],
   gbif_key_groups = get_gbif_key_groups(cleaned_occurrences),
   n_cleaned_occurrences = count_occurrences_per_taxon(cleaned_occurrences), 
@@ -273,7 +273,9 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   analysis_frame = build_analysis_frame(org_degree, independent_suitability), 
   poisson_formulas = define_poisson_models(), 
   binomial_formulas = define_binomial_models(), 
+  binomial_constrained_formulas = define_binomial_constrained_models(),
   binomial_models = fit_model(binomial_formulas, analysis_frame, brm_cores), 
+  binomial_constrained_models = fit_model(binomial_constrained_formulas, analysis_frame, brm_cores), 
   poisson_models = fit_model(poisson_formulas, analysis_frame, brm_cores)
 )
 

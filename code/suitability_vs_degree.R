@@ -107,6 +107,22 @@ define_binomial_models <- function(){
   define_alternative_models(formula_base)
 }
 
+define_binomial_constrained_models <- function(){
+  suppressPackageStartupMessages({
+    require(brms)
+  })
+  
+  formula_base <- brmsformula(
+    n_partners | trials(n_possible_partners) ~ 
+      scaled_suitability * guild +
+      (1 + scaled_suitability | org_id) + (1 | loc_id), 
+    family = binomial, 
+    center = TRUE
+  )
+  
+  define_alternative_models(formula_base)
+}
+
 # Return a list of formulas for the poisson models
 define_poisson_models <- function(){
   suppressPackageStartupMessages({
