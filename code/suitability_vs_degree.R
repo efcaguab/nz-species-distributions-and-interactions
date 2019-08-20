@@ -177,7 +177,7 @@ define_poisson_models <- function(){
 
 
 
-fit_model <- function(formulas, analysis_frame, cores = 1L){
+fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
   suppressPackageStartupMessages({
     library(brms)
     library(future)
@@ -195,7 +195,7 @@ fit_model <- function(formulas, analysis_frame, cores = 1L){
                  set_prior("cauchy(0, 2)", class = "sd")
                  ),
                chains = 4, 
-               iter = 4000,
+               iter = iter,
                # warmup = 2000, 
                cores = cores,
                # future = TRUE,
