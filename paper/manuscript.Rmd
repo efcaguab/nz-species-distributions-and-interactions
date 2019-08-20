@@ -425,14 +425,18 @@ In all models normalised degree was modelled using a logit link function and a b
 We are aware that wether species intreacts or not is not a bernoulli process as species interactions are not independent from each other, however a binomial distribution allow us to indirectly account for the differences in species richness across communities. 
 Importantly, results are qualitatively the similar when we model species degree directly using a Poisson distribution and a logarithmic link function and include the number of possible partners as predictors (Supp info).
 
-Within each model set we evaluate several candidate models in order to evaluate the relative importance of suitability. 
-A first model included suitability and guild as population effects and two grouping levels, species and the community. 
-Our main predictor, the environmental suitability of the species in that particular community, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
-As we are particularly intrested on understanding wether the effect of species suitability is conditional on the species guild (plant or pollinator), we also included guild and its interaction with suitability in the model. 
+Within each model set we evaluate four candidate models in order to evaluate the relative importance of suitability. 
+A first model, our baseline model, included four population-level predictors and two grouping levels, species and the community. 
+The population-level predictors, commonly called fixed effects, were the environmental suitability, the species guild, the species generalism, and it's environmental niche breadth.
+The environmental suitability of the species in that particular community, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
+We were particularly intrested on understanding wether the effect of species suitability is conditional on the species guild (plant or pollinator), we therefore included guild and its interaction with suitability in the model. 
+To estimate a species overal level of generalism we included among the predictors the magnitude of the total number of interacting species across communities in our dataset. 
+We included the number of communities where the species was present as a rough estimate of a species environmental niche breadth. 
 We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate the extent to which suitability is a population or a group level effect. 
 Finally, to account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
-A second model accounted for the overall generalism of a species by also including among the predictors the magnitude of the total number of interacting species across networks. 
-Finally, a third alternative model included the overall species generalism but excluded the effect of environmental suitability both at the population and the species level. 
+
+The second, third, and fourth models within each model set were a reduction of the first. 
+In the second model we removed the species generalism as a predictor, in the third, we removed the environmental niche breadth, and in the fourth model we removed excluded the effect of environmental suitability (both at the population and the species level). 
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
@@ -443,6 +447,7 @@ We used the Wanatabe-Akaike information criterion (WAIC) to compare the out-of s
 
 # Results
 
+We found that our models performe
 We found that environmental suitability is an important variable 
 
 We found a positive association between environmental suitability and the niche breath. 

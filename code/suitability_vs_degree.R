@@ -81,7 +81,8 @@ build_analysis_frame <- function(org_degree,
     dplyr::mutate(scaled_suitability = scale(suitability), 
                   log_n_partners_global = log(n_partners_global), 
                   scaled_log_n_partners_global = scale(log_n_partners_global), 
-                  scaled_n_possible_partners = scale(n_possible_partners))
+                  scaled_n_possible_partners = scale(n_possible_partners), 
+                  scaled_n_obs = scale(n_obs))
   
   # add scale attributes to main frame
   attr(af, "scale_attributes") <- lapply(af, attributes)
@@ -99,6 +100,8 @@ define_binomial_models <- function(){
   formula_base <- brmsformula(
     n_partners | trials(n_opposite_guild) ~ 
       scaled_suitability * guild +
+      scaled_n_possible_partners + scaled_log_n_partners_global +
+      scaled_n_obs +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
     center = TRUE
@@ -115,12 +118,42 @@ define_binomial_constrained_models <- function(){
   formula_base <- brmsformula(
     n_partners | trials(n_possible_partners) ~ 
       scaled_suitability * guild +
+      scaled_log_n_partners_global + scaled_n_obs +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
     center = TRUE
   )
   
   define_alternative_models(formula_base)
+}
+
+# Given a base formula with suitability return a list of alternative formulas
+define_alternative_models <- function(formula_base){
+  
+  formula_no_generalism <- update(
+    formula_base, 
+    ~ . - scaled_log_n_partners_global
+  )
+  
+  formula_no_grinell_niche_size <- update(
+    formula_base, 
+    ~ . - scaled_n_obs
+  )
+  
+  formula_no_suitability <- update(
+    formula_base, 
+    ~ . - scaled_suitability - scaled_suitability:guild -
+      (1 + scaled_suitability | org_id) +
+      (1 | org_id)
+  )
+  
+  list(
+    formula_base = formula_base, 
+    formula_no_generalism = formula_no_generalism, 
+    formula_no_grinell_niche_size = formula_no_grinell_niche_size, 
+    formula_no_suitability = formula_no_suitability
+  )
+  
 }
 
 # Return a list of formulas for the poisson models
@@ -132,51 +165,16 @@ define_poisson_models <- function(){
   formula_base <- brmsformula(
     n_partners ~ 
       scaled_suitability * guild +
+      + scaled_n_possible_partners + scaled_log_n_partners_global + scaled_n_obs
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = poisson, 
     center = TRUE
   )
   
-  formula_global <-  update(
-    formula_base, 
-    ~ . + scaled_n_possible_partners + scaled_log_n_partners_global
-  )
-  
-  formula_no_suitability <- update(
-    formula_global, 
-    ~ . - scaled_suitability - scaled_suitability:guild -
-      (1 + scaled_suitability | org_id) +
-      (1 | org_id))
-    
-  list(
-    formula_base = formula_base, 
-    formula_global = formula_global, 
-    formula_no_suitability = formula_no_suitability
-  )
+  define_alternative_models(formula_base)
 }
 
-# Given a base formula with suitability return a list of alternative formulas
-define_alternative_models <- function(formula_base){
-  
-  formula_global <- update(
-    formula_base, 
-    ~ . + scaled_log_n_partners_global
-  )
 
-  formula_no_suitability <- update(
-    formula_global, 
-    ~ . - scaled_suitability - scaled_suitability:guild -
-      (1 + scaled_suitability | org_id) +
-      (1 | org_id)
-  )
-  
-  list(
-    formula_base = formula_base, 
-    formula_global = formula_global, 
-    formula_no_suitability = formula_no_suitability
-  )
-  
-}
 
 fit_model <- function(formulas, analysis_frame, cores = 1L){
   suppressPackageStartupMessages({
@@ -259,7 +257,7 @@ tinker <- function(){
     waic(binomial_constrained_models[[1]], binomial_constrained_models[[2]], binomial_constrained_models[[3]], binomial_constrained_models[[4]], binomial_models[[5]])
     
     ## extract fitted values
-    fit <- binomial_constrained_models[[4]]
+    fit <- binomial_models[[3]]
     fitted_values <- predict(fit) %>%
       tibble::as.tibble() %>%
       dplyr::mutate(trials = standata(fit)$trials)
@@ -276,20 +274,22 @@ tinker <- function(){
     
     ## plot fitted means against actual response
     dat <- as.data.frame(cbind(Y = standata(fit)$Y, fitted_values)) %>%
-      dplyr::mutate(trials = 1)
+      dplyr::mutate(trials = 1) %>%
+      dplyr::group_by(Y) %>%
+      dplyr::summarise_if(is.numeric, mean) 
     
     ggplot(dat, aes(y = Estimate/trials, x = Y/trials, group = Y/trials)) + 
+      geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.25) +
       geom_point(alpha = 0.5, shape = 21) +
       # scale_x_continuous(trans = logit_trans) +
       # scale_y_continuous(trans = logit_trans) +
       # coord_trans(x = inverse_logit_trans)
-      scale_y_log10() +
-      scale_x_log10() +
-        geom_ribbon(aes(ymin = Q2.5/trials, ymax = Q97.5/trials), 
-                     size = 0.25, alpha = 0.25) +
+      # scale_y_log10() +
+      # scale_x_log10() +
+        geom_linerange(aes(ymin = Q2.5/trials, ymax = Q97.5/trials),
+                     size = 0.25, alpha = 0.5) +
       # coord_equal(xlim = c(0,1), ylim = c(0,1)) +
       coord_equal() +
-      geom_abline(intercept = 0, slope = 1, linetype = 2 ) +
       pub_theme()# +
       # labs(x = "estimated", 
       #      y = "")
