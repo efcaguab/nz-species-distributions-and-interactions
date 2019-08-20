@@ -93,11 +93,18 @@ mae <- function(x, y){
   sum(abs(x - y)) / length(x)
 }
 
-determine_min_occurrences <- function(error_subsamples, min_suitability_error){
+determine_min_occurrences_per_niche_space <- function(error_subsamples, min_suitability_error){
   error_subsamples %>%
-    dplyr::filter(niche_space == "single_species") %>%
+    # dplyr::filter(niche_space == "single_species") %>%
     dplyr::mutate(prop_occ = n_occ/n_net_occurrences, 
-                  log_prop_occ = log(prop_occ)) %>% 
+                  log_prop_occ = log(prop_occ)) %>%
+    split(.$niche_space) %>%
+    purrr::map(determine_min_occurrences, min_suitability_error)
+}
+
+
+determine_min_occurrences <- function(data, min_suitability_error){
+  data %>% 
     mgcv::gam(mae ~ s(log_prop_occ), data = . , family = "binomial") %>% 
     broom::augment(type.predict = "response", 
                    newdata = tibble::tibble(
