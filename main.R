@@ -277,13 +277,19 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   nets = ints_as_nets(interactions_org), 
   possible_interactions = get_possible_interactions(interactions_org), 
   org_degree = calc_org_degree(possible_interactions, interactions_org), 
-  analysis_frame = build_analysis_frame(org_degree, independent_suitability), 
+  analysis_frames = purrr::map(list(independent_suitability = independent_suitability, 
+                                   collective_suitability = collective_suitability),
+                              ~build_analysis_frame(org_degree, .)), 
   poisson_formulas = define_poisson_models(), 
   binomial_formulas = define_binomial_models(), 
   binomial_constrained_formulas = define_binomial_constrained_models(),
-  binomial_models = fit_model(binomial_formulas, analysis_frame, brm_cores), 
-  binomial_constrained_models = fit_model(binomial_constrained_formulas, analysis_frame, brm_cores), 
-  poisson_models = fit_model(poisson_formulas, analysis_frame, brm_cores)
+  model_formulas = list(binomial_formulas = binomial_formulas, 
+                        binomial_constrained_formulas = binomial_constrained_formulas, 
+                        poisson_formulas = poisson_formulas), 
+  formulas_and_data = purrr::cross2(model_formulas, analysis_frames), 
+  models = purrr::map(formulas_and_data,
+                      ~fit_model(formulas = .[[1]], analysis_frame = .[[2]], 
+                                 cores = brm_cores, iter = 4000))
 )
 
 # Referencing -------------------------------------------------------------
