@@ -107,6 +107,10 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
     library(ggplot2)
   })
   
+  thresholds <- min_occurrences_factor %>% 
+    as.data.frame() %>% 
+    tidyr::gather(key = "niche_space")
+  
   pal <- cgm()$pal_el_green[c(4,7)]
   
   n_nets <- suitability_subsamples$n_net_occurrences[1]
@@ -114,17 +118,19 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
   e <- error_subsamples %>%
     dplyr::group_by(niche_space) %>%
     dplyr::mutate(error = mae)
+  
   p <- e %>%
     ggplot(aes(x = n_occ, y = error, fill = niche_space)) +
     geom_point(data = dplyr::sample_n(e, 1000),
                shape = 21, alpha = 1, size = 1) +
     # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
-    geom_smooth(aes(colour = niche_space), method = "gam" , 
-                method.args = list(family = "binomial"), 
-                formula = y ~ s(x), se = T, 
+    geom_smooth(aes(colour = niche_space), method = "gam" ,
+                method.args = list(family = "binomial"),
+                formula = y ~ s(x), se = T,
                 size = 0.5) +
     geom_hline(yintercept = min_suitability_error, size = 0.25, linetype = 2) +
-    geom_vline(xintercept = min_occurrences_factor*n_nets, size = 0.25, linetype = 3) +
+    geom_vline(data = thresholds, 
+               aes(xintercept = value*n_nets, colour = niche_space), size = 0.5, linetype = 2) +
     # scale_x_continuous(limits = c(2,35)) +
     scale_x_log10() +
     scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
