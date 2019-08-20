@@ -69,7 +69,8 @@ build_analysis_frame <- function(org_degree,
     dplyr::right_join(independent_suitability,
                       by = c("loc_id", "org_id")) %>%
     dplyr::group_by(org_id) %>%
-    dplyr::mutate(n_obs = dplyr::n()) 
+    dplyr::mutate(n_obs = dplyr::n(), 
+                  grinell_niche_size = KUD_percent_90) 
   
   if(filter_same_partners) {
     af %<>% dplyr::filter(any(n_partners != n_possible_partners))
@@ -82,7 +83,7 @@ build_analysis_frame <- function(org_degree,
                   log_n_partners_global = log(n_partners_global), 
                   scaled_log_n_partners_global = scale(log_n_partners_global), 
                   scaled_n_possible_partners = scale(n_possible_partners), 
-                  scaled_n_obs = scale(n_obs))
+                  scaled_grinell_niche_size = scale(grinell_niche_size))
   
   # add scale attributes to main frame
   attr(af, "scale_attributes") <- lapply(af, attributes)
@@ -101,7 +102,7 @@ define_binomial_models <- function(){
     n_partners | trials(n_opposite_guild) ~ 
       scaled_suitability * guild +
       scaled_n_possible_partners + scaled_log_n_partners_global +
-      scaled_n_obs +
+      scaled_grinell_niche_size +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
     center = TRUE
@@ -118,7 +119,7 @@ define_binomial_constrained_models <- function(){
   formula_base <- brmsformula(
     n_partners | trials(n_possible_partners) ~ 
       scaled_suitability * guild +
-      scaled_log_n_partners_global + scaled_n_obs +
+      scaled_log_n_partners_global + scaled_grinell_niche_size +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
     center = TRUE
@@ -137,7 +138,7 @@ define_alternative_models <- function(formula_base){
   
   formula_no_grinell_niche_size <- update(
     formula_base, 
-    ~ . - scaled_n_obs
+    ~ . - scaled_grinell_niche_size
   )
   
   formula_no_suitability <- update(
@@ -165,7 +166,7 @@ define_poisson_models <- function(){
   formula_base <- brmsformula(
     n_partners ~ 
       scaled_suitability * guild +
-      + scaled_n_possible_partners + scaled_log_n_partners_global + scaled_n_obs
+      + scaled_n_possible_partners + scaled_log_n_partners_global + scaled_grinell_niche_size +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = poisson, 
     center = TRUE
