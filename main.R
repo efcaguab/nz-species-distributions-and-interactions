@@ -261,6 +261,13 @@ climatic_niche_plan <- drake_plan(
                                                               filled_climate_in_occurrences_2, 
                                                               filled_climate_in_networks_2, grid_networks, 
                                                               R = env_space_resolution),
+ collective_suitability = calc_suitability_collectivelly_all(enough_occurrences$all_species, 
+                                                             interactions_org, 
+                                                             filled_climate_in_occurrences_2, 
+                                                             filled_climate_in_networks_2, 
+                                                             grid_networks, 
+                                                             R = env_space_resolution),
+ # grinellian_niche_size = measure_pairwise_ebv_distance(),
  ecoregions = read_ecoregions(file_in("data/downloads/terrestrial-ecoregions.zip"))
 )
 
