@@ -386,6 +386,19 @@ calc_suitability <- function(
                                                  niche_space) %>%
     smooth_realised_niche(R)
   
+  area_cell <- raster::res(sp_niche$z) %>% prod()
+  percents <- seq(0.1, 0.5, by = 0.1)
+  niche_area <-
+    percents %>%
+      purrr::map_dbl(~sum(as.vector(sp_niche$z > .)) * area_cell) %>%
+      tibble::tibble(org_id = this_sp, 
+                     KUD_area_percent = percents, 
+                     KUD_area = .) %>%
+      dplyr::mutate(KUD_area_percent = paste('KUD_percent', 
+                                             (1- KUD_area_percent)*100, 
+                                             sep = "_")) %>%
+      tidyr::spread(key = KUD_area_percent, value = KUD_area)
+  
   # Get network climate in niche space
   net_niche_space <- project_locations_climate_to_space(net_locations_climate, 
                                                         niche_space)$lisup
@@ -400,7 +413,8 @@ calc_suitability <- function(
   tibble::tibble(org_id = this_sp, 
                  suitability = suitabiliy, 
                  w = w, 
-                 loc_id = this_net_locations)
+                 loc_id = this_net_locations) %>%
+    dplyr::inner_join(niche_area)
 }
 
 # Gicen some locations (coded as a grid in the climate thingy) find their projection in niche space 

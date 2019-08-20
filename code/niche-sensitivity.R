@@ -65,7 +65,8 @@ calc_error_subsamples <- function(suitability_subsamples){
     suitability_subsamples %>%
     dplyr::filter(n_occ == max(n_occ)) %>%
     dplyr::rename(base_suitability = suitability) %>%
-    dplyr::select(-n_occ)
+    dplyr::select(-n_occ) %>%
+    dplyr::select_at(dplyr::vars(-dplyr::contains("KUD")))
     # split(.$niche_space) %>%
 
   # suitability_subsamples %>%
@@ -76,6 +77,7 @@ calc_error_subsamples <- function(suitability_subsamples){
   #   scale_x_log10()
   
   dplyr::inner_join(suitability_subsamples, baseline) %>%
+    dplyr::select_at(dplyr::vars(-dplyr::contains("KUD"))) %>% 
     dplyr::mutate(run = rep(seq(1, nrow(.)/2), each = 2)) %>%
     dplyr::group_by(niche_space, n_occ, run, n_net_occurrences) %>%
     dplyr::summarise(mse = mse(suitability, base_suitability), 
