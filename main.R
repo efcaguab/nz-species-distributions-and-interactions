@@ -287,6 +287,8 @@ suitability_vs_generalism_plan <- drake::drake_plan(
                         binomial_constrained_formulas = binomial_constrained_formulas, 
                         poisson_formulas = poisson_formulas), 
   formulas_and_data = purrr::cross2(model_formulas, analysis_frames), 
+  models_index = purrr::cross2(names(model_formulas), names(analysis_frames)) %>%
+    purrr::imap_dfr(~tibble::tibble(i = .y, formula_type = .x[[1]], dataset_type = .x[[2]])),
   models = purrr::map(formulas_and_data,
                       ~fit_model(formulas = .[[1]], analysis_frame = .[[2]], 
                                  cores = brm_cores, iter = 4000))
