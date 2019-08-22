@@ -447,8 +447,21 @@ We used the Wanatabe-Akaike information criterion (WAIC) to compare the out-of s
 
 # Results
 
-We found that our models performe
+We found that our models performed relativelly well. 
+Overall we found no relationship between 
 We found that environmental suitability is an important variable 
+
+```{r}
+loadd(model_ranking)
+waic_scores <- as.data.frame(model_ranking$waic) %>%
+  tibble::rownames_to_column(var = "formula") %>%
+  dplyr::select(formula, waic, se_waic)
+
+loo_scores <- as.data.frame(model_ranking$loo) %>%
+  tibble::rownames_to_column(var = "formula") %>%
+  dplyr::select(formula, looic, se_looic)
+```
+
 
 We found a positive association between environmental suitability and the niche breath. 
 This relationship was maintained when we account for the overall generality of a species and even in extremely conservative model parametrization when we include the number of possible interacting species as an independent variable. 
