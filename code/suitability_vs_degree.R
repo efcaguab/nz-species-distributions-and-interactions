@@ -89,7 +89,8 @@ build_analysis_frame <- function(org_degree,
   attr(af, "scale_attributes") <- lapply(af, attributes)
   
   af %>%
-    dplyr::filter(!is.na(suitability))
+    dplyr::filter(!is.na(suitability)) %>%
+    dplyr::filter(n_obs > 1)
 }
 
 # Return a list of forumlas for the binomial models
@@ -119,7 +120,8 @@ define_binomial_constrained_models <- function(){
   formula_base <- brmsformula(
     n_partners | trials(n_possible_partners) ~ 
       scaled_suitability * guild +
-      scaled_log_n_partners_global + scaled_grinell_niche_size +
+      scaled_log_n_partners_global + scaled_grinell_niche_size + 
+      scaled_n_possible_partners +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
     center = TRUE
@@ -141,6 +143,16 @@ define_alternative_models <- function(formula_base){
     ~ . - scaled_grinell_niche_size
   )
   
+  formula_no_possible_partners <- update(
+    formula_base, 
+    ~ . - scaled_n_possible_partners
+  )
+  
+  formula_no_possible_partners_generalism <- update(
+    formula_base, 
+    ~ . - scaled_n_possible_partners - scaled_log_n_partners_global
+  )
+  
   formula_no_suitability <- update(
     formula_base, 
     ~ . - scaled_suitability - scaled_suitability:guild -
@@ -151,7 +163,9 @@ define_alternative_models <- function(formula_base){
   list(
     formula_base = formula_base, 
     formula_no_generalism = formula_no_generalism, 
-    formula_no_grinell_niche_size = formula_no_grinell_niche_size, 
+    formula_no_grinell_niche_size = formula_no_grinell_niche_size,
+    formula_no_possible_partners = formula_no_possible_partners,
+    formula_no_possible_partners_generalism = formula_no_possible_partners_generalism,
     formula_no_suitability = formula_no_suitability
   )
   
