@@ -217,6 +217,27 @@ fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
                               max_treedepth =12))
 }
 
+get_chosen_model <- function(models, models_index, chosen_formula_type, chosen_dataset){
+  models_index %>%
+    dplyr::filter(formula_type == chosen_formula_type, 
+                  dataset_type == chosen_dataset) %$% 
+                  {
+                    extract2(models, i)  
+                  }
+}
+
+compare_models <- function(chosen_models){
+  model_loo <- chosen_models %>%
+    purrr::map(brms::loo)
+  
+  model_waic <- chosen_models %>%
+    purrr::map(brms::waic)
+  
+  list(loo = brms::loo_compare(model_loo), 
+       waic = brms::loo_compare(model_waic))
+}
+
+
 sample_baseline_population <- function(analysis_frame){
   analysis_frame %$%
     list(N = NROW(.), 
