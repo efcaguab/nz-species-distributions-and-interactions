@@ -295,7 +295,8 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   chosen_models = get_chosen_model(models, models_index, 
                                    chosen_formula_type = "binomial_formulas", 
                                    chosen_dataset = "collective_suitability"), 
-  model_ranking = compare_models(chosen_models)
+  model_ranking = compare_models(chosen_models), 
+  bayesian_r2_baseline = brms::bayes_R2(chosen_models$formula_base)
 )
 
 # Referencing -------------------------------------------------------------
@@ -320,7 +321,8 @@ figures_plan <- drake_plan(
   fig_sensitivity_analysis = plot_sensitivity_analysis(error_subsamples, 
                                                        min_suitability_error, 
                                                        min_occurrences_factor, 
-                                                       suitability_subsamples)
+                                                       suitability_subsamples), 
+  fig_conditional_effects = plot_all_conditional_effect(chosen_models$formula_base)
 )
 
 
