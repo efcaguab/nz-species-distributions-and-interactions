@@ -149,3 +149,88 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
   
   p
 }
+
+plot_all_conditional_effect <- function(this_model){
+  
+  suppressPackageStartupMessages({
+    require(brms)
+    require(tidybayes)
+    require(ggplot2)
+  })
+  
+  
+  median_trials <- this_model$data %>%
+    # dplyr::distinct(org_id, loc_id, .keep_all = F) %>% nrow
+    dplyr::distinct(guild, n_opposite_guild) %>%
+    dplyr::group_by(guild) %>% 
+    dplyr::summarise(n_opposite_guild = median(n_opposite_guild))
+  
+  grinell_niche_size_plot <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = seq(-2, 2, length.out = 10), 
+                    scaled_suitability = 0, 
+                    scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>% 
+    dplyr::mutate(var = scaled_grinell_niche_size) %>%
+    plot_conditional_effect_guild() +
+    labs(title = "(a) Effect of environmental niche size", 
+         x = "environmental niche size (scaled)")
+  
+  suitability_scale_attr <- get_scale_attributes(this_model$data$scaled_suitability)
+  
+  suitability_plot <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = 0, 
+                    scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
+                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
+                    scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
+                  var = suitability) %>%
+    plot_conditional_effect_guild() +
+    labs(title = "(a) Environmental suitability", 
+         x = "environmental suitability")
+  
+  generality_scale_attr <- get_scale_attributes(this_model$data$scaled_log_n_partners_global)
+  
+  generality_plot <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = 0, 
+                    scaled_suitability = 0, 
+                    scaled_log_n_partners_global = seq(unscaled_to_scaled(log(1), generality_scale_attr),
+                                                       unscaled_to_scaled(log(50), generality_scale_attr), 
+                                                       length.out = 20), 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+    dplyr::mutate(log_n_partners_global = scaled_to_unscaled(scaled_log_n_partners_global, generality_scale_attr), 
+                  n_partners_global = exp(log_n_partners_global),
+                  var = n_partners_global) %>%
+    dplyr::filter(guild == "ani_id") %>%
+    plot_conditional_effect_guild() +
+    labs(title = "(c) Generality", 
+         x = "environmental suitability")
+  
+  possible_scale_attr <- get_scale_attributes(this_model$data$scaled_n_possible_partners)
+  
+  possible_plot <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = 0, 
+                    scaled_suitability = 0, 
+                    scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = seq(unscaled_to_scaled(1, possible_scale_attr),
+                                                     2, 
+                                                     length.out = 20)) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+    dplyr::mutate(n_possible_partners = scaled_to_unscaled(scaled_n_possible_partners, possible_scale_attr), 
+                  var = n_possible_partners ) %>%
+    dplyr::filter(guild == "ani_id") %>%
+    plot_conditional_effect_guild() +
+    labs(title = "(d) Possible number of partners", 
+         x = "# possible interactions")
+  
+  cowplot::plot_grid(suitability_plot, 
+                     grinell_niche_size_plot,
+                     generality_plot,
+                     possible_plot,
+                     ncol = 1, 
+                     align = "hv", axis = "lt", 
+                     rel_widths = c(2,1))
+}
