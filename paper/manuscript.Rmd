@@ -443,12 +443,18 @@ All models were fitted under a bayesian framework using the R package `brms` `r 
 All models were fitted using four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
 We used weakly informative priors for all model parameters. 
 Specifically we used normal priors of mean zero and standard deviation ten for the population level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters. 
-We used the Wanatabe-Akaike information criterion (WAIC) to compare the out-of sample performance of the different models. 
+To minimise the potential effect of influential observations we used leave-one-out cross-valiadtion to estimate their expected log predictive density and compare the out-of sample performance of the different models. 
+We also calculate the Wanatabe-Akaike information criterion (WAIC) for comparison. 
 
 # Results
 
+```{r}
+loadd(bayesian_r2_baseline)
+```
+
 We found that our models performed relativelly well. 
-Overall we found no relationship between 
+The bayesian R-squared for our baseline model was `r round(bayesian_r2_baseline[1], digits = 2)`. 
+Overall we found only weak evidence of a relationship between the environmental niche size and the normalised degree. 
 We found that environmental suitability is an important variable 
 
 ```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*4, fig.cap = "Conditional effects"}
