@@ -103,7 +103,7 @@ define_binomial_models <- function(){
     n_partners | trials(n_opposite_guild) ~ 
       scaled_suitability * guild +
       scaled_n_possible_partners + scaled_log_n_partners_global +
-      scaled_grinell_niche_size +
+      scaled_grinell_niche_size * guild +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
     center = TRUE
@@ -120,10 +120,29 @@ define_binomial_constrained_models <- function(){
   formula_base <- brmsformula(
     n_partners | trials(n_possible_partners) ~ 
       scaled_suitability * guild +
-      scaled_log_n_partners_global + scaled_grinell_niche_size + 
+      scaled_log_n_partners_global + scaled_grinell_niche_size * guild + 
       scaled_n_possible_partners +
       (1 + scaled_suitability | org_id) + (1 | loc_id), 
     family = binomial, 
+    center = TRUE
+  )
+  
+  define_alternative_models(formula_base)
+}
+
+
+# Return a list of formulas for the poisson models
+define_poisson_models <- function(){
+  suppressPackageStartupMessages({
+    require(brms)
+  })  
+  
+  formula_base <- brmsformula(
+    n_partners ~ 
+      scaled_suitability * guild +
+      + scaled_n_possible_partners + scaled_log_n_partners_global + scaled_grinell_niche_size * guild +
+      (1 + scaled_suitability | org_id) + (1 | loc_id), 
+    family = poisson, 
     center = TRUE
   )
   
@@ -140,7 +159,7 @@ define_alternative_models <- function(formula_base){
   
   formula_no_grinell_niche_size <- update(
     formula_base, 
-    ~ . - scaled_grinell_niche_size
+    ~ . - scaled_grinell_niche_size - scaled_grinell_niche_size:guild
   )
   
   formula_no_possible_partners <- update(
@@ -170,25 +189,6 @@ define_alternative_models <- function(formula_base){
   )
   
 }
-
-# Return a list of formulas for the poisson models
-define_poisson_models <- function(){
-  suppressPackageStartupMessages({
-    require(brms)
-  })  
-  
-  formula_base <- brmsformula(
-    n_partners ~ 
-      scaled_suitability * guild +
-      + scaled_n_possible_partners + scaled_log_n_partners_global + scaled_grinell_niche_size +
-      (1 + scaled_suitability | org_id) + (1 | loc_id), 
-    family = poisson, 
-    center = TRUE
-  )
-  
-  define_alternative_models(formula_base)
-}
-
 
 
 fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
