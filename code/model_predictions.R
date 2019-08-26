@@ -1,49 +1,65 @@
-make_predictions <- function(this_model){
-  suppressPackageStartupMessages({
-    require(brms)
-    require(tidybayes)
-  })
-  
-  model_data <- standata(this_model)
-  median_trials <- this_model$data %>% 
-    dplyr::distinct(guild, n_opposite_guild) %>%
-    dplyr::group_by(guild) %>% 
-    dplyr::summarise(trials = median(n_opposite_guild))
-  
-  conditions <- data.frame(guild = c("pla_id", "ani_id"))
-  
-  me <- marginal_effects(this_model, "scaled_grinell_niche_size", conditions = median_trials)
- 
-  grinell_niche_size_data <- expand.grid(scaled_grinell_niche_size = seq(-2, 2, length.out = 10), 
-              n_opposite_guild = 60, 
-              scaled_suitability = 0, 
-              guild = c("ani_id", "pla_id"), 
-              scaled_log_n_partners_global = 0, 
-              scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100)
-  
-  suitability_data <- expand.grid(scaled_grinell_niche_size = 0, 
-                                  n_opposite_guild = 60, 
-                                  scaled_suitability = seq(-2, 2, length.out = 10), 
-                                  guild = c("ani_id", "pla_id"), 
-                                  scaled_log_n_partners_global = 0, 
-                                  scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100)
-  
-  suitability_data %>% 
-    ggplot(aes(x = scaled_suitability, y = .value, group = interaction(.draw, guild), colour = guild)) +
-    geom_line(alpha = 0.1, size = 0.25) +
+
+get_scale_attributes <- function(x){
+  list(scale = attr(x, 'scaled:scale'), 
+       center = attr(x, 'scaled:center'))
+}
+
+unscaled_to_scaled <- function(x, scale_attr){
+  (x - scale_attr$center) / scale_attr$scale
+}
+
+scaled_to_unscaled <- function(x, scale_attr){
+  x * scale_attr$scale + scale_attr$center
+}
+
+plot_conditional_effect_guild <- function(data){
+  data %>%
+  ggplot(aes(x = var, y = .value, group = interaction(.draw, guild), colour = guild)) +
+    geom_line(alpha = 0.15, size = 0.25) +
     geom_line(aes(group = guild), stat = "summary",fun.y = "mean", size = 1) +
-    pub_theme()
+    facet_wrap(~guild) +
+    pub_theme() +
+    coord_cartesian(expand = F) +
+    theme(legend.position = "none") +
+    labs(y = "# interactions")
+}
+
+tinker <- function(){
+  # model_data <- standata(this_model)
+  # conditions <- data.frame(guild = c("pla_id", "ani_id"))
   
-  get_variables(this_model) %>% head
+  # me <- marginal_effects(this_model, "scaled_grinell_niche_size", conditions = median_trials)
   
   this_model %>%
-    spread_draws(b_scaled_suitability, b_guildpla_id) %>% 
+    spread_draws(b_scaled_suitability, 
+                 # b_guildpla_id, 
+                 b_scaled_grinell_niche_size, 
+                 b_scaled_log_n_partners_global, 
+                 b_scaled_n_possible_partners) %>% 
+    tidyr::gather("variable", "value", dplyr::starts_with("b_")) %>%
+    ggplot(aes(x = value, y = variable)) +
+    geom_vline(xintercept = 0, size = 0.25, linetype = 2) +
+    stat_intervalh() +
+    # stat_pointintervalh(size = 1) +
+    # geom_vline(xintercept = 0) +
+    # facet_grid(~ variable, scales = "free") +
+    scale_color_brewer() +
+    pub_theme() +
+    theme(legend.position = "none") +
+    labs(title = "(b) Effect sizes")
+  
+  effect <- this_model %>%
+    spread_draws(b_scaled_grinell_niche_size) %>% 
     tidyr::gather("variable", "value", dplyr::starts_with("b_")) %>%
     ggplot(aes(x = value)) +
     stat_density(geom = "line") +
-    geom_vline(xintercept = 0) +
+    geom_vline(xintercept = 0, linetype = 2, size = 0.25) +
     facet_wrap(~ variable, scales = "free") +
-    pub_theme()
+    pub_theme() +
+    theme(panel.border = element_blank(), 
+          axis.line.x = element_line(), 
+          axis.ticks.y = element_blank(), 
+          axis.text.y = element_blank(), 
+          axis.title.y = element_blank()) +
+    labs(title = "(b) Effect of environmental niche size")
 }
