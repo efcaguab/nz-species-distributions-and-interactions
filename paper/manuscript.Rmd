@@ -30,12 +30,14 @@ header-includes:
   - \newcommand{\lr}[1]{page~\pageref{#1}, line~\lineref{#1}}
   - \externaldocument{supp-info}
   - \usepackage[export]{adjustbox}
+  - \usepackage{caption}
 editor_options: 
   chunk_output_type: console
 ---
 
 \linenumbers
 \doublespacing
+\captionsetup[table]{skip=10pt}
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, 
