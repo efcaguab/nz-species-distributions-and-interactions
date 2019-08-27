@@ -109,7 +109,8 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
   
   thresholds <- min_occurrences_factor %>% 
     as.data.frame() %>% 
-    tidyr::gather(key = "niche_space")
+    tidyr::gather(key = "niche_space") %>%
+    dplyr::filter(niche_space == "all_species")
   
   pal <- cgm()$pal_el_green[c(4,7)]
   
@@ -117,27 +118,35 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
   
   e <- error_subsamples %>%
     dplyr::group_by(niche_space) %>%
-    dplyr::mutate(error = mae)
+    dplyr::mutate(error = mae) %>%
+    dplyr::filter(niche_space == "all_species")
   
   p <- e %>%
-    ggplot(aes(x = n_occ, y = error, fill = niche_space)) +
+    ggplot(aes(x = n_occ, y = error)) +
     geom_point(data = dplyr::sample_n(e, 1000),
-               shape = 21, alpha = 1, size = 1) +
+               shape = 21, alpha = 1, size = 1, colour = "grey30", stroke = 0.25) +
     # geom_smooth(method = "glm", method.args = list(family = "binomial")) +
-    geom_smooth(aes(colour = niche_space), method = "gam" ,
+    geom_smooth(method = "gam" ,
                 method.args = list(family = "binomial"),
-                formula = y ~ s(x), se = T,
-                size = 0.5) +
+                formula = y ~ s(x), se = F,
+                size = 0.5, colour = "black") +
     geom_hline(yintercept = min_suitability_error, size = 0.25, linetype = 2) +
     geom_vline(data = thresholds, 
-               aes(xintercept = value*n_nets, colour = niche_space), size = 0.5, linetype = 2) +
+               aes(xintercept = value*n_nets), size = 0.25, linetype = 2) +
+    geom_text(data = thresholds, 
+              aes(label = paste("~",  value, "occurrences\nper community"), 
+                  x = value*n_nets), 
+              y = max(e$error), angle = 90, hjust = 1, vjust = 1.2, 
+              size = 2.3, lineheight = 0.8) +
+    annotate("text", label = "10% error", x = max(e$n_occ), y = 0.1, hjust = 1, 
+             vjust = -1, size = 2.3) +
     # scale_x_continuous(limits = c(2,35)) +
     scale_x_log10() +
-    scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
-                      labels = c(" env. space based on all spp. occurrences", 
-                                 " env. space based on each spp. occurrences")) +
+    # scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
+                      # labels = c(" env. space based on all spp. occurrences", 
+                                 # " env. space based on each spp. occurrences")) +
     pub_theme() +
-    theme(legend.position = c(0.95,0.95), 
+    theme(legend.position = "none", 
           legend.justification = c(1,1), 
           legend.title = element_blank()) +
     labs(x = "number of GBIF occurrences", 
