@@ -138,3 +138,20 @@ translate_model_formula <- function(x, type = "short"){
     )
   }
 }
+
+translate_guild <- function(x, type = "normal"){
+  if(type == "effect"){
+    dplyr::case_when(
+      x == "pla_id" ~ "effect on plants",
+      x == "ani_id" ~ "effect on animals",
+      TRUE ~ "unknown"
+    )
+  } else if(type == "normal"){
+    dplyr::case_when(
+      x == "pla_id" ~ "plants",
+      x == "ani_id" ~ "animals",
+      TRUE ~ "unknown"
+    )
+  }
+  
+}
