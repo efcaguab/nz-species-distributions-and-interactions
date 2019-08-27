@@ -250,4 +250,81 @@ plot_conditional_effect_guild <- function(data, pal){
     theme(legend.position = "none") +
     labs(y = "# interactions")
 }
+
+plot_ranf<- function(){
+  
+  suppressPackageStartupMessages({
+    require(ggplot2)
+    require(tidybayes)
+  })
+  
+  pal <- cgm()$pal_el_green[c(8,7)]
+  
+  sp_plot <- this_model$data %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::mutate(n_obs = dplyr::n_distinct(loc_id)) %>%
+    dplyr::distinct(guild, org_id, n_obs, scaled_log_n_partners_global,scaled_grinell_niche_size) %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(n_obs >= 5)
+    
+  
+  median_trials <- this_model$data %>%
+    # dplyr::distinct(org_id, loc_id, .keep_all = F) %>% nrow
+    dplyr::distinct(guild, n_opposite_guild) %>%
+    dplyr::group_by(guild) %>% 
+    dplyr::summarise(n_opposite_guild = median(n_opposite_guild))
+  
+  suitability_scale_attr <- get_scale_attributes(this_model$data$scaled_suitability)
+  
+  draws <- median_trials %>%
+    dplyr::inner_join(sp_plot, by = "guild") %>%
+    # dplyr::group_by(guild) %>%
+    # dplyr::sample_n(50) %>%
+    tidyr::crossing(#scaled_grinell_niche_size = 0, 
+                    scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
+                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
+                    # scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
+  
+  # draw_empirical <- this_model$data %>%
+  #   dplyr::inner_join(sp_plot) %>%
+  #   dplyr::select(-n_opposite_guild, -loc_id) %>%
+  #   dplyr::inner_join(median_trials) %>% 
+  #   add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
+  
+  draws  %>%
+    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
+                  var = suitability) %>% 
+    dplyr::ungroup() %>%
+    dplyr::mutate(guild = translate_guild(guild)) %>%
+    ggplot(aes(x = var, y = .value, group = interaction(.draw, guild), colour = guild)) +
+    geom_line(aes(group = org_id), stat = "summary",fun.y = "mean", size = 0.25) +
+    facet_wrap(~guild, ncol = 1) +
+    scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
+                      labels = c(" env. space based on all spp. occurrences",
+                                 " env. space based on each spp. occurrences")) +
+    pub_theme() +
+    coord_cartesian(expand = F) +
+    theme(legend.position = "none") +
+    labs(y = "# interactions")
+  
+  
+  # loc_id_intercept <- 
+    p <- ranef(this_model, summary = T, probs = c(0.025, 0.975))$org_id  %>%
+      # dimnames()
+    extract(, , "scaled_suitability") %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column("loc_id") %>%
+    dplyr::mutate(loc_id = forcats::fct_reorder(loc_id, Estimate)) %>%
+    ggplot(aes(x = loc_id, y = Estimate)) +
+    geom_linerange(aes(ymin = Q2.5, ymax = Q97.5, colour = )) +
+      geom_point() +
+      coord_flip() 
+    
+    p
+    
+    ggsave("plot.pdf", p, width = unit(width("double"), "in"), height = unit(2.2*20, "in"))
+  
+  
 }
