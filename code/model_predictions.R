@@ -12,17 +12,7 @@ scaled_to_unscaled <- function(x, scale_attr){
   x * scale_attr$scale + scale_attr$center
 }
 
-plot_conditional_effect_guild <- function(data){
-  data %>%
-  ggplot(aes(x = var, y = .value, group = interaction(.draw, guild), colour = guild)) +
-    geom_line(alpha = 0.15, size = 0.25) +
-    geom_line(aes(group = guild), stat = "summary",fun.y = "mean", size = 1) +
-    facet_wrap(~guild) +
-    pub_theme() +
-    coord_cartesian(expand = F) +
-    theme(legend.position = "none") +
-    labs(y = "# interactions")
-}
+
 
 tinker <- function(){
   # model_data <- standata(this_model)

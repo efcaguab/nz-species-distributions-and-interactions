@@ -233,4 +233,21 @@ plot_all_conditional_effect <- function(this_model){
                      ncol = 1, 
                      align = "hv", axis = "lt", 
                      rel_widths = c(2,1))
+plot_conditional_effect_guild <- function(data, pal){
+  
+   data %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(guild = translate_guild(guild, "effect")) %>%
+    ggplot(aes(x = var, y = .value, group = interaction(.draw, guild), colour = guild)) +
+    geom_line(alpha = 0.15, size = 0.25) +
+    geom_line(aes(group = guild), stat = "summary",fun.y = "mean", size = 1) +
+    facet_wrap(~guild) +
+    scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
+                      labels = c(" env. space based on all spp. occurrences",
+                                 " env. space based on each spp. occurrences")) +
+    pub_theme() +
+    coord_cartesian(expand = F) +
+    theme(legend.position = "none") +
+    labs(y = "# interactions")
+}
 }
