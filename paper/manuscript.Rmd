@@ -486,7 +486,7 @@ loo_scores %>%
                col.names = c("predictors", "$\\Delta$", "$SE_{\\Delta}$", "IC", "WAIC"),
                escape = FALSE,
                linesep = "",
-               caption = "Comparison in out of sample predictive power of the baseline model (bold) and their alternatives. We rank models by their expected log predictive density based on their leave-one-out cross-validation information criterion (LOO). The standard error of the LOO difference provides rough guidance to the uncertainty of the model ranking. We also show the widely applicable information criterion (WAIC) of each model for comparison.") %>%
+               caption = "Comparison in out of sample predictive power of the baseline model (bold) and their alternatives. We rank models by their expected log predictive density based on their leave-one-out cross-validation information criterion (LOO). The standard error of the LOO difference provides rough guidance to the uncertainty of the model ranking. We also show the Wanatabe-Akaike information criterion (WAIC) of each model for comparison.") %>%
   kableExtra::kable_styling(font_size = 8) %>%
   kableExtra::add_header_above(c(" " = 1, "LOO" = 3, " " = 1))
 ```
