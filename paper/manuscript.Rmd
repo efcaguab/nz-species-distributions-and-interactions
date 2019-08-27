@@ -459,7 +459,7 @@ The bayesian R-squared for our baseline model was `r round(bayesian_r2_baseline[
 Overall we found only weak evidence of a relationship between the environmental niche size and the normalised degree. 
 We found that environmental suitability is an important variable 
 
-```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*4, fig.cap = "Conditional effects"}
+```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*3, fig.cap = "Conditional effects"}
 readd(fig_conditional_effects)
 ```
 
