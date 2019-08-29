@@ -223,8 +223,7 @@ plot_all_conditional_effect <- function(this_model){
 
     possible_plot <- median_trials %>%
     tidyr::crossing(scaled_grinell_niche_size = 0, 
-                    scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
-                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
+                    scaled_suitability = 0, 
                     scaled_log_n_partners_global = 0, 
                     scaled_n_possible_partners = seq(unscaled_to_scaled(1, possible_scale_attr),
                                                      2, 
@@ -266,7 +265,7 @@ plot_conditional_effect_guild <- function(data, pal){
     labs(y = "# interactions")
 }
 
-plot_ranf<- function(){
+plot_ranf <- function(this_model){
   
   suppressPackageStartupMessages({
     require(ggplot2)
@@ -280,8 +279,19 @@ plot_ranf<- function(){
     dplyr::mutate(n_obs = dplyr::n_distinct(loc_id)) %>%
     dplyr::distinct(guild, org_id, n_obs, scaled_log_n_partners_global,scaled_grinell_niche_size) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(n_obs >= 5)
+    dplyr::filter(n_obs >= 6)
     
+  sp_to_highlight <- brms::posterior_samples(this_model) %>%
+    dplyr::select(dplyr::contains("r_org_id")) %>%
+    dplyr::select(dplyr::contains("scaled_suitability")) %>% 
+    dplyr::select(-dplyr::contains("cor")) %>% 
+    tidyr::gather(key = "col", value = "value") %>%
+    dplyr::mutate(org_id = substr(col, 10, 18)) %>%
+    dplyr::inner_join(sp_plot) %>%
+    dplyr::group_by(guild, org_id) %>%
+    dplyr::summarise(value = mean(value)) %>%
+    dplyr::group_by(guild) %>%
+    dplyr::filter(value == max(value) | value == min(value)) %$% org_id
   
   median_trials <- this_model$data %>%
     # dplyr::distinct(org_id, loc_id, .keep_all = F) %>% nrow
@@ -308,38 +318,49 @@ plot_ranf<- function(){
   #   dplyr::inner_join(median_trials) %>% 
   #   add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
   
-  draws  %>%
+  a <- draws  %>%
     dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
-                  var = suitability) %>% 
+                  var = suitability, 
+                  highlight = org_id %in% sp_to_highlight) %>% 
     dplyr::ungroup() %>%
     dplyr::mutate(guild = translate_guild(guild)) %>%
     ggplot(aes(x = var, y = .value, group = interaction(.draw, guild), colour = guild)) +
-    geom_line(aes(group = org_id), stat = "summary",fun.y = "mean", size = 0.25) +
+    geom_line(aes(group = org_id, alpha = highlight, size = highlight), stat = "summary",fun.y = "mean") +
     facet_wrap(~guild, ncol = 1) +
+    scale_alpha_manual(values = c(0.5, 1)) +
+    scale_size_manual(values = c(0.25, 0.35)) +
     scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
                       labels = c(" env. space based on all spp. occurrences",
                                  " env. space based on each spp. occurrences")) +
     pub_theme() +
     coord_cartesian(expand = F) +
     theme(legend.position = "none") +
-    labs(y = "# interactions")
+    labs(y = "# interactions", 
+         x = "environmental suitability",
+         title = "(a) effect of suitability on individual species")
+  # a\[\w+,
   
+  b <- brms::posterior_samples(this_model, pars = c("cor_org_id__Intercept__scaled_suitability")) %>% 
+    dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability) %>%
+    ggplot(aes(x = correlation)) +
+    geom_density(fill = cgm()$pal_el_green[1], colour = NA) +
+    stat_density(geom = "line", colour = cgm()$pal_el_green[9], size = 0.25) +
+    # geom_vline(xintercept = 0, size = 0.25, linetype = 2) +
+    coord_cartesian(expand = T) +
+    pub_theme() +
+    theme(panel.border = element_blank(), 
+          axis.title.y = element_blank(), 
+          axis.text.y = element_blank(), 
+          axis.ticks.y = element_blank(), 
+          axis.line.x.bottom = element_line()) +
+    labs(title = "(b) correlation between random intercept and slope")
+
   
-  # loc_id_intercept <- 
-    p <- ranef(this_model, summary = T, probs = c(0.025, 0.975))$org_id  %>%
-      # dimnames()
-    extract(, , "scaled_suitability") %>%
-    as.data.frame() %>%
-    tibble::rownames_to_column("loc_id") %>%
-    dplyr::mutate(loc_id = forcats::fct_reorder(loc_id, Estimate)) %>%
-    ggplot(aes(x = loc_id, y = Estimate)) +
-    geom_linerange(aes(ymin = Q2.5, ymax = Q97.5, colour = )) +
-      geom_point() +
-      coord_flip() 
-    
-    p
-    
-    ggsave("plot.pdf", p, width = unit(width("double"), "in"), height = unit(2.2*20, "in"))
+  p <- cowplot::plot_grid(a, b, 
+                          ncol = 1 ,
+                          rel_heights = c(2,0.5), 
+                          align = "v")
+  # ggsave("plot.pdf", p, width = unit(width("single"), "in"), height = unit(2.2*2.5, "in"))
   
-  
+  p  
 }
