@@ -87,6 +87,59 @@ draw_conditional_fits <- function(this_model, median_trials){
        possible = possible)
 }
 
+draw_conditional_random_species <- function(this_model, median_trials){
+  
+  sp_properties <- this_model$data %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::mutate(n_obs = dplyr::n_distinct(loc_id)) %>%
+    dplyr::distinct(guild, org_id, n_obs, scaled_log_n_partners_global,scaled_grinell_niche_size) %>%
+    dplyr::ungroup() %>%
+    dplyr::filter(n_obs >= 6)
+  
+  slopes <- brms::posterior_samples(this_model) %>%
+    dplyr::select(dplyr::contains("r_org_id")) %>%
+    dplyr::select(dplyr::contains("scaled_suitability")) %>% 
+    dplyr::select(-dplyr::contains("cor")) %>% 
+    tidyr::gather(key = "col", value = "value") %>%
+    dplyr::mutate(org_id = substr(col, 10, 18)) %>%
+    dplyr::inner_join(sp_properties, by = "org_id") %>%
+    dplyr::group_by(guild, org_id) %>%
+    dplyr::summarise(value = mean(value)) %>%
+    dplyr::group_by(guild) 
+  
+  sp_to_highlight <- slopes %>%
+    dplyr::filter(value == max(value) | value == min(value)) %$% org_id
+  
+  suitability_scale_attr <- get_scale_attributes(this_model$data$scaled_suitability)
+  
+  draws <- median_trials %>%
+    dplyr::inner_join(sp_properties, by = "guild") %>%
+    tidyr::crossing(scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
+                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
+                    scaled_n_possible_partners = 0) %>%
+    tidybayes::add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
+  
+  draws %>%
+    dplyr::group_by(guild, org_id, scaled_suitability) %>%
+    dplyr::summarise(.value = mean(.value)) %>%
+    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
+                  var = suitability, 
+                  highlight = org_id %in% sp_to_highlight) %>%
+    dplyr::inner_join(slopes, by = c("guild", "org_id")) %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::mutate(suitability_percent = dplyr::percent_rank(suitability), 
+                  s_left = abs(suitability_percent - 0.1) == min(abs(suitability_percent - 0.1)), 
+                  s_right = abs(suitability_percent - 0.9) == min(abs(suitability_percent - 0.9)), 
+                  mark = value > 0 & s_right | value < 0 & s_left) 
+   
+}
+
+get_posterior_random_correlation <- function(baseline_model){
+  
+  brms::posterior_samples(baseline_model, pars = c("cor_org_id__Intercept__scaled_suitability")) %>% 
+    dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability)
+}
+
 tinker <- function(){
   # model_data <- standata(this_model)
   # conditions <- data.frame(guild = c("pla_id", "ani_id"))

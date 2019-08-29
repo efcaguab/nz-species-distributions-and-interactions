@@ -216,7 +216,7 @@ plot_conditional_effect_guild <- function(data, pal){
     labs(y = "# interactions")
 }
 
-plot_ranf <- function(this_model){
+plot_ranf <- function(random_species_draws, random_correlation_posterior){
   
   suppressPackageStartupMessages({
     require(ggplot2)
@@ -226,72 +226,13 @@ plot_ranf <- function(this_model){
   
   pal <- cgm()$pal_el_green[c(8,7)]
   
-  sp_plot <- this_model$data %>%
-    dplyr::group_by(org_id) %>%
-    dplyr::mutate(n_obs = dplyr::n_distinct(loc_id)) %>%
-    dplyr::distinct(guild, org_id, n_obs, scaled_log_n_partners_global,scaled_grinell_niche_size) %>%
-    dplyr::ungroup() %>%
-    dplyr::filter(n_obs >= 6)
-    
-  slopes <- brms::posterior_samples(this_model) %>%
-    dplyr::select(dplyr::contains("r_org_id")) %>%
-    dplyr::select(dplyr::contains("scaled_suitability")) %>% 
-    dplyr::select(-dplyr::contains("cor")) %>% 
-    tidyr::gather(key = "col", value = "value") %>%
-    dplyr::mutate(org_id = substr(col, 10, 18)) %>%
-    dplyr::inner_join(sp_plot, by = "org_id") %>%
-    dplyr::group_by(guild, org_id) %>%
-    dplyr::summarise(value = mean(value)) %>%
-    dplyr::group_by(guild) 
-  
-  sp_to_highlight <- slopes %>%
-    dplyr::filter(value == max(value) | value == min(value)) %$% org_id
-  
-  median_trials <- this_model$data %>%
-    # dplyr::distinct(org_id, loc_id, .keep_all = F) %>% nrow
-    dplyr::distinct(guild, n_opposite_guild) %>%
-    dplyr::group_by(guild) %>% 
-    dplyr::summarise(n_opposite_guild = median(n_opposite_guild))
-  
-  suitability_scale_attr <- get_scale_attributes(this_model$data$scaled_suitability)
-  
-  draws <- median_trials %>%
-    dplyr::inner_join(sp_plot, by = "guild") %>%
-    # dplyr::group_by(guild) %>%
-    # dplyr::sample_n(50) %>%
-    tidyr::crossing(#scaled_grinell_niche_size = 0, 
-                    scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
-                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
-                    # scaled_log_n_partners_global = 0, 
-                    scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
-  
-  mean_draws <- draws %>%
-    dplyr::group_by(guild, org_id, scaled_suitability) %>%
-    dplyr::summarise(.value = mean(.value)) %>%
-    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
-                  var = suitability, 
-                  highlight = org_id %in% sp_to_highlight)
-    
-  annotation_points <- mean_draws %>%
-    dplyr::inner_join(slopes) %>%
-    dplyr::group_by(org_id) %>%
-    dplyr::mutate(suitability_percent = dplyr::percent_rank(suitability), 
-                  s_left = abs(suitability_percent - 0.1) == min(abs(suitability_percent - 0.1)), 
-                  s_right = abs(suitability_percent - 0.9) == min(abs(suitability_percent - 0.9)), 
-                  mark = value > 0 & s_right | value < 0 & s_left) %>%
-    # dplyr::filter() %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(guild = translate_guild(guild)) 
-  
-  conditional_effects_plot <- mean_draws %>%
+  conditional_effects_plot <- random_species_draws %>%
     dplyr::ungroup() %>%
     dplyr::mutate(guild = translate_guild(guild)) %>%
     ggplot(aes(x = var, y = .value, colour = guild)) +
     geom_line(aes(group = org_id, alpha = highlight, size = highlight), stat = "summary",fun.y = "mean") +
-    geom_mark_circle(data = annotation_points, 
-                     aes(group = org_id, 
-                         filter = org_id %in% sp_to_highlight & mark, 
+    geom_mark_circle(aes(group = org_id, 
+                         filter = highlight & mark, 
                           label = org_id), 
                      expand = unit(0, "mm"), 
                      alpha = 0.1,
@@ -319,14 +260,11 @@ plot_ranf <- function(this_model){
          x = "environmental suitability",
          title = "(a) effect of suitability on individual species")
 
-  correlation_posterior <- brms::posterior_samples(this_model, pars = c("cor_org_id__Intercept__scaled_suitability")) %>% 
-    dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability)
-  
-  mean_correlation <- correlation_posterior %>%
+  mean_correlation <- random_correlation_posterior %>%
     dplyr::summarise_all(mean) %$% 
     correlation
   
-  correlation_plot <- correlation_posterior %>%
+  correlation_plot <- random_correlation_posterior %>%
     ggplot(aes(x = correlation)) +
     geom_density(fill = cgm()$pal_el_green[1], colour = NA) +
     stat_density(geom = "line", colour = cgm()$pal_el_green[9], size = 0.25) +
