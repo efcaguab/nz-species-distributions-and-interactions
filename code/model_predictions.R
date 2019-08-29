@@ -12,7 +12,11 @@ scaled_to_unscaled <- function(x, scale_attr){
   x * scale_attr$scale + scale_attr$center
 }
 
-
+get_parameter_posterior_summaries <- function(this_model){
+  brms::posterior_summary(this_model) %>% 
+    as.data.frame() %>%
+    tibble::rownames_to_column(var = "parameter") 
+}
 
 tinker <- function(){
   # model_data <- standata(this_model)

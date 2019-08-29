@@ -298,7 +298,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   model_ranking = compare_models(chosen_models), 
   baseline_model = chosen_models$formula_base, 
   bayesian_r2_baseline = brms::bayes_R2(baseline_model), 
-  parameter_posterior_summary = brms::posterior_summary(baseline_model)
+  parameter_posterior_summary = get_parameter_posterior_summaries(baseline_models)
 )
 
 # Referencing -------------------------------------------------------------
