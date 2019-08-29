@@ -475,15 +475,17 @@ Similarly environmental suitability does not show a consistent pattern accross s
 Indeed, when looking at the population level effects, suitability virtually no relationship with normalised degree, neither for plants or pollinators (Figure \@ref(fig:fig-conditional-effects)b). 
 However, suitability is still an important predictor as the difference between our baseline model and that that did not include suitability was XXX (±XX) (±SE). 
 Both among plants and pollinators for some species there is a strong negative relationship between suitability and normalised degree and some others with a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
-The slope of this relationship was negatively correlated with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b). 
-The correlation coefficient was `r round(random_cor$Estimate, 2)` with a `r round(random_cor$Q2.5, 2)` to `r round(random_cor$Q97.5, 2)` 95% credible interval.
 As expected, we found a positive relationship between a species generalism and normalised degree \@ref(fig:fig-conditional-effects)c). 
 However our model comparisons based on WAIC shows that including generalism in the model adds relatively little information once we have accounted for the other variables in the model.
 Finally, we found a strong and positive relationship between the number of possible interactions and the number of realised interactions in the community.
 
-Random effects SD. eviation
+```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*3, fig.cap = fig_conditional_effects_legend}
 
-```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*3, fig.cap = "Conditional effects"}
+fig_conditional_effects_legend <- 
+  paste0("Conditional effects of predictors in our models. The predicted values of the number of interacting species are based on ",
+         "XX ", "plants and ", 
+         "XX ", "pollinators, ",
+         "which corresponds to the median number of species in each guild. In each panel we condition on the mean values of all other predictors in the model. This is a environmental suitability of To illustrate the uncertainity around the fitted estimates we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution.")
 readd(fig_conditional_effects)
 ```
 
