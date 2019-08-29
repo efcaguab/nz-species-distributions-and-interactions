@@ -464,7 +464,7 @@ readd(fig_conditional_effects)
 ```
 
 
-```{r model-comparison-table}
+```{r tab-model-comparison-table}
 loadd(model_ranking)
 waic_scores <- as.data.frame(model_ranking$waic) %>%
   tibble::rownames_to_column(var = "formula") %>%
@@ -491,6 +491,9 @@ loo_scores %>%
   kableExtra::add_header_above(c(" " = 1, "LOO" = 3, " " = 1))
 ```
 
+```{r fig-random-effects, fig.width = width('single'), fig.height = 2.2*2.5, fig.cap = "Random effects"}
+readd(fig_random_effects)
+```
 
 We found a positive association between environmental suitability and the niche breath. 
 This relationship was maintained when we account for the overall generality of a species and even in extremely conservative model parametrization when we include the number of possible interacting species as an independent variable. 

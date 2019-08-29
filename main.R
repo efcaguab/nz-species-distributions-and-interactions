@@ -323,9 +323,9 @@ figures_plan <- drake_plan(
                                                        min_suitability_error, 
                                                        min_occurrences_factor, 
                                                        suitability_subsamples), 
-  fig_conditional_effects = plot_all_conditional_effect(chosen_models$formula_base)
+  fig_conditional_effects = plot_all_conditional_effect(chosen_models$formula_base), 
+  fig_random_effects = plot_ranf(chosen_models$formula_base)
 )
-
 
 # Manuscript --------------------------------------------------------------
 
