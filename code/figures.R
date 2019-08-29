@@ -270,6 +270,7 @@ plot_ranf <- function(this_model){
   suppressPackageStartupMessages({
     require(ggplot2)
     require(tidybayes)
+    require(ggforce)
   })
   
   pal <- cgm()$pal_el_green[c(8,7)]
@@ -281,16 +282,18 @@ plot_ranf <- function(this_model){
     dplyr::ungroup() %>%
     dplyr::filter(n_obs >= 6)
     
-  sp_to_highlight <- brms::posterior_samples(this_model) %>%
+  slopes <- brms::posterior_samples(this_model) %>%
     dplyr::select(dplyr::contains("r_org_id")) %>%
     dplyr::select(dplyr::contains("scaled_suitability")) %>% 
     dplyr::select(-dplyr::contains("cor")) %>% 
     tidyr::gather(key = "col", value = "value") %>%
     dplyr::mutate(org_id = substr(col, 10, 18)) %>%
-    dplyr::inner_join(sp_plot) %>%
+    dplyr::inner_join(sp_plot, by = "org_id") %>%
     dplyr::group_by(guild, org_id) %>%
     dplyr::summarise(value = mean(value)) %>%
-    dplyr::group_by(guild) %>%
+    dplyr::group_by(guild) 
+  
+  sp_to_highlight <- slopes %>%
     dplyr::filter(value == max(value) | value == min(value)) %$% org_id
   
   median_trials <- this_model$data %>%
@@ -312,23 +315,49 @@ plot_ranf <- function(this_model){
                     scaled_n_possible_partners = 0) %>%
     add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
   
-  # draw_empirical <- this_model$data %>%
-  #   dplyr::inner_join(sp_plot) %>%
-  #   dplyr::select(-n_opposite_guild, -loc_id) %>%
-  #   dplyr::inner_join(median_trials) %>% 
-  #   add_fitted_draws(this_model, re_formula = ~ (1 + scaled_suitability | org_id), n = 100)
-  
-  a <- draws  %>%
+  mean_draws <- draws %>%
+    dplyr::group_by(guild, org_id, scaled_suitability) %>%
+    dplyr::summarise(.value = mean(.value)) %>%
     dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
                   var = suitability, 
-                  highlight = org_id %in% sp_to_highlight) %>% 
+                  highlight = org_id %in% sp_to_highlight)
+    
+  annotation_points <- mean_draws %>%
+    dplyr::inner_join(slopes) %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::mutate(suitability_percent = dplyr::percent_rank(suitability), 
+                  s_left = abs(suitability_percent - 0.1) == min(abs(suitability_percent - 0.1)), 
+                  s_right = abs(suitability_percent - 0.9) == min(abs(suitability_percent - 0.9)), 
+                  mark = value > 0 & s_right | value < 0 & s_left) %>%
+    # dplyr::filter() %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(guild = translate_guild(guild)) 
+  
+  conditional_effects_plot <- mean_draws %>%
     dplyr::ungroup() %>%
     dplyr::mutate(guild = translate_guild(guild)) %>%
-    ggplot(aes(x = var, y = .value, group = interaction(.draw, guild), colour = guild)) +
+    ggplot(aes(x = var, y = .value, colour = guild)) +
     geom_line(aes(group = org_id, alpha = highlight, size = highlight), stat = "summary",fun.y = "mean") +
+    geom_mark_circle(data = annotation_points, 
+                     aes(group = org_id, 
+                         filter = org_id %in% sp_to_highlight & mark, 
+                          label = org_id), 
+                     expand = unit(0, "mm"), 
+                     alpha = 0.1,
+                      # concavity = 0, 
+                      colour = "transparent", 
+                      fill = "grey", 
+                      label.fontsize = 7, 
+                      label.buffer = unit(5, "mm"),
+                      label.minwidth = unit(10, "mm"),
+                      label.margin = margin(0.5, 0.5, 0.5, 0.5, "mm"),
+                      label.fontface = "italic", 
+                      con.size = 0.25, 
+                      con.cap = unit(0.1, "mm"), 
+                      con.type = "straight") +
     facet_wrap(~guild, ncol = 1) +
     scale_alpha_manual(values = c(0.5, 1)) +
-    scale_size_manual(values = c(0.25, 0.35)) +
+    scale_size_manual(values = c(0.25, 0.5)) +
     scale_fill_manual(values = pal, aesthetics = c("fill", "colour"), 
                       labels = c(" env. space based on all spp. occurrences",
                                  " env. space based on each spp. occurrences")) +
