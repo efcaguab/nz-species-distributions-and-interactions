@@ -159,79 +159,30 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
   p
 }
 
-plot_all_conditional_effect <- function(this_model){
+plot_all_conditional_effect <- function(cond_draws){
   
   suppressPackageStartupMessages({
-    require(brms)
-    require(tidybayes)
     require(ggplot2)
   })
   
   pal <- cgm()$pal_el_green[c(8,7)]
   
-  median_trials <- this_model$data %>%
-    # dplyr::distinct(org_id, loc_id, .keep_all = F) %>% nrow
-    dplyr::distinct(guild, n_opposite_guild) %>%
-    dplyr::group_by(guild) %>% 
-    dplyr::summarise(n_opposite_guild = median(n_opposite_guild))
-  
-  grinell_niche_size_plot <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = seq(-2, 2, length.out = 10), 
-                    scaled_suitability = 0, 
-                    scaled_log_n_partners_global = 0, 
-                    scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100) %>% 
-    dplyr::mutate(var = scaled_grinell_niche_size) %>%
+  grinell_niche_size_plot <- cond_draws$grinell_niche_size %>%
     plot_conditional_effect_guild(pal) +
     labs(title = "(a) environmental niche size", 
          x = "environmental niche size (scaled)")
   
-  suitability_scale_attr <- get_scale_attributes(this_model$data$scaled_suitability)
-  
-  suitability_plot <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = 0, 
-                    scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
-                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
-                    scaled_log_n_partners_global = 0, 
-                    scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
-    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
-                  var = suitability) %>%
+  suitability_plot <- cond_draws$suitability %>%
     plot_conditional_effect_guild(pal) +
     labs(title = "(b) environmental suitability", 
          x = "environmental suitability")
   
-  generality_scale_attr <- get_scale_attributes(this_model$data$scaled_log_n_partners_global)
-  
-  generality_plot <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = 0, 
-                    scaled_suitability = 0, 
-                    scaled_log_n_partners_global = seq(unscaled_to_scaled(log(1), generality_scale_attr),
-                                                       unscaled_to_scaled(log(50), generality_scale_attr), 
-                                                       length.out = 20), 
-                    scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
-    dplyr::mutate(log_n_partners_global = scaled_to_unscaled(scaled_log_n_partners_global, generality_scale_attr), 
-                  n_partners_global = exp(log_n_partners_global),
-                  var = n_partners_global) %>%
-    dplyr::filter(guild == "ani_id") %>%
+  generality_plot <- cond_draws$generality %>%
     plot_conditional_effect_guild(pal) +
     labs(title = "(c) generality", 
          x = "# partners across communities")
   
-  possible_scale_attr <- get_scale_attributes(this_model$data$scaled_n_possible_partners)
-
-    possible_plot <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = 0, 
-                    scaled_suitability = 0, 
-                    scaled_log_n_partners_global = 0, 
-                    scaled_n_possible_partners = seq(unscaled_to_scaled(1, possible_scale_attr),
-                                                     2, 
-                                                     length.out = 20)) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
-    dplyr::mutate(n_possible_partners = scaled_to_unscaled(scaled_n_possible_partners, possible_scale_attr), 
-                  var = n_possible_partners ) %>%
-    dplyr::filter(guild == "ani_id") %>%
+  possible_plot <- cond_draws$possible %>%
     plot_conditional_effect_guild(pal) +
     labs(title = "(d) possible number of interactions", 
          x = "# possible interactions")

@@ -18,6 +18,75 @@ get_parameter_posterior_summaries <- function(this_model){
     tibble::rownames_to_column(var = "parameter") 
 }
 
+get_median_number_trials <- function(model){
+  model$data %>%
+    dplyr::distinct(guild, n_opposite_guild) %>%
+    dplyr::group_by(guild) %>% 
+    dplyr::summarise(n_opposite_guild = median(n_opposite_guild))
+}
+
+draw_conditional_fits <- function(this_model, median_trials){
+  
+  suppressPackageStartupMessages({
+    require(brms)
+    require(tidybayes)
+  })
+  
+  grinell_niche_size <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = seq(-2, 2, length.out = 10), 
+                    scaled_suitability = 0, 
+                    scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>% 
+    dplyr::mutate(var = scaled_grinell_niche_size) 
+  
+  suitability_scale_attr <- get_scale_attributes(this_model$data$scaled_suitability)
+  
+  suitability <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = 0, 
+                    scaled_suitability = seq(unscaled_to_scaled(0, suitability_scale_attr),
+                                             unscaled_to_scaled(1, suitability_scale_attr), length.out = 10), 
+                    scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, suitability_scale_attr), 
+                  var = suitability) 
+  
+  generality_scale_attr <- get_scale_attributes(this_model$data$scaled_log_n_partners_global)
+  
+  generality <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = 0, 
+                    scaled_suitability = 0, 
+                    scaled_log_n_partners_global = seq(unscaled_to_scaled(log(1), generality_scale_attr),
+                                                       unscaled_to_scaled(log(50), generality_scale_attr), 
+                                                       length.out = 20), 
+                    scaled_n_possible_partners = 0) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+    dplyr::mutate(log_n_partners_global = scaled_to_unscaled(scaled_log_n_partners_global, generality_scale_attr), 
+                  n_partners_global = exp(log_n_partners_global),
+                  var = n_partners_global) %>%
+    dplyr::filter(guild == "ani_id") 
+  
+  possible_scale_attr <- get_scale_attributes(this_model$data$scaled_n_possible_partners)
+  
+  possible <- median_trials %>%
+    tidyr::crossing(scaled_grinell_niche_size = 0, 
+                    scaled_suitability = 0, 
+                    scaled_log_n_partners_global = 0, 
+                    scaled_n_possible_partners = seq(unscaled_to_scaled(1, possible_scale_attr),
+                                                     2, 
+                                                     length.out = 20)) %>%
+    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+    dplyr::mutate(n_possible_partners = scaled_to_unscaled(scaled_n_possible_partners, possible_scale_attr), 
+                  var = n_possible_partners ) %>%
+    dplyr::filter(guild == "ani_id") 
+  
+  list(grinell_niche_size = grinell_niche_size, 
+       suitability = suitability, 
+       generality = generality, 
+       possible = possible)
+}
+
 tinker <- function(){
   # model_data <- standata(this_model)
   # conditions <- data.frame(guild = c("pla_id", "ani_id"))

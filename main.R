@@ -298,7 +298,9 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   model_ranking = compare_models(chosen_models), 
   baseline_model = chosen_models$formula_base, 
   bayesian_r2_baseline = brms::bayes_R2(baseline_model), 
-  parameter_posterior_summary = get_parameter_posterior_summaries(baseline_models)
+  parameter_posterior_summary = get_parameter_posterior_summaries(baseline_model), 
+  median_trials = get_median_number_trials(baseline_model), 
+  cond_draws = draw_conditional_fits(baseline_model, median_trials)
 )
 
 # Referencing -------------------------------------------------------------
@@ -324,7 +326,7 @@ figures_plan <- drake_plan(
                                                        min_suitability_error, 
                                                        min_occurrences_factor, 
                                                        suitability_subsamples), 
-  fig_conditional_effects = plot_all_conditional_effect(chosen_models$formula_base), 
+  fig_conditional_effects = plot_all_conditional_effect(cond_draws), 
   fig_random_effects = plot_ranf(chosen_models$formula_base)
 )
 
