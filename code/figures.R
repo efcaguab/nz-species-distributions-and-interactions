@@ -367,14 +367,19 @@ plot_ranf <- function(this_model){
     labs(y = "# interactions", 
          x = "environmental suitability",
          title = "(a) effect of suitability on individual species")
-  # a\[\w+,
+
+  correlation_posterior <- brms::posterior_samples(this_model, pars = c("cor_org_id__Intercept__scaled_suitability")) %>% 
+    dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability)
   
-  b <- brms::posterior_samples(this_model, pars = c("cor_org_id__Intercept__scaled_suitability")) %>% 
-    dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability) %>%
+  mean_correlation <- correlation_posterior %>%
+    dplyr::summarise_all(mean) %$% 
+    correlation
+  
+  correlation_plot <- correlation_posterior %>%
     ggplot(aes(x = correlation)) +
     geom_density(fill = cgm()$pal_el_green[1], colour = NA) +
     stat_density(geom = "line", colour = cgm()$pal_el_green[9], size = 0.25) +
-    # geom_vline(xintercept = 0, size = 0.25, linetype = 2) +
+    geom_vline(xintercept = mean_correlation, size = 0.25, linetype = 2) +
     coord_cartesian(expand = T) +
     pub_theme() +
     theme(panel.border = element_blank(), 
@@ -385,7 +390,7 @@ plot_ranf <- function(this_model){
     labs(title = "(b) correlation between random intercept and slope")
 
   
-  p <- cowplot::plot_grid(a, b, 
+  p <- cowplot::plot_grid(conditional_effects_plot, correlation_plot, 
                           ncol = 1 ,
                           rel_heights = c(2,0.5), 
                           align = "v")
