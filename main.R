@@ -296,8 +296,9 @@ suitability_vs_generalism_plan <- drake::drake_plan(
                                    chosen_formula_type = "binomial_formulas", 
                                    chosen_dataset = "collective_suitability"), 
   model_ranking = compare_models(chosen_models), 
-  baseline_model = chosen_models$base_formula, 
-  bayesian_r2_baseline = brms::bayes_R2(chosen_models$formula_base)
+  baseline_model = chosen_models$formula_base, 
+  bayesian_r2_baseline = brms::bayes_R2(baseline_model), 
+  parameter_posterior_summary = brms::posterior_summary(baseline_model)
 )
 
 # Referencing -------------------------------------------------------------
