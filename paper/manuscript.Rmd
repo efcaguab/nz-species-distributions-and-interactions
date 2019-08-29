@@ -398,21 +398,6 @@ n_spp_not_enough_occ <- nrow(n_thinned_occurrences) - nrow(n_enough_occurrences)
 
 We used a sensitivity analysis to determine the minimum number of occurrences that are necessary to have robust environmental suitability values in our communities. 
 For that we used the species with most occurrences available, *`r sensitivity_species_name$canonicalName`*, and calculated the mean absolute error of the suitability values obtained with `r numbers2words(config$n_subsamples)` subsamples from the `r format(n_occ_sensitivity_species, big.mark  =",")`  occurrences available from GBIF. 
-We found that, when we calculate the environmental space independently for each sepecies, we need roughly `r readd(min_occurrences_factor)` independent occurrences for each community for which we calculated a suitability value in order to obtain a mean absolute error below `r config$min_suitability_error` (Fig. \@ref(fig:fig-sensitivity-analysis)). 
-We therefore removed from further analyses `r n_spp_not_enough_occ` species for which we did not have enough occurrences to obtain robust estimates.
-
-```{r fig-sensitivity-analysis, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_sensitivity_analysis_legend}
-
-fig_sensitivity_analysis_legend <- 
-  paste0("Sensitivity analysis of environmental suitability error. ",
-         "The number of independent occurrences retrieved from GBIF is inversely related to the error of environmental suitability for our plant-pollinator networks.", 
-         "The error was smaller when environmental space, where species ocurrences are projected, is calculated independently for each species. ", 
-         "The sensitivity analysis was performed by subsampling occurrences of", 
-         " *", sensitivity_species_name$canonicalName, "* ", 
-         "the species in our dataset with the largest number of occurrences in GBIF, which was recorded in two of our communities.")
-
-readd(fig_sensitivity_analysis)
-```
 
 ## Model
 
@@ -450,7 +435,20 @@ We also calculate the Wanatabe-Akaike information criterion (WAIC) for compariso
 
 # Results
 
-```{r}
+After performing our sensitivity analysis, we found that we need roughly `r readd(min_occurrences_factor)` independent occurrences for each community for which we calculated a suitability value in order to obtain a mean absolute error below `r config$min_suitability_error` (Fig. \@ref(fig:fig-sensitivity-analysis)). 
+We therefore removed from further analyses `r n_spp_not_enough_occ` species for which we did not have enough occurrences to obtain robust estimates.
+
+```{r fig-sensitivity-analysis, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_sensitivity_analysis_legend}
+
+fig_sensitivity_analysis_legend <- 
+  paste0("Sensitivity analysis of environmental suitability error. ",
+         "The number of independent occurrences retrieved from GBIF is inversely related to the error of environmental suitability for our plant-pollinator networks.", 
+         "The sensitivity analysis was performed by subsampling occurrences of", 
+         " *", sensitivity_species_name$canonicalName, "* ", 
+         "the species in our dataset with the largest number of occurrences in GBIF, which was recorded in two of our communities.")
+
+readd(fig_sensitivity_analysis)
+```
 loadd(bayesian_r2_baseline)
 loadd(parameter_posterior_summary)
 
