@@ -453,6 +453,7 @@ readd(fig_sensitivity_analysis)
 ```{r model-results-calculations}
 loadd(bayesian_r2_baseline)
 loadd(parameter_posterior_summary)
+loadd(model_ranking)
 
 random_cor <- parameter_posterior_summary %>%
   dplyr::filter(parameter == "cor_org_id__Intercept__scaled_suitability")
@@ -465,6 +466,12 @@ sd_org_id <- parameter_posterior_summary %>%
 
 sd_org_id_suitability <- parameter_posterior_summary %>% 
   dplyr::filter(stringr::str_detect(parameter, "sd_org_id__scaled_suitability"))
+
+waic_comp_suitability <- model_ranking$waic$formula_no_suitability$pointwise - model_ranking$waic$formula_base$pointwise 
+
+waic_diff_suitability <- sum(waic_comp_suitability[, "waic"])
+
+waic_se_diff_suitability <- sqrt(nrow(waic_comp_suitability) * var(waic_comp_suitability[, "waic"]))
 ```
 
 We found that our models performed relativelly well.
@@ -473,7 +480,7 @@ Overall we found only weak evidence of a relationship between the environmental 
 This relationship was stronger for plants than for animals.
 Similarly environmental suitability does not show a consistent pattern accross species. 
 Indeed, when looking at the population level effects, suitability virtually no relationship with normalised degree, neither for plants or pollinators (Figure \@ref(fig:fig-conditional-effects)b). 
-However, suitability is still an important predictor as the difference between our baseline model and that that did not include suitability was XXX (±XX) (±SE). 
+However, suitability is still an important predictor as the WAIC difference between our baseline model and that that did not include suitability was `r round(waic_diff_suitability)` ± `r round(waic_se_diff_suitability)`. 
 Both among plants and pollinators for some species there is a strong negative relationship between suitability and normalised degree and some others with a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
 As expected, we found a positive relationship between a species generalism and normalised degree \@ref(fig:fig-conditional-effects)c). 
 However our model comparisons based on WAIC shows that including generalism in the model adds relatively little information once we have accounted for the other variables in the model.
