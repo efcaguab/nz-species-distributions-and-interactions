@@ -300,9 +300,10 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   bayesian_r2_baseline = brms::bayes_R2(baseline_model), 
   parameter_posterior_summary = get_parameter_posterior_summaries(baseline_model), 
   median_trials = get_median_number_trials(baseline_model), 
-  cond_draws = draw_conditional_fits(baseline_model, median_trials), 
-  random_species_draws = draw_conditional_random_species(baseline_model, median_trials), 
-  random_correlation_posterior = get_posterior_random_correlation(baseline_model)
+  cond_draws = draw_conditional_fits(baseline_model, median_trials, parameter_scale_attributes), 
+  random_species_draws = draw_conditional_random_species(baseline_model, median_trials, parameter_scale_attributes), 
+  random_correlation_posterior = get_posterior_random_correlation(baseline_model), 
+  parameter_scale_attributes = get_all_pars_scale_attributes(baseline_model), 
 )
 
 # Referencing -------------------------------------------------------------
