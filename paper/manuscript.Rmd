@@ -90,9 +90,11 @@ This tighter co-evolution, in turn, can be reflected on a better trait-matching 
 This niche-based rationale can also operate within a species. 
 We can expect that a species can obtain a higher benefit from interactions with species with traits that better match their requirements. 
 
-The 
-At the same time, we know that ecological interactions are affected by the environment [@tylianakis_ecological_2017]. 
-Generally speaking, 
+Although several other factors, chiefly neutral processes determined by abundance, can also influence the probability of whether two species interact or not, one that is commonly overlooked by community ecologists is the role of the abiotic environment [but see @gravel_bringing_2018]. 
+The most studied mechanism is through patterns of community composition. 
+The abiotic environment can strongly influence whether a species can have a positive growth-rate when rare in a particular location.
+For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Fundamental "Grinellian" niche of both species. 
+However, community composition is only one part of the story as the abiotic environment is known to be able to influence the interactions directly [@tylianakis_ecological_2017]. 
 
 It is generally agreed that two species wether two species interact there is a neutral process
 
