@@ -83,10 +83,12 @@ loadd(interaction_citations)
 # Introduction
 
 From a mutualistic perspective, ecological interactions are thought to be selected based on the relative benefit they provide. 
-On one end of the spectrum, generalist are have traits that allow them to intract a large number of species.
+On one end of the spectrum, generalist species have traits that allow them to interact with a large number of species.
 In average, the benefits they obtain from each of the species they interact with is relatively low compared to specialists.
-This is so because, on the other end of the spectrum, specialist species tend to have a have deeper co-evolutionary history with their partner species. 
-This in turn is reflected on a better trait-matching with the species it interacts with which leads to a higher benefit.
+On the other end of the spectrum, specialist species are thought to have a more deep-rooted co-evolutionary history with their partner species. 
+This tighter co-evolution, in turn, can be reflected on a better trait-matching with the species it interacts with which leads to a higher benefit.
+This niche-based rationale can also operate within a species. 
+We can expect that a species can obtain a higher benefit from interactions with species with traits that better match their requirements. 
 
 The 
 At the same time, we know that ecological interactions are affected by the environment [@tylianakis_ecological_2017]. 
