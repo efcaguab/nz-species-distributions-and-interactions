@@ -82,6 +82,29 @@ loadd(interaction_citations)
 
 # Introduction
 
+From a mutualistic perspective, ecological interactions are thought to be selected based on the relative benefit they provide. 
+On one end of the spectrum, generalist are have traits that allow them to intract a large number of species.
+In average, the benefits they obtain from each of the species they interact with is relatively low compared to specialists.
+This is so because, on the other end of the spectrum, specialist species tend to have a have deeper co-evolutionary history with their partner species. 
+This in turn is reflected on a better trait-matching with the species it interacts with which leads to a higher benefit.
+
+The 
+At the same time, we know that ecological interactions are affected by the environment [@tylianakis_ecological_2017]. 
+Generally speaking, 
+
+It is generally agreed that two species wether two species interact there is a neutral process
+
+
+
+
+ small number of partner species are thought to benefit largely from each  deeper co-evolutionary history that, through trait matching
+Species with a small number of partners, specialists, are often deemed to 
+Species with a large number of interactions, generalists, benefits relatively 
+
+
+It is generally accepted that the species niche is the location in a multidimentional space defined by environmental conditions that allows a species to have a positive growth rate when rare (Godsoe). 
+There are two dimensions of a species niche, the Grinellian niche which focuses on the 
+
 <!-- Interactions are selected by species depending on the relative benefit they provide. The assumption goes that species with a large number of interactions are benefit relatively little from each of them, and species with a small number benefit largely with them, this is they focus in more optimal pollinators. -->
 
 <!-- AND  -->
@@ -137,7 +160,7 @@ loadd(interaction_citations)
 
 <!-- he occurrence and intensity of interactions could vary because of the environment, species abundance, and higher- order ecological interactions (Poisot et al. 2015). *Well do I show that could vary because of more stuff?* -->
 
-<!-- Variation in community composition can be independent of variation of ecological interactions, suggesting that species and inter- action distribution may well respond to diferent drivers (Poisot et al. 2012). -->
+<!-- Variation in community composition can be independent of variation of ecological interactions, suggesting that species and inter- ac tion distribution may well respond to diferent drivers (Poisot et al. 2012). -->
 
 <!-- Ecological interactions could also vary with the environment. Although it is rare to see a conditional representation of pairwise ecological interactions, experimental studies have frequently revealed interactions to be sensitive to the environment. For instance, McKinnon et al. (2010) showed that predation risks of shorebirds vary at the continental scale, decreasing from the south to the north. It is also common to see increasing top-down control with temperature (Shurin et al. 2012, Gray et al. 2016). Efects of the environment on interactions (Gibert and DeLong 2014) also propagate up the community and inluence net- work structure (Tylianakis et al. 2007, Petchey et al. 2010, Woodward et al. 2010). -->
 
@@ -598,6 +621,8 @@ Relationship is even stronger when we only include species for which we have mor
 <!-- Add the suitability of possible competitors? I mean they are not really competitors so maybe not.  -->
 
 <!-- Discuss implications for network rewiring? -->
+
+Note that although abundances can inflence wether two species interact we cannot tease t appart because suitability is not necessarily related to abundance. ALthough abundance affects the frequency of the interaction, rather than wether they interacts or not (Donoso)
 
 # Acknowledgements
 
