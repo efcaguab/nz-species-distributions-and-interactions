@@ -330,7 +330,7 @@ figures_plan <- drake_plan(
                                                        min_suitability_error, 
                                                        min_occurrences_factor, 
                                                        suitability_subsamples), 
-  fig_conditional_effects = plot_all_conditional_effect(cond_draws), 
+  fig_conditional_effects = plot_all_conditional_effect(cond_draws, mean_parameter_values), 
   fig_random_effects = plot_ranf(random_species_draws, random_correlation_posterior)
 )
 
