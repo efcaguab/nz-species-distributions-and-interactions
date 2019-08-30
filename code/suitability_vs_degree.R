@@ -234,8 +234,20 @@ compare_models <- function(chosen_models){
   model_waic <- chosen_models %>%
     purrr::map(brms::waic)
   
-  list(loo = brms::loo_compare(model_loo), 
-       waic = brms::loo_compare(model_waic))
+  model_kfold <- chosen_models %>%
+    purrr::map(brms::kfold)
+  
+  model_kfold_org <- chosen_models %>%
+    purrr::map(brms::kfold, group = "org_id", folds = "grouped")
+  
+  model_kfold_loc <- chosen_models %>%
+    purrr::map(brms::kfold, group = "loc_id", folds = "grouped")
+  
+  list(loo = model_loo, 
+       waic = model_waic, 
+       model_kfold = model_kfold, 
+       model_kfold_org = model_kfold_org, 
+       model_kfold_loc = model_kfold_loc)
 }
 
 
