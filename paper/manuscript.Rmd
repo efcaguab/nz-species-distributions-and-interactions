@@ -554,7 +554,25 @@ The standard deviation (in the parameters scale) of the community intercepts was
 Interestingly, the slope the relationship between suitability and normalised degree was negatively correlated with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b). 
 The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`].
 
-```{r fig-random-effects, fig.width = width('single'), fig.height = 2.2*2.5, fig.cap = "Random effects"}
+```{r fig-random-effects, fig.width = width('single'), fig.height = 2.2*2.5, fig.cap = fig_random_effects_legend}
+loadd(random_species_draws)
+
+n_random_species <- random_species_draws %>%
+  dplyr::group_by(guild) %>%
+  dplyr::summarise(n_sp = dplyr::n_distinct(org_id))
+
+n_random_pla <- n_random_species %>%
+  dplyr::filter(guild == "pla_id")
+
+n_random_ani <- n_random_species %>%
+  dplyr::filter(guild == "ani_id")
+
+fig_random_effects_legend <- 
+  paste0("Species level effects of suitability. (a) Conditional effect of suitability for individual species. To facilitate visualization we show only species for which there is suitability information in at least six communities (", 
+         n_random_pla, " plants and ", 
+         n_random_ani, " pollinators). As in the previous figure, fitted values assume a hypothetical community of median size. In each panel we highlight two species for which the relationship between environental suitability and normalised degree was particularly strong. ", 
+         "(b) The correlation between the species' intercept and the species' slope of suitability was negatively correlated.")
+
 readd(fig_random_effects)
 ```
 
