@@ -141,6 +141,18 @@ get_posterior_random_correlation <- function(baseline_model){
     dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability)
 }
 
+get_random_sp_names <- function(random_species_draws, org_ids, gbif_key_groups, gbif_keys,
+                                species_ids){
+  random_species_draws %>%
+    dplyr::filter(highlight) %$%
+    org_id %>% 
+    unique() %>%
+    purrr::map(get_sp_name, org_ids, gbif_key_groups, gbif_keys,
+               species_ids) %>%
+    purrr::map(dplyr::slice, 1) %>%
+    purrr::map_df(dplyr::select, org_id, sp_name)
+}
+
 tinker <- function(){
   # model_data <- standata(this_model)
   # conditions <- data.frame(guild = c("pla_id", "ani_id"))
