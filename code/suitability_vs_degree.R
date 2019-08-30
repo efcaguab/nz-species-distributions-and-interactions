@@ -167,10 +167,10 @@ define_alternative_models <- function(formula_base){
     ~ . - scaled_n_possible_partners
   )
   
-  formula_no_possible_partners_generalism <- update(
-    formula_base, 
-    ~ . - scaled_n_possible_partners - scaled_log_n_partners_global
-  )
+  # formula_no_possible_partners_generalism <- update(
+  #   formula_base, 
+  #   ~ . - scaled_n_possible_partners - scaled_log_n_partners_global
+  # )
   
   formula_no_suitability <- update(
     formula_base, 
@@ -184,7 +184,7 @@ define_alternative_models <- function(formula_base){
     formula_no_generalism = formula_no_generalism, 
     formula_no_grinell_niche_size = formula_no_grinell_niche_size,
     formula_no_possible_partners = formula_no_possible_partners,
-    formula_no_possible_partners_generalism = formula_no_possible_partners_generalism,
+    # formula_no_possible_partners_generalism = formula_no_possible_partners_generalism,
     formula_no_suitability = formula_no_suitability
   )
   
