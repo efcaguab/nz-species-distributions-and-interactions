@@ -480,12 +480,21 @@ However our model comparisons based on WAIC shows that including generalism in t
 Finally, we found a strong and positive relationship between the number of possible interactions and the number of realised interactions in the community.
 
 ```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*3, fig.cap = fig_conditional_effects_legend}
+loadd(median_trials)
+
+median_n_pla <- median_trials %>%
+  dplyr::filter(guild == "pla_id") %$% 
+  n_opposite_guild
+
+median_n_ani <- median_trials %>%
+  dplyr::filter(guild == "ani_id") %$% 
+  n_opposite_guild
 
 fig_conditional_effects_legend <- 
-  paste0("Conditional effects of predictors in our models. The predicted values of the number of interacting species are based on ",
-         "XX ", "plants and ", 
-         "XX ", "pollinators, ",
-         "which corresponds to the median number of species in each guild. In each panel we condition on the mean values of all other predictors in the model. This is a environmental suitability of To illustrate the uncertainity around the fitted estimates we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution.")
+  paste0("Conditional effects of predictors in our baseline model. The predicted values of the number of interacting species are based on a hypothetical community with ",
+         median_n_pla, " plants and ", 
+         median_n_ani, " pollinators",
+         ". These values correspond to the median number of species in each guild respectively. In each panel we condition on the mean values of all other predictors in the model, mean values for each predictor are indicated with a vertical dashed line. For model fitting, we scaled all predictors to have mean of zero and unit variance. However, with the exception of environmental niche size, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainity around the fitted estimates we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between guild and generality or the number of possible interactions, for these two predictors we only show conditional the conditional effect of pollinators.")
 readd(fig_conditional_effects)
 ```
 
