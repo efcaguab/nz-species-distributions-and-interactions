@@ -304,6 +304,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   random_species_draws = draw_conditional_random_species(baseline_model, median_trials, parameter_scale_attributes), 
   random_correlation_posterior = get_posterior_random_correlation(baseline_model), 
   parameter_scale_attributes = get_all_pars_scale_attributes(baseline_model), 
+  mean_parameter_values = purrr::map(parameter_scale_attributes, ~scaled_to_unscaled(0, .)), 
 )
 
 # Referencing -------------------------------------------------------------
