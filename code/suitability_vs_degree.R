@@ -212,7 +212,7 @@ fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
                iter = iter,
                # warmup = 2000, 
                cores = cores,
-               save_all_pars = TRUE,
+               save_all_pars = FALSE,
                # future = TRUE,
                control = list(adapt_delta = 0.99, 
                               max_treedepth =12))
