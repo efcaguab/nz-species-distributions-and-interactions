@@ -550,7 +550,7 @@ model_ranking$waic %>%
 ```
 
 The group level variation among communities was larger than that among species.
-The standard deviation (in the parameters scale) of the community intercepts was `r round(sd_loc_id$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(sd_loc_id$Q97.5, 2)`] while the standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' suitability slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brakets). 
+The standard deviation (in the parameters scale) of the community intercepts was `r round(sd_loc_id$Estimate, 2)` [`r round(sd_loc_id$Q2.5, 2)`, `r round(sd_loc_id$Q97.5, 2)`] while the standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' suitability slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brakets). 
 Interestingly, the slope the relationship between suitability and normalised degree was negatively correlated with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b). 
 The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`].
 
