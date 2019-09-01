@@ -88,11 +88,12 @@ It is crucial to understand why and how this turnover of interactions occur beca
 Despite much progress in the last decades, we are still unable to predict species interactions, partially because we still have not accurately identified the factors that drive species to interact under certain conditions and not under another. 
 
 There are two main processes involved in whether two species in a community interact or not.
-The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species.
-Under this rationale, when, for example, a deep-rooted co-evolutionary history leads to optimally matched traits, the interacting species can obtain a substantial benefit from this interaction. 
-Contrastingly, we would expect a lower per-capita benefit from interactions with low trait matching.
+The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species. 
+Compared to other kinds of trophic interactions, mutualistic interactions, and plant-pollination interactions in particular, are relatively generalised.
+While a large proportion of the interactions appear to be opportunistic, a fraction of interactions show a strong signature of deep co-evolutionary history [@hutchinson_cophylogenetic_2017]. 
+In contrast to opportunistic interactions with low trait-matching, the more co-evolved interactions with optimally matched traits are more persistent and presumably lead to a more substantial per-capita benefit for the interacting species. 
 The second is a neutral process underpinned by the encounter rate of the interacting species. 
-All else being equal, when the encounter rate of interacting species is high there is a higher probability to interact than if the rate were smaller, for example due to species rarity. 
+All else being equal, when the encounter rate of interacting species is high, there is a higher probability to interact than if the rate were lower, for example, due to species rarity. 
 
 Perhaps, because it operates at scales larger than those of the Eltonian niche concept, the abiotic environment is one of the factors that is commonly overlooked by community ecologists when explaining interaction turnover [but see @gravel_bringing_2018]. 
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
