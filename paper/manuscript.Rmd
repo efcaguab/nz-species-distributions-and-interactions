@@ -99,27 +99,29 @@ Perhaps, because it operates at scales larger than those of the Eltonian niche c
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
 At the heart of biogeography is the idea that the abiotic environment can determine whether a species can have a positive growth-rate when rare in a particular location.
 For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the "Grinellian" niche of both species. 
-However, community composition is only one part of the story as the abiotic environment can also influence the interactions directly [@tylianakis_ecological_2017]. 
 
-When looked from an Eltonian-niche lens, one way the environment can influence wether two species interact or not is based on, what we call, stress-induced hypotheses of interaction turnover. 
+After community composition has been determined, one way the environment can influence wether two species interact or not is by affecting their Eltonian-niche [@tylianakis_ecological_2017]. 
+This effect can happen through what we call stress/suitability-induced hypotheses of interaction turnover. 
+The first hypothesis is that when species are under environmental stress, they might be "pressured" to focus on the partners with which they are best adapted to interact. 
+For instance @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where enviornmental stress were higher than in native forests, were constrained to attack only hosts they were best adapted to. 
+Similarly, @lavandero_genotype_2013 found that environmental stress due to higer temperature reduced the breadth of the Eltonian niche of parasitoids. 
+The alternative hypotheis is that when species are under environmental stress they are forced
+
+
+One possible outcome of environmental stress, as reviewed by @tylianakis_ecological_2017, is that species are "pressured" to interact with species with which its best adapted
+
+.
 These hypotheses are rooted in the co-evolutionary processes that determine the quality of an interaction partner. 
-Environmental induced stress can 
 
-Another way
+Another possble outcome is that 
+
+For example, environmental stressors could cause species to narrow their trophic breadth by increasing the search time to find alternative partners (Gauld 1987) or by imposing limits on the quality of interaction partners that can be used (i.e., using only resources to which a species is best adapted). Phylogenetic congruence becomes stronger in parasitoid–host networks with increasing temperature (Lavandero & Tylianakis 2013) and in plantation versus native forests (Peralta et al. 2015), and such patterns appear consistent with a hy- pothesis of stress-induced reduction in trophic (phylogenetic) breadth (in the case of Lavandero & Tylianakis 2013, this occurred on genotype relatedness rather than between-species phylogenies). 
 
 In a pollination context, it can for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007)
 . 
+<!-- One option is that when species are in detrimental environmental conditions focus on most optimal partners and as such interact with a smaller number of species.  -->
+<!-- An alternative hypotheisis is that when species are in favourable environmental conditions they can afford to be more picky about their interactions and as such avoid those of less value, while individuals in unfavourable conditions must get rewards from whatever they can get.  -->
 
-Second, and oare more subtle, mechanism through which enviroment can determine interactions is
-This is so because , species distributions are strongly determined 
-At the basis of species distrFormally, the fundamental "Grinellian" niche of a species is determined by the set of environments where a species has a positive groth rate when rare. 
-The environement, 
-From a "Grinellian" niche perspect
-Framed from a niche perspective, 
-
-It is generally agreed that two species wether two species interact there is a neutral process
-
-HYPOTHESIS: many trophic and mutualistic interactions are relatively generalized and potentially opportunistic (Pimm et al. 1991). Thus, we may expect that ecological networks will comprise a mixture of interactions that persist over the long-term owing to trait matching of partners through coevolution (Go ́ mez et al. 2010, Guimaraes et al. 2011) and those that occur opportunistically, perhaps with inferior long-term fitness benefits (Aizen et al. 2016).
 
 It is generally accepted that the species niche is the location in a multidimentional space defined by environmental conditions that allows a species to have a positive growth rate when rare (Godsoe). 
 There are two dimensions of a species niche, the Grinellian niche which focuses on the 
