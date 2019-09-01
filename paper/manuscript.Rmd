@@ -82,6 +82,10 @@ loadd(interaction_citations)
 
 # Introduction
 
+Species interactions are known to vary widely across space and time. 
+There are multiple examples of species that interact tightly in an ecological community or a particular season but not in another. 
+It is crucial to understand why and how this turnover of interactions occur because the network of interactions of an ecological community is known to underpin ecosystem function and stability. 
+Despite much progress in the last decades, we are still unable to predict species interactions, partially because we still have not accurately identified the factors that drive species to interact under certain conditions and not under another. 
 From a mutualistic perspective, ecological interactions are thought to be selected based on the relative benefit they provide. 
 On one end of the spectrum, generalist species have traits that allow them to interact with a large number of species.
 In average, the benefits they obtain from each of the species they interact with is relatively low compared to specialists.
