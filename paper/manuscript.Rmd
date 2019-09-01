@@ -86,19 +86,19 @@ Species interactions are known to vary widely across space and time.
 There are multiple examples of species that interact tightly in an ecological community or a particular season but not in another. 
 It is crucial to understand why and how this turnover of interactions occur because the network of interactions of an ecological community is known to underpin ecosystem function and stability. 
 Despite much progress in the last decades, we are still unable to predict species interactions, partially because we still have not accurately identified the factors that drive species to interact under certain conditions and not under another. 
-From a mutualistic perspective, ecological interactions are thought to be selected based on the relative benefit they provide. 
-On one end of the spectrum, generalist species have traits that allow them to interact with a large number of species.
-In average, the benefits they obtain from each of the species they interact with is relatively low compared to specialists.
-On the other end of the spectrum, specialist species are thought to have a more deep-rooted co-evolutionary history with their partner species. 
-This tighter co-evolution, in turn, can be reflected on a better trait-matching with the species it interacts with which leads to a higher benefit.
-This "Eltionian" niche-based rationale can also operate within a species. 
-We can expect that a species can obtain a higher benefit from interactions with species with traits that better match their requirements. 
 
-Although several other factors, chiefly neutral processes determined by abundance, can also influence the probability of whether two species interact or not, one that is commonly overlooked by community ecologists is the role of the abiotic environment [but see @gravel_bringing_2018]. 
-The most studied mechanism is through patterns of community composition. 
-The abiotic environment can strongly influence whether a species can have a positive growth-rate when rare in a particular location.
+It is widely awknowledged that there are two main processes involved in whether two species in a community interact or not.
+The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species.
+Under this rationale, when the traits of interacting species are optimally matched, due for example to a deep-rooted co-evolutionary history, species are able to obtain a high benefit from the interaction. 
+Contrastingly, we can expect the per-capita benefit of interaction with a relatively low trait matching to be lower.
+The second is a neutral process underpinned by the abundance of the intereacting species. 
+All else being equal, when the abundance of a species is high their potential encounter rate is also high and therefore there is a higher probability to interact than if it were rare. 
+
+Perhaps, because it operates at scales larger than those commonly considered by community ecologists, the abiotic environment is one of the factors that is commonly overlooked when explaining interaction turnover [but see @gravel_bringing_2018]. 
+The most evident, and best studied, way through which the environment can afect the structure of ecological networks is by way of patterns of community composition. 
+This is because the abiotic environment can strongly influence whether a species can have a positive growth-rate when rare in a particular location.
 For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Fundamental "Grinellian" niche of both species. 
-However, community composition is only one part of the story as the abiotic environment is known to be able to influence the interactions directly [@tylianakis_ecological_2017]. 
+However, community composition is only one part of the story as the abiotic environment can also influence the interactions directly [@tylianakis_ecological_2017]. 
 
 It is generally agreed that two species wether two species interact there is a neutral process
 
