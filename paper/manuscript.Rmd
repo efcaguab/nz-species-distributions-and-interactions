@@ -659,7 +659,9 @@ This can happen either through changes in abundance driven by patterns of tempor
 
 <!-- Discuss implications for network rewiring? -->
 
-Note that although abundances can inflence wether two species interact we cannot tease t appart because suitability is not necessarily related to abundance. ALthough abundance affects the frequency of the interaction, rather than wether they interacts or not (Donoso)
+<!-- Note that although abundances can inflence wether two species interact we cannot tease t appart because suitability is not necessarily related to abundance. ALthough abundance affects the frequency of the interaction, rather than wether they interacts or not (Donoso) -->
+
+<!--Mention implications for community assembly? -->
 
 # Acknowledgements
 
