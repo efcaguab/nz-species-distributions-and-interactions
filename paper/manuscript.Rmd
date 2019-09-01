@@ -87,17 +87,17 @@ There are multiple examples of species that interact tightly in an ecological co
 It is crucial to understand why and how this turnover of interactions occur because the network of interactions of an ecological community is known to underpin ecosystem function and stability. 
 Despite much progress in the last decades, we are still unable to predict species interactions, partially because we still have not accurately identified the factors that drive species to interact under certain conditions and not under another. 
 
-It is widely awknowledged that there are two main processes involved in whether two species in a community interact or not.
+There are two main processes involved in whether two species in a community interact or not.
 The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species.
-Under this rationale, when the traits of interacting species are optimally matched, due for example to a deep-rooted co-evolutionary history, species are able to obtain a high benefit from the interaction. 
-Contrastingly, we can expect the per-capita benefit of interaction with a relatively low trait matching to be lower.
-The second is a neutral process underpinned by the abundance of the intereacting species. 
-All else being equal, when the abundance of a species is high their potential encounter rate is also high and therefore there is a higher probability to interact than if it were rare. 
+Under this rationale, when, for example,  a deep-rooted co-evolutionary history leads to optimally matched traits, the interacting species can obtain a substantial benefit from this interaction. 
+Contrastingly, we would expect a lower per-capita benefit from interactions with low trait matching.
+The second is a neutral process underpinned by the abundance of the interacting species. 
+All else being equal, when the abundance of a species is high, their potential encounter rate is also high, and therefore there is a higher probability to interact than if it were rare. 
 
-Perhaps, because it operates at scales larger than those commonly considered by community ecologists, the abiotic environment is one of the factors that is commonly overlooked when explaining interaction turnover [but see @gravel_bringing_2018]. 
-The most evident, and best studied, way through which the environment can afect the structure of ecological networks is by way of patterns of community composition. 
-This is because the abiotic environment can strongly influence whether a species can have a positive growth-rate when rare in a particular location.
-For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Fundamental "Grinellian" niche of both species. 
+Perhaps, because it operates at scales larger than those of the Eltonian niche concept, the abiotic environment is one of the factors that is commonly overlooked by community ecologists when explaining interaction turnover [but see @gravel_bringing_2018]. 
+The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
+At the heart of biogeography is the idea that the abiotic environment can determine whether a species can have a positive growth-rate when rare in a particular location.
+For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the "Grinellian" niche of both species. 
 However, community composition is only one part of the story as the abiotic environment can also influence the interactions directly [@tylianakis_ecological_2017]. 
 
 It is generally agreed that two species wether two species interact there is a neutral process
