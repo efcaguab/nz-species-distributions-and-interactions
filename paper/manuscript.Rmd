@@ -89,10 +89,10 @@ Despite much progress in the last decades, we are still unable to predict specie
 
 There are two main processes involved in whether two species in a community interact or not.
 The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species.
-Under this rationale, when, for example,  a deep-rooted co-evolutionary history leads to optimally matched traits, the interacting species can obtain a substantial benefit from this interaction. 
+Under this rationale, when, for example, a deep-rooted co-evolutionary history leads to optimally matched traits, the interacting species can obtain a substantial benefit from this interaction. 
 Contrastingly, we would expect a lower per-capita benefit from interactions with low trait matching.
-The second is a neutral process underpinned by the abundance of the interacting species. 
-All else being equal, when the abundance of a species is high, their potential encounter rate is also high, and therefore there is a higher probability to interact than if it were rare. 
+The second is a neutral process underpinned by the encounter rate of the interacting species. 
+All else being equal, when the encounter rate of interacting species is high there is a higher probability to interact than if the rate were smaller, for example due to species rarity. 
 
 Perhaps, because it operates at scales larger than those of the Eltonian niche concept, the abiotic environment is one of the factors that is commonly overlooked by community ecologists when explaining interaction turnover [but see @gravel_bringing_2018]. 
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
@@ -100,15 +100,25 @@ At the heart of biogeography is the idea that the abiotic environment can determ
 For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the "Grinellian" niche of both species. 
 However, community composition is only one part of the story as the abiotic environment can also influence the interactions directly [@tylianakis_ecological_2017]. 
 
+When looked from an Eltonian-niche lens, one way the environment can influence wether two species interact or not is based on, what we call, stress-induced hypotheses of interaction turnover. 
+These hypotheses are rooted in the co-evolutionary processes that determine the quality of an interaction partner. 
+Environmental induced stress can 
+
+Another way
+
+In a pollination context, it can for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007)
+. 
+
+Second, and oare more subtle, mechanism through which enviroment can determine interactions is
+This is so because , species distributions are strongly determined 
+At the basis of species distrFormally, the fundamental "Grinellian" niche of a species is determined by the set of environments where a species has a positive groth rate when rare. 
+The environement, 
+From a "Grinellian" niche perspect
+Framed from a niche perspective, 
+
 It is generally agreed that two species wether two species interact there is a neutral process
 
-
-
-
- small number of partner species are thought to benefit largely from each  deeper co-evolutionary history that, through trait matching
-Species with a small number of partners, specialists, are often deemed to 
-Species with a large number of interactions, generalists, benefits relatively 
-
+HYPOTHESIS: many trophic and mutualistic interactions are relatively generalized and potentially opportunistic (Pimm et al. 1991). Thus, we may expect that ecological networks will comprise a mixture of interactions that persist over the long-term owing to trait matching of partners through coevolution (Go ́ mez et al. 2010, Guimaraes et al. 2011) and those that occur opportunistically, perhaps with inferior long-term fitness benefits (Aizen et al. 2016).
 
 It is generally accepted that the species niche is the location in a multidimentional space defined by environmental conditions that allows a species to have a positive growth rate when rare (Godsoe). 
 There are two dimensions of a species niche, the Grinellian niche which focuses on the 
@@ -131,6 +141,9 @@ There are two dimensions of a species niche, the Grinellian niche which focuses 
 <!-- We used a global dataset on plant pollinator interactions, species occurrence, and bioclimatic data to test these hypotheses.  -->
 <!-- If the first option is true we should see a negative relationship between environmental sutability and the relative degree of a species.  -->
 <!-- If the second option is true we should see the opposite, a positive relationship between environmental suitability and the relative degree of a species.  -->
+
+
+
 
 <!-- **Is my central topic turnover of interactions**? If yes then I should quanitify turnover accross high and low suitability areas.  -->
 
