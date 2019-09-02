@@ -102,7 +102,6 @@ For two species to interact, they first need to co-occur in the same community, 
 Although less understood, the environment can also affect the interactions, once community composition has been established [@tylianakis_ecological_2017]. 
 For instance, some studies show that trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016], and both plant-plant [@bertness_positive_1994] and plant-pollinator [@tur_evaluating_2016] interactions can switch from facilitative to competitive along an elevation/temperature gradient. 
 Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
-
 One way to summarise the seemingly contradictory evidence of whether the environment can influence whether two species interact or not is by moving from gradients of temperature or precipitation to gradients of environmental stress/suitability. 
 Previous research is so far equivocal and indicates that environmental stress can have two contrasting effects on species' Eltonian-niche [@tylianakis_ecological_2017].
 On the one hand, it is possible that when species are under environmental stress, they might be "pressured" to focus on partners with which they are best adapted to interact. 
@@ -113,10 +112,10 @@ For instance, @hoiss_interactive_2015 found that the specialisation of plant-pol
 Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities. 
 
 We collect available data on plant-pollinator interactions globally and calculate the environmental suitability of all species present at two or more communities to. 
-Our main aim is to leverage that information to test the two competing hypothesis that relate environmental stress and Eltionian niche breadth and whether there is a pattern within and across species. 
-Specialist species have been found to be able to become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example when phenologies are decoupled; @benadi_specialization_2014]. 
-We therefore also expect that as environmental stress increasses species with a relatively small number of partners are more likely to broaden their Eltonian niche. 
-Species with a large number of partners on the other hand should have a larger pool of available partners and might therefore be more likely to narrow their niche under environmental stress. 
+Our main aim is to leverage that information to test the two competing hypotheses that relate environmental stress and Eltionian niche breadth and whether there is a pattern within and across species. 
+Specialist species can become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example, when variations in climate decouple phenologies; @benadi_specialization_2014]. 
+We therefore also expect that as environmental stress increases species with a relatively small number of partners are more likely to broaden their Eltonian niche. 
+Species with a large number of partners, on the other hand, should have a larger pool of available partners and might, therefore, be more likely to narrow their niche under environmental stress. 
 Importantly, when testing these hypotheses, we control for the potential effects of the environment in community composition and the size of the species fundamental niche, both from an Eltonian (interactions) and Grinellian (environment) perspective. 
 
 <!-- Interactions are selected by species depending on the relative benefit they provide. The assumption goes that species with a large number of interactions are benefit relatively little from each of them, and species with a small number benefit largely with them, this is they focus in more optimal pollinators. -->
