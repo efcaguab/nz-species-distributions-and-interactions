@@ -99,6 +99,9 @@ Perhaps, because it operates at scales larger than those of the Eltonian niche c
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
 At the heart of biogeography is the idea that the abiotic environment can determine whether a species can have a positive growth-rate when rare in a particular location.
 For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the "Grinellian" niche of both species. 
+Although less understood, the environment can also affect the interactions, once community composition has been established [@tylianakis_ecological_2017]. 
+For instance some studies show that thropic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decreasse with precipitation [@pires_predicted_2016], and both plant-plant [@bertness_positive_1994] and plant-pollinator [@tur_evaluating_2016] interactions can switch from facilitative to competitive along a elevation/temperature gradient. 
+Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
 
 After community composition has been established, one way the environment can influence whether two species interact or not is by affecting their Eltonian-niche [@tylianakis_ecological_2017]. 
 This effect can happen through what we call stress/suitability-induced hypotheses of interaction turnover. 
