@@ -89,8 +89,8 @@ Despite much progress in the last decades, we are still unable to predict specie
 
 There are two main processes involved in whether two species in a community interact or not.
 The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species. 
-Compared to other kinds of trophic interactions, mutualistic interactions, and plant-pollination interactions in particular, are relatively generalised.
-While a large proportion of the interactions appear to be opportunistic, a fraction of interactions show a strong signature of deep co-evolutionary history [@hutchinson_cophylogenetic_2017]. 
+Compared to other kinds of trophic interactions, mutualistic interactions, and plant-pollination interactions, in particular, are relatively generalised.
+While a large proportion of the interactions appear to be opportunistic, a fraction of interactions shows a strong signature of deep co-evolutionary history [@hutchinson_cophylogenetic_2017]. 
 In contrast to opportunistic interactions with low trait-matching, the more co-evolved interactions with optimally matched traits are more persistent and presumably lead to a more substantial per-capita benefit for the interacting species. 
 The second is a neutral process underpinned by the encounter rate of the interacting species. 
 All else being equal, when the encounter rate of interacting species is high, there is a higher probability to interact than if the rate were lower, for example, due to species rarity. 
@@ -109,39 +109,15 @@ On the one hand, it is possible that when species are under environmental stress
 For instance, @hoiss_altitude_2012 found increased phylogenetic clustering between plants and pollinators at higher altitudes; while @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where environmental stress was higher than in native forests, were constrained to interact with hosts, they were best adapted to attack.
 Similarly, @lavandero_genotype_2013 found that environmental stress due to higher temperature reduced the breadth of the Eltonian niche of parasitoids. 
 On the other, it is also possible that when species are under environmental stress, they are forced to be more flexible in their interactions as higher environmental stress is likely to be reflected in greater energetic or reproductive costs and therefore they might not be able to sustain encounter rates with their preferred partners at sufficient levels. 
-For instance, @hoiss_interactive_2015 found that the specialization of plant-pollinator networks decreased both with elevation and after extreme drought events.
-Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities.
+For instance, @hoiss_interactive_2015 found that the specialisation of plant-pollinator networks decreased both with elevation and after extreme drought events.
+Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities. 
 
-Here we use information on plant-pollinator interactions and their environmental suitability at a global scale to test the stress/suitability hypotheses of 
-
-
-Here, we explicitly test 
-Benadi found that 
-
-Generalists vs specialists might show contrasting patterns. 
-
-
-Specialist species (that lack flexibility in their choice of interaction partner) should theoretically be most vulnerable to phenological decoupling. However, one study of pollinator communities along an elevational gradient found that apparently specialized pollinators were facultatively more generalist than they appeared and could adapt their visitation patterns across sites as much as generalists to avoid phenological asynchrony (Benadi et al. 2014). Similarly, duration of the fruiting season has been shown to predict the degree and strength of seed-dispersal interactions (Gonza lez- Castro et al. 2012), and a long-term study found no difference between specialist and generalist plant species in their interannual fluctuations in phenology and pollinator richness (Petanidou et al. 2014). Although these findings suggest that the facultative generalism of pollination mutualisms may confer robustness to these networks in the face of altered phenology (see also discussion on rewiring above), this robustness may depend on the climate context and the diversity and specialization within the network (Hoiss et al. 2015). Moreover, less-generalized interactions such as those between parasites and hosts may show less flexibility.
-
-
-
-One possible outcome of environmental stress, as reviewed by @tylianakis_ecological_2017, is that species are "pressured" to interact with species with which its best adapted
-
-.
-These hypotheses are rooted in the co-evolutionary processes that determine the quality of an interaction partner. 
-
-Another possble outcome is that 
-
-For example, environmental stressors could cause species to narrow their trophic breadth by increasing the search time to find alternative partners (Gauld 1987) or by imposing limits on the quality of interaction partners that can be used (i.e., using only resources to which a species is best adapted). Phylogenetic congruence becomes stronger in parasitoid–host networks with increasing temperature (Lavandero & Tylianakis 2013) and in plantation versus native forests (Peralta et al. 2015), and such patterns appear consistent with a hy- pothesis of stress-induced reduction in trophic (phylogenetic) breadth (in the case of Lavandero & Tylianakis 2013, this occurred on genotype relatedness rather than between-species phylogenies). 
-
-In a pollination context, it can for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007)
-. 
-<!-- One option is that when species are in detrimental environmental conditions focus on most optimal partners and as such interact with a smaller number of species.  -->
-<!-- An alternative hypotheisis is that when species are in favourable environmental conditions they can afford to be more picky about their interactions and as such avoid those of less value, while individuals in unfavourable conditions must get rewards from whatever they can get.  -->
-
-
-It is generally accepted that the species niche is the location in a multidimentional space defined by environmental conditions that allows a species to have a positive growth rate when rare (Godsoe). 
-There are two dimensions of a species niche, the Grinellian niche which focuses on the 
+We collect available data on plant-pollinator interactions globally and calculate the environmental suitability of all species present at two or more communities to. 
+Our main aim is to leverage that information to test the two competing hypothesis that relate environmental stress and Eltionian niche breadth and whether there is a pattern within and across species. 
+Specialist species have been found to be able to become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example when phenologies are decoupled; @benadi_specialization_2014]. 
+We therefore also expect that as environmental stress increasses species with a relatively small number of partners are more likely to broaden their Eltonian niche. 
+Species with a large number of partners on the other hand should have a larger pool of available partners and might therefore be more likely to narrow their niche under environmental stress. 
+Importantly, when testing these hypotheses, we control for the potential effects of the environment in community composition and the size of the species fundamental niche, both from an Eltonian (interactions) and Grinellian (environment) perspective. 
 
 <!-- Interactions are selected by species depending on the relative benefit they provide. The assumption goes that species with a large number of interactions are benefit relatively little from each of them, and species with a small number benefit largely with them, this is they focus in more optimal pollinators. -->
 
