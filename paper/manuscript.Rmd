@@ -112,14 +112,16 @@ On the other, it is also possible that when species are under environmental stre
 For instance, @hoiss_interactive_2015 found that the specialization of plant-pollinator networks decreased both with elevation and after extreme drought events.
 Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities.
 
-Here, we expli
+Here we use information on plant-pollinator interactions and their environmental suitability at a global scale to test the stress/suitability hypotheses of 
+
+
+Here, we explicitly test 
 Benadi found that 
 
 Generalists vs specialists might show contrasting patterns. 
 
-Here we 
 
-Specialist species (that lack flexibility in their choice of interaction partner) should theoretically be most vulnerable to phenological decoupling. However, one study of pollinator communities along an elevational gradient found that apparently specialized pollinators were facultatively more generalist than they appeared and could adapt their visitation patterns across sites as much as generalists to avoid phenological asynchrony (Benadi et al. 2014). Similarly, duration of the fruiting season has been shown to predict the degree and strength of seed-dispersal interactions (Gonza ́ lez- Castro et al. 2012), and a long-term study found no difference between specialist and generalist plant species in their interannual fluctuations in phenology and pollinator richness (Petanidou et al. 2014). Although these findings suggest that the facultative generalism of pollination mutualisms may confer robustness to these networks in the face of altered phenology (see also discussion on rewiring above), this robustness may depend on the climate context and the diversity and specialization within the network (Hoiss et al. 2015). Moreover, less-generalized interactions such as those between parasites and hosts may show less flexibility.
+Specialist species (that lack flexibility in their choice of interaction partner) should theoretically be most vulnerable to phenological decoupling. However, one study of pollinator communities along an elevational gradient found that apparently specialized pollinators were facultatively more generalist than they appeared and could adapt their visitation patterns across sites as much as generalists to avoid phenological asynchrony (Benadi et al. 2014). Similarly, duration of the fruiting season has been shown to predict the degree and strength of seed-dispersal interactions (Gonza lez- Castro et al. 2012), and a long-term study found no difference between specialist and generalist plant species in their interannual fluctuations in phenology and pollinator richness (Petanidou et al. 2014). Although these findings suggest that the facultative generalism of pollination mutualisms may confer robustness to these networks in the face of altered phenology (see also discussion on rewiring above), this robustness may depend on the climate context and the diversity and specialization within the network (Hoiss et al. 2015). Moreover, less-generalized interactions such as those between parasites and hosts may show less flexibility.
 
 
 
