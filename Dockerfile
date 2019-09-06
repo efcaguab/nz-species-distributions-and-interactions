@@ -33,6 +33,24 @@ RUN apt-get update \
   && apt-get -y --no-install-recommends install libudunits2-dev libgdal-dev libv8-dev
 RUN R -e "install.packages(c('concaveman'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
 
+## THE FOLLOWING BLOCK INSTALLS NEOVIM
+RUN apt-get update \
+    && apt-get -y --no-install-recommends install curl python3-dev python3-pip python3-setuptools
+# Install some python pre-requisites for neovim plugnins
+COPY init.vim /root/.config/nvim/init.vim
+# Pyton requirements for autocompletion
+RUN python3 -m pip install wheel \
+  && python3 -m pip install pynvim \
+# Install neovim software
+  && wget https://github.com/neovim/neovim/releases/download/v0.3.8/nvim.appimage \
+  && chmod u+x nvim.appimage \
+  && ./nvim.appimage --appimage-extract \
+  && ln -s /squashfs-root/AppRun /usr/local/bin/nvim \
+# Install plugins
+  && curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+  && squashfs-root/AppRun +PlugInstall +qall 
+
 # Install development version of Rmangal. Code at April 8 2019 Note: Rmangal is pretty shit at the moment (May 2019) won't use it for now
 # RUN apt-get update \
 #  && apt-get -y --no-install-recommends install libjq-dev libprotobuf-dev protobuf-compiler libudunits2-dev libv8-dev
