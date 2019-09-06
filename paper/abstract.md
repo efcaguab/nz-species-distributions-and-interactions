@@ -1,8 +1,6 @@
-It has been long clear that species interactions and consequently the structure of ecological networks can be heavily influenced by the habitat and environmental gradiets (Tylianakis 2017). 
-The central paradigm has been that the link between between environmental variation and network structure is based on changes on species composition which in turn determine co-occurrence.
-But despite theoretical predictions, the link between evironmental variation and wether two co-occurring species interact has been elusive and, to date, chiefly attributed to stochastic processes. 
-Using a global dataset of plant-pollinator interactions, occurrences, and bioclimatic variables, we show that this process is not completely stochastic but is instead mediated by how the environmental suitability interacts with the coevolutionary processes that underpin species interactions. 
-Specifically, we provide evidence to the hypothesis that environmental suitability could cause species to broaden their trophic breadth by removing limits on the quality of interaction partners that can be used. 
-In the face of climate change when species populations are forced to habitat in the fringes of their distribution, our results emphasizes that species could be particularly vulnerable if the species they are best adapted to interact with do not share the same distributional changes. 
-A current challenge of ecology is to integrate species biogeography and their interactions our results advance this question as we show that is not the environment per-se, but the stresses imposed by the environment what determine turnover in species interactions. 
-From a theoretical standpoint, this ultimately means that the position of a population in the grinellian niche can influence its eltonian niche. 
+Evidence that the environment influences the interaction between species is rapidly accumulating. 
+However, how it happens is currently unclear as environmental gradients appear to have contrasting or non-linear effects on the species' trophic niche breadth depending on the environmental variable. 
+Here, we explore the relationship between the stresses imposed by the environment, instead of environmental gradients directly, and niche breadth using a global dataset of plant-pollinator interactions.
+We found that environmental stress plays a significant role in determining the number of partners a species interacts with, but this role is highly variable across species. 
+In particular, when faced with environmental stress, species that have a large number of interactions are more likely to focus on a smaller number of, presumably higher-quality, interactions. 
+Contrastingly, the specialists that can cope with increased stress are more likely to broaden their niche and engage in opportunistic interactions, effectively behaving as facultative generalists.
