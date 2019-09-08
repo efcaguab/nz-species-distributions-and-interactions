@@ -97,118 +97,28 @@ All else being equal, when the encounter rate of interacting species is high, th
 
 Perhaps, because it operates at scales larger than those of the Eltonian niche concept, the abiotic environment is one of the factors that is commonly overlooked by community ecologists when explaining interaction turnover [but see @gravel_bringing_2018]. 
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
-At the heart of biogeography is the idea that the abiotic environment can determine whether a species can have a positive growth-rate when rare in a particular location.
-For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the "Grinellian" niche of both species. 
-Although less understood, the environment can also affect the interactions, once community composition has been established [@tylianakis_ecological_2017]. 
+At the heart of biogeography is the idea that the abiotic environment can determine the "Grinellian" niche of a species, this is whether the species can have a positive growth-rate when rare in a particular location.
+For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Grinellian niche of both species. 
+Although less understood, the environment can also affect the interactions themselves, after community composition has been established [@tylianakis_ecological_2017]. 
 For instance, some studies show that trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016], and both plant-plant [@bertness_positive_1994] and plant-pollinator [@tur_evaluating_2016] interactions can switch from facilitative to competitive along an elevation/temperature gradient. 
 Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
-One way to summarise the seemingly contradictory evidence of whether the environment can influence whether two species interact or not is by moving from gradients of temperature or precipitation to gradients of environmental stress/suitability. 
-Previous research is so far equivocal and indicates that environmental stress can have two contrasting effects on species' Eltonian-niche [@tylianakis_ecological_2017].
+One way to summarise the seemingly contradictory evidence of whether the environment can influence whether two species interact or not is by moving from gradients of temperature or precipitation to gradients of environmental stress. 
+Previous research is so far equivocal and, taken together, suggest that environmental stress can have two contrasting effects on species' Eltonian-niche [@tylianakis_ecological_2017].
 On the one hand, it is possible that when species are under environmental stress, they might be "pressured" to focus on partners with which they are best adapted to interact. 
-For instance, @hoiss_altitude_2012 found increased phylogenetic clustering between plants and pollinators at higher altitudes; while @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where environmental stress was higher than in native forests, were constrained to interact with hosts, they were best adapted to attack.
+For instance, @hoiss_altitude_2012 found increased phylogenetic clustering between plants and pollinators at higher altitudes; while @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where environmental stress was higher than in native forests, were constrained to interact with hosts they were best adapted to attack.
 Similarly, @lavandero_genotype_2013 found that environmental stress due to higher temperature reduced the breadth of the Eltonian niche of parasitoids. 
 On the other, it is also possible that when species are under environmental stress, they are forced to be more flexible in their interactions as higher environmental stress is likely to be reflected in greater energetic or reproductive costs and therefore they might not be able to sustain encounter rates with their preferred partners at sufficient levels. 
-For instance, @hoiss_interactive_2015 found that the specialisation of plant-pollinator networks decreased both with elevation and after extreme drought events.
+In line with this hypothesis, @hoiss_interactive_2015 found that the specialisation of plant-pollinator networks decreased both with elevation and after extreme drought events.
 Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities. 
 
-We collect available data on plant-pollinator interactions globally and calculate the environmental suitability of all species present at two or more communities to. 
+We analyse data on plant-pollinator interactions globally and calculate the environmental suitability of all species present at two or more communities to. 
 Our main aim is to leverage that information to test the two competing hypotheses that relate environmental stress and Eltionian niche breadth and whether there is a pattern within and across species. 
 Specialist species can become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example, when variations in climate decouple phenologies; @benadi_specialization_2014]. 
 We therefore also expect that as environmental stress increases species with a relatively small number of partners are more likely to broaden their Eltonian niche. 
 Species with a large number of partners, on the other hand, should have a larger pool of available partners and might, therefore, be more likely to narrow their niche under environmental stress. 
 Importantly, when testing these hypotheses, we control for the potential effects of the environment in community composition and the size of the species fundamental niche, both from an Eltonian (interactions) and Grinellian (environment) perspective. 
 
-<!-- Interactions are selected by species depending on the relative benefit they provide. The assumption goes that species with a large number of interactions are benefit relatively little from each of them, and species with a small number benefit largely with them, this is they focus in more optimal pollinators. -->
-
-<!-- AND  -->
-
-<!-- We know that interactions are influenced by the environment.  -->
-
-<!-- BUT -->
-
-<!-- We don't know how exactly wether the enviroment influences the patterns of generalisation/specialization.  -->
-
-<!-- One option is that when species are in detrimental environmental conditions focus on most optimal partners and as such interact with a smaller number of species.  -->
-<!-- An alternative hypotheisis is that when species are in favourable environmental conditions they can afford to be more picky about their interactions and as such avoid those of less value, while individuals in unfavourable conditions must get rewards from whatever they can get.  -->
-
-<!-- THEREFORE -->
-
-<!-- We used a global dataset on plant pollinator interactions, species occurrence, and bioclimatic data to test these hypotheses.  -->
-<!-- If the first option is true we should see a negative relationship between environmental sutability and the relative degree of a species.  -->
-<!-- If the second option is true we should see the opposite, a positive relationship between environmental suitability and the relative degree of a species.  -->
-
-
-
-
-<!-- **Is my central topic turnover of interactions**? If yes then I should quanitify turnover accross high and low suitability areas.  -->
-
-<!-- **Continuation: compare the suitability of the species that species do not interact with vs those that interact (when a possible interaction occurs but is not realised)?** -->
-
-<!-- **Continuation: average suitability of all species. If avg. competitors suitability is low, species, facilitation more common and resource sharing should increase. If avg. suitability is high, the opposite should happen?** -->
-
-<!-- **Continuation: Should I use relative suitability instead of absolute? Is not total suitability what matters but that relative to other species?**  -->
-
-<!-- **Is smaller degree a smaller Eltonian niche?** Should I frame this as the relationship between Grinellian and Eltonian. A better position in the grinellian niche allows for a larger Realised Eltonian niche. A problem of stating the hypothesis in terms of niches is that there are many definitions of niche and people is picky -->
-
-<!-- *Previous state of the world: We know interactions change with the environment but we don't know beyond co-occurrence patterns* -->
-
-<!-- Notes: -->
-
-<!-- **From donoso et al 2017: ** Intro: It is generally agreed that both neutral and niche-driven processes contribute to the occurrence of pairwise mutualistic interactions and network structure. That is, whether or not two species interact can be thought of as the result of two sequential processes. First, there is a stochastic (neutral) process driven by the local abundances of interacting species, such that abundant species are more likely to encounter each other than are rare ones. Secondly, there is a deterministic process driven by a matching of traits (e.g., phenology, morphology, behavior, etc.) that finally permits the interaction between co- occurring species.  -->
-
-<!-- Intro: Mutualistic interactions are fundamentally dynamic, such that there is a turnover of species and individuals in space and time (Carnicer et al., 2009; Laliberté and Tylianakis, 2010; Hagen et al., 2012).  -->
-
-<!-- I would then add a thrird one that is dictated by the rewards provided by an interaction. Maybe? -->
-
-<!-- Conclusion: Overall we found that the assemblage of pairwise interactions depended on the neutral effects of interacting species abundances (the more abundant the species of fruit and frugivore, the more frequent their pairwise interaction) and on the local context of ecological neighborhoods. -->
-
-<!-- **From Boulangeat et al 2012:** Intro: These drivers of species distributions may act at different spatial scales. For instance, frequent consideration is given to abiotic variables acting at large spatial scales. On the other hand, biotic interactions and consumer-resource dynamics are assumed to occur at smaller spatial scales. -->
-
-<!-- Conclusion: Biotic inetractions are def important at determining abundace. They observed positive effects of biotic interactions at colder climates (low suitability for plants) -- suggest facilitation. and negative effects of interactions at warmer climates (high suitability) suggesting competition. *Should I calculate the suitability of other species and test this?* -->
-
-<!-- **From Dormann et al 2018:** Intro: Sometimes, an organism will be little affected by com- petitors, mutualists, pathogens or predators; a mature tree may appear to grow unfettered by its neighbours for decades. In other cases, an individual may struggle to survive the pressure of its community during every hour of its life; for example, a fish preying and escaping predators in a small river. Biotic interactions such as these can have major effects on local processes and population dynamics, and some, but not neces- sarily all, scale up to co-determining the range of a species (reviewed, e.g., by Wisz et al., 2013). -->
-
-<!-- Most BI-SDMs assume that biotic interactions are constant in space and time. It is more likely, however, that interaction strengths are modulated by the biotic and abiotic environment. Experimental studies showed that rates of biological interactions depend on environmental conditions: rates of herbivory are temperature dependent (Burnside, Erhardt, Hammond, & Brown, 2014); mycorrhizal symbioses change with resource availability (Cox, Barsoum, Lilleskov, & Bidartondo, 2010; Johnson, Wilson, Bowker, Wilson, & Miller, 2010); and plant–plant interactions can shift from competitive to facilitative along a stress gra- dient (Bertness & Callaway, 1994). Additionally, environmental change can modulate biotic interactions via phenological mismatches, such as for plant–pollinator interactions (Berg et al., 2010; Elzinga et al., 2007). In these conditions, the model must also allow for the interplay of environmental and biotic interactions (Clark et al., 2011), which has only recently started to be explored in BI-SDMs (Tikhonov, Abrego, Dunson, & Ovaskainen, 2017). -->
-
-<!-- **From Gravel et al. 2018**: We apply this framework to host–parasite interactions across Europe and ind that two aspects of the environment (temperature and precipitation) exert a strong imprint on species co-occurrence, but not on species interactions. Even where species co-occur, interaction proves to be stochastic rather than deterministic, adding to variation in realized network structure. *Bingo: I show it's not completely stochastic and is likely to be determined by the suitability hehe* -- for real ( They test prob. of two co-occurring species to interact does not depend on environment. I test single species thingy). Should I do that? suit sp.1 and suit sp. 2? It;s not about the environment, but about how the environment affect the species involved. Buya! -->
-
-<!-- There is, however, ample evidence that interaction networks vary in space and time (Laliberté and Tylianakis 2010, Poisot et al. 2012, 2016c, Schleuning et al. 2012, Albouy et al. 2014, Trøjelsgaard et al. 2015), even though there is no common framework with which to generalize these results. -->
-
-<!-- he occurrence and intensity of interactions could vary because of the environment, species abundance, and higher- order ecological interactions (Poisot et al. 2015). *Well do I show that could vary because of more stuff?* -->
-
-<!-- Variation in community composition can be independent of variation of ecological interactions, suggesting that species and inter- ac tion distribution may well respond to diferent drivers (Poisot et al. 2012). -->
-
-<!-- Ecological interactions could also vary with the environment. Although it is rare to see a conditional representation of pairwise ecological interactions, experimental studies have frequently revealed interactions to be sensitive to the environment. For instance, McKinnon et al. (2010) showed that predation risks of shorebirds vary at the continental scale, decreasing from the south to the north. It is also common to see increasing top-down control with temperature (Shurin et al. 2012, Gray et al. 2016). Efects of the environment on interactions (Gibert and DeLong 2014) also propagate up the community and inluence net- work structure (Tylianakis et al. 2007, Petchey et al. 2010, Woodward et al. 2010). -->
-
-<!-- In terms of species interacting with each other, our analysis suggests that the environment leaves a detectable imprint on species co-occurrence, but only a slight mark on the occurrence of realized links among species in a speciic place: the prob- ability of inding a given combination of species at a higher and a lower trophic level at the same site was clearly afected by the environment, whereas the probability of observing an interaction between the two was, given co-occurrence, not signiicantly so.  -->
-
-<!-- This does not imply that species will always interact when they meet – **although this is a basic assumption in most documented metawebs to date** (Havens 1992, Wood et al. 2015).  -->
-
-<!-- Evidence that the structure of ecological networks does vary across habitats (Tylianakis et al. 2007), over environmental gradients (Lurgi et al. 2012) and in time (Simanonok and Burkle 2014) is accumulating rapidly.  -->
-
-<!-- **Devictor 2010:** I can use degree to quantify realised eltonian niche -->
-
-<!-- **Godsoe 2017**: Biogeographers and community ecologists have long debated the importance of biotic interactions (see Glossary) for species distributions and range limits [1–5].*But seldom the other way arround?* -->
-
-<!-- **Tylianakis 2017**: Interactions can change because of environment because environment and habitat can change encounter rate.  -->
-
-<!-- Specialist species (that lack flexibility in their choice of interaction partner) should theoretically be most vulnerable to phenological decoupling. However, one study of pollinator communities along an elevational gradient found that apparently specialized pollinators were facultatively more generalist than they appeared and could adapt their visitation patterns across sites as much as generalists to avoid phenological asynchrony (Benadi et al. 2014). Similarly, duration of the fruiting season has been shown to predict the degree and strength of seed-dispersal interactions (Gonza ́ lez- Castro et al. 2012), and a long-term study found no difference between specialist and generalist plant species in their interannual fluctuations in phenology and pollinator richness (Petanidou et al. 2014). Although these findings suggest that the facultative generalism of pollination mutualisms may confer robustness to these networks in the face of altered phenology (see also discussion on rewiring above), this robustness may depend on the climate context and the diversity and specialization within the network (Hoiss et al. 2015). Moreover, less-generalized interactions such as those between parasites and hosts may show less flexibility. -->
-
-<!-- many trophic and mutualistic interactions are relatively generalized and potentially opportunistic (Pimm et al. 1991). Thus, we may expect that ecological networks will comprise a mixture of interactions that persist over the long-term owing to trait matching of partners through coevolution (Go ́ mez et al. 2010, Guimaraes et al. 2011) and those that occur opportunistically, perhaps with inferior long-term fitness benefits (Aizen et al. 2016). Increases in the frequency of the former will strengthen any pattern of phylogenetic congruence, whereas increases in the latter will erode it. -->
-
-<!-- For example, environmental stressors could cause species to narrow their trophic breadth by increasing the search time to find alternative partners (Gauld 1987) or by imposing limits on the quality of interaction partners that can be used (i.e., using only resources to which a species is best adapted). Phylogenetic congruence becomes stronger in parasitoid–host networks with increasing temperature (Lavandero & Tylianakis 2013) and in plantation versus native forests (Peralta et al. 2015), and such patterns appear consistent with a hy- pothesis of stress-induced reduction in trophic (phylogenetic) breadth (in the case of Lavandero & Tylianakis 2013, this occurred on genotype relatedness rather than between-species phylogenies). However, evidence for the hypothesized mechanism is still lacking, as experiments have revealed no change in the proportionate use of good or bad hosts when parasitoids are nutritionally stressed (Hopper et al. 2013) or even decreased selectivity toward high-quality hosts under high levels of nutritional stress (Crespo et al. 2015). -->
-
-<!-- In addition to seasonal patterns, interaction turnover can be driven by environmental fac- tors, such as community changes during drought years (Alarco ́n et al. 2008) or along land use or landscape intensity gradients (Gagic et al. 2012, Laliberte ́ & Tylianakis 2010). The impact of environmental conditions on interaction turnover can, in turn, be constrained by species traits such as feeding morphology (Carnicer et al. 2009) or body size (Laliberte ́ & Tylianakis 2010). To understand this balance, species interactions can be thought of as having both a niche-based or trait-based component and a random or neutral component determined by encounter probability (Bartomeus et al. 2016, Vazquez et al. 2009). Any environmental driver that sufficiently increases encounter probability (see Section 2.2) for all species could reduce the neutral barrier to inter- actions and allow species to consistently select their interaction partner with optimally matched traits. This enhanced expression of species preferences would result in reduced spatial or temporal variability because the same interactions would consistently be realized (i.e., network homogeniza- tion; Laliberte ́ & Tylianakis 2010). Reduction of the neutral component of interactions could also lead to exaggeration of patterns of trait matching and phylogenetic congruence (Carnicer et al. 2009) (see Section 2.3). Alternatively, a driver that increases the abundance of a subset of species could result in their overrepresentation in interactions by allowing the neutral component of inter- actions to be overexpressed relative to the trait-based component (Carnicer et al. 2009). Because individual species may differ in the extent to which they engage in neutral interactions, changes to the relative abundance of species can alter network architecture. For example, exotic birds can be less selective in the fruit species on which they feed (i.e., feeding more neutrally on species in proportion to their abundance), and this low selectivity can allow them to fill the gap left by rare or extinct native birds and maintain high network nestedness and connectance (Garcıa et al. 2014). -->
-
-<!-- **Peralta 2015:** Plantation forests (as opposed to native) habitat may impose stresses on parasitoids that constrain them to attack only host species for which they are best adapted. -> Consistent with more stress less generalism.  -->
-
-<!-- Native herbivore–parasitoid combinations whose interac- tions contributed the most to the pattern of phylogenetic congruence were more abundant in plantations than in native forests. This stronger co-evolutionary signal in plantation forests suggests that parasitoids in disturbed habitats may only be able to utilize hosts that they have best evolved to attack. Analogously, climate warming has been shown to reduce the niche breadth plasticity of par- asitoids (Lavandero & Tylianakis 2013), suggesting that different environmental changes could reduce the ability of parasitoid communities to suppress a broad range of host species and genotypes in natural systems and biologi- cal control programmes. -->
-
 # Methods
-
-## Data aquisition
-
-### Species interactions
 
 ```{r}
 loadd(config)
@@ -283,17 +193,29 @@ n_names_in_multiple_references_orig <- spp %>%
 ```
 
 We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014]. 
-This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]` `r all_int_cites`.
-All together, these data sources contained `r format(n_sp_names, big.mark = ",")` unique organism names; `r format(n_names_in_multiple_references_orig, big.mark = ",")` of them in more than one data source.
-Because assessing how habitat suitability affects interaction partners of plants and pollinators requires linking of species across different datasets, it was important to ensure that the names used to identify species were as accurate as possible.
-From the total number of organisms,`r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level_no_subsp, big.mark = ",")` to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, and no taxonomic information was avaliable for the remaining `r format(n_no_tax_info, big.mark = ",")`. 
-As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we group together subspecies or varieties within a same species. 
+This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]` `r all_int_cites`. 
+Calculating the environmental stress of species in their community and their Eltonian niche breadth requires that the scientific names used to identify them are valid and unambiguous. 
+This is because valid scientific names are necessary to both accurately match species across studies and to obtain other information from biological databases. 
+However, a significant proportion of the data obtained contain spelling mistakes, taxonomic synonyms, or non-standard abbreviations. 
+Therefore, our first step was to validate and correct scientific names across studies to ensure that we matching of species across studies was as accurate as possible. 
 
-We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the cannonical names used to identify organisms (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
-We assessed the validity of a cannonical name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
+Second, we calculated the suitability of the environment for a species in a particular community as a proxy of environmental stress. 
+We assume that the environmental stress a species experience in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
+Our third and final step was to relate the environmental suitability to the relative number of partners a species has in a community, as a proxy for Eltionian niche breadth. 
+To explore this relationship within and across species, we used a multilevel Bayesian model in which we controlled for the potential effects of the environment on co-occurrence.
+
+## Plant-pollinator interactions
+
+All together, interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
+From these `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
+From the total number of organisms, `r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level_no_subsp, big.mark = ",")` to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, whereas the remaining `r format(n_no_tax_info, big.mark = ",")` were unidentified. 
+As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we grouped together subspecies or varieties within a same species. 
+
+We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the scientific names used to identify organisms (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
+We assessed the validity of a name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
 Specifically, we used the function `gnr_resolve` from the R package `taxize` `r as.character(packageVersion('taxize'))` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
 
-From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, we were able to identify and correct `r format(n_sp_corrected_typos, big.mark = ",")` spelling mistakes. 
+From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, we were able to identify and correct `r format(n_sp_corrected_typos, big.mark = ",")` that contained spelling mistakes. 
 These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with tgose in the Global Names Resover database. 
 In rare occasions, the fuzzy matching algorithm can suggest a cannonical name that has similar spelling but that correspond to an organism in a completely different taxonomic group, often in a different kingdom. 
 We, therefore, checked the taxonomic hierarchy of suggested names to confirm that it corresponded to our expectations. 
