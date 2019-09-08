@@ -213,28 +213,29 @@ As the species level was the most common taxonomic rank available in our interac
 
 We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the scientific names used to identify organisms (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
 We assessed the validity of a name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
-Specifically, we used the function `gnr_resolve` from the R package `taxize` `r as.character(packageVersion('taxize'))` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
+We accessed this database using the function `gnr_resolve` from the R package `taxize` `r as.character(packageVersion('taxize'))` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
 
 From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, we were able to identify and correct `r format(n_sp_corrected_typos, big.mark = ",")` that contained spelling mistakes. 
-These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with tgose in the Global Names Resover database. 
-In rare occasions, the fuzzy matching algorithm can suggest a cannonical name that has similar spelling but that correspond to an organism in a completely different taxonomic group, often in a different kingdom. 
-We, therefore, checked the taxonomic hierarchy of suggested names to confirm that it corresponded to our expectations. 
+These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with those in the Global Names Resover database. 
+However, in rare occasions, the fuzzy matching algorithm can suggest a cannonical name that has similar spelling but that correspond to an organism in a different taxonomic group, often a different kingdom. 
+To address this potential problem, we checked the taxonomic hierarchy of suggested names and confirmed that it matched to our expectated taxon.
 We retrieved all taxonomic hierarchies from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
 
-Subsequently, we checked for possible synonyms of the canonnical names in our data sources. 
-Using data from the Integrated Taxonomic Information System database (http://www.itis.gov), we found synonyms and alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` of those in our data sources.
-Finding these alternative names was important due to two reasons. 
-First, because we wanted to be able to identify the cases in which the same organism might have been recorded with different cannonical names in different data sources. This can ocurr not only with synonyms but also when the cannonical name has been changed or when there are widely used ortographic variants.
+As species names are constantly changin, we subsequently checked for possible synonyms of the canonnical names in our data sources. 
+Using data from the Integrated Taxonomic Information System database (http://www.itis.gov), we found synonyms and alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` species.  
+Finding these alternative names was important for two main reasons. 
+First, because we wanted to be able to identify the cases in which the same species might have been recorded with different names in various data sources. 
+This can ocurr not only when the cannonical name has been changed but also when there are widely used ortographic variants.
 Second, because retrieving occurrence data is often only possible using the latest accepted/valid name for a particular species.
 
-All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct `r format(n_sp_not_found, big.mark = ",")` of them. 
-We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for cannonical names that resembled the unvalidated names and matched the geographic and taxonomic spectations. 
-We were able to further correct `r n_sp_manual_corrections` names in this fashion.
-Most manual corrections were of species names that have been abbreviated or had more than two spelling mistakes. 
+All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct or find synonyms `r format(n_sp_not_found, big.mark = ",")` of them. 
+We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for cannonical names that both, resembled the unvalidated names and matched the geographic and taxonomic spectations. 
+In this fashion, we were able to further correct `r n_sp_manual_corrections` names. 
+Most manual corrections were made on names that have been abbreviated or had more than two spelling mistakes. 
 A complete list of manual name corrections can bee seen in Table \@ref(tab:tab-manual-name-corrections).
 
 ```{r}
-loadd(recoded_interactions, clean_interactions)
+loadd(recoded_interactions, clean_interactions, int_metadata)
 
 n_sp_ids <- recoded_interactions %>%
   select(-loc_id) %>%
@@ -251,13 +252,21 @@ n_names_in_multiple_references_after <- recoded_interactions %>%
 
 stats_clean_int <- clean_interactions %>%
   purrr::map(n_distinct)
+
+data_sources_mult_nets <- int_metadata %>%
+  group_by(loc_id) %>%
+  summarise(n_nets = n_distinct(net_name)) %>%
+  filter(n_nets > 1) 
+
+n_data_sources_mult_nets <- nrow(data_sources_mult_nets)
 ```
 
 This cleaning process allowed us to match further `r n_sp_names - n_sp_ids` names across data sources and, by doing so, identify another `r n_names_in_multiple_references_after - n_names_in_multiple_references_orig` species that were present in more than one study. 
-It also allowed us to identify `r numbers2words(length(problematic_networks))` problematic networks in which some names were included as both plants and pollinators. 
-These networks were removed from further analysis. 
-Sometimes interaction data was recorded at multiple points in time within or across our data sources. 
-When this was the case, we combined them into one single interaction network per location. 
+The process also allowed us to identify `r numbers2words(length(problematic_networks))` problematic data sources in which some names were included as both plants and pollinators. 
+These data sources were removed from further analysis. 
+In `r numbers2words(n_data_sources_mult_nets)` of our data sources interaction data was recorded at multiple points in time. 
+When this was the case, we combined interaction data into one single interaction network. 
+
 The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap), \@ref(fig:fig-distribution-species-mult-locations)).
 
 ```{r fig-worldmap, fig.width = width('single'), fig.cap ="Worldwide distribution of pollination communities included in this study"}
