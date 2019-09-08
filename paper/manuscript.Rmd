@@ -209,27 +209,27 @@ To explore this relationship within and across species, we used a multilevel Bay
 All together, interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
 From these `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
 From the total number of organisms, `r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level_no_subsp, big.mark = ",")` to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, whereas the remaining `r format(n_no_tax_info, big.mark = ",")` were unidentified. 
-As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we grouped together subspecies or varieties within a same species. 
+As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we grouped together subspecies or varieties within the same species. 
 
 We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the scientific names used to identify organisms (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
 We assessed the validity of a name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
 We accessed this database using the function `gnr_resolve` from the R package `taxize` `r as.character(packageVersion('taxize'))` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
 
 From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, we were able to identify and correct `r format(n_sp_corrected_typos, big.mark = ",")` that contained spelling mistakes. 
-These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with those in the Global Names Resover database. 
-However, in rare occasions, the fuzzy matching algorithm can suggest a cannonical name that has similar spelling but that correspond to an organism in a different taxonomic group, often a different kingdom. 
-To address this potential problem, we checked the taxonomic hierarchy of suggested names and confirmed that it matched to our expectated taxon.
+These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with those in the Global Names Resolver database. 
+However, on rare occasions, the fuzzy matching algorithm can suggest a scientific name that has a similar spelling, but that corresponds to an organism in a different taxonomic group, often a separate kingdom. 
+To address this potential problem, we checked the taxonomic hierarchy of suggested names and confirmed that it matched our expected taxon.
 We retrieved all taxonomic hierarchies from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
 
-As species names are constantly changin, we subsequently checked for possible synonyms of the canonnical names in our data sources. 
+As species names are constantly changing, we subsequently checked for possible synonyms of the canonical names in our data sources. 
 Using data from the Integrated Taxonomic Information System database (http://www.itis.gov), we found synonyms and alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` species.  
-Finding these alternative names was important for two main reasons. 
+Finding these alternative names was required for two main reasons. 
 First, because we wanted to be able to identify the cases in which the same species might have been recorded with different names in various data sources. 
-This can ocurr not only when the cannonical name has been changed but also when there are widely used ortographic variants.
+This can occur not only when the canonical name has been changed but also when there are widely used orthographic variants.
 Second, because retrieving occurrence data is often only possible using the latest accepted/valid name for a particular species.
 
 All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct or find synonyms `r format(n_sp_not_found, big.mark = ",")` of them. 
-We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for cannonical names that both, resembled the unvalidated names and matched the geographic and taxonomic spectations. 
+We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for canonical names that both, resembled the unvalidated names and matched the geographic and taxonomic expectations. 
 In this fashion, we were able to further correct `r n_sp_manual_corrections` names. 
 Most manual corrections were made on names that have been abbreviated or had more than two spelling mistakes. 
 A complete list of manual name corrections can bee seen in Table \@ref(tab:tab-manual-name-corrections).
