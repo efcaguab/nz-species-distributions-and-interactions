@@ -310,8 +310,10 @@ percent_thinned <- 1 - sum(n_thinned_occurrences$N) / sum(n_cleaned_occurrences$
 percent_filled_round_one <- 1-complete_filled_cells_1[1]/complete_climate_cells[1]
 ```
 
-Our next step was to determine the suitability of the species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
-To do that we first fit a climatic envelope for each  of them which requires information about the climate and habitat at the locations where the species occurrs. 
+Our next step was to determine the habitat suitability of the species as a proxy of the environmental stress they experience in their community.
+As our aim is to compare the throphic niche for different suitability levels, we only do this for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
+To calculate the suitability of a species in a particular location, using a (grinellian) niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012] which is based on the probabiliy density function of a species distribution in an environmental-bioclimatic variable space. 
+Calculating this we To do that we first fit a climatic envelope for each  of them which requires information about the climate and habitat at the locations where the species occurrs. 
 We retrieved climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
 These bioclimatic variables were complemented with 18 of bioclimatic and topographic variables available in Envirem [@title_envirem_2018]. 
 This additional set of variables have been shown to be relevant to ecological or physiological processes and as such have the potential to improve species distribition models.
