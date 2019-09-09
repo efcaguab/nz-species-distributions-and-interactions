@@ -179,13 +179,25 @@ define_alternative_models <- function(formula_base){
       (1 | org_id)
   )
   
+  formula_triple_interaction <- update(
+    formula_base, 
+    ~ . + scaled_grinell_niche_size:scaled_suitability
+  )
+
+  formula_triple_interaction_no_niche <- update(
+    formula_base, 
+    ~ . + scaled_grinell_niche_size:scaled_suitability - scaled_grinell_niche_size - scaled_grinell_niche_size:guild
+  )
+  
   list(
     formula_base = formula_base, 
     formula_no_generalism = formula_no_generalism, 
     formula_no_grinell_niche_size = formula_no_grinell_niche_size,
     formula_no_possible_partners = formula_no_possible_partners,
+    formula_triple_interaction_no_niche = formula_triple_interaction_no_niche,
     # formula_no_possible_partners_generalism = formula_no_possible_partners_generalism,
-    formula_no_suitability = formula_no_suitability
+    formula_no_suitability = formula_no_suitability, 
+    formula_triple_interaction = formula_triple_interaction
   )
   
 }
@@ -204,9 +216,9 @@ fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
                data = analysis_frame, 
                prior = c(
                  set_prior("normal(0,10)", class = "b"), 
-                 set_prior("normal(0,10)", class = "Intercept"), 
+                 set_prior("normal(0,10)", class = "Intercept")
                  # set_prior("lkj(2)", class = "cor"), 
-                 set_prior("cauchy(0, 2)", class = "sd")
+                 # set_prior("cauchy(0, 2)", class = "sd")
                  ),
                chains = 4, 
                iter = iter,
@@ -234,20 +246,21 @@ compare_models <- function(chosen_models){
   model_waic <- chosen_models %>%
     purrr::map(brms::waic)
   
-  model_kfold <- chosen_models %>%
-    purrr::map(brms::kfold)
-  
-  model_kfold_org <- chosen_models %>%
-    purrr::map(brms::kfold, group = "org_id", folds = "grouped")
-  
-  model_kfold_loc <- chosen_models %>%
-    purrr::map(brms::kfold, group = "loc_id", folds = "grouped")
+  # model_kfold <- chosen_models %>%
+  #   purrr::map(brms::kfold)
+  # 
+  # model_kfold_org <- chosen_models %>%
+  #   purrr::map(brms::kfold, group = "org_id", folds = "grouped")
+  # 
+  # model_kfold_loc <- chosen_models %>%
+  #   purrr::map(brms::kfold, group = "loc_id", folds = "grouped")
   
   list(loo = model_loo, 
-       waic = model_waic, 
-       model_kfold = model_kfold, 
-       model_kfold_org = model_kfold_org, 
-       model_kfold_loc = model_kfold_loc)
+       waic = model_waic#, 
+       # model_kfold = model_kfold, 
+       # model_kfold_org = model_kfold_org, 
+       # model_kfold_loc = model_kfold_loc
+       )
 }
 
 
