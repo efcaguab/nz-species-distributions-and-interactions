@@ -11,6 +11,7 @@ Plug 'ncm2/ncm2-ultisnips'
 Plug 'lervag/vimtex'
 Plug 'chrisbra/csv.vim'
 Plug 'rakr/vim-one'
+Plug 'junegunn/goyo.vim'
 call plug#end()
 
 "" CONFIGURATIONS FOR AUTOCOMPLETION
