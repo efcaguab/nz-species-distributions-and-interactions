@@ -8,7 +8,7 @@ author:
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
-csl: pnas.csl
+# csl: pnas.csl
 output: #word_document
   bookdown::pdf_document2:
     # base_format: rticles::peerj_article
