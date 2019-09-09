@@ -311,53 +311,53 @@ percent_filled_round_one <- 1-complete_filled_cells_1[1]/complete_climate_cells[
 ```
 
 Our next step was to determine the habitat suitability of the species as a proxy of the environmental stress they experience in their community.
-As our aim is to compare the throphic niche for different suitability levels, we only do this for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
-To calculate the suitability of a species in a particular location, we used a (grinellian) niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
-This approach is based on the probabiliy density function of a species distribution in an environmental variable space. 
-In a nutshell, habitats (characterised by a collection of environmental variables) in which the species ocurrs most often are deemed to be suitable for the species than habitats in which the species has never been observed. 
-This approach to estimate the habitat suitability requires to key pieces of information. 
-First we require information about the occurrences of the species of interest.
-Second we require information about the environmental conditions for all the locations in which the species occurs.
+As we aim to compare the trophic niche for different suitability levels, we only do this for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
+To calculate the suitability of a species in a particular location, we used a (Grinellian) niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
+This approach is based on the probability density function of species distribution in an environmental variable space. 
+In a nutshell, habitats (characterised by a collection of environmental variables) in which the species occurs most often are deemed to be suitable for the species than habitats in which the species has never been observed. 
+This approach to estimating the habitat suitability requires two critical pieces of information. 
+First, we require information about the occurrences of the species of interest.
+Second, we require information about the environmental conditions for all the locations in which the species occurs.
 
 We retrieved occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
 Specifically, for each species, we only requested occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
 Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species we were interested on. 
-This occurrences however, contain observations of mixed quality. 
+This occurrences, however, contain observations of mixed quality. 
 Therefore, we followed (ref?) and applied a series of simple filters and geographic heuristics to remove those of lower quality. 
-\R{rationale-occurrence-filtering}Specifically, we removed all occurrences with (*i*) a coordinate uncertainity larger than 100km; (*ii*) those recorded prior to 1945 (ref? or why?); (*iii*) those in which the number of individuals recorded was either zero or more than 100 as such large counts are often erroneous (ref? or why?); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (ref? why?). 
+\R{rationale-occurrence-filtering}Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (ref? or why?); (*iii*) those in which the number of individuals registered was either zero or more than 100 as such large counts are often erroneous (ref? or why?); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (ref? why?). 
 We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
-We removed occurrences in which their coordinates (*v*) fell outside the borders of the country in which they were recorded; (*vi*) those arround a the country capital or the centroid of the country and province centroids; (*vii*) those arond a biodiversity institution; and (*viii*) those located within oceans. 
+We removed occurrences for which their coordinates (*v*) fell outside the borders of the country where they were recorded; (*vi*) those around a country capital or the centroid of the country and province centroids; (*vii*) those around a biodiversity institution; and (*viii*) those located within oceans. 
 Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
 Finally, we integrated the occurrences from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
 
-We retrieved environmental data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
-We then complemented data obtained from WorldClim with data from Envirem [@title_envirem_2018], which includes 16 extra bioclimatic and two topographic variables. 
-The additional set of variables from Envirem have been shown to be relevant to ecological or physiological processes and as such have the potential to improve our suitability estimation. 
+We retrieved environmental data from WorldClim V2.0, which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
+We then complemented data obtained from WorldClim with data from Envirem [@title_envirem_2017], which includes 16 extra bioclimatic and two topographic variables. 
+The additional set of variables from Envirem are relevant to ecological or physiological processes and as such, have the potential to improve our suitability estimation [@title_envirem_2018]. 
 We obtained all environmental data as rasters composed by cells of 2.5 arc-minutes. 
 We chose this resolution because it provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
 
-After obtaining information about the species occurrence and the evironment, the next step was to merge these two datasets such that the location of each occurrence is characterized by a vector with information of our 37 bioclimatic and topographic variables. 
-If a species had more than one occurrence records within one of the cells of the bioclimatic raster we only included one of the occurrence records. 
-We did this to avoid giving more weight to areas with a high number of occurrences, a common scenario in occurrrence records collected opportunistically as the ones we use here. 
+After obtaining information about species occurrence and the environment, we then merged these two datasets such that the location of each occurrence was characterised by a vector with details of our 37 bioclimatic and topographic variables. 
+If a species had more than one occurrence records within one of the cells of the bioclimatic raster, we only included one of the occurrence records. 
+We did this to avoid giving more weight to areas with a high number of occurrences, a common scenario in occurrence records collected opportunistically as the ones we use here. 
 In this step we removed `r scales::percent(percent_thinned)` of the occurrences which resulted in a total of `r round(sum(n_thinned_occurrences$N)/1000000, digits = 1)` million occurrences used in our niche analysis. 
 
-A common issue of terrestrial bioclimatic datasets is that the boundaries of the cells with information do not exactly match the land mass boundaries. 
+A common issue of terrestrial bioclimatic datasets is that the boundaries of the cells with information do not precisely match the landmass boundaries. 
 The result of this missmatch is that not all environmental variables was not available for `r format(complete_climate_cells[1], big.mark = ",")` of the raster cells with occurrences (`r scales::percent(complete_climate_cells[1]/sum(complete_climate_cells), accuracy = 0.1)` of the total). 
-As expected, a vast majority of these problematic cells were close to the shore. 
-To address this issue, we calculated the average value of environmental variables within a `r config$climate_buffer/1000`km buffer of the center of the cell where the variable is missing, and used it to approximate the value of the variable in that cell. 
-Using this procedure we were able to fill environmental variables for `r scales::percent(percent_filled_round_one, accuracy = 0.1)` of the cells were they were missing. 
+As expected, the vast majority of these problematic cells were close to the shore. 
+To address this issue, we calculated the average value of environmental variables within an `r config$climate_buffer/1000`km buffer of the centre of the cell where the variable was missing and used it to approximate the value of the variable in that cell. 
+Using this procedure, we were able to fill environmental variables for `r scales::percent(percent_filled_round_one, accuracy = 0.1)` of the cells were they were missing. 
 To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but instead using a `r config$climate_buffer*2/1000`km buffer. 
-We removed from further analyis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables. 
+We removed from further analysis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables. 
 
-Next, we calculate the probability density function of the species distribution in environemntal space. 
-To determine the environmental space we use the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
+Next, we calculate the probability density function of the species distribution in environmental space. 
+To determine the environmental space, we use the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
 Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of 0 and a unit standard deviation. 
 We then determine the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
-We use a kernel method to estimate this density and normalise it such that it ranges beetween zero and one. 
+We use a kernel method to estimate this density and normalise it such that it ranges between zero and one. 
 Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@ecospat_citation] with a grid resolution of 200.
-We then determine the location in environmental space of the plant-pollinator communities where the species is present using the function `suprow` from `ade4`.
+We then determine the location in the environmental space of the plant-pollinator communities using the function `suprow` from `ade4`.
 The normalised density at that particular location corresponds to our suitability metric, which we calculate using the R package `raster` `r as.character(packageVersion('raster'))` [@raster_citation]. 
-We use the kernel density method in the niche-factor analyisis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier, as it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
+We use the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier, as it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
 
 ```{r sensitivity-analysis-calculations}
 loadd(sensitivity_species_name)
@@ -375,31 +375,33 @@ For that we used the species with most occurrences available, *`r sensitivity_sp
 
 We then used a set of bayesian multilevel models to evaluate the impact of environmental suitability on the size of the realised Eltonian trophic niche. 
 We measure the size of the Eltonian niche using the normalised degree of species, this is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
-Normalised degree was modelled using a logit link function and a binomial distribution in which the number of species interacts with is the number of successes and the number of species in the opposite guild is the number of trials. 
-We are aware that wether species intreacts or not is not a bernoulli process as species interactions are not strictly independent from each other, however a binomial distribution allow us to indirectly account for the differences in species richness across communities. 
-Importantly, however, results are qualitatively the similar when we model species degree directly using a Poisson distribution and a logarithmic link function (Supp info).
+The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of species interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
+We are aware that wether species interacts or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
+However, a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
+Importantly, however, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function (Supp info).
 
-Within each model set we evaluate four models in order to evaluate the relative importance of suitability. 
+Within each model set, we evaluate four models to assess the relative importance of suitability. 
 A first model, our baseline model, included four population-level predictors and two grouping levels, species and the community. 
 The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (whether it was a plant or a pollinator), a metric of the species generalism, and its number of known possible partners.
 We included the overall level of generalism as one would expect species with a large number of interactions globally to be more likely to interact with a large number of species locally. 
-Specifically, we estimated a species overal level of generalism as the total number of interacting species across communities in our dataset. 
-We also included the number of known possible partners as a predictor in our models as it allow us to control for the environmental effects on species co-occurrence. 
-We calculate the number of possible partners by determining the number of species in a community with which the species is known to interact in any other location in our dataset. 
-Controlling for the number of potential partners makes our model a particularly stringent test of our environemntal stress hypotheses as this number is often the same, or very close, to the number of actual partners, particularly for species in a small number of communities or with a small number of interactions.  
-As we were particularly intrested on understanding wether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we therefore included guild and its interaction with suitability in the model. 
+Concretely, we estimated an overall species level of generalism as the total number of interacting species across communities in our dataset. 
+We also included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
+We calculate this metric by determining the number of partners with which the species is known to interact in any other community.
+Controlling for the number of potential partners makes our model a particularly stringent test of our environmental stress hypotheses. 
+Often the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.  
+As we were particularly interested in understanding whether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we, therefore, included guild and its interaction with suitability in the model. 
 We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate two questions. 
-First, it allow us to inspect the extent to which suitability is a population or a group level effect. 
-Second, by investigating the correlation between the intercept and the slope as a model parameter it allowed us to inspect the extent by which species with a small or large number of interactions respond to increassing levels of environmental stress. 
+First, it allows us to inspect the extent to which suitability is a population or a group level effect. 
+Second, by investigating the correlation between the intercept and the slope as a model parameter, it allowed us to inspect the extent by which species with a small or large number of interactions respond to increasing levels of environmental stress. 
 To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
 We compare this baseline model with three alternative models in which we remove one predictor at a time.
 To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC). 
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
-For each model we used four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
+For each model, we used four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
 We used weakly informative priors for all model parameters. 
-Specifically we used normal priors of mean zero and standard deviation ten for the population level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters. 
+Specifically we used normal priors of mean zero and standard deviation ten for the population-level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters. 
 
 # Results
 
