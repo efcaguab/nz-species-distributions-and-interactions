@@ -349,21 +349,15 @@ Using this procedure we were able to fill environmental variables for `r scales:
 To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but instead using a `r config$climate_buffer*2/1000`km buffer. 
 We removed from further analyis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables. 
 
-Our main objective is to investigate wether the suitability of the environment was to obtain the suitability of the environment at the locations for which we have community data. 
-This involves two steps. 
-First, we determine the species' grinellian niche, the range of environmental conditions that are suitable for a positive growth rate. 
-We assume that the suitability of a particular set of environmental conditions (a point in the environmental space) can be inferred from the density of occurrences under these conditions. 
-This is, areas of the niche that have a higher density of occurrences have higher suitability and can be interpreted as the core of the species distribution in environental space. 
-Contrastingly, areas with a lower density are comparatively less suitable and represent the fringes of the species distribution. 
-The second step is to determine the location of our plant-pollinator communities (where the species is present) in the environmental space and calculate its corresponding environmental suitability.
-
+Next, we calculate the probability density function of the species distribution in environemntal space. 
 To determine the environmental space we use the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
 Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of 0 and a unit standard deviation. 
-We then determine the position of species occurrences in the environmental space and estimate their bivariate density distribution using the kernel method. 
-The main advantage of using the kernel method is that it reduces the sensitivity of the niche to sampling effort and the resolution chosen for the environmental space grid [@broennimann_measuring_2012]. 
-To calculate the kernel we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@ecospat_citation] with a grid resolution of 200.
-We then normalise the occurrence density distribution such that our suitability ranges beetween 1 for the grids with environmental conditions in which the species was most commonly observed and 0 for the grids in which it was never observed.  
-We then determine the location in environmental space of the plant-pollinator communities where the species is present using the function `suprow` from `ade4` and calculate its corresponding suitability using the R package `raster` `r as.character(packageVersion('raster'))` [@raster_citation]. 
+We then determine the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
+We use a kernel method to estimate this density and normalise it such that it ranges beetween zero and one. 
+Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@ecospat_citation] with a grid resolution of 200.
+We then determine the location in environmental space of the plant-pollinator communities where the species is present using the function `suprow` from `ade4`.
+The normalised density at that particular location corresponds to our suitability metric, which we calculate using the R package `raster` `r as.character(packageVersion('raster'))` [@raster_citation]. 
+We use the kernel density method in the niche-factor analyisis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier, as it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
 
 ```{r sensitivity-analysis-calculations}
 loadd(sensitivity_species_name)
@@ -377,39 +371,35 @@ n_spp_not_enough_occ <- nrow(n_thinned_occurrences) - nrow(n_enough_occurrences)
 We used a sensitivity analysis to determine the minimum number of occurrences that are necessary to have robust environmental suitability values in our communities. 
 For that we used the species with most occurrences available, *`r sensitivity_species_name$canonicalName`*, and calculated the mean absolute error of the suitability values obtained with `r numbers2words(config$n_subsamples)` subsamples from the `r format(n_occ_sensitivity_species, big.mark  =",")`  occurrences available from GBIF. 
 
-## Model
+## Data analysis
 
-We then used a two sets of bayesian multilevel models to evaluate the impact of environmental suitability on the size of the realised Eltonian niche. 
-We measure the size of the Eltonian niche using the normalised degree of species, this is, the number of species it interacts with given the number of possible partners. 
-In the first set of models, we use a *naive* version of the normalised degree [@martin_gonzalez_centrality_2010] in which the number of possible partners is defined by the number of species in the opposite guild.
-This definition is the one commonly used in the ecological network literature. 
-In the second set of models, we use an *informed* version of the normalised degree in which the number of possible partners is defined by the number of species in the community with which the focal species is known to interact in any other location in our dataset.
-Measuring the size of the Eltonian niche using the informed version of normalised degree is a particularly stringent test of the effect of environmental suitability as for many species populations in our dataset, the number of possible interacting species is the same or very similar to the number of species it actually interacts with. 
+We then used a set of bayesian multilevel models to evaluate the impact of environmental suitability on the size of the realised Eltonian trophic niche. 
+We measure the size of the Eltonian niche using the normalised degree of species, this is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
+Normalised degree was modelled using a logit link function and a binomial distribution in which the number of species interacts with is the number of successes and the number of species in the opposite guild is the number of trials. 
+We are aware that wether species intreacts or not is not a bernoulli process as species interactions are not strictly independent from each other, however a binomial distribution allow us to indirectly account for the differences in species richness across communities. 
+Importantly, however, results are qualitatively the similar when we model species degree directly using a Poisson distribution and a logarithmic link function (Supp info).
 
-In all models normalised degree was modelled using a logit link function and a binomial distribution in which the number of species interacts with is the number of successes and the number of possible partners is the number of trials. 
-We are aware that wether species intreacts or not is not a bernoulli process as species interactions are not independent from each other, however a binomial distribution allow us to indirectly account for the differences in species richness across communities. 
-Importantly, results are qualitatively the similar when we model species degree directly using a Poisson distribution and a logarithmic link function and include the number of possible partners as predictors (Supp info).
-
-Within each model set we evaluate four candidate models in order to evaluate the relative importance of suitability. 
+Within each model set we evaluate four models in order to evaluate the relative importance of suitability. 
 A first model, our baseline model, included four population-level predictors and two grouping levels, species and the community. 
-The population-level predictors, commonly called fixed effects, were the environmental suitability, the species guild, the species generalism, and it's environmental niche breadth.
-The environmental suitability of the species in that particular community, is an index defined betwen zero and one in which a value of zero indicates that the species has never been observed in this environment while a value of one indicates that the species is most commonly observed in that environment. 
-We were particularly intrested on understanding wether the effect of species suitability is conditional on the species guild (plant or pollinator), we therefore included guild and its interaction with suitability in the model. 
-To estimate a species overal level of generalism we included among the predictors the magnitude of the total number of interacting species across communities in our dataset. 
-We included the number of communities where the species was present as a rough estimate of a species environmental niche breadth. 
-We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate the extent to which suitability is a population or a group level effect. 
-Finally, to account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
-
-The second, third, and fourth models within each model set were a reduction of the first. 
-In the second model we removed the species generalism as a predictor, in the third, we removed the environmental niche breadth, and in the fourth model we removed excluded the effect of environmental suitability (both at the population and the species level). 
+The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (whether it was a plant or a pollinator), a metric of the species generalism, and its number of known possible partners.
+We included the overall level of generalism as one would expect species with a large number of interactions globally to be more likely to interact with a large number of species locally. 
+Specifically, we estimated a species overal level of generalism as the total number of interacting species across communities in our dataset. 
+We also included the number of known possible partners as a predictor in our models as it allow us to control for the environmental effects on species co-occurrence. 
+We calculate the number of possible partners by determining the number of species in a community with which the species is known to interact in any other location in our dataset. 
+Controlling for the number of potential partners makes our model a particularly stringent test of our environemntal stress hypotheses as this number is often the same, or very close, to the number of actual partners, particularly for species in a small number of communities or with a small number of interactions.  
+As we were particularly intrested on understanding wether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we therefore included guild and its interaction with suitability in the model. 
+We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate two questions. 
+First, it allow us to inspect the extent to which suitability is a population or a group level effect. 
+Second, by investigating the correlation between the intercept and the slope as a model parameter it allowed us to inspect the extent by which species with a small or large number of interactions respond to increassing levels of environmental stress. 
+To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
+We compare this baseline model with three alternative models in which we remove one predictor at a time.
+To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC). 
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
-All models were fitted using four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
+For each model we used four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
 We used weakly informative priors for all model parameters. 
 Specifically we used normal priors of mean zero and standard deviation ten for the population level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters. 
-To minimise the potential effect of influential observations we used leave-one-out cross-valiadtion to estimate their expected log predictive density and compare the out-of sample performance of the different models. 
-We also calculate the Wanatabe-Akaike information criterion (WAIC) for comparison. 
 
 # Results
 
