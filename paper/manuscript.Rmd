@@ -102,6 +102,7 @@ For two species to interact, they first need to co-occur in the same community, 
 Although less understood, the environment can also affect the interactions themselves, after community composition has been established [@tylianakis_ecological_2017]. 
 For instance, some studies show that trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016], and both plant-plant [@bertness_positive_1994] and plant-pollinator [@tur_evaluating_2016] interactions can switch from facilitative to competitive along an elevation/temperature gradient. 
 Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
+
 One way to summarise the seemingly contradictory evidence of whether the environment can influence whether two species interact or not is by moving from gradients of temperature or precipitation to gradients of environmental stress. 
 Previous research is so far equivocal and, taken together, suggest that environmental stress can have two contrasting effects on species' Eltonian-niche [@tylianakis_ecological_2017].
 On the one hand, it is possible that when species are under environmental stress, they might be "pressured" to focus on partners with which they are best adapted to interact. 
