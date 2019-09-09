@@ -381,9 +381,9 @@ We are aware that wether species interacts or not is not a Bernoulli process as 
 However, a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
 Importantly, however, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function (Supp info).
 
-Within each model set, we evaluate four models to assess the relative importance of suitability. 
-A first model, our baseline model, included four population-level predictors and two grouping levels, species and the community. 
-The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (whether it was a plant or a pollinator), a metric of the species generalism, and its number of known possible partners.
+We evaluate four models to assess the relative importance of suitability. 
+A first model, our baseline model, included five population-level predictors and two grouping levels, species and the community. 
+The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (plant or a pollinator), a metric of the species generalism, and its number of known possible partners.
 We included the overall level of generalism as one would expect species with a large number of interactions globally to be more likely to interact with a large number of species locally. 
 Concretely, we estimated an overall species level of generalism as the total number of interacting species across communities in our dataset. 
 We also included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
@@ -397,7 +397,7 @@ Second, by investigating the correlation between the intercept and the slope as 
 To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
-We compare this baseline model with three alternative models in which we remove one predictor at a time.
+We compared this baseline model with three alternative models in which we remove one predictor at a time.
 To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC). 
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
 For each model, we used four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
