@@ -46,6 +46,7 @@ set shiftwidth=2
 set tabstop=2
 set listchars=space:_,tab:>~ list
 set et     "expand tabs to spaces
+set autoread        "update files when have been modifued outside of vim 
 
 "" CONFIGURATIONS FOR THEME
 "Credit joshdick
