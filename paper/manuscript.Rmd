@@ -312,35 +312,41 @@ percent_filled_round_one <- 1-complete_filled_cells_1[1]/complete_climate_cells[
 
 Our next step was to determine the habitat suitability of the species as a proxy of the environmental stress they experience in their community.
 As our aim is to compare the throphic niche for different suitability levels, we only do this for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
-To calculate the suitability of a species in a particular location, using a (grinellian) niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012] which is based on the probabiliy density function of a species distribution in an environmental-bioclimatic variable space. 
-Calculating this we To do that we first fit a climatic envelope for each  of them which requires information about the climate and habitat at the locations where the species occurrs. 
-We retrieved climatic data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
-These bioclimatic variables were complemented with 18 of bioclimatic and topographic variables available in Envirem [@title_envirem_2018]. 
-This additional set of variables have been shown to be relevant to ecological or physiological processes and as such have the potential to improve species distribition models.
-All climatic data was obtained as rasters composed by cells of 2.5 arc-minutes. 
-This resolution provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
-Furthermore, we obtained habitat data from The Nature Conservation's terrestrial ecoregions of the world [@olson_global_2002].
+To calculate the suitability of a species in a particular location, we used a (grinellian) niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
+This approach is based on the probabiliy density function of a species distribution in an environmental variable space. 
+In a nutshell, habitats (characterised by a collection of environmental variables) in which the species ocurrs most often are deemed to be suitable for the species than habitats in which the species has never been observed. 
+This approach to estimate the habitat suitability requires to key pieces of information. 
+First we require information about the occurrences of the species of interest.
+Second we require information about the environmental conditions for all the locations in which the species occurs.
 
 We retrieved occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
-For each species, we downloaded occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
-Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for `r format(n_species_with_occurrences, big.mark = ",")` of the species of interest. 
-The occurrences obtained contain observations of mixed quality, so we applied a series of simple filters to remove those of lower quality. 
+Specifically, for each species, we only requested occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
+Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species we were interested on. 
+This occurrences however, contain observations of mixed quality. 
+Therefore, we followed (ref?) and applied a series of simple filters and geographic heuristics to remove those of lower quality. 
 \R{rationale-occurrence-filtering}Specifically, we removed all occurrences with (*i*) a coordinate uncertainity larger than 100km; (*ii*) those recorded prior to 1945 (ref? or why?); (*iii*) those in which the number of individuals recorded was either zero or more than 100 as such large counts are often erroneous (ref? or why?); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (ref? why?). 
 We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
 We removed occurrences in which their coordinates (*v*) fell outside the borders of the country in which they were recorded; (*vi*) those arround a the country capital or the centroid of the country and province centroids; (*vii*) those arond a biodiversity institution; and (*viii*) those located within oceans. 
 Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
-We added the occurrences from our plant-pollinator networks to the cleaned occurrences retrieved from GBIF.
+Finally, we integrated the occurrences from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
 
-Next, we overlapped the occurrence and our environmental rasters such that each occurrence location is characterized by a vector with information of our 37 bioclimatic and topographic variables . 
+We retrieved environmental data from WorldClim V2.0 which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
+We then complemented data obtained from WorldClim with data from Envirem [@title_envirem_2018], which includes 16 extra bioclimatic and two topographic variables. 
+The additional set of variables from Envirem have been shown to be relevant to ecological or physiological processes and as such have the potential to improve our suitability estimation. 
+We obtained all environmental data as rasters composed by cells of 2.5 arc-minutes. 
+We chose this resolution because it provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
+
+After obtaining information about the species occurrence and the evironment, the next step was to merge these two datasets such that the location of each occurrence is characterized by a vector with information of our 37 bioclimatic and topographic variables. 
 If a species had more than one occurrence records within one of the cells of the bioclimatic raster we only included one of the occurrence records. 
 We did this to avoid giving more weight to areas with a high number of occurrences, a common scenario in occurrrence records collected opportunistically as the ones we use here. 
-Overall we removed `r scales::percent(percent_thinned)` of the occurrences which resulted in a total of `r round(sum(n_thinned_occurrences$N)/1000000, digits = 1)` million occurrences used in our niche analysis. 
+In this step we removed `r scales::percent(percent_thinned)` of the occurrences which resulted in a total of `r round(sum(n_thinned_occurrences$N)/1000000, digits = 1)` million occurrences used in our niche analysis. 
+
 A common issue of terrestrial bioclimatic datasets is that the boundaries of the cells with information do not exactly match the land mass boundaries. 
-The result of this missmatch is that at least one of the environmental variables was not available for `r format(complete_climate_cells[1], big.mark = ",")` of the raster cells with occurrences (`r scales::percent(complete_climate_cells[1]/sum(complete_climate_cells), accuracy = 0.1)` of the total). 
-As expected a vast majority of these cells were close to the shore. 
-To address this issue, calculated average value of environmental variables within a `r config$climate_buffer/1000`km buffer of the center of the cell where the variable is missing, and used it to approximate the value of the variable in that cell. 
-In this fashion we were able to fill environmental variables for `r scales::percent(percent_filled_round_one, accuracy = 0.1)` of the cells were they were missing. 
-To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but using a `r config$climate_buffer*2/1000`km buffer. 
+The result of this missmatch is that not all environmental variables was not available for `r format(complete_climate_cells[1], big.mark = ",")` of the raster cells with occurrences (`r scales::percent(complete_climate_cells[1]/sum(complete_climate_cells), accuracy = 0.1)` of the total). 
+As expected, a vast majority of these problematic cells were close to the shore. 
+To address this issue, we calculated the average value of environmental variables within a `r config$climate_buffer/1000`km buffer of the center of the cell where the variable is missing, and used it to approximate the value of the variable in that cell. 
+Using this procedure we were able to fill environmental variables for `r scales::percent(percent_filled_round_one, accuracy = 0.1)` of the cells were they were missing. 
+To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but instead using a `r config$climate_buffer*2/1000`km buffer. 
 We removed from further analyis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables. 
 
 Our main objective is to investigate wether the suitability of the environment was to obtain the suitability of the environment at the locations for which we have community data. 
