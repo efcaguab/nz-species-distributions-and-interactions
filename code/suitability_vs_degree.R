@@ -100,16 +100,26 @@ define_binomial_models <- function(){
   })
   
   formula_base <- brmsformula(
-    n_partners | trials(n_opposite_guild) ~ 
-      scaled_suitability * guild +
-      scaled_n_possible_partners + scaled_log_n_partners_global +
-      scaled_grinell_niche_size * guild +
-      (1 + scaled_suitability | org_id) + (1 | loc_id), 
+    n_partners | trials(n_opposite_guild) ~ 1, 
     family = binomial, 
     center = TRUE
-  )
- 
+  ) %>%
+  add_baseline_predictors()
+
   define_alternative_models(formula_base)
+}
+
+add_baseline_predictors <- function(formula_base){
+  update(
+         formula_base,
+          ~ . +
+          scaled_suitability * guild +
+          scaled_grinell_niche_size * guild +
+          scaled_n_possible_partners + 
+          scaled_log_n_partners_global +
+          (1 + scaled_suitability | org_id) + (1 | loc_id)
+
+  )
 }
 
 define_binomial_constrained_models <- function(){
@@ -138,13 +148,11 @@ define_poisson_models <- function(){
   })  
   
   formula_base <- brmsformula(
-    n_partners ~ 
-      scaled_suitability * guild +
-      + scaled_n_possible_partners + scaled_log_n_partners_global + scaled_grinell_niche_size * guild +
-      (1 + scaled_suitability | org_id) + (1 | loc_id), 
+    n_partners ~ 1, 
     family = poisson, 
     center = TRUE
-  )
+  ) %>%
+  add_baseline_predictors()
   
   define_alternative_models(formula_base)
 }
