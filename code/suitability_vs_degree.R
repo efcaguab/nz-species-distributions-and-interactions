@@ -185,12 +185,12 @@ define_alternative_models <- function(formula_base){
   #   ~ . - scaled_n_possible_partners - scaled_log_n_partners_global
   # )
   
-  #   formula_no_suitability <- update(
-  #     formula_base, 
-  #     ~ . - scaled_suitability - scaled_suitability:guild -
-  #       (1 + scaled_suitability | org_id) +
-  #       (1 | org_id)
-  #   )
+  formula_no_suitability <- update(
+    formula_base, 
+    ~ . - scaled_suitability - scaled_suitability:guild -
+      (1 + scaled_suitability | org_id) +
+      (1 | org_id)
+  )
   #   
   #   formula_triple_interaction <- update(
   #     formula_base, 
