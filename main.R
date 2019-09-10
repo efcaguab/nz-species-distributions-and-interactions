@@ -40,7 +40,8 @@ configuration_plan <- drake_plan(
   env_space_resolution = config$env_space_resolution,
   n_subsamples = config$n_subsamples, 
   min_suitability_error = config$min_suitability_error, 
-  brm_cores = config$brm_cores
+  brm_cores = config$brm_cores,
+  n_markov_iter = config$n_markov_iter
 )
 
 # Download data ----------------------------------------------------------
@@ -291,7 +292,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
     purrr::imap_dfr(~tibble::tibble(i = .y, formula_type = .x[[1]], dataset_type = .x[[2]])),
   models = purrr::map(formulas_and_data,
                       ~fit_model(formulas = .[[1]], analysis_frame = .[[2]], 
-                                 cores = brm_cores, iter = 2000)), 
+                                 cores = brm_cores, iter = n_markov_iter)), 
   chosen_models = get_chosen_model(models, models_index, 
                                    chosen_formula_type = "binomial_formulas", 
                                    chosen_dataset = "collective_suitability"), 
