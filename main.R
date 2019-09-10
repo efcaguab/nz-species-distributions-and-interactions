@@ -282,9 +282,9 @@ suitability_vs_generalism_plan <- drake::drake_plan(
                               ~build_analysis_frame(org_degree, .)), 
   poisson_formulas = define_poisson_models(), 
   binomial_formulas = define_binomial_models(), 
-  binomial_constrained_formulas = define_binomial_constrained_models(),
+  #   binomial_constrained_formulas = define_binomial_constrained_models(),
   model_formulas = list(binomial_formulas = binomial_formulas, 
-                        binomial_constrained_formulas = binomial_constrained_formulas, 
+                        #                         binomial_constrained_formulas = binomial_constrained_formulas, 
                         poisson_formulas = poisson_formulas), 
   formulas_and_data = purrr::cross2(model_formulas, analysis_frames), 
   models_index = purrr::cross2(names(model_formulas), names(analysis_frames)) %>%
