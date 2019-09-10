@@ -31,7 +31,13 @@ draw_conditional_fits <- function(this_model, median_trials, scale_attr){
     require(brms)
     require(tidybayes)
   })
-  
+
+  # To play around
+  #   drake::loadd(chosen_models)
+  #   drake::loadd(median_trials, parameter_scale_attributes)
+  #   scale_attr <- parameter_scale_attributes
+  #   this_model <- chosen_models$formula_base
+
   grinell_niche_size <- median_trials %>%
     tidyr::crossing(scaled_grinell_niche_size = seq(-2, 2, length.out = 10), 
                     scaled_suitability = 0, 
