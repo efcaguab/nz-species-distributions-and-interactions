@@ -546,8 +546,16 @@ fig_random_effects_legend <-
 
 readd(fig_random_effects)
 ```
-
+ 
 # Discussion 
+
+We found that environemntal stress, which we meassured using habitat suitability, was a very importat predictor for the number of partners a species interacts with. 
+However, this relationship was highly variable among species. 
+So much so that, at the population level, there is no discernable pattern between stress and the number of interacting species.
+Interestingly, within species, there was a significant coorelaton between the number of partners a species has and the stress-partners relationship itself. 
+Specifically, species with a large number of partners in low-stress communities, were more likely to have a negative relatiosnship and hence reduce the number of partners as stress increasses. 
+Contrastingly, species in our datasets with a small number of parters in low-stress communities were more likely to have a larger number of partners in more stressful communities.
+
 
 * Summarise results
 * We cannot completely distinguish between the effect on the environment on the niche itself or on neutral processes
