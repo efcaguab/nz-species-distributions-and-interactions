@@ -19,6 +19,7 @@ Plug 'tpope/vim-fugitive' "Git inside vim
 Plug 'easymotion/vim-easymotion' "Jump to word forward or backwards
 Plug 'scrooloose/nerdtree' "A view of files
 Plug 'jiangmiao/auto-pairs' "Autopair parenthesis and stuff
+Plug 'editorconfig/editorconfig-vim' "Codestyyle
 call plug#end()
 
 "" CONFIGURATIONS FOR AUTOCOMPLETION
