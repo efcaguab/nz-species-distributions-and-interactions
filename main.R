@@ -309,7 +309,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   formulas_and_data = purrr::map(all_datasets,
                                  ~purrr::cross2(model_formulas, .)),
   models_index = generate_model_index(model_formulas, analysis_frames),
-  all_fitted_models = purrr::map(formulas_and_data, fit_all_models),
+  all_fitted_models = purrr::map(formulas_and_data, fit_all_models, n_markov_iter),
   models = all_fitted_models$analysis_frames,
   chosen_models = get_chosen_model(models, models_index,
                                    chosen_formula_type = "binomial_formulas",

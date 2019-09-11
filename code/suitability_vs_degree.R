@@ -100,7 +100,7 @@ build_analysis_frame <- function(org_degree,
 }
 
 # Fit all models in a crossed formulas and data list
-fit_all_models <- function(formulas_and_data){
+fit_all_models <- function(formulas_and_data, n_markov_iter){
  purrr::map(formulas_and_data,
             ~fit_model(formulas = .[[1]], analysis_frame = .[[2]],
                        cores = brm_cores, iter = n_markov_iter))
