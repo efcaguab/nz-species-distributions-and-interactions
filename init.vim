@@ -1,17 +1,24 @@
 call plug#begin('/root/.local/share/nvim/plugged')
-Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-path' 
+Plug 'jalvesaq/Nvim-R' "Run R from Vim using \rf
+Plug 'ncm2/ncm2' "Autocompletion
 Plug 'roxma/nvim-yarp'
 Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'jalvesaq/Nvim-R'
 Plug 'gaalcaras/ncm-R'
 Plug 'sirver/UltiSnips'
 Plug 'SirVer/UltiSnips'
 Plug 'ncm2/ncm2-ultisnips'
-Plug 'lervag/vimtex'
-Plug 'chrisbra/csv.vim'
-Plug 'rakr/vim-one'
-Plug 'junegunn/goyo.vim'
+Plug 'lervag/vimtex' "Vim adn Latex
+Plug 'chrisbra/csv.vim' "View CSVs and data frames
+Plug 'rakr/vim-one'  "One dark theme
+Plug 'itchyny/lightline.vim' "Better statusline
+Plug 'junegunn/goyo.vim' "Focus mode using :Goyo
+Plug 'dense-analysis/ale' "Code linting
+Plug 'airblade/vim-gitgutter' "Git indicators 
+Plug 'tpope/vim-fugitive' "Git inside vim
+Plug 'easymotion/vim-easymotion' "Jump to word forward or backwards
+Plug 'scrooloose/nerdtree' "A view of files
+Plug 'jiangmiao/auto-pairs' "Autopair parenthesis and stuff
 call plug#end()
 
 "" CONFIGURATIONS FOR AUTOCOMPLETION
