@@ -14,7 +14,7 @@ RUN R -e "install.packages(c('bib2df', 'bookdown', 'brms', 'concaveman', 'countr
 
 ## Installing NEOVIM
 RUN apt-get update \
-    && apt-get -y --no-install-recommends install curl python3-dev python3-pip python3-setuptools
+    && apt-get -y --no-install-recommends install curl python3-dev python3-pip python3-setuptools silversearcher-ag
 # Install some python pre-requisites for neovim plugnins
 COPY init.vim /root/.config/nvim/init.vim
 # Pyton requirements for autocompletion
@@ -28,4 +28,4 @@ RUN python3 -m pip install wheel \
 # Install plugins
   && curl -fLo /root/.local/share/nvim/site/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
-  && squashfs-root/AppRun +PlugInstall +qall 
+  && squashfs-root/AppRun +PlugInstall +qall

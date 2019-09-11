@@ -1,5 +1,5 @@
 call plug#begin('/root/.local/share/nvim/plugged')
-Plug 'ncm2/ncm2-path' 
+Plug 'ncm2/ncm2-path'
 Plug 'jalvesaq/Nvim-R' "Run R from Vim using \rf
 Plug 'ncm2/ncm2' "Autocompletion
 Plug 'roxma/nvim-yarp'
@@ -14,12 +14,14 @@ Plug 'rakr/vim-one'  "One dark theme
 Plug 'itchyny/lightline.vim' "Better statusline
 Plug 'junegunn/goyo.vim' "Focus mode using :Goyo
 Plug 'dense-analysis/ale' "Code linting
-Plug 'airblade/vim-gitgutter' "Git indicators 
+Plug 'airblade/vim-gitgutter' "Git indicators
 Plug 'tpope/vim-fugitive' "Git inside vim
 Plug 'easymotion/vim-easymotion' "Jump to word forward or backwards
 Plug 'scrooloose/nerdtree' "A view of files
 Plug 'jiangmiao/auto-pairs' "Autopair parenthesis and stuff
 Plug 'editorconfig/editorconfig-vim' "Codestyyle
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } "Fuzzy search
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 "" CONFIGURATIONS FOR AUTOCOMPLETION
@@ -54,7 +56,7 @@ set shiftwidth=2
 set tabstop=2
 set listchars=space:_,tab:>~ list
 set et     "expand tabs to spaces
-set autoread        "update files when have been modifued outside of vim 
+set autoread        "update files when have been modifued outside of vim
 
 "" CONFIGURATIONS FOR THEME
 "Credit joshdick
@@ -75,5 +77,5 @@ if (empty($TMUX))
 endif
 set background=dark " for the dark version
 " set background=light " for the light version
-colorscheme one 
+colorscheme one
 let g:airline_theme = 'one'
