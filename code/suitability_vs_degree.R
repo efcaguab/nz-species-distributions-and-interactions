@@ -226,8 +226,8 @@ fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
   plan(multiprocess)
   
   formulas %>%
-    purrr::map(brm, 
-               data = analysis_frame, 
+    purrr::map(brm,
+               data = analysis_frame,
                prior = c(
                  set_prior("normal(0,10)", class = "b"), 
                  set_prior("normal(0,10)", class = "Intercept")
@@ -288,85 +288,4 @@ sample_baseline_population <- function(analysis_frame){
   
 }
 
-tinker <- function(){
-  library(brms)
-  mod <- analysis_frame %>% 
-    dplyr::group_by(org_id) %>%
-    dplyr::mutate(n_obs = dplyr::n()) %>% 
-    dplyr::group_by(org_id) %>%
-    dplyr::filter(any(n_partners != n_possible_partners)) %>%
-    # dplyr::filter(n_obs > 5) %>%
-    # glm(n_partners ~scale(suitability)* guild + 
-          # guild + 
-          # scale(n_obs) +
-          # scale(log(n_partners_global)) +
-          # scale(n_possible_partners),
-                # family = "poisson",
-                # data = .)
-    lme4::glmer(cbind(n_partners, n_opposite_guild - n_partners) ~ 
-                   suitability * guild +
-                  scale(log(n_partners_global)) +
-                  scale(n_possible_partners) +
-                  (suitability | org_id) + (1 | loc_id),
-                family = "binomial",
-                data = .)
-  # broom::glance(mod)$AIC
-  summary(mod)
-  
-  mod %>%
-    lme4::ranef() %>%
-    as.data.frame() %>% 
-    ggplot(aes(y = condval, x = grp)) +
-    geom_point() +
-    geom_errorbar(aes(ymin = condval - 2 * condsd, 
-                       ymax = condval + 2 * condsd, 
-                      colour = sign(condval - 2 * condsd) == sign(condval + 2 * condsd)), 
-                   width = 0) +
-    facet_wrap(~term, ncol = 2, scales = "free") +
-    theme(legend.position = "none") +
-    coord_flip()
-    lm(n_partners ~ suitability + log(n_partners_global) + n_opposite_guild + n_possible_partners, data = .) %>% 
-    summary()
-    
-    loo(poisson_models[[1]], poisson_models[[2]], poisson_models[[3]], poisson_models[[4]], poisson_models[[5]])
-    loo(binomial_models[[1]], binomial_models[[2]], binomial_models[[3]], binomial_models[[4]], binomial_models[[5]])
-    waic(binomial_constrained_models[[1]], binomial_constrained_models[[2]], binomial_constrained_models[[3]], binomial_constrained_models[[4]], binomial_models[[5]])
-    
-    ## extract fitted values
-    fit <- binomial_models[[3]]
-    fitted_values <- predict(fit) %>%
-      tibble::as.tibble() %>%
-      dplyr::mutate(trials = standata(fit)$trials)
-    # head(fitted_values)
-    
-    # inverse_logit_trans <- trans_new("inverse logit",
-    #                                  transform = plogis,
-    #                                  inverse = qlogis)
-    # 
-    # logit_trans <- trans_new("logit",
-    #                          transform = qlogis,
-    #                          inverse = plogis)
-    # 
-    
-    ## plot fitted means against actual response
-    dat <- as.data.frame(cbind(Y = standata(fit)$Y, fitted_values)) %>%
-      dplyr::mutate(trials = 1) %>%
-      dplyr::group_by(Y) %>%
-      dplyr::summarise_if(is.numeric, mean) 
-    
-    ggplot(dat, aes(y = Estimate/trials, x = Y/trials, group = Y/trials)) + 
-      geom_abline(intercept = 0, slope = 1, linetype = 2, size = 0.25) +
-      geom_point(alpha = 0.5, shape = 21) +
-      # scale_x_continuous(trans = logit_trans) +
-      # scale_y_continuous(trans = logit_trans) +
-      # coord_trans(x = inverse_logit_trans)
-      # scale_y_log10() +
-      # scale_x_log10() +
-        geom_linerange(aes(ymin = Q2.5/trials, ymax = Q97.5/trials),
-                     size = 0.25, alpha = 0.5) +
-      # coord_equal(xlim = c(0,1), ylim = c(0,1)) +
-      coord_equal() +
-      pub_theme()# +
-      # labs(x = "estimated", 
-      #      y = "")
-}
+
