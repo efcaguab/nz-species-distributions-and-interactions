@@ -66,11 +66,15 @@ build_analysis_frame <- function(org_degree,
                                  independent_suitability,
                                  filter_same_partners = FALSE,
                                  min_obs = 0){
+
+  #   drake::loadd(independent_suitability)
+  #   drake::loadd(org_degree)
+
   af <- org_degree %>%
     dplyr::right_join(independent_suitability,
                       by = c("loc_id", "org_id")) %>%
     dplyr::group_by(org_id) %>%
-    dplyr::mutate(n_obs = dplyr::n(),
+    dplyr::mutate(n_obs = dplyr::n_distinct(loc_id),
                   grinell_niche_size = KUD_percent_90)
 
   if(filter_same_partners) {
@@ -93,6 +97,21 @@ build_analysis_frame <- function(org_degree,
   af %>%
     dplyr::filter(!is.na(suitability)) %>%
     dplyr::filter(n_obs > 1)
+}
+
+# Fit all models in a crossed formulas and data list
+fit_all_models <- function(formulas_and_data){
+ purrr::map(formulas_and_data,
+            ~fit_model(formulas = .[[1]], analysis_frame = .[[2]],
+                       cores = brm_cores, iter = n_markov_iter))
+}
+
+# Given a set of model formulas and model datasets generate a list of names that can be used to access them at a later point
+generate_model_index <- function(model_formulas, analysis_frame){
+  purrr::cross2(names(model_formulas), names(analysis_frames)) %>%
+    purrr::imap_dfr(~tibble::tibble(i = .y,
+                                    formula_type = .x[[1]],
+                                    dataset_type = .x[[2]]))
 }
 
 # Return a list of forumlas for the binomial models
