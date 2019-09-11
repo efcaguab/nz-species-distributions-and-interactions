@@ -107,7 +107,7 @@ fit_all_models <- function(formulas_and_data){
 }
 
 # Given a set of model formulas and model datasets generate a list of names that can be used to access them at a later point
-generate_model_index <- function(model_formulas, analysis_frame){
+generate_model_index <- function(model_formulas, analysis_frames){
   purrr::cross2(names(model_formulas), names(analysis_frames)) %>%
     purrr::imap_dfr(~tibble::tibble(i = .y,
                                     formula_type = .x[[1]],
