@@ -66,9 +66,9 @@ numbers2words <- function(x){
   ## Function by John Fox found here:
   ## http://tolstoy.newcastle.edu.au/R/help/05/04/2715.html
   ## Tweaks by AJH to add commas and "and"
-  
+
   helper <- function(x){
-    
+
     digits <- rev(strsplit(as.character(x), "")[[1]])
     nDigits <- length(digits)
     if (nDigits == 1) as.vector(ones[digits])
@@ -115,24 +115,24 @@ numbers2words <- function(x){
 }
 
 translate_model_formula <- function(x, type = "short"){
-  
+
   if(type == "long-initial"){
     dplyr::case_when(
-      x == "formula_base" ~ "baseline: S + G + P + E", 
+      x == "formula_base" ~ "baseline: S + G + P + E",
       x == "formula_no_grinell_niche_size" ~ "S + G + P",
-      x == "formula_no_generalism" ~ "S + P + E", 
-      x == "formula_no_suitability" ~ "G + P + E", 
-      x == "formula_no_possible_partners_generalism" ~ "S + E", 
+      x == "formula_no_generalism" ~ "S + P + E",
+      x == "formula_no_suitability" ~ "G + P + E",
+      x == "formula_no_possible_partners_generalism" ~ "S + E",
       x == "formula_no_possible_partners" ~ "S + G + E",
       TRUE ~ "unknown"
-    ) 
+    )
   } else if(type == "long-abv"){
     dplyr::case_when(
-      x == "formula_base" ~ "Suit. + Gen. + Pot. + Env.", 
+      x == "formula_base" ~ "Suit. + Gen. + Pot. + Env.",
       x == "formula_no_grinell_niche_size" ~ "Suit. + Gen. + Pot.",
-      x == "formula_no_generalism" ~ "Suit. + Pot. + Env.", 
-      x == "formula_no_suitability" ~ "Gen. + Pot. + Env.", 
-      x == "formula_no_possible_partners_generalism" ~ "Suit. + Env.", 
+      x == "formula_no_generalism" ~ "Suit. + Pot. + Env.",
+      x == "formula_no_suitability" ~ "Gen. + Pot. + Env.",
+      x == "formula_no_possible_partners_generalism" ~ "Suit. + Env.",
       x == "formula_no_possible_partners" ~ "Suit. + Gen. + Env.",
       TRUE ~ "unknown"
     )
@@ -153,5 +153,5 @@ translate_guild <- function(x, type = "normal"){
       TRUE ~ "unknown"
     )
   }
-  
+
 }
