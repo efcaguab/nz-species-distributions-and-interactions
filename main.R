@@ -325,6 +325,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   cond_draws = draw_conditional_fits(baseline_model, median_trials, parameter_scale_attributes),
   random_species_draws = draw_conditional_random_species(baseline_model, median_trials, parameter_scale_attributes),
   random_correlation_posterior = get_posterior_random_correlation(baseline_model),
+  random_slope_intercepts = get_pos_random_params(baseline_model),
   parameter_scale_attributes = get_all_pars_scale_attributes(baseline_model),
   mean_parameter_values = purrr::map(parameter_scale_attributes, ~scaled_to_unscaled(0, .)),
   random_sp_names = get_random_sp_names(random_species_draws, org_ids, gbif_key_groups, gbif_keys,
@@ -355,7 +356,10 @@ figures_plan <- drake_plan(
                                                        min_occurrences_factor,
                                                        suitability_subsamples),
   fig_conditional_effects = plot_all_conditional_effect(cond_draws, mean_parameter_values),
-  fig_random_effects = plot_ranf(random_species_draws, random_correlation_posterior, random_sp_names)
+  fig_random_effects = plot_ranf(random_species_draws,
+                                 random_correlation_posterior,
+                                 random_sp_names,
+                                 random_slope_intercepts)
 )
 
 # Manuscript --------------------------------------------------------------

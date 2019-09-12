@@ -141,9 +141,40 @@ draw_conditional_random_species <- function(this_model, median_trials, scale_att
 
 }
 
+# Get model random slopes and intercepts
+get_pos_random_params <- function(baseline_model){
+
+  tall_posterior <- brms::posterior_summary(baseline_model, pars = "^r_org_id",
+                          probs = c(0.025, 0.25, 0.75, 0.975)) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "parameter") %>%
+  tibble::as_tibble() %>%
+  dplyr::mutate(org_id = stringr::str_sub(string = parameter,
+                                          start = 10,
+                                          end = 18),
+                parameter = stringr::str_sub(string = parameter,
+                                             start = 20,
+                                             end = -2L))
+
+  c("Estimate", "Q25", "Q75") %>%
+    purrr::map_dfc(~ spread_post_summary(tall_posterior, .))
+}
+
+spread_post_summary <- function(d, variable){
+
+  d %>%
+    dplyr::select(org_id, parameter, !!rlang::enquo(variable)) %>%
+    tidyr::spread(key = parameter, value = !!rlang::enquo(variable)) %>%
+    dplyr::rename_if(is.numeric, paste, rlang::as_character(variable) , sep = "_")
+
+
+}
+
+
 get_posterior_random_correlation <- function(baseline_model){
 
-  brms::posterior_samples(baseline_model, pars = c("cor_org_id__Intercept__scaled_suitability")) %>%
+    brms::posterior_samples(baseline_model,
+                          pars = c("cor_org_id__Intercept__scaled_suitability")) %>%
     dplyr::mutate(correlation = cor_org_id__Intercept__scaled_suitability)
 }
 

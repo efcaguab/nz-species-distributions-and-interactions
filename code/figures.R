@@ -219,7 +219,7 @@ plot_conditional_effect_guild <- function(data, pal, mean_val, log_transformed =
     labs(y = "# interactions")
 }
 
-plot_ranf <- function(random_species_draws, random_correlation_posterior, random_sp_names){
+plot_ranf <- function(random_species_draws, random_correlation_posterior, random_sp_names, random_slope_intercepts){
 
   suppressPackageStartupMessages({
     require(ggplot2)
@@ -282,10 +282,24 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
           axis.line.x.bottom = element_line()) +
     labs(title = "(b) correlation between random intercept and slope")
 
+  slope_intercept_plot <- random_slope_intercepts %>%
+    ggplot(mapping = aes(x = Intercept_Estimate, y = scaled_suitability_Estimate)) +
+    geom_point() +
+    geom_errorbar(mapping = aes(ymin = scaled_suitability_Q25,
+                                ymax = scaled_suitability_Q75),
+                  size = 0.15, alpha = 0.25) +
+    geom_errorbarh(mapping = aes(xmin = Intercept_Q25,
+                                 xmax = Intercept_Q75),
+                   size = 0.15, alpha = 0.25) +
+    geom_hline(yintercept = 0, linetype = 2, size = 0.25) +
+    geom_vline(xintercept = 0, linetype = 2, size = 0.25) +
+    pub_theme()
 
-  p <- cowplot::plot_grid(conditional_effects_plot, correlation_plot,
+  p <- cowplot::plot_grid(conditional_effects_plot,
+                          correlation_plot,
+                          slope_intercept_plot,
                           ncol = 1 ,
-                          rel_heights = c(2,0.5),
+                          rel_heights = c(2,0.5, 1),
                           align = "v")
   # ggsave("plot.pdf", p, width = unit(width("single"), "in"), height = unit(2.2*2.5, "in"))
 
