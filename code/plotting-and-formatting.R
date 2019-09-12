@@ -7,7 +7,7 @@ pub_theme <- function(){
           plot.subtitle = element_text(size = 7),
           plot.tag = element_text(size = 7),
           strip.background = element_blank(),
-          strip.text = element_text(hjust = 0),
+          strip.text = element_text(hjust = 0, size = 7),
           legend.title = element_text(hjust = 0.5),
           legend.key.size = unit(3, "mm"),
           legend.margin = margin(),
