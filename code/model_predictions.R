@@ -101,7 +101,11 @@ draw_conditional_random_species <- function(this_model, median_trials, scale_att
   sp_properties <- this_model$data %>%
     dplyr::group_by(org_id) %>%
     dplyr::mutate(n_obs = dplyr::n_distinct(loc_id)) %>%
-    dplyr::distinct(guild, org_id, n_obs, scaled_log_n_partners_global,scaled_grinell_niche_size) %>%
+    dplyr::distinct(guild,
+                    org_id,
+                    n_obs,
+                    scaled_log_n_partners_global,
+                    scaled_grinell_niche_size) %>%
     dplyr::ungroup() %>%
     dplyr::filter(n_obs >= 6)
 
@@ -144,6 +148,14 @@ draw_conditional_random_species <- function(this_model, median_trials, scale_att
 # Get model random slopes and intercepts
 get_pos_random_params <- function(baseline_model){
 
+  sp_properties <- baseline_model$data %>%
+    dplyr::group_by(org_id) %>%
+    dplyr::mutate(n_obs = dplyr::n_distinct(loc_id)) %>%
+    dplyr::distinct(guild,
+                    org_id,
+                    n_obs) %>%
+    dplyr::ungroup()
+
   tall_posterior <- brms::posterior_summary(baseline_model, pars = "^r_org_id",
                           probs = c(0.025, 0.25, 0.75, 0.975)) %>%
   as.data.frame() %>%
@@ -157,7 +169,9 @@ get_pos_random_params <- function(baseline_model){
                                              end = -2L))
 
   c("Estimate", "Q25", "Q75") %>%
-    purrr::map_dfc(~ spread_post_summary(tall_posterior, .))
+    purrr::map_dfc(~ spread_post_summary(tall_posterior, .)) %>%
+    dplyr::inner_join(sp_properties, by = "org_id")
+
 }
 
 spread_post_summary <- function(d, variable){
