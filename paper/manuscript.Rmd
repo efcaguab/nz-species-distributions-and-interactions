@@ -556,8 +556,23 @@ Interestingly, within species, there was a significant coorelaton between the nu
 Specifically, species with a large number of partners in low-stress communities, were more likely to have a negative relatiosnship and hence reduce the number of partners as stress increasses. 
 Contrastingly, species in our datasets with a small number of parters in low-stress communities were more likely to have a larger number of partners in more stressful communities.
 
+Previous research supported the idea that the differences in network structure along an environmental gradient were due solely to changes to community composition. 
+In other words, it showed that the differences between two hypothetical communities with the same species were stochastic for the most part. 
+Here, by abstracting with multiple environmental gradients into a single gradient of environmental stress, we show that this might not be the case. 
+Instead, the environment can also have a direct impact on the number of partners a species interacts with and, therefore, influence network structure. 
+Our results still show that the primary channel through which environment affects interaction probabilities is determining which species are present or absent froma particular community. 
+However they also show that, for a large number of species, it can have an important effect on their realised Eltonian component of the niche.
+Indeed, as evidenced by the predictive power of competing models, habitat suitability had a substantial contribution to predicting the number of possible partners in the community. 
 
-* Summarise results
+
+
+Previous We found that
+
+* Why is the relationship different across species?
+* Why is there no difference between plants and pollinators?
+* Why is there a correlation between the intercept and the slope?
+
+
 * We cannot completely distinguish between the effect on the environment on the niche itself or on neutral processes
 * The environment can certainly influence the number of interactions but its very variable among species
 * We don't know wether specialists are also constrained to interact with species they like because our dataset is biased for species that are there. This is we are only observing those specialist that survive the lack of interaction partners
