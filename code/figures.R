@@ -282,9 +282,13 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
           axis.line.x.bottom = element_line()) +
     labs(title = "(b) correlation between random intercept and slope")
 
-  slope_intercept_plot <- random_slope_intercepts %>%
-    ggplot(mapping = aes(x = Intercept_Estimate, y = scaled_suitability_Estimate)) +
-    geom_point() +
+  slope_intercept_plot <- random_species_draws %>%
+    dplyr::select(org_id, guild) %>%
+    dplyr::inner_join(random_slope_intercepts) %>%
+    ggplot(mapping = aes(colour = guild,
+                         x = Intercept_Estimate,
+                         y = scaled_suitability_Estimate)) +
+    geom_point(shape = 21, stroke = 0.25, size = 1) +
     geom_errorbar(mapping = aes(ymin = scaled_suitability_Q25,
                                 ymax = scaled_suitability_Q75),
                   size = 0.15, alpha = 0.25) +
@@ -294,14 +298,16 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
     geom_hline(yintercept = 0, linetype = 2, size = 0.25) +
     geom_vline(xintercept = 0, linetype = 2, size = 0.25) +
     pub_theme()
-
-  p <- cowplot::plot_grid(conditional_effects_plot,
-                          correlation_plot,
-                          slope_intercept_plot,
-                          ncol = 1 ,
-                          rel_heights = c(2,0.5, 1),
-                          align = "v")
-  # ggsave("plot.pdf", p, width = unit(width("single"), "in"), height = unit(2.2*2.5, "in"))
+  plot_left <- conditional_effects_plot
+  plot_right <- cowplot::plot_grid(slope_intercept_plot,
+                                   correlation_plot,
+                                   ncol = 1,
+                                   rel_heights = c(2, 1),
+                                   align = "v")
+  p <- cowplot::plot_grid(plot_left,
+                          plot_right,
+                          ncol = 2)
+  ggsave("plot.pdf", p, width = unit(width("double"), "in"), height = unit(2.2*2.5, "in"))
 
   p
 }
