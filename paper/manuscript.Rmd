@@ -564,7 +564,9 @@ Our results still show that the primary channel through which environment affect
 However they also show that, for a large number of species, it can have an important effect on their realised Eltonian component of the niche.
 Indeed, as evidenced by the predictive power of competing models, habitat suitability had a substantial contribution to predicting the number of possible partners in the community. 
 
+The significant relationship between the number of partners a species has in a hypothetical community with no environmental stress and the slope 
 
+* Add in the intro that stress includes how traits mediate environment?
 
 Previous We found that
 
