@@ -533,10 +533,12 @@ n_random_species <- random_species_draws %>%
   dplyr::summarise(n_sp = dplyr::n_distinct(org_id))
 
 n_random_pla <- n_random_species %>%
-  dplyr::filter(guild == "pla_id")
+  dplyr::filter(guild == "pla_id") %$%
+  n_sp
 
 n_random_ani <- n_random_species %>%
-  dplyr::filter(guild == "ani_id")
+  dplyr::filter(guild == "ani_id") %$%
+  n_sp
 
 fig_random_effects_legend <- 
   paste0("Species level effects of suitability. (a) Conditional effect of suitability for individual species. To facilitate visualization we show only species for which there is suitability information in at least six communities (", 
