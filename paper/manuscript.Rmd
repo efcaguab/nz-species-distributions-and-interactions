@@ -572,6 +572,12 @@ Our results still show that the primary channel through which environment affect
 However they also show that, for a large number of species, it can have an important effect on their realised Eltonian component of the niche.
 Indeed, as evidenced by the predictive power of competing models, habitat suitability had a substantial contribution to predicting the number of possible partners in the community. 
 
+Although, we cannot tell with certainty how much of the effect of environmental stress is can be attributed to either niche or neutral processes it is likely that the patterns we observe are more related to the niche. 
+In the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
+It would be, therefore, somewhat naive to assume that a high habitat suitability translates directly to high species abundances. 
+On the other hand, even if species abunances are correlated with suitability, we show that within a community there is a wide range of suitabilities, even for the limmited number of species we included in our analyses. 
+Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increasse and decreasse for others. 
+
 The significant relationship between the number of partners a species has in a hypothetical community with no environmental stress and the slope 
 
 * Add in the intro that stress includes how traits mediate environment?
@@ -605,8 +611,6 @@ This can happen either through changes in abundance driven by patterns of tempor
 <!-- We focus suitability in abiotic factors but can also be influenced by dispersal and species interactions themselves (e.g. competition and facilitation, Lortie et al. 2004).  -->
 <!-- We learnt that there is a trade-off pollination dynamics (Cagua in review?). -->
 <!-- This means that species with more environemntal favours are better prepared to deal with the trade-offs that pollination can convey. Cool! -->
-
-<!-- Suitability is not a meric of abbundances across sites (Pearce & Ferrier 2001; Sagarin et al. 2006) (Taken from Boulangeat) -->
 
 <!-- Remarkable that we found a consistent signal of suitability given our relatively small number of communities and the multitude of processes that shape n. interactions Eltonian niche. We didn;t even account for traits. Interactions can influence co-occurrence (indirect and third order too see refs in Gravel 2018) -->
 
