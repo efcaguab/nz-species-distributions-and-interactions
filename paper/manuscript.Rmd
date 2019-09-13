@@ -357,9 +357,9 @@ To determine the environmental space, we use the first two components from a pri
 Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of 0 and a unit standard deviation. 
 We then determine the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
 We use a kernel method to estimate this density and normalise it such that it ranges between zero and one. 
-Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@ecospat_citation] with a grid resolution of 200.
+Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@broennimann_ecospat_2018] with a grid resolution of 200.
 We then determine the location in the environmental space of the plant-pollinator communities using the function `suprow` from `ade4`.
-The normalised density at that particular location corresponds to our suitability metric, which we calculate using the R package `raster` `r as.character(packageVersion('raster'))` [@raster_citation]. 
+The normalised density at that particular location corresponds to our suitability metric, which we calculate using the R package `raster` `r as.character(packageVersion('raster'))` [@hijmans_raster_2019]. 
 We use the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier, as it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
 
 ```{r sensitivity-analysis-calculations}
