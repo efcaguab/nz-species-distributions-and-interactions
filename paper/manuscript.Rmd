@@ -590,7 +590,7 @@ Although, we cannot tell with certainty how much of the effect of environmental 
 In the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
 It would be, therefore, somewhat naive to assume that a high habitat suitability translates directly to high species abundances. 
 On the other hand, even if species abunances are correlated with suitability, we show that within a community there is a wide range of suitabilities, even for the limmited number of species we included in our analyses. 
-Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increasse and decreasse for others.  
+Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increasse and decreasse for others. 
 Furthermore, the fact that the effects of environemtal stress do not depend on wether the species is a plant or a pollinator (for which there can be niche differences based on individual behaviour) emphasises that niche processes driven by co-evolutionary history might be driving the patterns we observe. 
 
 * Add in the intro that stress includes how traits mediate environment?
