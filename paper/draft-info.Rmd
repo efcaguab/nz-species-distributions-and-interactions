@@ -31,9 +31,10 @@ header-includes:
 ## Requests to coauthors
 
 * Should I include more networks? Easy to get some more from other published studies. Could improve the manuscript but every new data set has to be cleaned independently. This could take around 2 days per network.
-* Should I increase the resolution of the bioclimatic variables? Currently working with 2.5' (~5km). Increasing to 30'' (~1km) might improve the analysis but we're talking about working with ~25GB+ of data instead of the 1GB used now. 
+* Should I increase the resolution of the bioclimatic variables? Currently working with 2.5' (~5km). Increasing to 30'' (~1km) might improve the analysis but we're talking about working with ~25GB+ of climatic data instead of the 1GB used now. Unsure the benefits would outweight the costs. 
 * Audrey: Could you please fill in the gaps in the rationale behind filtering out occurrences with potential low quality coordinates (\lr{rationale-occurrence-filtering})
 * I chose, rather arbitrarily, a mean absolute error of 10% for the sensitivity analysis. Does this choice sound appropiate to you?
+* Should I remove the species overall generalism and the size of the grinellian niche from the model to simplify things. Both contribute little to the model and the story. For the former, seems to be redundant once the number of possible interacting species has been included in the model. For the later, there is little biological reasons (what I could gather from the lit.) to justify their inclussion in the model. What you think? If not, at the very least I think I would move panels a and c in Fig. 5 to the supplementary info.
 
 ## Done
 
