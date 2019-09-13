@@ -342,6 +342,11 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
 }
 
 plot_suitability <- function(suitability_distribution){
+
+  suppressPackageStartupMessages({
+    require(ggplot2)
+  })
+
   p <- suitability_distribution %>%
     ggplot(aes(x = median_suitability, y = loc_id)) +
     geom_point(size = 0.5, stroke = 0.25, colour = cgm()$pal_el_green[9]) +
