@@ -4,11 +4,11 @@
 # analysis
 get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids,
                               clean_interactions){
-  
+
   # Find "components" of species ids and gbif keys that belong to the same group
   orgs_in_gbif <- gbif_key_groups %>%
     dplyr::full_join(gbif_keys, by = c("taxonKey"= "key")) %>%
-    dplyr::full_join(species_ids, by = c("queried_sp_name" = "sp_name")) %>% 
+    dplyr::full_join(species_ids, by = c("queried_sp_name" = "sp_name")) %>%
     dplyr::distinct(sp_id, key_id) %>%
     tidyr::drop_na() %>%
     # make into a graph to detect components
@@ -17,29 +17,29 @@ get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids,
     igraph::groups() %>%
     purrr::map_df(~tibble::tibble(sp_key_id = .), .id = "org_id") %>%
     tibble::as_tibble() %>%
-    dplyr::mutate(org_id = stringr::str_pad(org_id, 5, pad = "0"), 
+    dplyr::mutate(org_id = stringr::str_pad(org_id, 5, pad = "0"),
                   org_id = paste("org", org_id, sep = "_"))
-  
+
   used_org_ids <- orgs_in_gbif %>%
     dplyr::distinct(org_id) %>%
     tidyr::separate(org_id, c(NA, "org_number"), sep = "_") %>%
     dplyr::mutate(org_number = as.numeric(org_number)) %$%
-    org_number %>% 
+    org_number %>%
     max
-  
+
   # Add info for organism that were not found in GBIF but deserve some love
   other_orgs <- clean_interactions %>%
-    tidyr::gather(key = "guild", 
-                  value = "sp_id", 
+    tidyr::gather(key = "guild",
+                  value = "sp_id",
                   pla_id, ani_id) %>%
     dplyr::filter(! sp_id %in% orgs_in_gbif$sp_key_id) %>%
     dplyr::distinct(sp_id) %>%
     dplyr::mutate(org_id = 1:dplyr::n() + used_org_ids,
-                  org_id = stringr::str_pad(org_id, 5, pad = "0"), 
+                  org_id = stringr::str_pad(org_id, 5, pad = "0"),
                   org_id = paste("org", org_id, sep = "_")) %>%
     dplyr::rename(sp_key_id = sp_id)
-  
-  dplyr:::bind_rows(orgs_in_gbif, other_orgs) 
+
+  dplyr:::bind_rows(orgs_in_gbif, other_orgs)
 }
 
 
@@ -47,12 +47,12 @@ get_organisms_ids <- function(gbif_key_groups, gbif_keys, species_ids,
 # used for the niche suitability analysis. This function takes the network data
 # and reshape it so that it can be appended to GBIF occurrences for further
 # analysis. Only species for which data was found in GBIF are included
-get_occurrences_from_networks <- function(org_ids, interactions_org, 
+get_occurrences_from_networks <- function(org_ids, interactions_org,
                                           gbif_key_groups, int_metadata){
   # Get interaction networks coded by organism id
   interactions_org %>%
-    tidyr::gather(key = "guild", 
-                  value = "org_id", 
+    tidyr::gather(key = "guild",
+                  value = "org_id",
                   ani_id, pla_id) %>%
     dplyr::distinct(loc_id, org_id) %>%
     # Find the GBIF keys for those organisms
@@ -66,22 +66,22 @@ get_occurrences_from_networks <- function(org_ids, interactions_org,
 }
 
 # Merge GBIF and network occurrences
-merge_gbif_and_network_occurrences <- function(cleaned_occurrences, 
+merge_gbif_and_network_occurrences <- function(cleaned_occurrences,
                                                net_occurrences) {
   suppressPackageStartupMessages({
     library(data.table)
   })
-  rbind(as.data.table(cleaned_occurrences), as.data.table(net_occurrences), 
+  rbind(as.data.table(cleaned_occurrences), as.data.table(net_occurrences),
         fill = TRUE)
 }
 
 # Loop over evert species (organism id) and thin the occurrences fpr that species
-thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups, 
+thin_occurrences_per_species <- function(cleaned_occurrences, gbif_key_groups,
                                          org_ids, stacks){
   suppressPackageStartupMessages({
     library(data.table)
   })
-  
+
   # Occurrences are coded by taxonKey so need to find the org_ids first
   cleaned_occurrences %>%
     dplyr::inner_join(gbif_key_groups, by = "taxonKey") %>%
@@ -101,9 +101,9 @@ thin_occurrences <- function(this_sp_occurrences, worldclim_stack){
   # get latitudes and longitudes
  this_sp_occurrences %>%
     # Find out the cell number (grid) in which the occurrence is recorded
-    add_stack_grid(worldclim_stack, "wc_grid") %>% 
+    add_stack_grid(worldclim_stack, "wc_grid") %>%
     # just keep one coordinate per grid
-    unique(by = c("wc_grid")) 
+    unique(by = c("wc_grid"))
 }
 
 # Given some occurrences find out the cell number (grid) in which the occurrence
@@ -115,9 +115,9 @@ add_stack_grid <- function(this_sp_occurrences, stack, colname){
   # get latitudes and longitudes
   lon_lats <- this_sp_occurrences %>%
     .[, list(decimalLongitude, decimalLatitude)]
-  
+
   this_sp_occurrences %>%
-    # figure out where each coordinate is 
+    # figure out where each coordinate is
     .[ , (colname) := raster::cellFromXY(
       stack, lon_lats)]
 }
@@ -130,7 +130,7 @@ remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences_facto
   net_occ_per_sp <- thinned_occurrences[is.na(countryCode)] %>%
     .[, .(n_net = .N), by = org_id] %>%
     .[]
-  
+
   thinned_occurrences[, n := .N, by = org_id][] %>%
     merge(., net_occ_per_sp, by = "org_id") %>%
     .[n/n_net >= min_occurrences_factor]
@@ -141,9 +141,9 @@ remove_sp_few_occurrences <- function(thinned_occurrences, min_occurrences_facto
 read_ecoregions <- function(shapefile_path){
   extract_dir <- file.path(tempdir(), "ecoregion")
   unzip(shapefile_path, exdir = extract_dir)
-  sf::st_read(extract_dir) %>% 
-    dplyr::select(ECO_NAME, WWF_MHTNAM, WWF_REALM2) %>% 
-    dplyr::transmute('ecoregion' = ECO_NAME, 'major_habitat_type' = WWF_MHTNAM, 
+  sf::st_read(extract_dir) %>%
+    dplyr::select(ECO_NAME, WWF_MHTNAM, WWF_REALM2) %>%
+    dplyr::transmute('ecoregion' = ECO_NAME, 'major_habitat_type' = WWF_MHTNAM,
                      'biogeographic_realm'= WWF_REALM2)
 }
 
@@ -162,8 +162,8 @@ get_climate <- function(){
   worldclim_stack = get_raster_stack(file_in("data/downloads/wordclim_2-5m.zip"))
   envirem_stack = get_raster_stack(file_in("data/downloads/envirem_2-5m.zip"))
   topo_stack = get_raster_stack(file_in("data/downloads/envirem_topo_2-5m.zip"))
-  list(worldclim = worldclim_stack, 
-       envirem = envirem_stack, 
+  list(worldclim = worldclim_stack,
+       envirem = envirem_stack,
        topo = topo_stack)
 }
 
@@ -171,7 +171,7 @@ get_climate <- function(){
 # the climate vector for that occurrence
 get_climate_for_occurrences <- function(this_occurrences, raster_stacks){
   # get the grids of the occurrences
-  grids <- this_occurrences$wc_grid %>% 
+  grids <- this_occurrences$wc_grid %>%
     unique()
   # Extract climate for each of the stacks and put together as a data frame
   raster_stacks %>%
@@ -184,30 +184,30 @@ get_climate_for_occurrences <- function(this_occurrences, raster_stacks){
 # finding the mean climate for each stack
 fill_missing_values <- function(climate_in_occurrences, raster_stacks, n_chunks,
                                 buffer, verbose = T){
-  
+
   # subsample for testing
   # climate_in_occurrences <- climate_in_occurrences %>%
     # dplyr::sample_n(1000)
-  
+
   if (verbose) cat("filling topographic values\n")
-  topo_averages <- average_climate_buffer(climate_in_occurrences, 
-                                          names(raster_stacks$topo), 
-                                          raster_stacks$topo, 
-                                          n_chunks, 
+  topo_averages <- average_climate_buffer(climate_in_occurrences,
+                                          names(raster_stacks$topo),
+                                          raster_stacks$topo,
+                                          n_chunks,
                                           buffer)
-  
+
   if (verbose) cat("filling worldclim values\n")
-  worldclim_averages <- average_climate_buffer(climate_in_occurrences, 
-                                               names(raster_stacks$worldclim), 
-                                               raster_stacks$worldclim, 
-                                               n_chunks, 
+  worldclim_averages <- average_climate_buffer(climate_in_occurrences,
+                                               names(raster_stacks$worldclim),
+                                               raster_stacks$worldclim,
+                                               n_chunks,
                                                buffer)
-  
+
   if (verbose) cat("filling envirem averages\n")
-  envirem_averages <- average_climate_buffer(climate_in_occurrences, 
-                                             names(raster_stacks$envirem), 
-                                             raster_stacks$envirem, 
-                                             n_chunks, 
+  envirem_averages <- average_climate_buffer(climate_in_occurrences,
+                                             names(raster_stacks$envirem),
+                                             raster_stacks$envirem,
+                                             n_chunks,
                                              buffer)
 
   # Replace the NAs with the calculated means
@@ -216,7 +216,7 @@ fill_missing_values <- function(climate_in_occurrences, raster_stacks, n_chunks,
     # dplyr::filter(wc_grid %in% problematic_grids) %>% View
     fill_averages(worldclim_averages) %>%
     fill_averages(envirem_averages)
-}  
+}
 
 # Some cells of the ocurrences have no climatic information, this function finds
 # out the mean climate of the cells within a buffer (in meters) arround the
@@ -228,16 +228,16 @@ average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chu
   problematic_grids <- climate_in_occurrences %>%
     dplyr::select(tidyselect::one_of(pattern), wc_grid) %>%
     dplyr::filter_all(dplyr::any_vars(is.na(.))) %$%
-    wc_grid # %>% 
+    wc_grid # %>%
     # extract(1:10)
-  
+
   # if there are no NA values just don't return anything
   if (length(problematic_grids) == 0) return(NULL)
-  
+
   # Extract climate from neighbouring cells and format as a data frame
   raster::xyFromCell(stack, problematic_grids) %>%
     raster::extract(stack, ., buffer = buffer,
-                    cellnumbers = TRUE, 
+                    cellnumbers = TRUE,
                     fun = function(x) mean(x, na.rm = TRUE)) %>%
     tibble::as_tibble() %>%
     dplyr::mutate(wc_grid = problematic_grids)
@@ -246,19 +246,19 @@ average_climate_buffer <- function(climate_in_occurrences, pattern, stack, n_chu
 # This function takes the frame with climate for occurrences and fills the
 # missing values with the a set of values previously calculated
 fill_averages <- function(frame_with_na, averages){
-  
+
   # If there are no averages return the same thing we got
   if (is.null(averages)) return(frame_with_na)
-  
+
   cols <- colnames(averages) %>% head(-1)
-  
+
   for (i in cols) {
     for (j in averages$wc_grid) {
-      frame_with_na[frame_with_na$wc_grid == j, i] <- 
+      frame_with_na[frame_with_na$wc_grid == j, i] <-
         averages[averages$wc_grid == j, i]
     }
   }
-  
+
   return(frame_with_na)
 }
 
@@ -271,7 +271,7 @@ count_occurrences_per_organism <- function(x){
 # organism ids, which is the way species are best identified
 interactions_as_org_id <- function(clean_interactions, org_ids){
   clean_interactions %>%
-    dplyr::left_join(org_ids, by = c("pla_id" = "sp_key_id")) %>% 
+    dplyr::left_join(org_ids, by = c("pla_id" = "sp_key_id")) %>%
     dplyr::left_join(org_ids, by = c("ani_id" = "sp_key_id")) %>%
     dplyr::select(loc_id, pla_id = org_id.x, ani_id = org_id.y)
 }
@@ -281,14 +281,14 @@ get_grid_networks <- function(int_metadata, stacks){
   suppressPackageStartupMessages({
     require(data.table)
   })
-  
+
   int_metadata %>%
-    dplyr::group_by(loc_id) %>% 
-    dplyr::summarise(decimalLongitude = mean(lon), 
+    dplyr::group_by(loc_id) %>%
+    dplyr::summarise(decimalLongitude = mean(lon),
                      decimalLatitude = mean(lat)) %>%
     dplyr::filter(!is.na(decimalLatitude), !is.na(decimalLongitude)) %>%
     as.data.table() %>%
-    add_stack_grid(stacks$worldclim, "wc_grid") 
+    add_stack_grid(stacks$worldclim, "wc_grid")
 }
 
 # Given some locations (a data frame with grid, get the climate for each row)
@@ -301,26 +301,26 @@ get_climate_cells <- function(locations, filled_climate){
 # Calculate suitability of all species using niche spaces calculated using the
 # occurrences of each species independently
 calc_suitability_independently_all <- function(thinned_occurrences,
-                                               interactions_org, 
+                                               interactions_org,
                                                filled_climate_occ,
                                                filled_climate_net,
                                                grid_networks, R){
   suppressPackageStartupMessages({
     require(data.table)
   })
-  
+
   # For each species calculate the suitability
   thinned_occurrences$org_id %>%
     unique() %>%
-    purrr::map_df(calc_suitability, 
-                  thinned_occurrences, interactions_org, 
+    purrr::map_df(calc_suitability,
+                  thinned_occurrences, interactions_org,
                   filled_climate_occ, filled_climate_net, grid_networks, R)
 }
 
 # Calculate suitability of all species using a single niche space for all
 # calculated using the occurrences of all species together
-calc_suitability_collectivelly_all <- function(thinned_occurrences, 
-                                               interactions_org, 
+calc_suitability_collectivelly_all <- function(thinned_occurrences,
+                                               interactions_org,
                                                filled_climate_occ,
                                                filled_climate_net,
                                                grid_networks,
@@ -328,14 +328,14 @@ calc_suitability_collectivelly_all <- function(thinned_occurrences,
   suppressPackageStartupMessages({
     require(data.table)
   })
-  
+
   niche_space <- calc_niche_space(filled_climate_occ)
-  
+
   thinned_occurrences$org_id %>%
     unique() %>%
-    purrr::map_df(calc_suitability, 
-                  thinned_occurrences, interactions_org, 
-                  filled_climate_occ, filled_climate_net, grid_networks, R, 
+    purrr::map_df(calc_suitability,
+                  thinned_occurrences, interactions_org,
+                  filled_climate_occ, filled_climate_net, grid_networks, R,
                   niche_space)
 }
 
@@ -344,85 +344,85 @@ calc_suitability_collectivelly_all <- function(thinned_occurrences,
 # estimate with a resolution of R. If no background niche (a dudi pca object) is
 # provided it calculate one using the occurrences of the species itself
 calc_suitability <- function(
-  this_sp, thinned_occurrences, interactions_org, 
+  this_sp, thinned_occurrences, interactions_org,
   filled_climate_occ, filled_climate_net, grid_networks, R, niche_space = NULL,
   verbose = T){
-  
+
   if(verbose) cat("Calculating suitability for", this_sp, "\n")
-  
+
   # Filter the occurrences that correspond to the species
   this_occurrences <- thinned_occurrences[org_id == this_sp]
-  
+
   # Get the network locations where the species is present
   this_net_locations <- interactions_org %>%
     tidyr::gather("guild", "org_id", pla_id, ani_id) %>%
     dplyr::filter(org_id == this_sp) %$%
     unique(loc_id)
-  
+
   # If the species is not found in the networks (mistery) just return an empty
   # frame
   if(length(this_net_locations) == 0) {
-    return(tibble::tibble(org_id = character(), 
-                          loc_id = character(), 
-                          suitability = double(), 
+    return(tibble::tibble(org_id = character(),
+                          loc_id = character(),
+                          suitability = double(),
                           w = double()))
   }
-  
+
   # Get climate of points where species has been seen in GBIF
   sp_locations_climate <- this_occurrences %>%
-    get_climate_cells(filled_climate_occ) 
-  
+    get_climate_cells(filled_climate_occ)
+
   # Get climate of points where suitability will be calculated
   net_locations_climate <- grid_networks %>%
     dplyr::filter(loc_id %in% this_net_locations) %>%
     get_climate_cells(filled_climate_net)
-  
+
   if(is.null(niche_space)){
     niche_space <- calc_niche_space(sp_locations_climate)
   }
-  
+
   # Get niche and smooth it
-  sp_niche <- project_locations_climate_to_space(sp_locations_climate, 
+  sp_niche <- project_locations_climate_to_space(sp_locations_climate,
                                                  niche_space) %>%
     smooth_realised_niche(R)
-  
+
   area_cell <- raster::res(sp_niche$z) %>% prod()
   percents <- seq(0.1, 0.5, by = 0.1)
   niche_area <-
     percents %>%
       purrr::map_dbl(~sum(as.vector(sp_niche$z > .)) * area_cell) %>%
-      tibble::tibble(org_id = this_sp, 
-                     KUD_area_percent = percents, 
+      tibble::tibble(org_id = this_sp,
+                     KUD_area_percent = percents,
                      KUD_area = .) %>%
-      dplyr::mutate(KUD_area_percent = paste('KUD_percent', 
-                                             (1- KUD_area_percent)*100, 
+      dplyr::mutate(KUD_area_percent = paste('KUD_percent',
+                                             (1- KUD_area_percent)*100,
                                              sep = "_")) %>%
       tidyr::spread(key = KUD_area_percent, value = KUD_area)
-  
+
   # Get network climate in niche space
-  net_niche_space <- project_locations_climate_to_space(net_locations_climate, 
+  net_niche_space <- project_locations_climate_to_space(net_locations_climate,
                                                         niche_space)$lisup
-  
+
   # Calculate the suitability
   suitabiliy <- raster::cellFromXY(sp_niche$z, net_niche_space) %>%
-    raster::extract(sp_niche$z, .) 
+    raster::extract(sp_niche$z, .)
   w <- raster::cellFromXY(sp_niche$w, net_niche_space) %>%
-    raster::extract(sp_niche$w, .) 
-  
+    raster::extract(sp_niche$w, .)
+
   # Put it all in a nice data frame format
-  tibble::tibble(org_id = this_sp, 
-                 suitability = suitabiliy, 
-                 w = w, 
+  tibble::tibble(org_id = this_sp,
+                 suitability = suitabiliy,
+                 w = w,
                  loc_id = this_net_locations) %>%
     dplyr::inner_join(niche_area)
 }
 
-# Gicen some locations (coded as a grid in the climate thingy) find their projection in niche space 
+# Gicen some locations (coded as a grid in the climate thingy) find their projection in niche space
 project_locations_climate_to_space <- function(sp_locations_climate, niche_space){
   sp_locations_climate %>%
     dplyr::filter_all(function(x) !is.na(x)) %>%
     dplyr::select(-wc_grid) %>%
-    ade4::suprow(niche_space, .) 
+    ade4::suprow(niche_space, .)
 }
 
 smooth_realised_niche <- function(projection, R){
