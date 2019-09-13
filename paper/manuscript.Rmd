@@ -99,6 +99,7 @@ Perhaps, because it operates at scales larger than those of the Eltonian niche c
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
 At the heart of biogeography is the idea that the abiotic environment can determine the "Grinellian" niche of a species, this is whether the species can have a positive growth-rate when rare in a particular location.
 For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Grinellian niche of both species. 
+
 Although less understood, the environment can also affect the interactions themselves, after community composition has been established [@tylianakis_ecological_2017]. 
 For instance, some studies show that trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016], and both plant-plant [@bertness_positive_1994] and plant-pollinator [@tur_evaluating_2016] interactions can switch from facilitative to competitive along an elevation/temperature gradient. 
 Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
@@ -108,7 +109,8 @@ Previous research is so far equivocal and, taken together, suggest that environm
 On the one hand, it is possible that when species are under environmental stress, they might be "pressured" to focus on partners with which they are best adapted to interact. 
 For instance, @hoiss_altitude_2012 found increased phylogenetic clustering between plants and pollinators at higher altitudes; while @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where environmental stress was higher than in native forests, were constrained to interact with hosts they were best adapted to attack.
 Similarly, @lavandero_genotype_2013 found that environmental stress due to higher temperature reduced the breadth of the Eltonian niche of parasitoids. 
-On the other, it is also possible that when species are under environmental stress, they are forced to be more flexible in their interactions as higher environmental stress is likely to be reflected in greater energetic or reproductive costs and therefore they might not be able to sustain encounter rates with their preferred partners at sufficient levels. 
+
+On the other hand, it is also possible that when species are under environmental stress, they are forced to be more flexible in their interactions as higher environmental stress is likely to be reflected in greater energetic or reproductive costs and therefore they might not be able to sustain encounter rates with their preferred partners at sufficient levels. 
 In line with this hypothesis, @hoiss_interactive_2015 found that the specialisation of plant-pollinator networks decreased both with elevation and after extreme drought events.
 Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities. 
 
@@ -572,30 +574,32 @@ Our results still show that the primary channel through which environment affect
 However they also show that, for a large number of species, it can have an important effect on their realised Eltonian component of the niche.
 Indeed, as evidenced by the predictive power of competing models, habitat suitability had a substantial contribution to predicting the number of possible partners in the community. 
 
+One of our most interesting results was the negative correlation between the species' intercept and the slope of the habitat suitability in our model.
+Specifically, species with a small intercept, this is, species that were likely to have an above-average number of partners in a community with little environemntal stress, were more likely to interact with a smaller number of partners as stress increassed. 
+At least for these species, the hypothesis that species focus on partners with which they are best adapted to interact as environmental conditions deteriorates seems to hold weight.
+Contrastingly, species with a below-average number of partners in a low stress environment were more likely to interact with a large number of partners as stress increassed.
+At first glance, these species behave as facultative generalists when the environment worsens. 
+This is certainly true for this group of species in our dataset.
+However, there are some nuances to this observation once we take into account the biases inherent to community level interaction data. 
+Specifically, we have no information about species for which environmental conditions would, in principle, allow for a positive growth rate but are absent from our datasets.
+A ramification of this bias is that an undertermined number of species on this second group might also be more likely to focus on partners with higher trait matching as conditions deteriorate, but we are not able to detect that trend because these species are not recoded in community composition or interaction data. 
+Presumably because their preferred partners are unavailable and as such they areabsent from the community or too rare to be observed.
+Note that the coorelation between species' intercept and slope is unlikely to be just a byproduct of our modelling framework, as, in principle, there is nothing preventing species with an above-average number of partners to interact with even more species as environmental stress increasses.
+
 Although, we cannot tell with certainty how much of the effect of environmental stress is can be attributed to either niche or neutral processes it is likely that the patterns we observe are more related to the niche. 
 In the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
 It would be, therefore, somewhat naive to assume that a high habitat suitability translates directly to high species abundances. 
 On the other hand, even if species abunances are correlated with suitability, we show that within a community there is a wide range of suitabilities, even for the limmited number of species we included in our analyses. 
-Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increasse and decreasse for others. 
-
-The significant relationship between the number of partners a species has in a hypothetical community with no environmental stress and the slope 
+Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increasse and decreasse for others.  
+Furthermore, the fact that the effects of environemtal stress do not depend on wether the species is a plant or a pollinator (for which there can be niche differences based on individual behaviour) emphasises that niche processes driven by co-evolutionary history might be driving the patterns we observe. 
 
 * Add in the intro that stress includes how traits mediate environment?
-
-Previous We found that
-
 * Why is the relationship different across species?
 * Why is there no difference between plants and pollinators?
 * Why is there a correlation between the intercept and the slope?
-
-
-* We cannot completely distinguish between the effect on the environment on the niche itself or on neutral processes
 * The environment can certainly influence the number of interactions but its very variable among species
-* We don't know wether specialists are also constrained to interact with species they like because our dataset is biased for species that are there. This is we are only observing those specialist that survive the lack of interaction partners
-* It was clear that the compositional effect on communities is very strong and is really the determining factor at large. The environment only a fraction. However we differ that the way the rest happens is not stochastic but might be driven but driven of how environment mediates eco-evolutionary processes. 
 * In the absence of abundance this is as much as we can say. 
 * It is remarkable we found a signal given the amount of data we had it is realy not that much for our question. It is not surprising that the slope of suitability was small for many species as we had little data. The results hold for when species had
-* The interaction between slope suitability was not related to guild. Emphasizes the relevance of eco-evolutionary processes for both guilds. If other factors like for example behaviour could explain that, we would expect markedly different outcomes for plants and pollinators. 
 * Implications for community assembly and network rewiring. 
 
 <!-- We found a positive association between environmental suitability and the niche breath. 
