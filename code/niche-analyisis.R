@@ -438,3 +438,18 @@ calc_niche_space <- function(background_climate){
     ade4::dudi.pca(center = T, scale = T, scannf = F, nf = 2)
 }
 
+# Get median suitability with quantiles
+get_median_suitability <- function(baseline_model, parameter_scale_attributes){
+
+  baseline_model$data %>%
+    dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability,
+                                                   parameter_scale_attributes$suitability),
+                  loc_id = forcats::fct_reorder(loc_id, suitability, median)) %>%
+    dplyr::group_by(loc_id) %>%
+    dplyr::summarise(median_suitability = median(suitability, na.rm = TRUE),
+                     Q97.5 = quantile(suitability, probs = 0.975, na.rm = TRUE),
+                     Q2.5 = quantile(suitability, probs = 0.025, na.rm = TRUE),
+                     Q25 = quantile(suitability, probs = 0.25, na.rm = TRUE),
+                     Q75 = quantile(suitability, probs = 0.75, na.rm = TRUE))
+
+}

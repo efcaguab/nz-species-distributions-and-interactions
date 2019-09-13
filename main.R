@@ -329,7 +329,8 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   parameter_scale_attributes = get_all_pars_scale_attributes(baseline_model),
   mean_parameter_values = purrr::map(parameter_scale_attributes, ~scaled_to_unscaled(0, .)),
   random_sp_names = get_random_sp_names(random_species_draws, org_ids, gbif_key_groups, gbif_keys,
-                                        species_ids)
+                                        species_ids),
+median_suitability = get_median_suitability(baseline_model, parameter_scale_attributes)
 )
 
 # Referencing -------------------------------------------------------------
@@ -359,7 +360,8 @@ figures_plan <- drake_plan(
   fig_random_effects = plot_ranf(random_species_draws,
                                  random_correlation_posterior,
                                  random_sp_names,
-                                 random_slope_intercepts)
+                                 random_slope_intercepts),
+ fig_median_suitability = plot_suitability(median_suitability)
 )
 
 # Manuscript --------------------------------------------------------------

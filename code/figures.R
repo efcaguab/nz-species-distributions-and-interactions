@@ -340,3 +340,28 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
 
   p
 }
+
+plot_suitability <- function(suitability_distribution){
+  p <- suitability_distribution %>%
+    ggplot(aes(x = median_suitability, y = loc_id)) +
+    geom_point(size = 0.5, stroke = 0.25, colour = cgm()$pal_el_green[9]) +
+    geom_errorbarh(aes(xmin = Q2.5, xmax = Q97.5), size = 0.25,
+                   height = 0, alpha = 0.5, colour = cgm()$pal_el_green[9]) +
+    scale_x_continuous(expand = c(0,0)) +
+    pub_theme() +
+    theme(#axis.title.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          panel.border = element_blank(),
+          plot.title = element_text(margin = margin(b = 4)),
+          axis.line.x = element_line()) +
+    labs(title = "median suitability per community",
+         y = "ecological communities",
+         x = "habitat suitability")
+
+    #     ggsave("plot.pdf", width = unit(width("single"), "in"), height = unit(2.2*1.5, "in"))
+
+  p
+}
+
+
