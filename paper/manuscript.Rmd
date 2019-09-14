@@ -603,9 +603,9 @@ We, however, demonstrate that at least a fraction of the species that appear to 
 Contrastingly, specialists that are highly constrained to interact with partners of high trait-matching might be more vulnerable to increassed climate change induced environmental stress and habitat degradation. 
 Taken together, the fact that most species appear to be flexible interaction partners, combined with the fact that those that are not flexible are less likely to persist, might expain why specialised communities that are highly constrained by trait matching [like some plant-humingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] might be relatively rare.
 
-<!-- In conclusion, we show that
+In conclusion, we show that...
 
-It still remains to evaluate the role of abundance and neutral processes and 
+<!-- It still remains to evaluate the role of abundance and neutral processes and 
 
 * Add in the intro that stress includes how traits mediate environment?
 * Why is the relationship different across species?
