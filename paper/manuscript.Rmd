@@ -603,7 +603,7 @@ We, however, demonstrate that at least a fraction of the species that appear to 
 Contrastingly, specialists that are highly constrained to interact with partners of high trait-matching might be more vulnerable to increassed climate change induced environmental stress and habitat degradation. 
 Taken together, the fact that most species appear to be flexible interaction partners, combined with the fact that those that are not flexible are less likely to persist, might expain why specialised communities that are highly constrained by trait matching [like some plant-humingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] might be relatively rare.
 
-In conclusion, we show that 
+<!-- In conclusion, we show that
 
 It still remains to evaluate the role of abundance and neutral processes and 
 
@@ -612,7 +612,7 @@ It still remains to evaluate the role of abundance and neutral processes and
 * The environment can certainly influence the number of interactions but its very variable among species
 * In the absence of abundance this is as much as we can say. 
 * It is remarkable we found a signal given the amount of data we had it is realy not that much for our question. It is not surprising that the slope of suitability was small for many species as we had little data. The results hold for when species had
-* Implications for community assembly and network rewiring. 
+* Implications for community assembly and network rewiring. -->
 
 <!-- We found a positive association between environmental suitability and the niche breath. 
 This relationship was maintained when we account for the overall generality of a species and even in extremely conservative model parametrization when we include the number of possible interacting species as an independent variable. 
