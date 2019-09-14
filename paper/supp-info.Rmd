@@ -1,6 +1,5 @@
 ---
-title: "The pollination trade-off"
-# DBS: The title above needs editing to match the final version in the paper
+title: "Environmental stress affects niche breadth in plant-pollinator communities"
 subtitle: "Supplementary information"
 author: "E. Fernando Cagua, Hugo J. Marrero, Jason M. Tylianakis, Daniel B. Stouffer"
 # bibliography: references.bib

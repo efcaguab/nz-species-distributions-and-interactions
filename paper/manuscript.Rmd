@@ -1,5 +1,5 @@
 ---
-title: "Flexibility of interactions depends on habitat suitability"
+title: "Environmental stress affects niche breadth in plant-pollinator communities"
 author: 
   - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
