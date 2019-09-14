@@ -35,6 +35,7 @@ header-includes:
 * Audrey: Could you please fill in the gaps in the rationale behind filtering out occurrences with potential low quality coordinates (\lr{rationale-occurrence-filtering})
 * I chose, rather arbitrarily, a mean absolute error of 10% for the sensitivity analysis. Does this choice sound appropiate to you?
 * Should I remove the species overall generalism and the size of the grinellian niche from the model to simplify things. Both contribute little to the model and the story. For the former, seems to be redundant once the number of possible interacting species has been included in the model. For the later, there is little biological reasons (what I could gather from the lit.) to justify their inclussion in the model. What you think? If not, at the very least I think I would move panels a and c in Fig. 5 to the supplementary info.
+* What you think would be the best way to end the paper? Thinking about what could be highlighted in the conclusion. 
 
 ## Done
 
@@ -48,7 +49,9 @@ header-includes:
 
 * Manually fix the remaining species names that are incorrect and were not picked up by the automatic procedure. Doing 5-10 per day, so should be done in a couple months
 * Fix references. There are lots of mistakes re. author, years and publication venue particularly for those from which data was downloaded.
-
+* Finish off discussion with a punchy conclusion. 
+* Fix the WAIC table. Currently shows the model without guild as unknown.
+* Add Lupe's feedback to the intro. Need to better define stress and Eltonian/Grinellian niche and don't need to say realised Eltonian niche when I really just mean number of partners
 <!-- Interactions are selected by species depending on the relative benefit they provide. The assumption goes that species with a large number of interactions are benefit relatively little from each of them, and species with a small number benefit largely with them, this is they focus in more optimal pollinators. -->
 
 <!-- AND  -->
