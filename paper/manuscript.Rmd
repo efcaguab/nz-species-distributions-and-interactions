@@ -559,49 +559,50 @@ readd(fig_random_effects)
  
 # Discussion 
 
-We found that environemntal stress, which we meassured using habitat suitability, was a very importat predictor for the number of partners a species interacts with. 
+We found that environmental stress, which we measured using habitat suitability, was an important predictor for the number of partners a species interacts with. 
 However, this relationship was highly variable among species. 
-So much so that, at the population level, there is no discernable pattern between stress and the number of interacting species.
-Interestingly, within species, there was a significant coorelaton between the number of partners a species has and the stress-partners relationship itself. 
-Specifically, species with a large number of partners in low-stress communities, were more likely to have a negative relatiosnship and hence reduce the number of partners as stress increasses. 
-Contrastingly, species in our datasets with a small number of parters in low-stress communities were more likely to have a larger number of partners in more stressful communities.
+So much so that, at the population level, there is no discernible pattern between stress and the number of partners.
+Interestingly, within species, there was a significant correlation between the number of partners a species has and the stress-partners relationship itself. 
+Specifically, species with a large number of partners in low-stress communities were more likely to have a negative relationship and hence reduce the number of partners as stress increases. 
+Contrastingly, species in our datasets with a small number of partners in low-stress communities were more likely to have a larger number of partners in more stressful communities.
 
 Previous research supported the idea that the differences in network structure along an environmental gradient were due solely to changes to community composition. 
 In other words, it showed that the differences between two hypothetical communities with the same species were stochastic for the most part. 
 Here, by abstracting with multiple environmental gradients into a single gradient of environmental stress, we show that this might not be the case. 
 Instead, the environment can also have a direct impact on the number of partners a species interacts with and, therefore, influence network structure. 
-Our results still show that the primary channel through which environment affects interaction probabilities is determining which species are present or absent froma particular community. 
-However they also show that, for a large number of species, it can have an important effect on their realised Eltonian component of the niche.
+Our results still show that the primary channel through which environment affects interaction probabilities is determining which species are present or absent from a particular community. 
+However, they also show that, for a large number of species, it can have a substantial effect on their realised Eltonian component of the niche.
 Indeed, as evidenced by the predictive power of competing models, habitat suitability had a substantial contribution to predicting the number of possible partners in the community. 
 
-Although, we cannot tell with certainty how much of the effect of environmental stress is can be attributed to either niche or neutral processes it is likely that the patterns we observe are more related to the niche. 
-In the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
-It would be, therefore, somewhat naive to assume that a high habitat suitability translates directly to high species abundances. 
-On the other hand, even if species abunances are correlated with suitability, we show that within a community there is a wide range of suitabilities, even for the limmited number of species we included in our analyses. 
-Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increasse and decreasse for others. 
-Furthermore, the fact that the effects of environemtal stress do not depend on wether the species is a plant or a pollinator (for which there can be niche differences based on individual behaviour) emphasises that niche processes driven by co-evolutionary history might be driving the patterns we observe. 
+Although we cannot tell with certainty how much of the effect of environmental stress can be attributed to either niche or neutral processes, the patterns we observe are likely more related to the niche. 
+On the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
+It would be, therefore, somewhat naive to assume that high habitat suitability translates directly to high species abundances. 
+On the other hand, even if species abundances are correlated with suitability, we show that within a community there is a wide range of suitabilities, even for the limited number of species we included in our analyses. 
+Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increase and decrease for others. 
+Furthermore, the fact that the effects of environmental stress do not depend on whether the species is a plant or a pollinator (for which there can be niche differences based on individual behaviour) emphasises that co-evolutionary history, which in turn shape niche processes driven by, might be driving the patterns we observe. 
 
 One of our most interesting results was the negative correlation between the species' intercept and the slope of the habitat suitability in our model.
-Specifically, species with a small intercept, this is, species that were likely to have an above-average number of partners in a community with little environemntal stress, were more likely to interact with a smaller number of partners as stress increassed. 
-At least for these species, the hypothesis that species focus on partners with which they are best adapted to interact as environmental conditions deteriorates seems to hold weight.
-Contrastingly, species with a below-average number of partners in a low stress environment were more likely to interact with a large number of partners as stress increassed.
+Specifically, species with a small intercept, this is, species that were likely to have an above-average number of partners in a community with little environmental stress, were more likely to interact with a smaller number of partners as stress increased. 
+At least for these species, the hypothesis that species focus on partners with which they are best adapted to interact as environmental conditions deteriorate seems to hold weight.
+Contrastingly, species with a below-average number of partners in a low-stress environment were more likely to interact with a large number of partners as stress increased.
 At first glance, these species behave as facultative generalists when the environment worsens. 
 This is certainly true for this group of species in our dataset.
-However, there are some nuances to this observation once we take into account the biases inherent to community level interaction data. 
+However, there are some nuances to this observation once we take into account the biases inherent to community-level interaction data. 
 Specifically, we have no information about species for which environmental conditions would, in principle, allow for a positive growth rate but are absent from our datasets.
-A ramification of this bias is that an undertermined number of species on this second group might also be more likely to focus on partners with higher trait matching as conditions deteriorate, but we are not able to detect that trend because these species are not recoded in community composition or interaction data. 
-Presumably because their preferred partners are unavailable and as such they areabsent from the community or too rare to be observed.
-Note that the coorelation between species' intercept and slope is unlikely to be just a byproduct of our modelling framework, as, in principle, there is nothing preventing species with an above-average number of partners to interact with even more species as environmental stress increasses.
+A ramification of this bias is that an undetermined number of species on this second group might also be more likely to focus on partners with higher trait matching as conditions deteriorate. 
+However, we are not able to detect that trend because these species are not recorded in community composition or interaction data. 
+Presumably, because their preferred partners are unavailable and as such, they are absent from the community or too rare to be observed.
+Note that the correlation between species' intercept and the slope is unlikely to be just a byproduct of our modelling framework, as, in principle, there is nothing preventing species with an above-average number of partners to interact with even more species as environmental stress increases.
 
-These observations have implications for understanding the assembly of ecological networks and how it might be impacted by climate change, which currentlt threatens to increasse the environmental stress of species within its range. 
-Previous research suggests that flexibility of interactions in ecological communities might be a rather ubiquitous phenomenon whenever environemntal conditions change in space or time [@caradonna_interaction_2017]. 
+These observations have implications for understanding the assembly of ecological networks and how it might be impacted by climate change, which currently threatens to increase the environmental stress of species within its range. 
+Previous research suggests that flexibility of interactions in ecological communities might be a rather ubiquitous phenomenon whenever environmental conditions change in space or time [@caradonna_interaction_2017]. 
 This flexibility has been shown to confer robustness and stability to the loss of interaction partners [@kaiser-bunbury_robustness_2010]. 
-The current paradigm of interaction turnover suggest first that trait matching is a relatively unimportant driver of interaction turnover for generalist species [@caradonna_interaction_2017]. 
-The fact that species with a high number of interactions were more likely to interact with less species as environmental stress increassed indicates that trait matching might still play a role at determining the interactions of generalist species. 
-Second, current research suggests that the rewiring of the interaction network is primarly driven by generalist species [@burkle_plant-pollinator_2013].
-We, however, demonstrate that at least a fraction of the species that appear to be specialist in their communities might be more flexible, if not more, than generalist species and, therefore, might a larger role in network persistence than previously expected. 
-Contrastingly, specialists that are highly constrained to interact with partners of high trait-matching might be more vulnerable to increassed climate change induced environmental stress and habitat degradation. 
-Taken together, the fact that most species appear to be flexible interaction partners, combined with the fact that those that are not flexible are less likely to persist, might expain why specialised communities that are highly constrained by trait matching [like some plant-humingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] might be relatively rare.
+The current paradigm of interaction turnover suggests first that trait matching is a relatively unimportant driver of interaction turnover for generalist species [@caradonna_interaction_2017]. 
+The fact that species with a high number of interactions were more likely to interact with fewer species as environmental stress increased indicates that trait matching might still play a role in determining the interactions of generalist species. 
+Second, current research suggests that the rewiring of the interaction network is primarily driven by generalist species [@burkle_plant-pollinator_2013].
+We, however, demonstrate that at least a fraction of the species that appear to be specialist in their communities might be more flexible, if not more, than generalist species and, therefore, might have a more significant role in network persistence than previously expected. 
+Contrastingly, specialists that are highly constrained to interact with partners of high trait-matching might be more vulnerable to increased climate change-induced environmental stress and habitat degradation. 
+Taken together, the fact that most species appear to be flexible interaction partners, combined with the fact that those that are not flexible are less likely to persist, might explain why specialised communities that are highly constrained by trait matching [like some plant-hummingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] might be relatively rare.
 
 In conclusion, we show that...
 
