@@ -84,3 +84,5 @@ data/sp_ocurrences\.csv
 data/sp_name_checks\.csv
 
 data/gbif_keys\.csv
+
+*.RData
