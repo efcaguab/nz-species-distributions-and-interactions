@@ -83,9 +83,18 @@ loadd(interaction_citations)
 # Introduction
 
 Species interactions are known to vary widely across space and time. 
-There are multiple examples of species that interact tightly in an ecological community or a particular season but not in another. 
-It is crucial to understand why and how this turnover of interactions occur because the network of interactions of an ecological community is known to underpin ecosystem function and stability. 
+There are multiple examples of species that interact with a large number of partners in an ecological community or a particular season but with fewer in another. 
+It has been proposed that some of variation can be attributed to environmental drivers. 
+However, how exactly the environment, and the stress it imposes, affects the turnover of interactions is still unknown. 
+It is crucial to understand why and how this turnover occur because the network of interactions of an ecological community is known to underpin ecosystem function and stability. 
 Despite much progress in the last decades, we are still unable to predict species interactions, partially because we still have not accurately identified the factors that drive species to interact under certain conditions and not under another. 
+
+Species interactions are determined in part by niche processes (the matching of traits) and partly by neutral processes (more abundant species are more likely to encounter each other and, thus, interact). 
+Both of these processes can be influenced by the environment. 
+Therefore, it is not surprising that multiple studies have shown how changes to interactions, both pairwise and at the community level, can be driven by environmental change [@tylianakis_ecological_2017].
+For instance, some studies show that the rate of some trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016]. 
+Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
+Overall, 
 
 There are two main processes involved in whether two species in a community interact or not.
 The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species. 
@@ -96,6 +105,8 @@ The second is a neutral process underpinned by the encounter rate of the interac
 All else being equal, when the encounter rate of interacting species is high, there is a higher probability to interact than if the rate were lower, for example, due to species rarity. 
 
 Perhaps, because it operates at scales larger than those of the Eltonian niche concept, the abiotic environment is one of the factors that is commonly overlooked by community ecologists when explaining interaction turnover [but see @gravel_bringing_2018]. 
+
+
 The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition. 
 At the heart of biogeography is the idea that the abiotic environment can determine the "Grinellian" niche of a species, this is whether the species can have a positive growth-rate when rare in a particular location.
 For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Grinellian niche of both species. 
