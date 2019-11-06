@@ -84,23 +84,21 @@ loadd(interaction_citations)
 
 Species interactions are known to vary widely across space and time. 
 There are multiple examples of species that interact with a large number of partners in an ecological community or a particular season but with fewer in another. 
-It has been proposed that at least some of this variation can be attributed to environmental drivers. 
-Despite much progress in the last decades, we are still unable to predict species interactions, partially because we still have not accurately identified the factors that drive species to interact under certain conditions and not under another. 
-
-However, how exactly the environment, and the stress it imposes on species, affects wether two species interact or not, and ultimately species degree the number of partners a species has---its degree---is still unknown. 
-It is crucial to understand why and how species degree might change because it underpins species importance and, collectively is the foundation of network structure that underpins ecosystem function and stability. 
+Some of this variation can be attributed to environmental drivers. 
+However, how exactly the environment, specifically the stress it imposes on species, affects wether two species interact or not, and ultimately the number of partners a species has is still unknown. 
+Understanding how the number of partners—the species degree—is driven by the environment is crucial, because it underpins the species role in its community and shapes the structure of the network of interactions. 
+A determinant of ecosystem function and stability. 
 
 Species interactions are determined in part by niche processes (the matching of traits) and partly by neutral processes (more abundant species are more likely to encounter each other and, thus, interact). 
-These two processes in turn 
 Both of these processes can be influenced by the environment. 
-Therefore, it is not surprising that multiple studies have shown how changes to interactions can be driven by environmental change [@tylianakis_ecological_2017].
-For instance, some studies show that the rate of some trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016]. 
-Contrastingly, other studies have shown either no overall effect or non-linear effects of temperature or precipitation on plant-pollinator interactions at the community level [@devoto_patterns_2005; @gravel_bringing_2018].
+It is, therefore, not surprising that multiple studies have been able to show how changes to interactions can be related to environmental change [@tylianakis_ecological_2017].
+For instance, some studies suggest that the rate of some trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016]. 
+Some other sudies, however, have shown either no effect (on average) or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
 
-Each species can have multiple partners. 
+One possible explanation for the seemingly contradictory evidence is that each species can have multiple partners. 
 Each of these partners, as well as the interactions with them, can be simultaneoulsy affected by the environmental conditions. 
-Given all these sources of variation, it is not clear whether the environment can systematically affect species degree. 
-Previous research suggests that there might be two alternative hypothesis of how the environment, in particular the environmental stress, affects the number of partners of a species [@tylianakis_ecological_2017]. 
+And therefore is possible that the environmental stress affects the number of partners in different ways depending on its role in the community (for example its thropic guild) or even the species itself. 
+Previous research suggests that there might be two alternative hypothesis of how in particular the environmental stress may affect species degree [@tylianakis_ecological_2017]. 
 On the one hand, it is possible that when species are under environmental stress, they might be "pressured" to focus on partners with which they are best adapted to interact. 
 For instance, @hoiss_altitude_2012 found increased phylogenetic clustering between plants and pollinators at higher altitudes; while @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where environmental stress was higher than in native forests, were constrained to interact with hosts they were best adapted to attack.
 Similarly, @lavandero_genotype_2013 found that environmental stress due to higher temperature reduced the breadth of the Eltonian niche of parasitoids. 
@@ -108,6 +106,14 @@ Similarly, @lavandero_genotype_2013 found that environmental stress due to highe
 On the other hand, it is also possible that when species are under environmental stress, they are forced to be more flexible in their interactions as higher environmental stress is likely to be reflected in greater energetic or reproductive costs and therefore they might not be able to sustain encounter rates with their preferred partners at sufficient levels. 
 In line with this hypothesis, @hoiss_interactive_2015 found that the specialisation of plant-pollinator networks decreased both with elevation and after extreme drought events.
 Likewise, @pellissier_spatial_2010 found a positive relationship between niche breadth and environmental stress: disk- or bowl-shaped blossoms (which allow a large number of potential pollinator species to access pollen and nectar rewards) dominated at high altitude flower communities. 
+
+Here, we investigate whether, and how, environmental stress can systematically affect species degree. 
+Our main aim is to test the two competing hypotheses that relate environmental stress and species degree and investigate whether there is a pattern within and across species and species guilds. 
+We propose that specialist species can become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example, when variations in climate decouple phenologies; @benadi_specialization_2014]. 
+We therefore also expect that as environmental stress increases species with a relatively small number of partners are more likely to engage with more partners and broaden their thropic niche. 
+Species with a large number of partners, on the other hand, should have a larger pool of available partners and might, therefore, be more likely to narrow their niche under environmental stress. 
+Importantly, when testing these hypotheses, we control for the potential effects of the environment in community composition and the size of the species fundamental niche, both from an Eltonian (interactions) and Grinellian (environment) perspective. We test these hypothesis using data on plant-pollinator interactions globally and use their global patterns of occurrence to calculate the environmental suitability of all species present at two or more communities. 
+
 
 <!-- There are two main processes involved in whether two species in a community interact or not. -->
 <!-- The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species.  -->
@@ -129,14 +135,6 @@ Likewise, @pellissier_spatial_2010 found a positive relationship between niche b
 
 
 <!-- One way to summarise the seemingly contradictory evidence of whether the environment can influence whether two species interact or not is by moving from gradients of temperature or precipitation to gradients of environmental stress.  -->
-
-
-We analyse data on plant-pollinator interactions globally and calculate the environmental suitability of all species present at two or more communities to. 
-Our main aim is to leverage that information to test the two competing hypotheses that relate environmental stress and Eltionian niche breadth and whether there is a pattern within and across species. 
-Specialist species can become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example, when variations in climate decouple phenologies; @benadi_specialization_2014]. 
-We therefore also expect that as environmental stress increases species with a relatively small number of partners are more likely to broaden their Eltonian niche. 
-Species with a large number of partners, on the other hand, should have a larger pool of available partners and might, therefore, be more likely to narrow their niche under environmental stress. 
-Importantly, when testing these hypotheses, we control for the potential effects of the environment in community composition and the size of the species fundamental niche, both from an Eltonian (interactions) and Grinellian (environment) perspective. 
 
 # Methods
 
