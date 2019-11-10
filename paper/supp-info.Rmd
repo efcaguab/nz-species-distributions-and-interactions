@@ -157,15 +157,91 @@ manual_name_corrections %>%
   filter(!is.na(sp_name)) %>%
   arrange(guild, queried_sp_name, sp_name) %>%
   mutate(sp_name = tidyr::replace_na(sp_name, "no replacement found"), 
-         sp_name = kableExtra::cell_spec(sp_name, italic = TRUE), 
+         sp_name = kableExtra::cell_spec(sp_name, 
+                                         format = "latex", 
+                                         italic = TRUE), 
          guild = if_else(guild == "pla", "plant", "pollinator")) %>%
-  knitr::kable(caption = "Manually corrected canonnical names. More than one correct name have been included when an accepted/valid synonym the cannonical name exists.", 
+  knitr::kable(format = "latex", 
+               caption = "Manually corrected canonnical names. More than one correct name have been included when an accepted/valid synonym the cannonical name exists.", 
                col.names = c("incorrect name", "corrected name", "guild"),
                booktabs = TRUE, 
                escape = F) %>%
   kableExtra::kable_styling(font_size = 8) %>%
   kableExtra::collapse_rows(1, latex_hline = "none", valign = "top")
 ```
+
+```{r}
+loadd(recoded_interactions, int_metadata)
+
+n_sp_ids <- recoded_interactions %>%
+  select(-loc_id) %>%
+  purrr::map(n_distinct) %>%
+  unlist() %>% sum()
+
+n_names_in_multiple_references_after <- recoded_interactions %>%
+  tidyr::gather(key = "guild", "sp_id", pla_id, ani_id) %>%
+  left_join(study_per_location, by = "loc_id") %>%
+  group_by(sp_id) %>%
+  summarise(n_ref = n_distinct(reference)) %>%
+  filter(n_ref > 1) %$%
+  n_distinct(sp_id)
+
+
+data_sources_mult_nets <- int_metadata %>%
+  group_by(loc_id) %>%
+  summarise(n_nets = n_distinct(net_name)) %>%
+  filter(n_nets > 1) 
+
+n_data_sources_mult_nets <- nrow(data_sources_mult_nets)
+```
+
+This cleaning process allowed us to match further `r n_sp_names - n_sp_ids` names across data sources and, by doing so, identify another `r n_names_in_multiple_references_after - n_names_in_multiple_references_orig` species that were present in more than one study. 
+The process also allowed us to identify `r numbers2words(length(problematic_networks))` problematic data sources in which some names were included as both plants and pollinators. 
+These data sources were removed from further analysis. 
+In `r numbers2words(n_data_sources_mult_nets)` of our data sources interaction data was recorded at multiple points in time. 
+When this was the case, we combined interaction data into one single interaction network. 
+
+```{r tab-studies, eval = F}
+loadd(int_metadata)
+loadd(interaction_citations)
+
+simple_metadata <- int_metadata %>%
+  filter(stringr::str_detect(reference, pattern = "unpubl", negate = TRUE)) %>%
+  group_by(loc_id) %>%
+  summarise(location = paste0(round(mean(lon), 2), ", ", 
+                              round(mean(lat), 2)), 
+            name = first(loc_name), 
+            ref = first(reference)) %>%
+  # first word in the references is the main author (usually)
+  mutate(first_author = stringr::str_extract(ref, "^\\w+"), 
+         # the first number of four digits is the year
+         year = stringr::str_extract(ref, "[0-9]{4}"), 
+         key = paste(tolower(first_author), year, sep = "_")) %>%
+  select(-first_author, -year)
+
+
+interaction_citations %>%
+  mutate(first_author = stringr::str_extract(BIBTEXKEY, "[^_-]+"), 
+         year = stringr::str_extract(BIBTEXKEY, "[0-9]{4}"), 
+         key = paste(tolower(first_author), year, sep = "_"), 
+         bibtex_key = BIBTEXKEY) %>%
+  select(bibtex_key, key) %>%
+  fuzzyjoin::stringdist_full_join(simple_metadata, 
+                                  by = c(key = "key"), 
+                                  max_dist = 6, 
+                                  distance_col = "dist") %>% 
+  group_by(key.y) %>%
+  filter(dist == min(dist)) %>%
+  ungroup() %>%
+  select(location, name, bibtex_key) %>%
+  mutate(bibtex_key = paste0("@", bibtex_key, "")) %>%
+  knitr::kable(format = "markdown", 
+               escape = F, 
+               booktabs = T, 
+               col.names = c("coordinates", "site", "reference"),
+               caption = "Sites included in this study")
+  kableExtra::kable_styling(font_size = 8)
+``` 
 
 ```{r eval = FALSE, tab-sp-synonym-reasons}
 sp_with_synonyms %>%
@@ -181,3 +257,5 @@ sp_with_synonyms %>%
   kableExtra::kable_styling(font_size = 8) %>%
   kableExtra::collapse_rows(columns = 1)
 ```
+
+# Supplementary references
