@@ -2,13 +2,21 @@
 title: "Environmental stress affects niche breadth in plant-pollinator communities"
 subtitle: "Supplementary information"
 author: "E. Fernando Cagua, Hugo J. Marrero, Jason M. Tylianakis, Daniel B. Stouffer"
-# bibliography: references.bib
-csl: ecology-letters.csl
-documentclass: book
+bibliography: 
+  - bibliography.bib
+  - int-bibliography.bib
+# csl: pnas.csl
 output: 
-  bookdown::pdf_document2: 
+  bookdown::pdf_document2:
+    # base_format: rticles::peerj_article
     keep_tex: yes
-    toc: false
+    number_sections: false
+toc: false
+fontsize: 11pt
+# classoption: a4paper
+geometry: 
+  - textwidth=33em
+  - textheight=48\baselineskip
 header-includes:
   - \usepackage{booktabs}
   - \usepackage{longtable}
@@ -24,9 +32,14 @@ header-includes:
   - \usepackage[normalem]{ulem}
   - \usepackage{makecell}
   - \usepackage{xcolor}
+  - \usepackage{setspace}
+  - \usepackage{caption}
 editor_options: 
   chunk_output_type: console
 ---
+
+\onehalfspacing
+\captionsetup[table]{skip=10pt}
 
 <!-- To add an S before each figure and table -->
 \renewcommand\thefigure{S\arabic{figure}}    
