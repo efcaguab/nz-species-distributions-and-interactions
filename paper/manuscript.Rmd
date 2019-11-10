@@ -47,7 +47,6 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 library(dplyr)
 
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords, bibliography)
-loadd(interaction_citations)
 ```
  
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
@@ -120,176 +119,23 @@ We test these hypotheses using data on plant-pollinator interactions.
 We use the species' patterns of occurrence to estimate the environmental suitability in their communities as an indirect measure of the environmental stress they might experience. 
 Condensing the environmental variation over multiple factors (like temperature and precipitation) into a single metric is crucial to generalise our findings at a global scale. 
 
-<!-- There are two main processes involved in whether two species in a community interact or not. -->
-<!-- The first is an "Eltonian" niche process that is underpinned by the traits of the interacting species.  -->
-<!-- Compared to other kinds of trophic interactions, mutualistic interactions, and plant-pollination interactions, in particular, are relatively generalised. -->
-<!-- While a large proportion of the interactions appear to be opportunistic, a fraction of interactions shows a strong signature of deep co-evolutionary history [@hutchinson_cophylogenetic_2017].  -->
-<!-- In contrast to opportunistic interactions with low trait-matching, the more co-evolved interactions with optimally matched traits are more persistent and presumably lead to a more substantial per-capita benefit for the interacting species.  -->
-<!-- The second is a neutral process underpinned by the encounter rate of the interacting species.  -->
-<!-- All else being equal, when the encounter rate of interacting species is high, there is a higher probability to interact than if the rate were lower, for example, due to species rarity.  -->
-
-<!-- Perhaps, because it operates at scales larger than those of the Eltonian niche concept, the abiotic environment is one of the factors that is commonly overlooked by community ecologists when explaining interaction turnover [but see @gravel_bringing_2018].  -->
-
-<!-- The most evident—and best-studied—way through which the environment can affect the structure of ecological networks is by way of patterns of community composition.  -->
-<!-- At the heart of biogeography is the idea that the abiotic environment can determine the "Grinellian" niche of a species, this is whether the species can have a positive growth-rate when rare in a particular location. -->
-<!-- For two species to interact, they first need to co-occur in the same community, which can only happen if the environmental conditions of the community fall within the Grinellian niche of both species.  -->
-
-<!-- Although less understood, the environment can also affect the interactions themselves, after community composition has been established [@tylianakis_ecological_2017].  -->
-<!-- For instance, some studies show that trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016], and both plant-plant [@bertness_positive_1994] and plant-pollinator [@tur_evaluating_2016] interactions can switch from facilitative to competitive along an elevation/temperature gradient.  -->
-<!-- Contrastingly, other studies have shown either no effect or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018]. -->
-
-
-<!-- One way to summarise the seemingly contradictory evidence of whether the environment can influence whether two species interact or not is by moving from gradients of temperature or precipitation to gradients of environmental stress.  -->
-
 # Methods
 
 ```{r}
-loadd(config)
-loadd(int_metadata)
-
-n_published_studies <- int_metadata$reference %>%
-  unique() %>%
-  stringr::str_detect(pattern = "unpubl", negate = TRUE) %>%
-  sum()
-
-all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
-  glue::glue_collapse(sep = "; ") %>%
-  paste0("[", ., "]")
-
+loadd(interaction_citations)
 int_citations_year_range <- range(interaction_citations$YEAR)
-```
 
-```{r scientific-names-cleaning-info}
-loadd(checked_sp_names, spp, manual_name_corrections, problematic_networks)
-
-n_sp_names <- n_distinct(spp$sp_name) 
-
-n_sp_names_subsp_level <- filter(spp, is_subspecies) %$%
-  n_distinct(sp_name)
-
-n_sp_names_sp_level_no_subsp <- filter(spp, !sp_unidentified, !is_subspecies) %$% 
-  n_distinct(sp_name)
-
-n_sp_names_sp_level <- filter(spp, !sp_unidentified) %$% 
-  n_distinct(sp_name)
-
-n_sp_names_gen_level <- filter(spp, sp_unidentified, !gen_unidentified) %$% 
-  n_distinct(sp_name)
-
-n_no_tax_info <- filter(spp, gen_unidentified) %$% n_distinct(sp_name) 
-
-n_sp_correct_in_data <- checked_sp_names %>%
-  filter(good_queried_sp_name) %$%
-  n_distinct(queried_sp_name)
-
-n_sp_corrected_typos <- checked_sp_names %>%
-  filter(corrected_typo) %$% 
-  n_distinct(queried_sp_name)
-
-sp_with_synonyms <- checked_sp_names %>%
-  filter(alt_sp_name_found) 
-
-n_sp_with_synonyms <- sp_with_synonyms %$%
-  n_distinct(queried_sp_name)
-
-sp_not_found <- checked_sp_names %>%
-  filter(!good_queried_sp_name) %>% 
-  filter(!alt_sp_name_found, !corrected_typo) 
-
-n_sp_not_found <- sp_not_found %$%
-  n_distinct(queried_sp_name)
-
-n_sp_manual_corrections <- manual_name_corrections %>%
-  filter(!is.na(sp_name)) %$%
-  n_distinct(queried_sp_name)
-
-study_per_location <- int_metadata %>%
-  distinct(loc_id, reference)
-
-n_names_in_multiple_references_orig <- spp %>%
-  left_join(study_per_location, by = "loc_id") %>%
-  group_by(sp_name) %>%
-  summarise(n_net = n_distinct(loc_id), 
-            n_ref = n_distinct(reference)) %>%
-  filter(n_ref > 1) %$%
-  n_distinct(sp_name)
+loadd(clean_interactions)
+stats_clean_int <- clean_interactions %>%
+  purrr::map(n_distinct)
 ```
 
 We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014]. 
-This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]` `r all_int_cites`. 
-Calculating the environmental stress of species in their community and their Eltonian niche breadth requires that the scientific names used to identify them are valid and unambiguous. 
-This is because valid scientific names are necessary to both accurately match species across studies and to obtain other information from biological databases. 
-However, a significant proportion of the data obtained contain spelling mistakes, taxonomic synonyms, or non-standard abbreviations. 
-Therefore, our first step was to validate and correct scientific names across studies to ensure that we matching of species across studies was as accurate as possible. 
-
-Second, we calculated the suitability of the environment for a species in a particular community as a proxy of environmental stress. 
-We assume that the environmental stress a species experience in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
-Our third and final step was to relate the environmental suitability to the relative number of partners a species has in a community, as a proxy for Eltionian niche breadth. 
-To explore this relationship within and across species, we used a multilevel Bayesian model in which we controlled for the potential effects of the environment on co-occurrence.
-
-## Plant-pollinator interactions
-
-All together, interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
-From these `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
-From the total number of organisms, `r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level_no_subsp, big.mark = ",")` to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, whereas the remaining `r format(n_no_tax_info, big.mark = ",")` were unidentified. 
-As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we grouped together subspecies or varieties within the same species. 
-
-We were able to confirm the validity of `r format(n_sp_correct_in_data, big.mark = ",")` of the scientific names used to identify organisms (roughly `r scales::percent(n_sp_correct_in_data/n_sp_names_sp_level, 1)`). 
-We assessed the validity of a name by querying the Global Names Resolver database (https://resolver.globalnames.org) which includes data from `r dplyr::n_distinct(taxize::gnr_datasources()$title)` taxonomic sources. 
-We accessed this database using the function `gnr_resolve` from the R package `taxize` `r as.character(packageVersion('taxize'))` [@chamberlain_taxize_2013; @chamberlain_taxize_2019].
-
-From the remaining `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, we were able to identify and correct `r format(n_sp_corrected_typos, big.mark = ",")` that contained spelling mistakes. 
-These spelling mistakes were corrected automatically by fuzzy matching the canonical names in our data sources with those in the Global Names Resolver database. 
-However, on rare occasions, the fuzzy matching algorithm can suggest a scientific name that has a similar spelling, but that corresponds to an organism in a different taxonomic group, often a separate kingdom. 
-To address this potential problem, we checked the taxonomic hierarchy of suggested names and confirmed that it matched our expected taxon.
-We retrieved all taxonomic hierarchies from the National Center for Biotechnology Information taxonomic database (https://www.ncbi.nlm.nih.gov/taxonomy). 
-
-As species names are constantly changing, we subsequently checked for possible synonyms of the canonical names in our data sources. 
-Using data from the Integrated Taxonomic Information System database (http://www.itis.gov), we found synonyms and alternative names for `r format(n_sp_with_synonyms, big.mark = ",")` species.  
-Finding these alternative names was required for two main reasons. 
-First, because we wanted to be able to identify the cases in which the same species might have been recorded with different names in various data sources. 
-This can occur not only when the canonical name has been changed but also when there are widely used orthographic variants.
-Second, because retrieving occurrence data is often only possible using the latest accepted/valid name for a particular species.
-
-All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct or find synonyms `r format(n_sp_not_found, big.mark = ",")` of them. 
-We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for canonical names that both, resembled the unvalidated names and matched the geographic and taxonomic expectations. 
-In this fashion, we were able to further correct `r n_sp_manual_corrections` names. 
-Most manual corrections were made on names that have been abbreviated or had more than two spelling mistakes. 
-A complete list of manual name corrections can bee seen in Table \@ref(tab:tab-manual-name-corrections).
-
-```{r}
-loadd(recoded_interactions, clean_interactions, int_metadata)
-
-n_sp_ids <- recoded_interactions %>%
-  select(-loc_id) %>%
-  purrr::map(n_distinct) %>%
-  unlist() %>% sum()
-
-n_names_in_multiple_references_after <- recoded_interactions %>%
-  tidyr::gather(key = "guild", "sp_id", pla_id, ani_id) %>%
-  left_join(study_per_location, by = "loc_id") %>%
-  group_by(sp_id) %>%
-  summarise(n_ref = n_distinct(reference)) %>%
-  filter(n_ref > 1) %$%
-  n_distinct(sp_id)
-
-stats_clean_int <- clean_interactions %>%
-  purrr::map(n_distinct)
-
-data_sources_mult_nets <- int_metadata %>%
-  group_by(loc_id) %>%
-  summarise(n_nets = n_distinct(net_name)) %>%
-  filter(n_nets > 1) 
-
-n_data_sources_mult_nets <- nrow(data_sources_mult_nets)
-```
-
-This cleaning process allowed us to match further `r n_sp_names - n_sp_ids` names across data sources and, by doing so, identify another `r n_names_in_multiple_references_after - n_names_in_multiple_references_orig` species that were present in more than one study. 
-The process also allowed us to identify `r numbers2words(length(problematic_networks))` problematic data sources in which some names were included as both plants and pollinators. 
-These data sources were removed from further analysis. 
-In `r numbers2words(n_data_sources_mult_nets)` of our data sources interaction data was recorded at multiple points in time. 
-When this was the case, we combined interaction data into one single interaction network. 
-
+This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]`. 
+Calculating the environmental stress of species in their community and their Eltonian niche breadth required us to reduce both the taxonomic and distributional/locational uncertainty.
+A critical step towards reducing this uncertainty is to ensure that the names used to identify species are valid and unambiguous, which in turn allow us to obtain further information from biological databases and accurately match species across studies. 
+Therefore, our first step was to ensure consistent spelling and standarisation of species names synonyms (See Supplementary Information - \@ref[supp-methods]).
+This ensured that the matching of species across studies was as accurate as possible. 
 The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap), \@ref(fig:fig-distribution-species-mult-locations)).
 
 ```{r fig-worldmap, fig.width = width('single'), fig.cap ="Worldwide distribution of pollination communities included in this study"}
@@ -315,6 +161,11 @@ fig_dist_species_multiple_locations_legend <-
 
 readd(fig_dist_species_multiple_locations)
 ```
+
+Second, we calculated the suitability of the environment for a species in a particular community as a proxy of environmental stress. 
+We assume that the environmental stress a species experience in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
+Our third and final step was to relate the environmental suitability to the relative number of partners a species has in a community, as a proxy for Eltionian niche breadth. 
+To explore this relationship within and across species, we used a multilevel Bayesian model in which we controlled for the potential effects of the environment on co-occurrence.
 
 ### Species suitability
 
