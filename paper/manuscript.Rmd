@@ -202,7 +202,10 @@ We obtained all environmental data as rasters composed by cells of 2.5 arc-minut
 We chose this resolution because it provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that come preserved specimens in museum collections. 
 
 After obtaining information about species occurrence and the environment, we then merged these two datasets such that the location of each occurrence was characterised by a vector with details of our 37 bioclimatic and topographic variables. 
-If a species had more than one occurrence records within one of the cells of the bioclimatic raster, we only included one of the occurrence records. 
+
+Sets of occurrence data tend to be spatially aggregated due to sample bias (tendency to collect close to cities, certain countries). 
+Spatial autocorrelation arises in ecological data because geographically clumped records tend to be more similar, in physical characteristics and/or species abundances, than are pairs locations that are farther apart. 
+To account for such spatial dependency in occurrence data, if a species had more than one occurrence records within one of the cells of the bioclimatic raster, we only included one of the occurrence records. 
 We did this to avoid giving more weight to areas with a high number of occurrences, a common scenario in occurrence records collected opportunistically as the ones we use here. 
 In this step we removed `r scales::percent(percent_thinned)` of the occurrences which resulted in a total of `r round(sum(n_thinned_occurrences$N)/1000000, digits = 1)` million occurrences used in our niche analysis. 
 
