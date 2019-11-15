@@ -244,27 +244,25 @@ For that we used the species with most occurrences available, *`r sensitivity_sp
 We then used a set of bayesian multilevel models to evaluate the impact of environmental suitability on the number of partners a species has. 
 Specifically, we use the normalised degree of species as our response variable, this is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
 The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of species interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
-We are aware that wether species interacts or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
+We are aware that whether species interact or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
 However, a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
 Importantly, however, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function (Supp info).
 
 We evaluate four models to assess the relative importance of suitability. 
-A first model, our baseline model, included five population-level predictors and two grouping levels, species and the community. 
-The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (plant or a pollinator), a metric of the species generalism, and its number of known possible partners.
-We included the overall level of generalism as one would expect species with a large number of interactions globally to be more likely to interact with a large number of species locally. 
-Concretely, we estimated an overall species level of generalism as the total number of interacting species across communities in our dataset. 
-We also included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
+A first model, our baseline model, included three population-level predictors and two grouping levels, species and the community. 
+The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (plant or a pollinator), and its number of known possible partners.
+We included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
 We calculate this metric by determining the number of partners with which the species is known to interact in any other community.
 Controlling for the number of potential partners makes our model a particularly stringent test of our environmental stress hypotheses. 
 Often the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.  
-As we were particularly interested in understanding whether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we, therefore, included guild and its interaction with suitability in the model. 
+As we were interested in understanding whether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we, therefore, included guild and its interaction with suitability in the model. 
 We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate two questions. 
 First, it allows us to inspect the extent to which suitability is a population or a group level effect. 
 Second, by investigating the correlation between the intercept and the slope as a model parameter, it allowed us to inspect the extent by which species with a small or large number of interactions respond to increasing levels of environmental stress. 
-To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we calculated an intercept for each community in our study.
+To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we also calculated an intercept for each community in our study.
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
-We compared this baseline model with three alternative models in which we remove one predictor at a time.
+We compared this baseline model with two alternative models in which we remove one predictor at a time.
 To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC). 
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
 For each model, we used four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
