@@ -58,6 +58,8 @@ library(dplyr)
 
 # Supplementary methods
 
+## Reducing taxononic uncertainty
+
 ```{r scientific-names-cleaning-info}
 loadd(checked_sp_names, spp, manual_name_corrections, problematic_networks)
 loadd(int_metadata)
@@ -121,7 +123,7 @@ all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
 
 Data was obtained from the Web of Life database [@fortuna_web_2014] which includes data from `r length(interaction_citations$BIBTEXKEY)` published studies `r all_int_cites`.
 
-All together, interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
+Interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
 From these `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
 From the total number of organisms, `r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level_no_subsp, big.mark = ",")` to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, whereas the remaining `r format(n_no_tax_info, big.mark = ",")` were unidentified. 
 As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we grouped together subspecies or varieties within the same species. 
