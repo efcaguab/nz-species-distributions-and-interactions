@@ -83,6 +83,7 @@ loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords, bibliogr
 
 Species interactions are known to vary widely across space and time. 
 There are multiple examples of species that interact with a large number of partners in a particular community or season, but with fewer in another. 
+
 Some of this variation can be attributed to environmental drivers. 
 However, how exactly the environment, specifically the stress it imposes on species, affects whether two species interact or not, and ultimately the number of partners a species has is still unknown. 
 Understanding how the number of partners—the species degree—is driven by the environment is crucial because it underpins the species role in its community and shapes the structure of the network of interactions. 
@@ -134,7 +135,7 @@ We retrieved plant-pollinator networks from the Web of Life database [@fortuna_w
 This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]`. 
 Calculating the environmental stress of species in their community and their Eltonian niche breadth required us to reduce both the taxonomic and distributional/locational uncertainty.
 A critical step towards reducing this uncertainty is to ensure that the names used to identify species are valid and unambiguous, which in turn allow us to obtain further information from biological databases and accurately match species across studies. 
-Therefore, our first step was to ensure consistent spelling and standarisation of species names synonyms (See Supplementary Information - \@ref[supp-methods]).
+Therefore, our first step was to ensure consistent spelling and standarisation of species names synonyms (See Supplementary Methods).
 This ensured that the matching of species across studies was as accurate as possible. 
 The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap), \@ref(fig:fig-distribution-species-mult-locations)).
 
