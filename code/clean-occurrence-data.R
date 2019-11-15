@@ -36,7 +36,7 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf, ver
       (basisOfRecord == "HUMAN_OBSERVATION" |
          basisOfRecord == "OBSERVATION" |
          basisOfRecord == "PRESERVED_SPECIMEN") &
-      (individualCount > 0 | individualCount < 99 | is.na(individualCount)) &
+      (individualCount > 0 & !is.na(individualCount)) &
       (year > 1945)]
   
   cleaned_occurrences <- dirty_occurrences %>%
