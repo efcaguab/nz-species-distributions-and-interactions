@@ -201,61 +201,31 @@ These data sources were removed from further analysis.
 In `r numbers2words(n_data_sources_mult_nets)` of our data sources interaction data was recorded at multiple points in time. 
 When this was the case, we combined interaction data into one single interaction network. 
 
-```{r tab-studies, eval = F}
-loadd(int_metadata)
-loadd(interaction_citations)
+## Reducing location uncertainty
 
-simple_metadata <- int_metadata %>%
-  filter(stringr::str_detect(reference, pattern = "unpubl", negate = TRUE)) %>%
-  group_by(loc_id) %>%
-  summarise(location = paste0(round(mean(lon), 2), ", ", 
-                              round(mean(lat), 2)), 
-            name = first(loc_name), 
-            ref = first(reference)) %>%
-  # first word in the references is the main author (usually)
-  mutate(first_author = stringr::str_extract(ref, "^\\w+"), 
-         # the first number of four digits is the year
-         year = stringr::str_extract(ref, "[0-9]{4}"), 
-         key = paste(tolower(first_author), year, sep = "_")) %>%
-  select(-first_author, -year)
+```{r}
+loadd(n_occurrences, n_cleaned_occurrences, n_dirty_occurrences, gbif_key_groups, org_ids)
 
+get_n_species <- . %>%
+  dplyr::inner_join(gbif_key_groups, by = "taxonKey") %>%
+  dplyr::inner_join(org_ids, by = c("key_id" = "sp_key_id")) %$%
+  dplyr::n_distinct(org_id)
 
-interaction_citations %>%
-  mutate(first_author = stringr::str_extract(BIBTEXKEY, "[^_-]+"), 
-         year = stringr::str_extract(BIBTEXKEY, "[0-9]{4}"), 
-         key = paste(tolower(first_author), year, sep = "_"), 
-         bibtex_key = BIBTEXKEY) %>%
-  select(bibtex_key, key) %>%
-  fuzzyjoin::stringdist_full_join(simple_metadata, 
-                                  by = c(key = "key"), 
-                                  max_dist = 6, 
-                                  distance_col = "dist") %>% 
-  group_by(key.y) %>%
-  filter(dist == min(dist)) %>%
-  ungroup() %>%
-  select(location, name, bibtex_key) %>%
-  mutate(bibtex_key = paste0("@", bibtex_key, "")) %>%
-  knitr::kable(format = "markdown", 
-               escape = F, 
-               booktabs = T, 
-               col.names = c("coordinates", "site", "reference"),
-               caption = "Sites included in this study")
-  kableExtra::kable_styling(font_size = 8)
-``` 
-
-```{r eval = FALSE, tab-sp-synonym-reasons}
-sp_with_synonyms %>%
-  filter(!is.na(itis_reason)) %>%
-  group_by(queried_sp_name) %>%
-  summarise(itis_reason = first(itis_reason)) %>%
-  group_by(itis_reason) %>%
-  count(sort = T) %>%
-  knitr::kable("latex", 
-               col.names = c("reason of species alternative name", "n"), 
-               caption = "tablesita", 
-               booktabs = TRUE) %>%
-  kableExtra::kable_styling(font_size = 8) %>%
-  kableExtra::collapse_rows(columns = 1)
+n_species_with_occurrences <- get_n_species(n_occurrences)
+n_species_with_cleaned_occurrences <- get_n_species(n_cleaned_occurrences) 
+n_species_with_dirty_occurrences <- get_n_species(n_dirty_occurrences)
 ```
+
+We retrieved occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
+Specifically, for each species, we only requested occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
+Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species we were interested on. 
+This occurrences, however, contain observations of mixed quality. 
+Therefore, we followed @zizka_coordinatecleaner_2019 and applied a series of simple filters and geographic heuristics to remove those of lower quality. 
+Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (as records prior to this date have been shown to be often impreciseref); (*iii*) those in which the number of counts in the occurrence were registered was either zero (as that indicates that the species has not been recorded); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (as occirrences from unknown and fossil records are known to be highly unreliable). 
+We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
+We removed occurrences for which their coordinates (*v*) fell outside the borders of the country where they were recorded; (*vi*) those around a country capital or the centroid of the country and province centroids; (*vii*) those around a biodiversity institution; and (*viii*) those located within oceans. 
+Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
+
+# Supplementary results
 
 # Supplementary references

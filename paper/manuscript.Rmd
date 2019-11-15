@@ -177,32 +177,23 @@ get_n_species <- . %>%
   dplyr::inner_join(org_ids, by = c("key_id" = "sp_key_id")) %$%
   dplyr::n_distinct(org_id)
 
-n_species_with_occurrences <- get_n_species(n_occurrences)
-n_species_with_cleaned_occurrences <- get_n_species(n_cleaned_occurrences) 
-n_species_with_dirty_occurrences <- get_n_species(n_dirty_occurrences)
 percent_thinned <- 1 - sum(n_thinned_occurrences$N) / sum(n_cleaned_occurrences$N)
-percent_filled_round_one <- 1-complete_filled_cells_1[1]/complete_climate_cells[1]
+percent_filled_round_one <- 1 - complete_filled_cells_1[1]/complete_climate_cells[1]
 ```
 
 Our next step was to determine the habitat suitability of the species as a proxy of the environmental stress they experience in their community.
 As we aim to compare the trophic niche for different suitability levels, we only do this for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
-To calculate the suitability of a species in a particular location, we used a (Grinellian) niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
+To calculate the suitability of a species in a particular location, we used a niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
 This approach is based on the probability density function of species distribution in an environmental variable space. 
 In a nutshell, habitats (characterised by a collection of environmental variables) in which the species occurs most often are deemed to be suitable for the species than habitats in which the species has never been observed. 
 This approach to estimating the habitat suitability requires two critical pieces of information. 
 First, we require information about the occurrences of the species of interest.
 Second, we require information about the environmental conditions for all the locations in which the species occurs.
 
-We retrieved occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
-Specifically, for each species, we only requested occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
-Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species we were interested on. 
-This occurrences, however, contain observations of mixed quality. 
-Therefore, we followed (ref?) and applied a series of simple filters and geographic heuristics to remove those of lower quality. 
-\R{rationale-occurrence-filtering}Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (ref? or why?); (*iii*) those in which the number of individuals registered was either zero or more than 100 as such large counts are often erroneous (ref? or why?); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (ref? why?). 
-We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
-We removed occurrences for which their coordinates (*v*) fell outside the borders of the country where they were recorded; (*vi*) those around a country capital or the centroid of the country and province centroids; (*vii*) those around a biodiversity institution; and (*viii*) those located within oceans. 
-Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
-Finally, we integrated the occurrences from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
+We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org). 
+Issues with data quality are a central issue hampering the use of publicly available species occurrence GBIF data in ecology and biogeography (Jetz et al 2019). 
+We, therefore we followed a series of filters and geographic heuristics to correct or remove erroneous and imprecise referencing records [See supplementary methods; @zizka_coordinatecleaner_2019] which allowed us to identify and remove `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million problematic occurrences from further analysis.
+We integrated the occurrences from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
 
 We retrieved environmental data from WorldClim V2.0, which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
 We then complemented data obtained from WorldClim with data from Envirem [@title_envirem_2017], which includes 16 extra bioclimatic and two topographic variables. 
