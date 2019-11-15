@@ -39,6 +39,11 @@ header-includes:
 
 ## Done
 
+* Refocused the introduction
+* Moved details of taxonomic data cleaning process to supplementary materials
+* Moved details of occurrence data cleaning process to supplementary materials
+
+
 * Downloaded network data from the Web of Life and cleaned it. I didn't anticipated data needed SO MUCH work! I estimated three days to do this but took roughly 3 weeks to do it propperly and there is still some work to do. Quite a mess...
 * Downloaded bioclimatic and habitat data
 * Dowloaded species occurrences. Wasn't straightforward as there is a lot of species and lots of restrictions with the GBIF API. About a week getting this to work.
