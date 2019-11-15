@@ -241,8 +241,8 @@ For that we used the species with most occurrences available, *`r sensitivity_sp
 
 ## Data analysis
 
-We then used a set of bayesian multilevel models to evaluate the impact of environmental suitability on the size of the realised Eltonian trophic niche. 
-We measure the size of the Eltonian niche using the normalised degree of species, this is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
+We then used a set of bayesian multilevel models to evaluate the impact of environmental suitability on the number of partners a species has. 
+Specifically, we use the normalised degree of species as our response variable, this is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
 The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of species interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
 We are aware that wether species interacts or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
 However, a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
