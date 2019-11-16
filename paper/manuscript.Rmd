@@ -391,13 +391,11 @@ We proposed two altenative hypotheses of how environmental stress may affect deg
 Species with a large number of partners in low-stress communities were more likely to have a negative relationship and hence reduce the number of partners as stress increases. 
 Contrastingly, species in our datasets with a small number of partners in low-stress communities were more likely to have a larger number of partners in more stressful communities.
 
-Previous research supported the idea that the differences in network structure along an environmental gradient were due solely to changes to community composition. 
-In other words, it showed that the differences between two hypothetical communities with the same species were stochastic for the most part. 
-Here, by abstracting with multiple environmental gradients into a single gradient of environmental stress, we show that this might not be the case. 
-Instead, the environment can also have a direct impact on the number of partners a species interacts with and, therefore, influence network structure. 
-Our results still show that the primary channel through which environment affects interaction probabilities is determining which species are present or absent from a particular community. 
-However, they also show that, for a large number of species, it can have a substantial effect on their realised Eltonian component of the niche.
-Indeed, as evidenced by the predictive power of competing models, habitat suitability had a substantial contribution to predicting the number of possible partners in the community. 
+Our results suggest that changes in community composition are indeed the primmary channel through which environment determines changes interaction probability. 
+However, they also show that, for a large number of species, the environment may also play a substantial role on determining their realised (Eltonian) niche. 
+While previous research has recognised that environmental factors may help explain the changes in network structure along environmental gradients that cannot be explained by community composition [@tylianakis_habitat_2007], how these two factors were linked had been elusive so far [@gravel_bringing_2018]. 
+We believe that part of this difficulty could have arisen because species, and ultimately network structre, can respond multiple, and contrasting, ways depending on the particular bioclimatic variable being examined (e.g. temperature or precipitation).
+Using stress to summarise the effect on species of multiple environmental gradients allowed us to detect a clear signal of the environment in species' interaction patterns.
 
 Although we cannot tell with certainty how much of the effect of environmental stress can be attributed to either niche or neutral processes, the patterns we observe are likely more related to the niche. 
 On the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
