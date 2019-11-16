@@ -247,10 +247,10 @@ Specifically, we use the normalised degree of species as our response variable, 
 The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of species interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
 We are aware that whether species interact or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
 However, a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
-Importantly, however, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function (Supp info).
+Importantly, however, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function.
 
 We evaluate four models to assess the relative importance of suitability. 
-A first model, our baseline model, included three population-level predictors and two grouping levels, species and the community. 
+A first model, our baseline model, included three population-level predictors and two grouping levels, species and the community.
 The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (plant or a pollinator), and its number of known possible partners.
 We included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
 We calculate this metric by determining the number of partners with which the species is known to interact in any other community.
@@ -263,12 +263,12 @@ Second, by investigating the correlation between the intercept and the slope as 
 To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we also calculated an intercept for each community in our study.
 To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
 
-We compared this baseline model with two alternative models in which we remove one predictor at a time.
-To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC). 
+We compared this baseline model with three alternative models in which we remove one predictor at a time.
+To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC).
 All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
 For each model, we used four Markov chains of 4,000 iterations each; half of the iterations were used for warmup.
 We used weakly informative priors for all model parameters. 
-Specifically we used normal priors of mean zero and standard deviation ten for the population-level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters. 
+Specifically we used normal priors of mean zero and standard deviation ten for the population-level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters.
 
 # Results
 
