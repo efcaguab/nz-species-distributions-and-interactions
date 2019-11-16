@@ -31,6 +31,7 @@ clean_occurrences <- function(dirty_occurrences, land_data, country_data_sf, ver
                                        "countryCode",
                                        "individualCount"))
 
+  # There are lots of NA values that we're keeping because. Most records have no uncertainty or counts
   less_dirty_occurrences <- dirty_occurrences %>%
     .[coordinateUncertaintyInMeters/1000 <= 100 |
       is.na(coordinateUncertaintyInMeters)] %>%
