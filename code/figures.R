@@ -102,7 +102,8 @@ get_dist_species_multiple_locations_data <- function(clean_interactions, checked
 
 plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
                                       min_occurrences_factor,
-                                      suitability_subsamples){
+                                      suitability_subsamples, 
+                                      chosen_niche_space = "all_species"){
   suppressPackageStartupMessages({
     library(ggplot2)
   })
@@ -110,7 +111,7 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
   thresholds <- min_occurrences_factor %>%
     as.data.frame() %>%
     tidyr::gather(key = "niche_space") %>%
-    dplyr::filter(niche_space == "all_species")
+    dplyr::filter(niche_space == chosen_niche_space)
 
   pal <- cgm()$pal_el_green[c(4,7)]
 
