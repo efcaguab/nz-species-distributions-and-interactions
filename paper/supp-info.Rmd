@@ -230,4 +230,20 @@ Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$
 
 # Supplementary results
 
+```{r fig-sensitivity-analysis, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_sensitivity_analysis_legend}
+
+fig_sensitivity_analysis_legend <- 
+  paste0("Sensitivity analysis of environmental suitability error. ",
+         "The number of independent occurrences retrieved from GBIF is inversely related to the error of environmental suitability for our plant-pollinator networks.", 
+         "The sensitivity analysis was performed by subsampling occurrences of", 
+         " *", sensitivity_species_name$canonicalName, "* ", 
+         "the species in our dataset with the largest number of occurrences in GBIF, which was recorded in two of our communities.")
+
+readd(fig_sensitivity_analysis)
+```
+
+```{r fig-median-suitability, fig.width = width('single'), fig.height = 2.2*1.5, fig.cap = "Median habitat suitability of communities in our dataset. Each row represents a different community and horizontal lines represent span the 2.5 and 97.5 quantiles."}
+readd(fig_median_suitability)
+```
+
 # Supplementary references
