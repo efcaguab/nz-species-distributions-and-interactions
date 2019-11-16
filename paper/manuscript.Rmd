@@ -384,11 +384,11 @@ Specifically, the standard deviation (in the parameters scale) of the community 
 
 # Discussion 
 
-We found that environmental stress, which we measured using habitat suitability, was an important predictor for the number of partners a species interacts with. 
-However, this relationship was highly variable among species. 
-So much so that, at the population level, there is no discernible pattern between stress and the number of partners.
-Interestingly, within species, there was a significant correlation between the number of partners a species has and the stress-partners relationship itself. 
-Specifically, species with a large number of partners in low-stress communities were more likely to have a negative relationship and hence reduce the number of partners as stress increases. 
+We set out to explore wether and how environmental stress can systematically affect species degree. 
+After accounting for the pool of potential partners, we found that indeed environmental conditions contribute to determining wether a species is a generalist or a specialist in their community. 
+However, we also found that the particular effect of environment is strongly dependent on the species.
+We proposed two altenative hypotheses of how environmental stress may affect degree and we found evidence for both of them.
+Species with a large number of partners in low-stress communities were more likely to have a negative relationship and hence reduce the number of partners as stress increases. 
 Contrastingly, species in our datasets with a small number of partners in low-stress communities were more likely to have a larger number of partners in more stressful communities.
 
 Previous research supported the idea that the differences in network structure along an environmental gradient were due solely to changes to community composition. 
