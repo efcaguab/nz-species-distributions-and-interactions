@@ -254,8 +254,8 @@ A first model, our baseline model, included three population-level predictors an
 The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (plant or a pollinator), and its number of known possible partners.
 We included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
 We calculate this metric by determining the number of partners with which the species is known to interact in any other community.
-Controlling for the number of potential partners makes our model a particularly stringent test of our environmental stress hypotheses. 
-Often the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.  
+Controlling for the number of potential partners makes our model a particularly stringent test of our environmental stress hypotheses because this variable could explain a large proportion of variance. 
+Often the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.
 As we were interested in understanding whether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we, therefore, included guild and its interaction with suitability in the model. 
 We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species, this allowed us to investigate two questions. 
 First, it allows us to inspect the extent to which suitability is a population or a group level effect. 
