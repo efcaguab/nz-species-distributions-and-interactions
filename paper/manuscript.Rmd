@@ -409,25 +409,21 @@ First, because generalists seem to focus on a smaller number of partners as envi
 Second, we demonstrate that rewiring is not exclusive to generalists.
 At least a fraction of the species that appear to be specialist in their communities might be as flexible, if not more, than generalist species, effectively behaving as facultative generalists in the face of environmental change. 
 These flexible specialists might, therefore, have a more significant role in network persistence than previously expected.
-Specifically, we have no information about species for which environmental conditions would, in principle, allow for a positive growth rate but are absent from our datasets.
-A ramification of this bias is that an undetermined number of species on this second group might also be more likely to focus on partners with higher trait matching as conditions deteriorate. 
-However, we are not able to detect that trend because these species are not recorded in community composition or interaction data. 
-Presumably, because their preferred partners are unavailable and as such, they are absent from the community or too rare to be observed.
-Note that the correlation between species' intercept and the slope is unlikely to be just a byproduct of our modelling framework, as, in principle, there is nothing preventing species with an above-average number of partners to interact with even more species as environmental stress increases.
 
-These observations have implications for understanding the assembly of ecological networks and how it might be impacted by climate change, which currently threatens to increase the environmental stress of species within its range. 
-Previous research suggests that flexibility of interactions in ecological communities might be a rather ubiquitous phenomenon whenever environmental conditions change in space or time [@caradonna_interaction_2017]. 
-This flexibility has been shown to confer robustness and stability to the loss of interaction partners [@kaiser-bunbury_robustness_2010]. 
-The current paradigm of interaction turnover suggests first that trait matching is a relatively unimportant driver of interaction turnover for generalist species [@caradonna_interaction_2017]. 
-The fact that species with a high number of interactions were more likely to interact with fewer species as environmental stress increased indicates that trait matching might still play a role in determining the interactions of generalist species. 
-Second, current research suggests that the rewiring of the interaction network is primarily driven by generalist species [@burkle_plant-pollinator_2013].
-We, however, demonstrate that at least a fraction of the species that appear to be specialist in their communities might be more flexible, if not more, than generalist species and, therefore, might have a more significant role in network persistence than previously expected. 
-Contrastingly, specialists that are highly constrained to interact with partners of high trait-matching might be more vulnerable to increased climate change-induced environmental stress and habitat degradation. 
-Taken together, the fact that most species appear to be flexible interaction partners, combined with the fact that those that are not flexible are less likely to persist, might explain why specialised communities that are highly constrained by trait matching [like some plant-hummingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] might be relatively rare.
+While our model detected how the environment affects interaction of two types of species, generalists and flexible specialists, there is a third group that remained invisible for our model but has important implications for network persistence and stability.
+It has been shown that species that are able to flexibly vary their interaction partners and their role in the network are more likely to persist in their community as environmental conditions vary [@gaiarsa_interaction_2019].
+We propose this third group of is composed by specialists that are constrained to interact with parterns of high trait-matching and therefore were not likely to be found in more than one community. 
+If species that are not flexible are unlikely to persist over temporal or spatial environmental gradients we can expect specialised communities that are highly constrained by trait-matching [like some plant-hummingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] to be far more vulnerable to increased climate change-induced environmental stress and habitat degradation than communities where role and interaction flexibility are more prevalent.
 
-In conclusion, we show that...
+Similarly, if the patterns we see in our models have also played a role during the evolutionary history of pollination communities, our results also help explain why only a small fraction of plant-pollinator interactions show a strong signature of deep co-evolutionary history.
+The increasses on stress that species are predicted to experience due to rapid environmental change might further erode the co-evolutionary history of specialist species.
+Communities as a whole might be set in a trayectory of even more diffuse co-evolution.
+For specialist species, at least, the longer term benefits of being able to interact with multiple partners might be more important than the shorter term benefits of interacting with partners of high trait matching. 
 
-<!-- It still remains to evaluate the role of abundance and neutral processes and 
+The structural implications of the "regression towards the mean" that environmental stress promotes are less clear. 
+However, it is plausible to expect that nestedness, and therefore network stability, might be reduced in the face of rapid environmental change.
+Determining exactly how the changes in degree caused by environmental stress is also reflected in systematic changes in network structure would be an interesting avenue of research. 
+This would require expanding our suitability analysis to all species in the community and compare the degree distribution of networks along a gradient of stress for the community as a whole. 
 
 * Add in the intro that stress includes how traits mediate environment?
 * Why is the relationship different across species?
