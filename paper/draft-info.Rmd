@@ -1,7 +1,7 @@
 ---
 title: "Draft information"
-subtitle: "version: draft-0.0"
-date: "20xx"
+subtitle: "version: draft-0.3"
+date: "2019-11"
 # bibliography: phd-bibliography/pollen-competition.bib
 csl: ecology-letters.csl
 output:
@@ -31,7 +31,7 @@ header-includes:
 ## Done
 
 * Refocused the introduction
-* Moved details of taxonomic data cleaning process to supplementary materials
+* Moved details of the taxonomic data cleaning process to supplementary materials
 * Moved details of occurrence data cleaning process to supplementary materials
 * Reorganised the results
 * Rewrote most of the discussion
@@ -40,7 +40,7 @@ header-includes:
 
 ## To-do
 
-* There are some warnings for when matching environmental variables to occurrences. I need to double check this is happeing correctly. 
+* There are some warnings for when matching environmental variables to occurrences. I need to double-check this is happening correctly. 
 * Refine the supplementary results. 
 * Fix references
 
