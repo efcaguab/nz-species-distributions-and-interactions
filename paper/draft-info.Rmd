@@ -43,4 +43,4 @@ header-includes:
 * There are some warnings for when matching environmental variables to occurrences. I need to double-check this is happening correctly. 
 * Refine the supplementary results. 
 * Fix references
-
+* Finish manual species checks
