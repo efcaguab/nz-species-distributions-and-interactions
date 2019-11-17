@@ -428,33 +428,6 @@ This would require expanding our suitability analysis to all species in the comm
 In conclusion, we show that the environment is able to affect the realised niche of plants and pollinators in systematic ways beyond community composition. 
 On the one hand, species that are inflexible with their interaction partners are unlikely to persist under more stressful environmental conditions. 
 On the other, species that are flexible with their interactions partners experience a regression towards intermediate levels of degree, where generalist species tend to interact with fewer, presumably more effective, partners and specialist tend to interact with more partners. 
-* In the absence of abundance this is as much as we can say. 
-* It is remarkable we found a signal given the amount of data we had it is realy not that much for our question. It is not surprising that the slope of suitability was small for many species as we had little data. The results hold for when species had
-* Implications for community assembly and network rewiring. -->
-
-<!-- We found a positive association between environmental suitability and the niche breath. 
-This relationship was maintained when we account for the overall generality of a species and even in extremely conservative model parametrization when we include the number of possible interacting species as an independent variable. 
-We define "possible" interacting species as one with which the species interacts in any of our ecological communities.  -->
-
-<!-- No interaction significant between guild and relationship which highlights that differences are rooted in eco-evolutionary processes rather than behaviour.  -->
-
-<!-- Relationship is even stronger when we only include species for which we have more info. i.e. in more that 5 communities.  -->
-
-<!-- Environment can also affect neitral process because it affects encounter rates between species.
-This can happen either through changes in abundance driven by patterns of temporal or spatial overlap or through changes in the search efficiency.  -->
-<!-- We focus suitability in abiotic factors but can also be influenced by dispersal and species interactions themselves (e.g. competition and facilitation, Lortie et al. 2004).  -->
-<!-- We learnt that there is a trade-off pollination dynamics (Cagua in review?). -->
-<!-- This means that species with more environemntal favours are better prepared to deal with the trade-offs that pollination can convey. Cool! -->
-
-<!-- Remarkable that we found a consistent signal of suitability given our relatively small number of communities and the multitude of processes that shape n. interactions Eltonian niche. We didn;t even account for traits. Interactions can influence co-occurrence (indirect and third order too see refs in Gravel 2018) -->
-
-<!-- Add the suitability of possible competitors? I mean they are not really competitors so maybe not.  -->
-
-<!-- Discuss implications for network rewiring? -->
-
-<!-- Note that although abundances can inflence wether two species interact we cannot tease t appart because suitability is not necessarily related to abundance. ALthough abundance affects the frequency of the interaction, rather than wether they interacts or not (Donoso) -->
-
-<!--Mention implications for community assembly? -->
 
 # Acknowledgements
 
