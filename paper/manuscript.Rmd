@@ -397,12 +397,10 @@ While previous research has recognised that environmental factors may help expla
 We believe that part of this difficulty could have arisen because species, and ultimately network structre, can respond multiple, and contrasting, ways depending on the particular bioclimatic variable being examined (e.g. temperature or precipitation).
 Using stress to summarise the effect on species of multiple environmental gradients allowed us to detect a clear signal of the environment in species' interaction patterns.
 
-Although we cannot tell with certainty how much of the effect of environmental stress can be attributed to either niche or neutral processes, the patterns we observe are likely more related to the niche. 
-On the one hand, it has been shown that environmental models, such as our niche factor analysis, do a poor job predicting species abundances across sites [@pearce_practical_2001; @sagarin_moving_2006]. 
-It would be, therefore, somewhat naive to assume that high habitat suitability translates directly to high species abundances. 
-On the other hand, even if species abundances are correlated with suitability, we show that within a community there is a wide range of suitabilities, even for the limited number of species we included in our analyses. 
-Therefore, we might expect little or no overall effect of neutral processes on our response variable, as the abundance of some interaction partners might increase and decrease for others. 
-Furthermore, the fact that the effects of environmental stress do not depend on whether the species is a plant or a pollinator (for which there can be niche differences based on individual behaviour) emphasises that co-evolutionary history, which in turn shape niche processes driven by, might be driving the patterns we observe. 
+Although both niche and neutral processes are relevant at determining species interactions, our model suggests that niche processes may be the predominant mechanism through which the environment *systematically* affect species degree. 
+First, it is unlikely that environmental suitability is correlated to local species abundances [@pearce_practical_2001; @sagarin_moving_2006]. 
+Second, even if there is a relationship between suitability and abundances, a particular environmental gradient could have a positive effect in the abundance some species and a negative effect in others. 
+Indeed, we show that within a community there is a wide range of suitability values, even for the relatively limited number of species we were able to include in our analyis. 
 
 One of our most interesting results was the negative correlation between the species' intercept and the slope of the habitat suitability in our model.
 Specifically, species with a small intercept, this is, species that were likely to have an above-average number of partners in a community with little environmental stress, were more likely to interact with a smaller number of partners as stress increased. 
