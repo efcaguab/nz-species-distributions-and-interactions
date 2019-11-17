@@ -52,6 +52,8 @@ header-includes:
 
 ## To-do
 
+* Warnings for when filling environmental variables. More rows when replacing stuff. 
+
 * Manually fix the remaining species names that are incorrect and were not picked up by the automatic procedure. Doing 5-10 per day, so should be done in a couple months
 * Fix references. There are lots of mistakes re. author, years and publication venue particularly for those from which data was downloaded.
 * Finish off discussion with a punchy conclusion. 
