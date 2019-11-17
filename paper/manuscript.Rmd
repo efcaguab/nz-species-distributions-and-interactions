@@ -402,13 +402,13 @@ First, it is unlikely that environmental suitability is correlated to local spec
 Second, even if there is a relationship between suitability and abundances, a particular environmental gradient could have a positive effect in the abundance some species and a negative effect in others. 
 Indeed, we show that within a community there is a wide range of suitability values, even for the relatively limited number of species we were able to include in our analyis. 
 
-One of our most interesting results was the negative correlation between the species' intercept and the slope of the habitat suitability in our model.
-Specifically, species with a small intercept, this is, species that were likely to have an above-average number of partners in a community with little environmental stress, were more likely to interact with a smaller number of partners as stress increased. 
-At least for these species, the hypothesis that species focus on partners with which they are best adapted to interact as environmental conditions deteriorate seems to hold weight.
-Contrastingly, species with a below-average number of partners in a low-stress environment were more likely to interact with a large number of partners as stress increased.
-At first glance, these species behave as facultative generalists when the environment worsens. 
-This is certainly true for this group of species in our dataset.
-However, there are some nuances to this observation once we take into account the biases inherent to community-level interaction data. 
+Recent research suggest that species are continuoisly chaning there interaction partners wherever environmental conditions change in space of time [@raimundo_adaptive_2018].
+So far it appears that this rewiring is primarly driven by generalist species [@ponisio_opportunistic_2017; @burkle_plant-pollinator_2013], presumably because generalist species are less sensitive to trait matching of their interaction partners [@caradonna_interaction_2017].
+Our results add two important nuances to these findings. 
+First, because generalists seem to focus on a smaller number of partners as environmental conditions deteriorate, we show that trait matching might still play a role in determining the interactions of generalist species. 
+Second, we demonstrate that rewiring is not exclusive to generalists.
+At least a fraction of the species that appear to be specialist in their communities might be as flexible, if not more, than generalist species, effectively behaving as facultative generalists in the face of environmental change. 
+These flexible specialists might, therefore, have a more significant role in network persistence than previously expected.
 Specifically, we have no information about species for which environmental conditions would, in principle, allow for a positive growth rate but are absent from our datasets.
 A ramification of this bias is that an undetermined number of species on this second group might also be more likely to focus on partners with higher trait matching as conditions deteriorate. 
 However, we are not able to detect that trend because these species are not recorded in community composition or interaction data. 
