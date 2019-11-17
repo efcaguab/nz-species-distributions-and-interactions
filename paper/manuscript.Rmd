@@ -425,9 +425,9 @@ However, it is plausible to expect that nestedness, and therefore network stabil
 Determining exactly how the changes in degree caused by environmental stress is also reflected in systematic changes in network structure would be an interesting avenue of research. 
 This would require expanding our suitability analysis to all species in the community and compare the degree distribution of networks along a gradient of stress for the community as a whole. 
 
-* Add in the intro that stress includes how traits mediate environment?
-* Why is the relationship different across species?
-* The environment can certainly influence the number of interactions but its very variable among species
+In conclusion, we show that the environment is able to affect the realised niche of plants and pollinators in systematic ways beyond community composition. 
+On the one hand, species that are inflexible with their interaction partners are unlikely to persist under more stressful environmental conditions. 
+On the other, species that are flexible with their interactions partners experience a regression towards intermediate levels of degree, where generalist species tend to interact with fewer, presumably more effective, partners and specialist tend to interact with more partners. 
 * In the absence of abundance this is as much as we can say. 
 * It is remarkable we found a signal given the amount of data we had it is realy not that much for our question. It is not surprising that the slope of suitability was small for many species as we had little data. The results hold for when species had
 * Implications for community assembly and network rewiring. -->
