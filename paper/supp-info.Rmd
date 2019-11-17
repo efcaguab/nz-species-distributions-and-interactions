@@ -58,7 +58,7 @@ library(dplyr)
 
 # Supplementary methods
 
-## Reducing taxononic uncertainty
+## Reducing taxonomic uncertainty
 
 ```{r scientific-names-cleaning-info}
 loadd(checked_sp_names, spp, manual_name_corrections, problematic_networks)
@@ -122,7 +122,7 @@ all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
   paste0("[", ., "]")
 ```
 
-Data was obtained from the Web of Life database [@fortuna_web_2014] which includes data from `r length(interaction_citations$BIBTEXKEY)` published studies `r all_int_cites`.
+Data were obtained from the Web of Life database [@fortuna_web_2014] which includes data from `r length(interaction_citations$BIBTEXKEY)` published studies `r all_int_cites`.
 
 Interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
 From these `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
@@ -224,7 +224,7 @@ Specifically, for each species, we only requested occurrences for which the coor
 Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species we were interested on. 
 This occurrences, however, contain observations of mixed quality. 
 Therefore, we followed @zizka_coordinatecleaner_2019 and applied a series of simple filters and geographic heuristics to remove those of lower quality. 
-Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (as records prior to this date have been shown to be often impreciseref); (*iii*) those in which the number of counts in the occurrence were registered was either zero (as that indicates that the species has not been recorded); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (as occirrences from unknown and fossil records are known to be highly unreliable). 
+Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (as records prior to this date have been shown to be often imprecise); (*iii*) those in which the number of counts in the occurrence was registered was either zero (as that indicates that the species has not been recorded); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (as occurrences from unknown and fossil records are known to be highly unreliable). 
 We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
 We removed occurrences for which their coordinates (*v*) fell outside the borders of the country where they were recorded; (*vi*) those around a country capital or the centroid of the country and province centroids; (*vii*) those around a biodiversity institution; and (*viii*) those located within oceans. 
 Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species. 
