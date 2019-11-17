@@ -390,6 +390,7 @@ However, we also found that the particular effect of environment is strongly dep
 We proposed two altenative hypotheses of how environmental stress may affect degree and we found evidence for both of them.
 Species with a large number of partners in low-stress communities were more likely to have a negative relationship and hence reduce the number of partners as stress increases. 
 Contrastingly, species in our datasets with a small number of partners in low-stress communities were more likely to have a larger number of partners in more stressful communities.
+In summary, environmental stress pushes species that are flexible enough to change their interaction partners towards interpediate levels of degree, a so called "regression towards the mean".
 
 Our results suggest that changes in community composition are indeed the primmary channel through which environment determines changes interaction probability. 
 However, they also show that, for a large number of species, the environment may also play a substantial role on determining their realised (Eltonian) niche. 
