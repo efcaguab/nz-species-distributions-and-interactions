@@ -62,6 +62,7 @@ library(dplyr)
 
 ```{r scientific-names-cleaning-info}
 loadd(checked_sp_names, spp, manual_name_corrections, problematic_networks)
+loadd(interaction_citations)
 loadd(int_metadata)
 
 n_sp_names <- n_distinct(spp$sp_name) 
