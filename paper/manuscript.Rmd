@@ -308,7 +308,7 @@ Indeed, when looking at the population level effects, suitability has virtually 
 However, suitability is an important predictor as the WAIC difference between our baseline model and that that did not include suitability was `r round(waic_diff_suitability)` ± `r round(waic_se_diff_suitability)` (Table \@ref(tab:tab-model-comparison)).
 This apparent discrepancy can be explained by the variability of the suitability-degree relationship across species.
 
-```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*3, fig.cap = fig_conditional_effects_legend}
+```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*1.5, fig.cap = fig_conditional_effects_legend}
 loadd(median_trials)
 
 median_n_pla <- median_trials %>%
