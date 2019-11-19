@@ -232,7 +232,7 @@ Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$
 # Supplementary results
 
 ```{r fig-sensitivity-analysis, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_sensitivity_analysis_legend}
-
+loadd(sensitivity_species_name)
 fig_sensitivity_analysis_legend <- 
   paste0("Sensitivity analysis of environmental suitability error. ",
          "The number of independent occurrences retrieved from GBIF is inversely related to the error of environmental suitability for our plant-pollinator networks.", 
