@@ -330,7 +330,7 @@ readd(fig_conditional_effects)
 
 ```{r tab-model-comparison}
 model_ranking$waic %>%
-  purrr::map(~.$estimates["waic", ]) %>%
+  purrr::map(~.$estimates["waic", ]) %>% 
   purrr::map_df(~tibble::tibble(estimate = .[1], se = .[2]), .id = "formula") %>%
   dplyr::mutate(formula = translate_model_formula(formula, "long-abv"), 
                 formula = kableExtra::cell_spec(formula, format = "latex", 
