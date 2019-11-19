@@ -135,9 +135,9 @@ add_baseline_predictors <- function(formula_base){
          formula_base,
           ~ . +
           scaled_suitability * guild +
-          scaled_grinell_niche_size * guild +
+          # scaled_grinell_niche_size * guild +
           scaled_n_possible_partners +
-          scaled_log_n_partners_global +
+          # scaled_log_n_partners_global +
           (1 + scaled_suitability | org_id) + (1 | loc_id)
 
   )
@@ -162,14 +162,11 @@ define_poisson_models <- function(){
 # Given a base formula with suitability return a list of alternative formulas
 define_alternative_models <- function(formula_base){
 
-  formula_no_generalism <- update(
-    formula_base,
-    ~ . - scaled_log_n_partners_global
-  )
-
-  formula_no_grinell_niche_size <- update(
-    formula_base,
-    ~ . - scaled_grinell_niche_size - scaled_grinell_niche_size:guild
+  formula_full <- update(
+    formula_base, 
+    ~ . + scaled_log_n_partners_global +
+      + scaled_grinell_niche_size +
+      scaled_grinell_niche_size:guild
   )
 
   formula_no_possible_partners <- update(
@@ -179,13 +176,9 @@ define_alternative_models <- function(formula_base){
 
   formula_no_guild <- update(
     formula_base,
-    ~ . - guild - scaled_grinell_niche_size:guild - scaled_suitability:guild
+    ~ . - guild - scaled_suitability:guild
   )
 
-  # formula_no_possible_partners_generalism <- update(
-  #   formula_base,
-  #   ~ . - scaled_n_possible_partners - scaled_log_n_partners_global
-  # )
 
   formula_no_suitability <- update(
     formula_base,
@@ -193,21 +186,11 @@ define_alternative_models <- function(formula_base){
       (1 + scaled_suitability | org_id) +
       (1 | org_id)
   )
-  #
-  #   formula_triple_interaction <- update(
-  #     formula_base,
-  #     ~ . + scaled_grinell_niche_size:scaled_suitability
-  #   )
-  #
-  #   formula_triple_interaction_no_niche <- update(
-  #     formula_base,
-  #     ~ . + scaled_grinell_niche_size:scaled_suitability - scaled_grinell_niche_size - scaled_grinell_niche_size:guild
-  #   )
-  #
+
   list(
     formula_base = formula_base,
-    formula_no_generalism = formula_no_generalism,
-    formula_no_grinell_niche_size = formula_no_grinell_niche_size,
+    formula_full = formula_full,
+    # formula_no_grinell_niche_size = formula_no_grinell_niche_size,
     formula_no_possible_partners = formula_no_possible_partners,
     #     formula_triple_interaction_no_niche = formula_triple_interaction_no_niche,
     # formula_no_possible_partners_generalism = formula_no_possible_partners_generalism,
