@@ -331,12 +331,12 @@ readd(fig_conditional_effects)
 ```{r tab-model-comparison}
 model_ranking$waic %>%
   purrr::map(~.$estimates["waic", ]) %>% 
-  dplyr::filter(formula != "formula_full") %>%
   purrr::map_df(~tibble::tibble(estimate = .[1], se = .[2]), .id = "formula") %>%
+  dplyr::filter(formula != "formula_full") %>%
   dplyr::mutate(formula = translate_model_formula(formula, "long-abv"), 
                 formula = kableExtra::cell_spec(formula, format = "latex", 
                                                 bold =nchar(formula) == max(nchar(formula)))) %>% 
-   knitr::kable("latex", 
+  knitr::kable("latex", 
                booktabs = TRUE, 
                digits = c(0,0,0), 
                format.args = list(big.mark = ","), 
