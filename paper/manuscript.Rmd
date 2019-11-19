@@ -47,7 +47,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 library(dplyr)
 
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords, bibliography)
-loadd(interaction_citation, config)
+loadd(interaction_citations, config)
 ```
  
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
