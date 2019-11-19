@@ -331,6 +331,7 @@ readd(fig_conditional_effects)
 ```{r tab-model-comparison}
 model_ranking$waic %>%
   purrr::map(~.$estimates["waic", ]) %>% 
+  dplyr::filter(formula != "formula_full") %>%
   purrr::map_df(~tibble::tibble(estimate = .[1], se = .[2]), .id = "formula") %>%
   dplyr::mutate(formula = translate_model_formula(formula, "long-abv"), 
                 formula = kableExtra::cell_spec(formula, format = "latex", 
@@ -342,7 +343,7 @@ model_ranking$waic %>%
                col.names = c("predictors", "WAIC", "SE"),
                escape = FALSE,
                linesep = "",
-               caption = "Comparison in out of sample predictive power of the baseline model (bold) and their alternatives. We rank models by their expected log predictive density based on their leave-one-out cross-validation information criterion (LOO). The standard error of the LOO difference provides rough guidance to the uncertainty of the model ranking. We also show the Wanatabe-Akaike information criterion (WAIC) of each model for comparison.") %>%
+               caption = "Comparison in out of sample predictive power of the baseline model (bold) and their alternatives. We rank models by their expected log predictive density based on their Wanatabe-Akaike information criterion (WAIC).") %>%
   kableExtra::kable_styling(font_size = 8) #%>%
 ```
 
