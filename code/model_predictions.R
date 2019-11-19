@@ -38,36 +38,36 @@ draw_conditional_fits <- function(this_model, median_trials, scale_attr){
   #   scale_attr <- parameter_scale_attributes
   #   this_model <- chosen_models$formula_base
 
-  grinell_niche_size <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = seq(-2, 2, length.out = 10),
-                    scaled_suitability = 0,
-                    scaled_log_n_partners_global = 0,
-                    scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
-    dplyr::mutate(var = scaled_grinell_niche_size)
+  # grinell_niche_size <- median_trials %>%
+  #   tidyr::crossing(#scaled_grinell_niche_size = seq(-2, 2, length.out = 10),
+  #                   scaled_suitability = 0,
+  #                   # scaled_log_n_partners_global = 0,
+  #                   scaled_n_possible_partners = 0) %>%
+  #   add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+  #   dplyr::mutate(var = scaled_grinell_niche_size)
 
   suitability <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = 0,
+    tidyr::crossing(#scaled_grinell_niche_size = 0,
                     scaled_suitability = seq(unscaled_to_scaled(0, scale_attr$suitability),
                                              unscaled_to_scaled(1, scale_attr$suitability), length.out = 10),
-                    scaled_log_n_partners_global = 0,
+                    # scaled_log_n_partners_global = 0,
                     scaled_n_possible_partners = 0) %>%
     add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
     dplyr::mutate(suitability = scaled_to_unscaled(scaled_suitability, scale_attr$suitability),
                   var = suitability)
 
-  generality <- median_trials %>%
-    tidyr::crossing(scaled_grinell_niche_size = 0,
-                    scaled_suitability = 0,
-                    scaled_log_n_partners_global = seq(unscaled_to_scaled(log(1), scale_attr$generality),
-                                                       2, #unscaled_to_scaled(2, scale_attr$generality),
-                                                       length.out = 20),
-                    scaled_n_possible_partners = 0) %>%
-    add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
-    dplyr::mutate(log_n_partners_global = scaled_to_unscaled(scaled_log_n_partners_global, scale_attr$generality),
-                  n_partners_global = exp(log_n_partners_global),
-                  var = n_partners_global) %>%
-    dplyr::filter(guild == "ani_id")
+  # generality <- median_trials %>%
+  #   tidyr::crossing(scaled_grinell_niche_size = 0,
+  #                   scaled_suitability = 0,
+  #                   scaled_log_n_partners_global = seq(unscaled_to_scaled(log(1), scale_attr$generality),
+  #                                                      2, #unscaled_to_scaled(2, scale_attr$generality),
+  #                                                      length.out = 20),
+  #                   scaled_n_possible_partners = 0) %>%
+  #   add_fitted_draws(this_model, re_formula = NA, n = 100) %>%
+  #   dplyr::mutate(log_n_partners_global = scaled_to_unscaled(scaled_log_n_partners_global, scale_attr$generality),
+  #                 n_partners_global = exp(log_n_partners_global),
+  #                 var = n_partners_global) %>%
+  #   dplyr::filter(guild == "ani_id")
 
   possible <- median_trials %>%
     tidyr::crossing(scaled_grinell_niche_size = 0,
@@ -81,17 +81,17 @@ draw_conditional_fits <- function(this_model, median_trials, scale_attr){
                   var = n_possible_partners ) %>%
     dplyr::filter(guild == "ani_id")
 
-  list(grinell_niche_size = grinell_niche_size,
+  list(#grinell_niche_size = grinell_niche_size,
        suitability = suitability,
-       generality = generality,
+       # generality = generality,
        possible = possible)
 }
 
 get_all_pars_scale_attributes <- function(this_model){
   list(
-    niche_size = list(scale = 1, center = 0),
+    # niche_size = list(scale = 1, center = 0),
     suitability = get_scale_attributes(this_model$data$scaled_suitability),
-    generality = get_scale_attributes(this_model$data$scaled_log_n_partners_global),
+    # generality = get_scale_attributes(this_model$data$scaled_log_n_partners_global),
     possible = get_scale_attributes(this_model$data$scaled_n_possible_partners)
   )
 }
