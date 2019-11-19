@@ -168,29 +168,29 @@ plot_all_conditional_effect <- function(cond_draws, mean_parameter_values){
 
   pal <- cgm()$pal_el_green[c(8,7)]
 
-  grinell_niche_size_plot <- cond_draws$grinell_niche_size %>%
-    plot_conditional_effect_guild(pal, mean_parameter_values$niche_size) +
-    labs(title = "(a) environmental niche size",
-         x = "environmental niche size (scaled)")
+  # grinell_niche_size_plot <- cond_draws$grinell_niche_size %>%
+  #   plot_conditional_effect_guild(pal, mean_parameter_values$niche_size) +
+  #   labs(title = "(a) environmental niche size",
+  #        x = "environmental niche size (scaled)")
 
   suitability_plot <- cond_draws$suitability %>%
     plot_conditional_effect_guild(pal, mean_parameter_values$suitability) +
-    labs(title = "(b) environmental suitability",
+    labs(title = "(a) environmental suitability",
          x = "environmental suitability")
 
-  generality_plot <- cond_draws$generality %>%
-    plot_conditional_effect_guild(pal, mean_parameter_values$generality, TRUE) +
-    labs(title = "(c) generality",
-         x = "# partners across communities")
+  # generality_plot <- cond_draws$generality %>%
+  #   plot_conditional_effect_guild(pal, mean_parameter_values$generality, TRUE) +
+  #   labs(title = "(c) generality",
+  #        x = "# partners across communities")
 
   possible_plot <- cond_draws$possible %>%
     plot_conditional_effect_guild(pal, mean_parameter_values$possible) +
-    labs(title = "(d) possible number of interactions",
+    labs(title = "(b) possible number of interactions",
          x = "# possible interactions")
 
-  p <- cowplot::plot_grid(grinell_niche_size_plot,
+  p <- cowplot::plot_grid(#grinell_niche_size_plot,
                           suitability_plot,
-                          generality_plot,
+                          # generality_plot,
                           possible_plot,
                           ncol = 1,
                           align = "hv", axis = "lt")
