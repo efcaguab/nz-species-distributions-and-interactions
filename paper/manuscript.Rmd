@@ -1,10 +1,10 @@
 ---
 title: "Environmental stress affects niche breadth in plant-pollinator communities"
 author: 
-  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
   - "Daniel B. Stouffer^1^ ([daniel.stouffer@canterbury.ac.nz](daniel.stouffer@canterbury.ac.nz))"
+  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
@@ -47,6 +47,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE,
 library(dplyr)
 
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords, bibliography)
+loadd(interaction_citations)
 ```
  
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
