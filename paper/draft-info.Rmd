@@ -40,7 +40,13 @@ header-includes:
 
 ## To-do
 
-* There are some warnings for when matching environmental variables to occurrences. I need to double-check this is happening correctly. 
+* There are some unfamiliar warnings for when matching environmental variables to occurrences. I need to double-check this is all correct before submission. 
 * Refine the supplementary results. 
 * Fix references
 * Finish manual species checks
+
+## Comments
+
+* Jason, thanks for proposing the idea of calculating the suitability of the community as a whole. I think it would be super exciting but didn't pursue that path. Mainly because that would imply downloading the occurrences for all the species we know their correct name as opposed to just those that are in more than one community as we do now. Currently, the occurrence data for the latter group is ~50GB. Expanding the group will likely mean dealing with 3-5 times as much data. This exercise creates some new technical problems — all solvable but challenging enough to take longer than what I want to budget for it. 
+
+* Appart from that, I think I followed most suggestions one way or another. **Thanks!**
