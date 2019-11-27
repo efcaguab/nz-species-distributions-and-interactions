@@ -1,5 +1,5 @@
 ---
-title: "Environmental stress affects niche breadth in plant-pollinator communities"
+title: "Environment affects specialisation of plants and pollinators"
 author: 
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
