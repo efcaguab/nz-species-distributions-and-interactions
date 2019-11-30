@@ -133,12 +133,10 @@ stats_clean_int <- clean_interactions %>%
 
 We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014]. 
 This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]`. 
-Calculating the environmental stress of species in their community and their Eltonian niche breadth required us to reduce both the taxonomic and distributional/locational uncertainty.
+Calculating the environmental stress of species in their community and their potential partners required us to reduce both the taxonomic and distributional/locational uncertainty.
 A critical step towards reducing this uncertainty is to ensure that the names used to identify species are valid and unambiguous, which in turn allow us to obtain further information from biological databases and accurately match species across studies. 
-Therefore, our first step was to ensure consistent spelling and standardisation of species names synonyms (See Supplementary Methods).
-This step ensured that the matching of species across studies was as accurate as possible. 
+Therefore, our first step was to ensure consistent spelling and standardisation of species names synonyms (see Supplementary Methods).
 The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap), \@ref(fig:fig-distribution-species-mult-locations)).
-
 
 ```{r fig-distribution-species-mult-locations, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_dist_species_multiple_locations_legend}
 
@@ -160,10 +158,9 @@ fig_dist_species_multiple_locations_legend <-
 readd(fig_dist_species_multiple_locations)
 ```
 
-Second, we calculated the suitability of the environment for a species in a particular community as a proxy of environmental stress. 
-We assume that the environmental stress a species experience in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
-Our third and final step was to relate the environmental suitability to the relative number of partners a species has in a community, as a proxy for Eltionian niche breadth. 
-To explore this relationship within and across species, we used a multilevel Bayesian model in which we controlled for the potential effects of the environment on co-occurrence.
+After matching species across studies as accurate as possible we carried on two more steps. 
+First, we calculated the envoronmental stress of species in their communitues.
+Second, we relate the species stress in their communitu with the number of partner species it has as a metric of their level of specialisation.
 
 ### Species suitability
 
