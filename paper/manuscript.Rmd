@@ -236,8 +236,8 @@ n_occ_sensitivity_species <- n_thinned_occurrences %>%
 n_spp_not_enough_occ <- nrow(n_thinned_occurrences) - nrow(n_enough_occurrences)
 ```
 
-We used a sensitivity analysis to determine the minimum number of occurrences that are necessary to have robust environmental suitability values in our communities. 
-For that we used the species with most occurrences available, *`r sensitivity_species_name$canonicalName`*, and calculated the mean absolute error of the suitability values obtained with `r numbers2words(config$n_subsamples)` subsamples from the `r format(n_occ_sensitivity_species, big.mark  =",")`  occurrences available from GBIF. 
+We used a sensitivity analysis to determine the minimum number of occurrences that are necessary to have robust environmental stress estimations. 
+For that we used the species with most occurrences available, *`r sensitivity_species_name$canonicalName`*, and calculated the mean absolute error of the bioclimatic suitability values obtained with `r numbers2words(config$n_subsamples)` subsamples from the `r format(n_occ_sensitivity_species, big.mark  =",")`  occurrences available from GBIF. 
 
 ## Data analysis
 
