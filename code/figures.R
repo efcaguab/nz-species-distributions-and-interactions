@@ -174,9 +174,11 @@ plot_all_conditional_effect <- function(cond_draws, mean_parameter_values){
   #        x = "environmental niche size (scaled)")
 
   suitability_plot <- cond_draws$suitability %>%
-    plot_conditional_effect_guild(pal, mean_parameter_values$suitability) +
-    labs(title = "(a) environmental suitability",
-         x = "environmental suitability")
+    # Adding 1-x because we want to plot stress not suitability
+    dplyr::mutate(var = 1 - var) %>%
+    plot_conditional_effect_guild(pal, 1 - mean_parameter_values$suitability) +
+    labs(title = "(a) environmental stress",
+         x = "environmental stress")
 
   # generality_plot <- cond_draws$generality %>%
   #   plot_conditional_effect_guild(pal, mean_parameter_values$generality, TRUE) +
