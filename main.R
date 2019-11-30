@@ -281,8 +281,11 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   nets = ints_as_nets(interactions_org),
   possible_interactions = get_possible_interactions(interactions_org),
   org_degree = calc_org_degree(possible_interactions, interactions_org),
-  datasets = list(independent_suitability = independent_suitability,
+  datasets_suitability = list(independent_suitability = independent_suitability,
                   collective_suitability = collective_suitability),
+  # Using 1 - because I want stress not suitability
+  datasets = purrr::map(datasets_suitability, 
+                        ~dplyr::mutate(., suitability = 1 - suitability)),
   analysis_frames = purrr::map(datasets,
                               ~build_analysis_frame(
                                  org_degree, .,
