@@ -219,7 +219,7 @@ We removed from further analysis occurrences located within the `r complete_fill
 
 Next, we calculate the probability density function of the species distribution in environmental space. 
 To determine the environmental space, we use the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
-Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of zero and a unit standard deviation. 
+Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of zero and a unit variance. 
 We then determine the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
 We use a kernel method to estimate this density and normalise it such that it ranges between zero and one. 
 Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@broennimann_ecospat_2018] with a grid resolution of 200.
@@ -242,32 +242,32 @@ For that we used the species with most occurrences available, *`r sensitivity_sp
 
 ## Data analysis
 
-We then used a set of bayesian multilevel models to evaluate the impact of environmental suitability on the number of partners a species has. 
-Specifically, we use the normalised degree of species as our response variable; this is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
-The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of species interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
+We then used a set of Bayesian multilevel models to evaluate the impact of environmental stress on species specialisation. 
+Specifically, we use the normalised degree of species as our response variable; that is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
+The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of partner species a focal interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
 We are aware that whether species interact or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
-However, a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
-Importantly, however, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function.
+However, the use of a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
+Importantly, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function.
 
-We evaluate four models to assess the relative importance of suitability. 
-A first model, our baseline model, included three population-level predictors and two grouping levels, species and the community.
-The population-level predictors in the baseline model, commonly called fixed effects, were the habitat suitability, the species guild (plant or a pollinator), and its number of known possible partners.
-We included the number of known possible partners as a predictor in our models as it allows us to control for the environmental effects on species co-occurrence. 
+We evaluated four models to assess the relative importance of suitability. 
+A first model, our baseline model, included five variables. 
+<!-- fixed variables (population-level predictors) and two random variables (grouping levels). -->
+The predictors in the baseline model were the environmental stress, its number of known possible partners in the commuynity, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
+We included the number of known possible partners as a predictor in our models as it allows us to control for the effects of the environment on community composition, effectively accounting for species co-occurrence. 
 We calculate this metric by determining the number of partners with which the species is known to interact in any other community.
-Controlling for the number of potential partners makes our model a particularly stringent test of our environmental stress hypotheses because this variable could explain a large proportion of variance. 
-Often the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.
-As we were interested in understanding whether the effect of habitat suitability is conditional on the species guild (plant or pollinator), we, therefore, included guild and its interaction with suitability in the model. 
+Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance. 
+Often, the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.
 
-We allowed the intercept of degree and slope of the suitability-degree relationship to vary among species. 
+We allowed the intercept and slope of the stress-specialisation relationship to vary among species. 
 This approach allowed us to investigate two questions. 
-First, it allows us to inspect the extent to which suitability is a population or a group level effect. 
-Second, by investigating the correlation between the intercept and the slope as a model parameter, it allowed us to inspect the extent by which species with a small or large number of interactions respond to increasing levels of environmental stress. 
-To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we also calculated an intercept for each community in our study.
-To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit standard deviation. 
+First, it allows us to inspect the extent to which environmental stress affects species in a similar fashion. 
+Second, by investigating the correlation between the intercept and the slope as a model parameter, it allowed us to inspect the extent by which species with a small or large number of partner species respond to increasing levels of environmental stress. 
+To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we also allowed the model intercept to be different for each community in our study.
+To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit variance 
 
-We compared this baseline model with three alternative models in which we remove one predictor at a time.
+We compared this baseline model with three alternative models in which we removed one predictor at a time.
 To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC).
-All models were fitted under a bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
+All models were fitted under a Bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
 For each model, we used four Markov chains of 4,000 iterations each; we used half of the iterations for warmup.
 We used weakly informative priors for all model parameters. 
 Specifically we used normal priors of mean zero and standard deviation ten for the population-level effects and the intercepts, a half-Cauchy prior with a location of zero and a scale of two for the standard deviations, and, when applicable, an LKJ-correlation prior with parameter \(\zeta = 1\) for the correlation matrix between group-level parameters.
