@@ -42,7 +42,8 @@ configuration_plan <- drake_plan(
   n_subsamples = config$n_subsamples,
   min_suitability_error = config$min_suitability_error,
   brm_cores = config$brm_cores,
-  n_markov_iter = config$n_markov_iter
+  n_markov_iter = config$n_markov_iter, 
+  approach_suitability = config$approach_suitability
 )
 
 # Download data ----------------------------------------------------------
@@ -317,7 +318,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   models = all_fitted_models$analysis_frames,
   chosen_models = get_chosen_model(models, models_index,
                                    chosen_formula_type = "binomial_formulas",
-                                   chosen_dataset = "collective_suitability"),
+                                   chosen_dataset = approach_suitability),
   model_ranking = compare_models(chosen_models),
   baseline_model = chosen_models$formula_base,
   bayesian_r2_baseline = brms::bayes_R2(baseline_model),
@@ -353,10 +354,13 @@ figures_plan <- drake_plan(
   fig_dist_species_multiple_locations = plot_species_location_distribution(
     fig_dist_species_multiple_locations_data
   ),
-  fig_sensitivity_analysis = plot_sensitivity_analysis(error_subsamples,
-                                                       min_suitability_error,
-                                                       min_occurrences_factor,
-                                                       suitability_subsamples),
+  fig_sensitivity_analysis = plot_sensitivity_analysis(
+    error_subsamples,
+    min_suitability_error,
+    min_occurrences_factor,
+    suitability_subsamples, 
+    chosen_niche_space = ifelse(approach_suitability == "independent_suitability",
+                                "single_species", "all_species")),
   fig_conditional_effects = plot_all_conditional_effect(cond_draws, mean_parameter_values),
   fig_random_effects = plot_ranf(random_species_draws,
                                  random_correlation_posterior,
