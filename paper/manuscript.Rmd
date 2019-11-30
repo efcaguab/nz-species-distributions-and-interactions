@@ -333,10 +333,10 @@ median_n_ani <- median_trials %>%
   n_opposite_guild
 
 fig_conditional_effects_legend <- 
-  paste0("Conditional effects of predictors in our baseline model. The predicted values of the number of interacting species are based on a hypothetical community with ",
+  paste0("Conditional effects of predictors in our baseline model. The shown values are based on predictions for a hypothetical community with ",
          median_n_pla, " plants and ", 
          median_n_ani, " pollinators",
-         ". These values correspond to the median number of species in each guild, respectively. In each panel, we condition on the mean values of all other predictors in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance. However, except for environmental niche size, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between guild and generality or the number of possible interactions, for these two predictors, we only show conditional the conditional effect of pollinators.")
+         ". These values correspond to the median number of species in each guild across communities. In each panel, we condition on the mean value of the other predictor in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance; however, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between guild and the number of possible interactions, we only show the conditional effect of pollinators.")
 
 readd(fig_conditional_effects)
 ```
