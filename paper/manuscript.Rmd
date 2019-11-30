@@ -139,9 +139,6 @@ Therefore, our first step was to ensure consistent spelling and standardisation 
 This step ensured that the matching of species across studies was as accurate as possible. 
 The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap), \@ref(fig:fig-distribution-species-mult-locations)).
 
-```{r fig-worldmap, fig.width = width('single'), fig.cap ="Worldwide distribution of pollination communities included in this study"}
-readd(fig_worldmap)
-```
 
 ```{r fig-distribution-species-mult-locations, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_dist_species_multiple_locations_legend}
 

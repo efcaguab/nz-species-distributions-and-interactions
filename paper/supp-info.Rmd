@@ -204,6 +204,10 @@ These data sources were removed from further analysis.
 In `r numbers2words(n_data_sources_mult_nets)` of our data sources interaction data was recorded at multiple points in time. 
 When this was the case, we combined interaction data into one single interaction network. 
 
+```{r fig-worldmap, fig.width = width('single'), fig.cap ="Worldwide distribution of pollination communities included in this study"}
+readd(fig_worldmap)
+```
+
 ## Reducing location uncertainty
 
 ```{r}
