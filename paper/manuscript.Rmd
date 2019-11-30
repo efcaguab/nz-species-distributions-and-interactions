@@ -158,9 +158,9 @@ fig_dist_species_multiple_locations_legend <-
 readd(fig_dist_species_multiple_locations)
 ```
 
-After matching species across studies as accurate as possible we carried on two more steps. 
-First, we calculated the envoronmental stress of species in their communitues.
-Second, we relate the species stress in their communitu with the number of partner species it has as a metric of their level of specialisation.
+After matching species across studies as accurate as possible, we carried on two more steps. 
+First, we calculated the environmental stress of species in their communities.
+Second, we relate the species stress in their community with the number of partner species it has as a metric of their level of specialisation.
 
 ### Environmental stress
 
@@ -175,7 +175,6 @@ get_n_species <- . %>%
 percent_thinned <- 1 - sum(n_thinned_occurrences$N) / sum(n_cleaned_occurrences$N)
 percent_filled_round_one <- 1 - complete_filled_cells_1[1]/complete_climate_cells[1]
 ```
-
 
 Our third and final step was to relate the environmental suitability to the relative number of partners a species has in a community, as a proxy for Eltionian niche breadth. 
 To explore this relationship within and across species, we used a multilevel Bayesian model in which we controlled for the potential effects of the environment on co-occurrence.
@@ -193,7 +192,7 @@ First, we require information about the occurrences of the species of interest.
 Second, we require information about the environmental conditions for all the locations in which the species occurs.
 We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org). 
 Issues with data quality are a central issue hampering the use of publicly available species occurrence GBIF data in ecology and biogeography [@jetz_essential_2019]. 
-We therefore followed a series of filters and geographic heuristics to correct or remove erroneous and imprecise referencing records [see supplementary methods; @zizka_coordinatecleaner_2019] which allowed us to identify and remove `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million potentially problematic occurrences from further analysis.
+We, therefore, followed a series of filters and geographic heuristics to correct or remove erroneous and imprecise referencing records [see supplementary methods; @zizka_coordinatecleaner_2019] which allowed us to identify and remove `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million potentially problematic occurrences from further analysis.
 We integrated the occurrences from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
 
 We retrieved environmental data from WorldClim V2.0, which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
@@ -225,8 +224,8 @@ We use a kernel method to estimate this density and normalise it such that it ra
 Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@broennimann_ecospat_2018] with a grid resolution of 200.
 We then determine the location in the environmental space of the plant-pollinator communities using the function `suprow` from `ade4`.
 The normalised density at that particular location [which we calculate using the R package `raster` `r as.character(packageVersion('raster'))`; @hijmans_raster_2019] corresponds the bioclimatic suitability. 
-We use the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier, because it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
-The result of all these steps is the environmental stress which corresponds to one minus the bioclimatic suitability for a species of a particular location. 
+We use the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier because it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
+The result of all these steps is the environmental stress which corresponds to one minus the bioclimatic suitability for a species of a particular location.  
 
 ```{r sensitivity-analysis-calculations}
 loadd(sensitivity_species_name)
@@ -252,7 +251,7 @@ Importantly, results are qualitatively similar when we model species degree dire
 We evaluated four models to assess the relative importance of suitability. 
 A first model, our baseline model, included five variables. 
 <!-- fixed variables (population-level predictors) and two random variables (grouping levels). -->
-The predictors in the baseline model were the environmental stress, its number of known possible partners in the commuynity, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
+The predictors in the baseline model were the environmental stress, its number of known possible partners in the community, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
 We included the number of known possible partners as a predictor in our models as it allows us to control for the effects of the environment on community composition, effectively accounting for species co-occurrence. 
 We calculate this metric by determining the number of partners with which the species is known to interact in any other community.
 Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance. 
@@ -260,10 +259,10 @@ Often, the potential and the actual number of partners is the same or very close
 
 We allowed the intercept and slope of the stress-specialisation relationship to vary among species. 
 This approach allowed us to investigate two questions. 
-First, it allows us to inspect the extent to which environmental stress affects species in a similar fashion. 
+First, it allows us to inspect the extent to which environmental stress affects species similarly. 
 Second, by investigating the correlation between the intercept and the slope as a model parameter, it allowed us to inspect the extent by which species with a small or large number of partner species respond to increasing levels of environmental stress. 
 To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we also allowed the model intercept to be different for each community in our study.
-To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit variance 
+To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit variance. 
 
 We compared this baseline model with three alternative models in which we removed one predictor at a time.
 To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC).
