@@ -219,7 +219,7 @@ fit_model <- function(formulas, analysis_frame, cores = 1L, iter = 4000){
                  # set_prior("lkj(2)", class = "cor"),
                  # set_prior("cauchy(0, 2)", class = "sd")
                  ),
-               chains = 4,
+               chains = cores,
                iter = iter,
                # warmup = 2000,
                cores = cores,
