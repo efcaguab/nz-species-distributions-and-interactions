@@ -152,7 +152,7 @@ plot_sensitivity_analysis <- function(error_subsamples, min_suitability_error,
           legend.title = element_blank()) +
     labs(x = "number of GBIF occurrences",
          y = "mean absolute error",
-         title = "error of environmental suitability of communities",
+         title = "error of bioclimatic suitability",
          subtitle = "for a species present in two plant-pollinator communities ")
 
   # ggsave("plot.pdf", p,  width = unit(width("single"), "in"), height = unit(2.2, "in"))
