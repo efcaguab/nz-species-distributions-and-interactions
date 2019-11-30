@@ -162,7 +162,7 @@ After matching species across studies as accurate as possible we carried on two 
 First, we calculated the envoronmental stress of species in their communitues.
 Second, we relate the species stress in their communitu with the number of partner species it has as a metric of their level of specialisation.
 
-### Species suitability
+### Environmental stress
 
 ```{r occurrences-calcs}
 loadd(n_occurrences, n_cleaned_occurrences, n_dirty_occurrences, gbif_key_groups, org_ids, n_thinned_occurrences, complete_climate_cells, complete_filled_cells_1, complete_filled_cells_2)
