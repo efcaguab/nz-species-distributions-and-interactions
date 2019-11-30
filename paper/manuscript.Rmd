@@ -117,8 +117,8 @@ In other words we expect that, as environmental stress increases, specialists sh
 Species with a large number of partners, on the other hand, should have a larger pool of available partners and might, therefore, be more likely to specialise under environmental stress and focus on the most beneficial partners. 
 Importantly, when testing these hypotheses, we control for the potential effects of the environment in community [which has been previously shown to be determinant factor; @gravel_bringing_2018]
 We test these hypotheses using data on plant-pollinator interactions. 
-This system is a particularly interesting XX.
-We use the species' patterns of global occurrence to estimate the bioclimatic suitability of their communities and use this as an indirect measure of the environmental stress they might experience. 
+These interactions provide a particularly interesting system to test these hypotheses because, due to the multiple trade-offs involved in the pollination service, there are multiple intuitive ways in which we could imagine species respond to environmental stress given the available partners.
+We estimate the stress species might experience in their community by calculating the the bioclimatic suitability of their communities given the species' patterns of global occurrence. 
 
 # Methods
 
