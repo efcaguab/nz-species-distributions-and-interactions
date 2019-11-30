@@ -175,8 +175,8 @@ plot_all_conditional_effect <- function(cond_draws, mean_parameter_values){
 
   suitability_plot <- cond_draws$suitability %>%
     plot_conditional_effect_guild(pal, mean_parameter_values$suitability) +
-    labs(title = "(a) environmental suitability",
-         x = "environmental suitability")
+    labs(title = "(a) environmental stress",
+         x = "environmental stress")
 
     # generality_plot <- cond_draws$generality %>%
   #   plot_conditional_effect_guild(pal, mean_parameter_values$generality, TRUE) +
