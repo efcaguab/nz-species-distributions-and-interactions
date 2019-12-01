@@ -128,12 +128,12 @@ translate_model_formula <- function(x, type = "short"){
     )
   } else if(type == "long-abv"){
     dplyr::case_when(
-      x == "formula_base" ~ "Suit. * Guild + Pot.",
+      x == "formula_base" ~ "Suit. x Guild + Pot.",
       # x == "formula_no_grinell_niche_size" ~ "Suit. + Gen. + Pot.",
       # x == "formula_no_generalism" ~ "Suit. + Pot. + Env.",
       x == "formula_no_suitability" ~ "Guild + Pot.",
       # x == "formula_no_possible_partners_generalism" ~ "Suit. + Env.",
-      x == "formula_no_possible_partners" ~ "Suit. * Guild",
+      x == "formula_no_possible_partners" ~ "Suit. x Guild",
       x == "formula_full" ~ "FULL",
       x == "formula_no_guild" ~ "Suit. + Pot.",
       TRUE ~ "unknown"
