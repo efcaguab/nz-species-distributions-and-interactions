@@ -1,7 +1,7 @@
 ---
 title: "Draft information"
-subtitle: "version: draft-0.3"
-date: "2019-11"
+subtitle: "version: draft-0.4"
+date: "2019-12-01"
 # bibliography: phd-bibliography/pollen-competition.bib
 csl: ecology-letters.csl
 output:
@@ -37,6 +37,7 @@ header-includes:
 * Rewrote most of the discussion
 * Changed some details about how species are cleaned
 * Removed species generality and the breadth of the environmental niche from the model
+* Language is now centered on stress and specialisation. Mentioning bioclimatic suitability only when needed in the methods.
 
 ## To-do
 
