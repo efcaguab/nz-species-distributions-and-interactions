@@ -393,7 +393,7 @@ fig_random_effects_legend <-
   paste0("Species-level effects of environmental stress (a) Conditional effect of stress for individual species. Each line corresponds to the median relationship for each species. Although we included in the analysis of all species that are present in two or core communities, to facilitate visualisation here, we show only species for which there is suitability information in at least six communities (", 
          n_random_pla, " plants and ", 
          n_random_ani, " pollinators). As in the previous figure, fitted values assume a hypothetical community of median size. In each panel, we highlight two species for which the relationship between environmental suitability and the normalised degree was particularly strong. ", 
-         "(b and c) The correlation between the species' intercept and the species' slope of suitability was negative. The species' intercept can be interpreted as the relative difference between the number of partners a species has under zero environmental stress and the mean number of partners across all species. Positive values of species' slope indicate a positive relationship between stress and the number of partners and vice-versa.")
+         "(b and c) The correlation between the species' intercept and the species' slope of suitability was negative. The species' intercept can be interpreted as the relative difference between the number of partners a species has under mean levels of environmental stress and the mean number of partners across all species. Positive values of species' slope indicate a positive relationship between stress and the number of partners and vice-versa.")
 
 readd(fig_random_effects)
 ```
