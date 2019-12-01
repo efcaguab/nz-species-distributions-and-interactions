@@ -369,7 +369,8 @@ figures_plan <- drake_plan(
   fig_random_effects = plot_ranf(random_species_draws,
                                  random_correlation_posterior,
                                  random_sp_names,
-                                 random_slope_intercepts),
+                                 random_slope_intercepts, 
+                                 mean_suitability = mean_parameter_values$suitability),
  fig_median_suitability = plot_suitability(median_suitability)
 )
 

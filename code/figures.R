@@ -220,7 +220,11 @@ plot_conditional_effect_guild <- function(data, pal, mean_val, log_transformed =
     labs(y = "# interactions")
 }
 
-plot_ranf <- function(random_species_draws, random_correlation_posterior, random_sp_names, random_slope_intercepts){
+plot_ranf <- function(random_species_draws, 
+                      random_correlation_posterior, 
+                      random_sp_names, 
+                      random_slope_intercepts, 
+                      mean_suitability){
 
   suppressPackageStartupMessages({
     require(ggplot2)
@@ -236,6 +240,7 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
     dplyr::left_join(random_sp_names, by = "org_id") %>%
     ggplot(aes(x = var, y = .value, colour = guild)) +
     geom_line(aes(group = org_id, alpha = highlight, size = highlight), stat = "summary",fun.y = "mean") +
+    geom_vline(xintercept = mean_suitability, size = 0.25, linetype = 2) +
     geom_mark_circle(aes(group = org_id,
                          filter = highlight & mark,
                           label = sp_name),
