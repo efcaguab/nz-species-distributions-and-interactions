@@ -168,7 +168,7 @@ get_pos_random_params <- function(baseline_model){
                                              start = 20,
                                              end = -2L))
 
-  c("Estimate", "Q25", "Q75") %>%
+  c("Estimate", "Q2.5", "Q97.5") %>%
     purrr::map_dfc(~ spread_post_summary(tall_posterior, .)) %>%
     dplyr::inner_join(sp_properties, by = "org_id")
 
