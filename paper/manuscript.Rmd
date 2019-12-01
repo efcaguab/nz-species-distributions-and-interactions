@@ -426,21 +426,21 @@ Using stress to summarise the effect on species of multiple environmental gradie
 Although both niche and neutral processes are relevant in determining species interactions, our model suggests that niche processes may be the predominant mechanism through which the environment *systematically* affects specialisation. 
 First, it is unlikely that environmental stress correlates to local species abundances [@pearce_practical_2001; @sagarin_moving_2006]. 
 Second, even if there is a relationship between stress and abundances, a particular environmental gradient could have a positive effect on the abundance of some species and a negative effect on others. 
-Indeed, we find that within a community there is a wide range of stress values, even for the relatively limited number of species we were able to include in our analysis. 
+Indeed, we find that within a community there is a wide range of stress values, even for the relatively limited number of species we were able to include in our analysis.
 
 Recent research suggests that species are continuously changing their interaction partners wherever environmental conditions change in space or time [@raimundo_adaptive_2018].
 So far it appears that this rewiring is primarily driven by generalist species [@ponisio_opportunistic_2017; @burkle_plant-pollinator_2013], presumably because generalist species are less sensitive to trait matching of their interaction partners [@caradonna_interaction_2017].
 Our results add two important nuances to these findings. 
 First, because "generalists" seem to focus on a smaller number of partners as environmental conditions deteriorate, we show that trait matching might still play a role in determining the interactions of generalist species. 
-Second, and most importantly, our results suggest that actually only a small proportion of species are "true generalists" or "true specialists" this is, species that interact with a large or small number of partners regardless of the environmental stress, respectively. 
-This implies that rewiring is not exclusive of species with a large number of partners. 
+Second, and most importantly, our results suggest that only a small proportion of species are "true generalists" or "true specialists" this is, species that interact with a large or small number of partners regardless of the environmental stress, respectively. 
+This pattern implies that rewiring is not exclusive of species with a large number of partners. 
 Instead, at least a fraction of the species that appear to be specialist *in their communities* might be as flexible, if not more, than those with a large number of partners, effectively behaving as facultative generalists in the face of environmental change. 
 These flexible "specialists" might therefore have a more significant role in network persistence than previously expected.
 
-In our model we can roughly divide species between true specialists, true generalists, and flexible species. 
-However, there is a fourth group that remained invisible for our model but has important implications for network persistence and stability.
-Species that are able to vary their interaction partners flexibly and their role in the network are more likely to persist in their community as environmental conditions vary [@gaiarsa_interaction_2019].
-We propose this fourth group of is composed of true specialists that are constrained to interact with partners of high trait-matching and therefore were not likely to be found in more than one community. 
+In our model, we can roughly divide species between true specialists, true generalists, and flexible species. 
+However, there is a fourth group that remained invisible to our model but has important implications for network persistence and stability.
+Species that can vary their interaction partners flexibly and their role in the network are more likely to persist in their community as environmental conditions vary [@gaiarsa_interaction_2019].
+We propose this fourth group is composed of true specialists that are constrained to interact with partners of high trait-matching and therefore were not likely to be found in more than one community. 
 If species that are not flexible are unlikely to persist over temporal or spatial environmental gradients, we can expect specialised communities that are highly constrained by trait-matching [like some plant-hummingbird networks; @vizentin-bugoni_processes_2014; @maruyama_morphological_2014] to be far more vulnerable to increased climate change-induced environmental stress and habitat degradation than communities where role and interaction flexibility are more prevalent.
 
 Similarly, if the patterns we see in our models have also played a role during the evolutionary history of pollination communities, our results also help explain why only a small fraction of plant-pollinator interactions show a strong signature of deep co-evolutionary history [@hutchinson_cophylogenetic_2017].
@@ -455,8 +455,8 @@ Answering this question would require expanding our suitability analysis to all 
 
 In conclusion, we show that the environment can affect the specialisation level of plants and pollinators in systematic ways beyond community composition. 
 Species that are inflexible with their interaction partners are unlikely to persist under more stressful environmental conditions. 
-However, we show that many species are flexible in regards of their specialisation levels and therefore are not inherently generalists or specialists. 
-Instead, species' level of specialisation/generalisation should be considered on a relative scale depending on where they are found and the environmental conditions at that location. 
+However, we show that many species are flexible in regards to their specialisation levels and therefore are not inherently generalists or specialists. 
+Instead, the species' level of specialisation/generalisation should be considered on a relative scale depending on where they are found and the environmental conditions at that location. 
 
 # Acknowledgements
 
