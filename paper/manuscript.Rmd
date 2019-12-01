@@ -342,7 +342,7 @@ fig_conditional_effects_legend <-
   paste0("Conditional effects of predictors in our baseline model. The shown values are based on predictions for a hypothetical community with ",
          median_n_pla, " plants and ", 
          median_n_ani, " pollinators",
-         ". These values correspond to the median number of species in each guild across communities. In each panel, we condition on the mean value of the other predictor in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance; however, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between guild and the number of possible interactions, we only show the conditional effect of pollinators.")
+         ". These values correspond to the median number of species in each guild across communities. In each panel, we condition on the mean value of the other predictor in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance; however, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between the guild and the number of possible interactions, we only show the conditional effect of pollinators.")
 
 readd(fig_conditional_effects)
 ```
@@ -367,10 +367,10 @@ model_ranking$waic %>%
   kableExtra::kable_styling(font_size = 8) #%>%
 ```
 
-For some species there is a strong negative relationship between stress and specialisation, while for others there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
-Interestingly, the slope of this relationship correlates positively with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b and c). 
+For some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
+Interestingly, the slope of this relationship correlates negatively with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b and c). 
 The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`].
-In other words, the slope of the stress-specialisation relationship was more likely to be positive for species with a smaller number of partners in and negative for species with a larger number of partners in lower-suitability conditions.
+In other words, the slope of the stress-specialisation relationship was more likely to be positive for species with a smaller number of partners in low-stress conditions (and negative for species with a larger number of partners).
 
 ```{r fig-random-effects, fig.width = width('double'), fig.height = 2.2*2, fig.cap = fig_random_effects_legend, out.width = "6.81in", out.height = "4.4in", out.extra="center"}
 loadd(random_species_draws)
@@ -388,7 +388,7 @@ n_random_ani <- n_random_species %>%
   n_sp
 
 fig_random_effects_legend <- 
-  paste0("Species-level effects of suitability. (a) Conditional effect of suitability for individual species. To facilitate visualization we show only species for which there is suitability information in at least six communities (", 
+  paste0("Species-level effects of suitability. (a) Conditional effect of suitability for individual species. To facilitate visualisation we show only species for which there is suitability information in at least six communities (", 
          n_random_pla, " plants and ", 
          n_random_ani, " pollinators). As in the previous figure, fitted values assume a hypothetical community of median size. In each panel, we highlight two species for which the relationship between environmental suitability and the normalised degree was particularly strong. ", 
          "(b) The correlation between the species' intercept and the species' slope of suitability was negatively correlated.")
@@ -397,12 +397,12 @@ readd(fig_random_effects)
 ```
 
 As expected, we found a strong and positive relationship between the number of possible interactions and the number of realised interactions in the community. 
-There was a large difference on WAIC between the model that included this predictor and that that excluded it. 
-This result indicates that the availability of potential partners accounts for a large proportion of the variability on species degree.  
-Importantly, our findings of the suitability-degree relationship were qualitatively unchanged whether we included this variable or not. 
+There was also a large difference on WAIC between the model that included this predictor and that that excluded it. 
+This result indicates that the availability of potential partners—this is, community composition—accounts for a large proportion of the variability in species degree. 
+Importantly, our findings relating to the variability of the stress-specialisation relationship were qualitatively unchanged, whether we included this variable or not. 
 
-The group-level variation among communities was larger than that among species which further indicates the importance of the local context when determining species degree.
-Specifically, the standard deviation (in the parameters scale) of the community intercepts was `r round(sd_loc_id$Estimate, 2)` [`r round(sd_loc_id$Q2.5, 2)`, `r round(sd_loc_id$Q97.5, 2)`] while the standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' suitability slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brakets). 
+The standard deviation (in the parameters scale) of the community intercepts was `r round(sd_loc_id$Estimate, 2)` [`r round(sd_loc_id$Q2.5, 2)`, `r round(sd_loc_id$Q97.5, 2)`] which indicates the importance of the local context when determining specialisation. 
+The standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' suitability slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brakets). 
 
 # Discussion 
 
