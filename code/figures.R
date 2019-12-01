@@ -261,9 +261,9 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
     pub_theme() +
     coord_cartesian(expand = F) +
     theme(legend.position = "none") +
-    labs(y = "# interactions",
-         x = "environmental suitability",
-         title = "(a) effect of suitability on individual species")
+    labs(y = "# partners",
+         x = "environmental stress",
+         title = "(a) effect of stress on individual species")
 
   mean_correlation <- random_correlation_posterior %>%
     dplyr::summarise_all(mean) %$%
@@ -321,8 +321,8 @@ plot_ranf <- function(random_species_draws, random_correlation_posterior, random
     pub_theme() +
     theme(legend.position = "none") +
     labs(x = "species' intercept",
-         y = "species' suitability slope",
-         title = "(b) species' specific intercept and suitability slope",
+         y = "species' slope",
+         title = "(b) species' specific intercept and slope",
          subtitle = "all values in parameter space")
 
   plot_left <- conditional_effects_plot
