@@ -1,7 +1,7 @@
 ---
 title: "Environmental stress affects niche breadth in plant-pollinator communities"
 subtitle: "Supplementary information"
-author: "E. Fernando Cagua, Hugo J. Marrero, Jason M. Tylianakis, Daniel B. Stouffer"
+author: "E. Fernando Cagua, Audrey Lustig, Jason M. Tylianakis, Daniel B. Stouffer"
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
