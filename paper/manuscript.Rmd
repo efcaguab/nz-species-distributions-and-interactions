@@ -368,11 +368,11 @@ model_ranking$waic %>%
 ```
 
 For some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
-Interestingly, the slope of this relationship correlates negatively with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b and c). 
+Interestingly, the slope of this relationship correlates with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b and c).
+Recall that the model estimates the intercept at the mean value for stress across communities (`r round(readd(mean_parameter_values)$suitability, 2)`).
 The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`].
-In other words, the slope of the stress-specialisation relationship was more likely to be positive for species with a smaller number of partners in low-stress conditions (and negative for species with a larger number of partners).
-
-
+Therefore, the slope of the stress-specialisation relationship was more likely to be positive for species with a large number of partners under average stress conditions (and negative for species with a smaller number of partners).
+Extrapolating to no-stress conditions: species that would interact with a small number of partners under no stress are more likely to interact with more partners as stress increases, whereas those that would interact with a large number of partners are more likely to interact with less.
 
 ```{r fig-random-effects, fig.width = width('double'), fig.height = 2.2*2, fig.cap = fig_random_effects_legend, out.width = "6.81in", out.height = "4.4in", out.extra="center"}
 loadd(random_species_draws)
