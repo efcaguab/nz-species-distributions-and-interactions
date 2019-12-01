@@ -231,9 +231,7 @@ Therefore, we followed @zizka_coordinatecleaner_2019 and applied a series of sim
 Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (as records prior to this date have been shown to be often imprecise); (*iii*) those in which the number of counts in the occurrence was registered was either zero (as that indicates that the species has not been recorded); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (as occurrences from unknown and fossil records are known to be highly unreliable). 
 We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
 We removed occurrences for which their coordinates (*v*) fell outside the borders of the country where they were recorded; (*vi*) those around a country capital or the centroid of the country and province centroids; (*vii*) those around a biodiversity institution; and (*viii*) those located within oceans. 
-Thorugh this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed accross `r n_species_with_dirty_occurrences` species.
-
-# Supplementary results
+Through this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed across `r n_species_with_dirty_occurrences` species.
 
 ```{r fig-median-suitability, fig.width = width('single'), fig.height = 2.2*1.5, fig.cap = "Median habitat suitability of communities in our dataset. Each row represents a different community and horizontal lines represent span the 2.5 and 97.5 quantiles."}
 readd(fig_median_suitability)
