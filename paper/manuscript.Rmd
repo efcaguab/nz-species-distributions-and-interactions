@@ -372,33 +372,6 @@ Interestingly, the slope of this relationship correlates negatively with the spe
 The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`].
 In other words, the slope of the stress-specialisation relationship was more likely to be positive for species with a smaller number of partners in low-stress conditions (and negative for species with a larger number of partners).
 
-```{r}
-loadd(random_slope_intercepts)
-# random_slope_intercepts <- readRDS("rsi.rds")
-
-species_types <- random_slope_intercepts %>%
-  # dplyr::rename_all(stringr::str_replace, "Q75", "Q97.5") %>%
-  # dplyr::rename_all(stringr::str_replace, "Q25", "Q2.5") %>%
-  # = Q75, Q2.5 = Q25) %>%
-  dplyr::mutate(intercept_sig = dplyr::case_when(Intercept_Q2.5 > 0 ~ "positive", Intercept_Q97.5 < 0 ~ "negative", TRUE ~ "indeterminate"), 
-                slope_sig = dplyr::case_when(scaled_suitability_Q2.5 > 0 ~ "positive", scaled_suitability_Q97.5 < 0 ~ "negative", TRUE ~ "indeterminate"), 
-                int_slo = interaction(intercept_sig, slope_sig), 
-                int_slo = dplyr::case_when(int_slo == "indeterminate.indeterminate" ~ "neither generalist or specialist", int_slo == "positive.indeterminate" ~ "true generalist", int_slo == "negative.indeterminate" ~ "true specialist", int_slo %in% c("positive.positive", "negative.negative") ~ "flexible species", TRUE ~ "flexible species") ) %>%
-  dplyr::mutate(int_slo = forcats::fct_infreq(int_slo)) 
-
-species_types %>%
-  dplyr::count(int_slo, guild) %>%
-  tidyr::spread(guild, n)
-
-  # dplyr::filter(intercept_sig != "indeterminate") %>%
-  # table(slope_sig, intercept_sig)
-
-library(ggplot2)
-species_types %>%  # 
-  ggplot(aes(x = int_slo, fill = guild)) +
-  geom_bar() +
-  coord_flip()
-```
 
 
 ```{r fig-random-effects, fig.width = width('double'), fig.height = 2.2*2, fig.cap = fig_random_effects_legend, out.width = "6.81in", out.height = "4.4in", out.extra="center"}
