@@ -374,6 +374,35 @@ figures_plan <- drake_plan(
  fig_median_suitability = plot_suitability(median_suitability)
 )
 
+# File outputs -----------------------------------------------------------
+
+dir.create("data/processed", showWarnings = F, recursive = T)
+
+file_out_plan <- drake_plan(
+  target(saveRDS(fig_dist_species_multiple_locations_data, 
+                 "data/processed/species_location_distribution.rds")), 
+  fig_sensitivity_analysis_data = list(
+    error_subsamples = error_subsamples,
+    min_suitability_error = min_suitability_error,
+    min_occurrences_factor = min_occurrences_factor,
+    suitability_subsamples = suitability_subsamples, 
+    chosen_niche_space = ifelse(approach_suitability == "independent_suitability",
+                                "single_species", "all_species")),
+  target(saveRDS(fig_sensitivity_analysis_data, "data/processed/fig_sensitivity_analysis_data.rds")),
+  fig_conditional_effects_data = list(
+    cond_draws = cond_draws, 
+    mean_parameter_values = mean_parameter_values), 
+  target(saveRDS(fig_conditional_effects_data, "data/processed/fig_conditional_effects_data.rds")),
+  target(saveRDS(model_ranking, "model_ranking.rds")), 
+  fig_random_effects_data = list(
+    random_species_draws = random_species_draws,
+    random_correlation_posterior = random_correlation_posterior,
+    random_sp_names = random_sp_names,
+    random_slope_intercepts = random_slope_intercepts, 
+    mean_suitability = mean_parameter_values$suitability), 
+  target(saveRDS(fig_random_effects_data, "fig_random_effects_data.rds"))
+)
+
 # Manuscript --------------------------------------------------------------
 
 reporting_plan <- drake_plan(
@@ -414,7 +443,8 @@ paper_plan <- rbind(
   suitability_vs_generalism_plan,
   data_references_plan,
   figures_plan,
-  reporting_plan
+  reporting_plan,
+  file_out_plan
 )
 
 # full_config <- drake_config(full_plan)
