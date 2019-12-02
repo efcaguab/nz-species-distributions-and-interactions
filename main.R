@@ -42,7 +42,7 @@ configuration_plan <- drake_plan(
   n_subsamples = config$n_subsamples,
   min_suitability_error = config$min_suitability_error,
   brm_cores = config$brm_cores,
-  n_markov_iter = config$n_markov_iter, 
+  n_markov_iter = config$n_markov_iter,
   approach_suitability = config$approach_suitability
 )
 
@@ -284,7 +284,7 @@ suitability_vs_generalism_plan <- drake::drake_plan(
   datasets_suitability = list(independent_suitability = independent_suitability,
                   collective_suitability = collective_suitability),
   # Using 1 - because I want stress not suitability
-  datasets = purrr::map(datasets_suitability, 
+  datasets = purrr::map(datasets_suitability,
                         ~dplyr::mutate(., suitability = 1 - suitability)),
   analysis_frames = purrr::map(datasets,
                               ~build_analysis_frame(
@@ -362,14 +362,14 @@ figures_plan <- drake_plan(
     error_subsamples,
     min_suitability_error,
     min_occurrences_factor,
-    suitability_subsamples, 
+    suitability_subsamples,
     chosen_niche_space = ifelse(approach_suitability == "independent_suitability",
                                 "single_species", "all_species")),
   fig_conditional_effects = plot_all_conditional_effect(cond_draws, mean_parameter_values),
   fig_random_effects = plot_ranf(random_species_draws,
                                  random_correlation_posterior,
                                  random_sp_names,
-                                 random_slope_intercepts, 
+                                 random_slope_intercepts,
                                  mean_suitability = mean_parameter_values$suitability),
  fig_median_suitability = plot_suitability(median_suitability)
 )
@@ -379,27 +379,27 @@ figures_plan <- drake_plan(
 dir.create("data/processed", showWarnings = F, recursive = T)
 
 file_out_plan <- drake_plan(
-  target(saveRDS(fig_dist_species_multiple_locations_data, 
-                 "data/processed/species_location_distribution.rds")), 
+  target(saveRDS(fig_dist_species_multiple_locations_data,
+                 "data/processed/species_location_distribution.rds")),
   fig_sensitivity_analysis_data = list(
     error_subsamples = error_subsamples,
     min_suitability_error = min_suitability_error,
     min_occurrences_factor = min_occurrences_factor,
-    suitability_subsamples = suitability_subsamples, 
+    suitability_subsamples = suitability_subsamples,
     chosen_niche_space = ifelse(approach_suitability == "independent_suitability",
                                 "single_species", "all_species")),
   target(saveRDS(fig_sensitivity_analysis_data, "data/processed/fig_sensitivity_analysis_data.rds")),
   fig_conditional_effects_data = list(
-    cond_draws = cond_draws, 
-    mean_parameter_values = mean_parameter_values), 
+    cond_draws = cond_draws,
+    mean_parameter_values = mean_parameter_values),
   target(saveRDS(fig_conditional_effects_data, "data/processed/fig_conditional_effects_data.rds")),
-  target(saveRDS(model_ranking, "model_ranking.rds")), 
+  target(saveRDS(model_ranking, "data/processed/model_ranking.rds")),
   fig_random_effects_data = list(
     random_species_draws = random_species_draws,
     random_correlation_posterior = random_correlation_posterior,
     random_sp_names = random_sp_names,
-    random_slope_intercepts = random_slope_intercepts, 
-    mean_suitability = mean_parameter_values$suitability), 
+    random_slope_intercepts = random_slope_intercepts,
+    mean_suitability = mean_parameter_values$suitability),
   target(saveRDS(fig_random_effects_data, "fig_random_effects_data.rds"))
 )
 
