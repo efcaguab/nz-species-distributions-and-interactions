@@ -215,15 +215,15 @@ Using this procedure, we were able to fill environmental variables for `r scales
 To fill the remaining `r format(complete_filled_cells_1[1], big.mark= ",")` cells, we repeated the aforementioned procedure but instead using a `r config$climate_buffer*2/1000`km buffer. 
 We removed from further analysis occurrences located within the `r complete_filled_cells_2[1]` cells for which we were unable to fill environmental variables (`r scales::percent(complete_filled_cells_2[1]/sum(complete_filled_cells_2), 0.01)` of the total). 
 
-Next, we calculate the probability density function of the species distribution in environmental space. 
-To determine the environmental space, we use the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
-Specifically we use the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of zero and a unit variance. 
-We then determine the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
-We use a kernel method to estimate this density and normalise it such that it ranges between zero and one. 
-Specifically, to calculate the probability density function we use `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@broennimann_ecospat_2018] with a grid resolution of 200.
-We then determine the location in the environmental space of the plant-pollinator communities using the function `suprow` from `ade4`.
-The normalised density at that particular location [which we calculate using the R package `raster` `r as.character(packageVersion('raster'))`; @hijmans_raster_2019] corresponds the bioclimatic suitability. 
-We use the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002], as it has been proposed earlier because it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
+Next, we calculated the probability density function of the species distribution in environmental space. 
+To determine the environmental space, we used the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
+Specifically we used the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of zero and a unit variance. 
+We then determined the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
+We used a kernel method to estimate this density and normalised it such that it ranges between zero and one. 
+We used the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002] (as it has been proposed earlier) because it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
+Specifically, to calculate the probability density function we used `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@broennimann_ecospat_2018] with a grid resolution of 200.
+We then determined the location in the environmental space of the plant-pollinator communities using the function `suprow` from `ade4`.
+The normalised density at that particular location [which we calculated using the R package `raster` `r as.character(packageVersion('raster'))`; @hijmans_raster_2019] corresponds the bioclimatic suitability. 
 The result of all these steps is the environmental stress which corresponds to one minus the bioclimatic suitability for a species of a particular location.  
 
 ```{r sensitivity-analysis-calculations}
