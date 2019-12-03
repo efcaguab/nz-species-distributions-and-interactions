@@ -185,8 +185,8 @@ plot_all_conditional_effect <- function(cond_draws, mean_parameter_values){
 
   possible_plot <- cond_draws$possible %>%
     plot_conditional_effect_guild(pal, mean_parameter_values$possible) +
-    labs(title = "(b) possible number of interactions",
-         x = "# possible interactions")
+    labs(title = "(b) possible number of partners",
+         x = "# possible partners")
 
   p <- cowplot::plot_grid(#grinell_niche_size_plot,
                           suitability_plot,
@@ -217,7 +217,7 @@ plot_conditional_effect_guild <- function(data, pal, mean_val, log_transformed =
     pub_theme() +
     coord_cartesian(expand = F) +
     theme(legend.position = "none") +
-    labs(y = "# interactions")
+    labs(y = "# partners")
 }
 
 plot_ranf <- function(random_species_draws, 
