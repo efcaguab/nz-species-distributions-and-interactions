@@ -177,10 +177,8 @@ percent_thinned <- 1 - sum(n_thinned_occurrences$N) / sum(n_cleaned_occurrences$
 percent_filled_round_one <- 1 - complete_filled_cells_1[1]/complete_climate_cells[1]
 ```
 
-Our third and final step was to relate the environmental suitability to the relative number of partners a species has in a community, as a proxy for Eltionian niche breadth. 
-To explore this relationship within and across species, we used a multilevel Bayesian model in which we controlled for the potential effects of the environment on co-occurrence.
-
-We assume that stress a species experience in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
+We calculated the environmental stress of species in their communities.
+We assume that stress a species experiences in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
 As we aim to compare specialisation levels for different levels of environmental stress, we only calculate bioclimatic suitability for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
 To calculate the bioclimatic suitability of a species in a particular location, we used a niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
 This approach is based on the probability density function of species distribution in an environmental variable space. 
