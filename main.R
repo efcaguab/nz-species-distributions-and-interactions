@@ -400,7 +400,7 @@ file_out_plan <- drake_plan(
     random_sp_names = random_sp_names,
     random_slope_intercepts = random_slope_intercepts,
     mean_suitability = mean_parameter_values$suitability),
-  target(saveRDS(fig_random_effects_data, "fig_random_effects_data.rds"))
+  target(saveRDS(fig_random_effects_data, "data/processed/fig_random_effects_data.rds"))
 )
 
 # Manuscript --------------------------------------------------------------
