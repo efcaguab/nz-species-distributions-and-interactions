@@ -232,7 +232,7 @@ loadd(n_enough_occurrences)
 n_occ_sensitivity_species <- n_thinned_occurrences %>%
   dplyr::filter(org_id == sensitivity_species_name$org_id[1]) %$% N
 
-n_spp_not_enough_occ <- nrow(n_thinned_occurrences) - nrow(n_enough_occurrences)
+n_spp_not_enough_occ <- nrow(n_thinned_occurrences) - nrow(n_enough_occurrences$single_species)
 ```
 
 We used a sensitivity analysis to determine the minimum number of occurrences that are necessary to have robust environmental stress estimations. 
