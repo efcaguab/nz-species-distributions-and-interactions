@@ -46,6 +46,7 @@ header-includes:
 * Fix references
 * Finish manual species checks
 * Quantify number of "true specialists", "true generalists" and flexible species.
+* Check out Pedro Bergamo paper in Ecology Letters
 
 ## Comments
 
