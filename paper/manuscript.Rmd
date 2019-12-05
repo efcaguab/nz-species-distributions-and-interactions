@@ -279,7 +279,7 @@ threshold_type <- ifelse(approach_suitability == "independent_suitability", "sin
 
 After performing our sensitivity analysis, we found that, for a species, we need roughly `r readd(min_occurrences_factor)[[threshold_type]]` independent occurrences for each community for which we aim to estimate the environmental stress. 
 This is the number of occurrences necessary to maintain the mean absolute error of bioclimatic suitability below `r config$min_suitability_error` (Fig. \@ref(fig:fig-sensitivity-analysis)). 
-We therefore removed from further analyses (NOTE XXX) `r n_spp_not_enough_occ` species for which we did not have enough occurrences to obtain robust estimates.
+We therefore removed from further analyses `r n_spp_not_enough_occ` species for which we did not have enough occurrences to obtain robust estimates.
 <!-- When inspecting the suitability values of the analysed species, we found that most communities included species for which habitat suitability was low and species for which it was high (Fig. \@ref(fig:fig-median-suitability)). -->
 
 ```{r fig-sensitivity-analysis, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_sensitivity_analysis_legend}
