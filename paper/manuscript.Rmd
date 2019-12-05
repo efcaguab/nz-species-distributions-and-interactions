@@ -17,9 +17,9 @@ output: #word_document
 toc: false
 fontsize: 11pt
 # classoption: a4paper
-geometry: 
-  - textwidth=33em
-  - textheight=48\baselineskip
+# geometry: 
+  # - textwidth=33em
+  # - textheight=48\baselineskip
 header-includes:
   - \usepackage{booktabs}
   - \usepackage{setspace}
@@ -55,29 +55,29 @@ loadd(bibliography)
 
 ^2^ Geospatial Research Institute, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
 
-**Running title:** XX
+<!-- **Running title:** XX -->
 
-**Keywords:** `r keywords`
+<!-- **Type of article:** XX -->
 
-**Type of article:** XX
+<!-- **Number of words:** `r abs_wordcount$n_words_stri` in abstract; `r format(round(msc_wordcount$n_words_stri), big.mark = ",")` in main text. -->
 
-**Number of words:** `r abs_wordcount$n_words_stri` in abstract; `r format(round(msc_wordcount$n_words_stri), big.mark = ",")` in main text.
+<!-- **Number of displays:** `r n_displays$figures` figures; `r n_displays$tables` tables; `r n_displays$text_boxes` text boxes. -->
 
-**Number of displays:** `r n_displays$figures` figures; `r n_displays$tables` tables; `r n_displays$text_boxes` text boxes.
-
-**Number of references:** `r n_references + nrow(interaction_citations)`
+<!-- **Number of references:** `r n_references + nrow(interaction_citations)` -->
 
 **Author for correspondence:** E. Fernando Cagua (+64 20 4026 8153).
 
-**Data accessibility:** Data supporting the results will be accessible in an appropriate data repository after publication. We will include the DOI here.
+<!-- **Data accessibility:** Data supporting the results will be accessible in an appropriate data repository after publication. We will include the DOI here. -->
 
-**Author contributions:** XX
+<!-- **Author contributions:** XX -->
 
 \clearpage
 
 # Abstract
 
 `r paste(drake::readd(abstract), collapse = "")`
+
+**Keywords:** `r keywords`
 
 \clearpage
 
