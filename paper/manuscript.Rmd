@@ -137,7 +137,7 @@ This database contains datasets originating from `r length(interaction_citations
 Calculating the environmental stress of species in their community and their potential partners required us to reduce both the taxonomic and distributional/locational uncertainty.
 A critical step towards reducing this uncertainty is to ensure that the names used to identify species are valid and unambiguous, which in turn allow us to obtain further information from biological databases and accurately match species across studies. 
 Therefore, our first step was to ensure consistent spelling and standardisation of species names synonyms (see Supplementary Methods).
-The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-worldmap), \@ref(fig:fig-distribution-species-mult-locations)).
+The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-distribution-species-mult-locations) and  \@ref(fig:fig-worldmap)).
 
 ```{r fig-distribution-species-mult-locations, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_dist_species_multiple_locations_legend}
 
