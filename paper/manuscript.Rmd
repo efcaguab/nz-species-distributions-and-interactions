@@ -1,5 +1,5 @@
 ---
-title: "Environment affects specialisation of plants and pollinators"
+title: "Environmental stress drives intermediate plant and pollinator specialisation"
 author: 
   - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
