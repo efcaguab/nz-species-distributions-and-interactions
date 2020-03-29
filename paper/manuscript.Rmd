@@ -83,12 +83,12 @@ loadd(bibliography)
 
 # Introduction
 
-Species interactions are known to vary widely across space and time. 
-There are multiple examples of species that interact with a large number of partners in a particular community or season, but with fewer in another. 
-Some of this variation can be attributed to environmental drivers. 
-However, how exactly the environment, specifically the stress it imposes on species, affects whether two species interact or not, and ultimately the species' specialisation. 
-Understanding how the environment drives the number of partners is crucial because it underpins the species' role in its community and shapes the structure of the network of interactions. 
-This structure, in turn, determines ecosystem function and stability. 
+Species interactions are known to vary widely across space and time [@laliberte_cascading_2012; @trojelsgaard_geographical_2015; @schleuning_specialization_2012; @poisot_beyond_2015]. 
+There are multiple examples of species that interact with a large number of partners in a particular community or season, but with fewer in another [@olesen_temporal_2008; @dupont_spatio-temporal_2009; @olesen_strong_2011; @rabeling_seasonal_2019; @benadi_specialization_2014]. 
+Some of this variation can be attributed to environmental drivers [@tylianakis_ecological_2017]. 
+However, it remains unknown how generalisable characteristics of the environment, specifically the stress it imposes on species, affects whether two species interact, and, ultimately, the species' specialisation. 
+Understanding how the environment drives the number of partners is crucial because it underpins the species' role in its community and shapes the structure of the network of interactions [@cirtwill_review_2018]. 
+This structure, in turn, determines ecosystem function and stability [@thebault_stability_2010]. 
 
 Species interactions are determined in part by niche processes (the matching of traits) and partly by neutral processes (more abundant species are more likely to encounter each other and, thus, interact). 
 The environment can influence both of these processes. 
