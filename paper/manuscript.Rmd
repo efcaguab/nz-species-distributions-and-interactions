@@ -100,7 +100,7 @@ One possible explanation for the seemingly contradictory evidence is that differ
 Here we attempt to overcome these barriers to deriving general rules by reducing multiple factors into a single measure of environmental stress. 
 Previous research suggests that environmental stress may affect the number of interaction partners a species has in different ways depending on the species' role in the community (for example its trophic guild) [@tylianakis_ecological_2017]. 
 Specifically, we propose two alternative hypotheses of how environmental stress may affect specialisation. 
-First, species under environmental stress, might be "pressured" to focus on partners with which they are best adapted to interact. 
+First, species under environmental stress might be "pressured" to focus on partners with which they are best adapted to interact. 
 For instance, @hoiss_altitude_2012 found increased phylogenetic clustering between plants and pollinators at higher altitudes; while @peralta_phylogenetic_2015 found that parasitoids in plantation forest, where environmental stress was higher than in native forests, constrained their host use to those with which phylogenetic matching was strongest.
 Similarly, @lavandero_genotype_2013 showed that environmental stress due to higher temperature reduced the trophic niche breadth (range of host genotypes used) of parasitoids, suggesting higher specialisation. 
 
@@ -114,7 +114,7 @@ Here, we investigate whether and how environmental stress can systematically aff
 Our main aim is to test the two hypotheses mentioned above that relate environmental stress with a species' number of partners and investigate whether this changes systematically across species or between trophic guilds. 
 We propose that specialist species can become "facultative" generalists to reduce their vulnerability to the absence of preferred partners [for example, when variations in climate decouple phenologies; @benadi_specialization_2014]. 
 In other words, we expect that, as environmental stress increases, specialists should be more likely to engage with more partners. 
-Species with many partners, conversely, should have a larger pool of available partners and might, therefore, be more likely to specialise on the most benefitial partners under environmental stress. 
+Species with many partners, conversely, should have a larger pool of available partners and might, therefore, be more likely to specialise on the most beneficial partners under environmental stress. 
 Importantly, when testing these hypotheses, we control for the potential effects of the environment on community composition [which has been previously shown to be a determinant factor; @gravel_bringing_2018]. 
 We test these hypotheses using data on plant-pollinator interactions. 
 These interactions provide a particularly interesting system to test these hypotheses because, due to the multiple trade-offs involved in the pollination service, there are multiple intuitive ways in which we could imagine species responding to environmental stress given the available partners.
