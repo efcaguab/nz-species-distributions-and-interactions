@@ -1,10 +1,10 @@
 ---
 title: "Environmental stress drives intermediate plant and pollinator specialisation"
 author: 
-  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
   - "Daniel B. Stouffer^1^ ([daniel.stouffer@canterbury.ac.nz](daniel.stouffer@canterbury.ac.nz))"
+  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
@@ -90,11 +90,10 @@ However, it remains unknown how generalisable characteristics of the environment
 Understanding how the environment drives the number of partners is crucial because it underpins the species' role in its community and shapes the structure of the network of interactions [@cirtwill_review_2018]. 
 This structure, in turn, determines ecosystem function and stability [@thebault_stability_2010]. 
 
-Species interactions are determined in part by niche processes (the matching of traits) and partly by neutral processes (more abundant species are more likely to encounter each other and, thus, interact). 
-The environment can influence both of these processes. 
-It is, therefore, not surprising that, despite limitations on the spatial extent or the number of environmental gradients considered, multiple studies have been able to show how changes to interactions can be related to environmental change [@tylianakis_ecological_2017].
-For instance, some studies suggest that the strength of some trophic interactions, like predation [@mckinnon_lower_2010; @vucic-pestic_warming_2011] and herbivory [@baskett_latitudinal_2018], can increase with temperature but might decrease with precipitation [@pires_predicted_2016]. 
-Some other studies, however, have shown either no effect (on average) or non-linear effects of temperature or precipitation on plant-pollinator interactions [@devoto_patterns_2005; @gravel_bringing_2018].
+Species interactions are determined in part by niche processes (the matching of traits) and partly by neutral processes (more abundant species are more likely to encounter each other and, thus, interact) [@vazquez_evaluating_2009; @vazquez_uniting_2009]. 
+The environment can influence both of these processes [@godsoe_integrating_2017]. 
+It is, therefore, not surprising that, despite limitations on the spatial extent or the number of environmental gradients considered, multiple studies have shown how changes to interactions can be related to environmental change [@tylianakis_ecological_2017].
+Despite widespread evidence that species interactions and their networks can change along environmental gradients, the direction of change can be variable [@pires_predicted_2016; @baskett_latitudinal_2018; @devoto_patterns_2005], such that until now it has been impossible to extrapolate previous findings to new kinds of gradients.
 Overall, while it looks clear that pairwise interactions respond to environmental drivers, there is high variability in the response [@tylianakis_global_2008].
 
 One possible explanation for the seemingly contradictory evidence is that different bioclimatic factors (like temperature or precipitation) can have contrasting effects on species and their partners. 
