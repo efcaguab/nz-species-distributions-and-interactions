@@ -3,3 +3,5 @@
 .git
 .drake
 data/downloads
+chosen_models.RData
+model_data.RData
