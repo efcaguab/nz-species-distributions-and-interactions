@@ -242,7 +242,7 @@ threshold_type <- ifelse(approach_suitability == "independent_suitability", "sin
 We used a sensitivity analysis to determine the minimum number of occurrences that are necessary to have robust environmental stress estimations. 
 For that we used the species with most occurrences available, *`r sensitivity_species_name$canonicalName`*, and calculated the mean absolute error of the bioclimatic suitability values obtained with `r numbers2words(config$n_subsamples)` subsamples from the `r format(n_occ_sensitivity_species, big.mark  =",")`  occurrences available from GBIF. 
 This analysis indicated that, for a species, we need roughly `r readd(min_occurrences_factor)[[threshold_type]]` independent occurrences for each community for which we aim to estimate the environmental stress. 
-This is the number of occurrences necessary to maintain the mean absolute error of bioclimatic suitability below `r config$min_suitability_error` (Fig. \@ref(fig:fig-sensitivity-analysis)). 
+This is the number of occurrences necessary to maintain the mean absolute error of bioclimatic suitability below `r config$min_suitability_error` (Figure \@ref(fig:fig-sensitivity-analysis)). 
 We therefore removed from further analyses `r n_spp_not_enough_occ` species for which we did not have enough occurrences to obtain robust estimates.
 
 ```{r fig-sensitivity-analysis, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_sensitivity_analysis_legend}
@@ -317,7 +317,7 @@ waic_se_diff_suitability <- sqrt(nrow(waic_comp_suitability) * var(waic_comp_sui
 ```
 
 Our models performed relatively well.
-The Bayesian R^2^ for our baseline model was `r round(bayesian_r2_baseline[1], digits = 2)`, which indicates our models were able to capture a large proportion of the variability on the data. 
+The Bayesian R^2^ for our baseline model was `r round(bayesian_r2_baseline[1], digits = 2)`, which indicates that our models were able to capture a large proportion of the variability on the data. 
 Overall, we found that environmental stress does not have a consistent effect across species. 
 Indeed, when looking at the fixed effects, stress has virtually no relationship with the normalised degree—our metric of specialisation (Figure \@ref(fig:fig-conditional-effects)a). 
 However, environmental stress was still an important predictor in our model. 
@@ -365,11 +365,10 @@ model_ranking$waic %>%
 ```
 
 For some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
-Interestingly, the slope of this relationship correlates with the species' intercept in the model (Figure \@ref(fig:fig-random-effects)b and c).
-Recall that the model estimates the intercept at the mean value for stress across communities (`r round(readd(mean_parameter_values)$suitability, 2)`).
-The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`].
-Therefore, the slope of the stress-specialisation relationship was more likely to be positive for species with a large number of partners under average stress conditions (and negative for species with a smaller number of partners).
-Extrapolating to no-stress conditions: species that would interact with a small number of partners under no stress are more likely to interact with more partners as stress increases, whereas those that would interact with a large number of partners are more likely to interact with less.
+Interestingly, the slope of this relationship was correlated with the species' specialisation intercept in the model (Figure \@ref(fig:fig-random-effects)b and c; the mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`]).
+This correlation indicates that the slope of the stress-specialisation relationship was more likely to be positive for species with many partners under average stress conditions (and negative for species fewer partners).
+Recall that the model estimates the intercept of the number of partners for each species at the mean value for stress across communities (`r round(readd(mean_parameter_values)$suitability, 2)`).
+Extrapolating to no-stress conditions this means that species that would interact with few partners under no stress are more likely to interact with more partners as stress increases, whereas those that would interact with many partners are more likely to interact fewer.
 
 ```{r fig-random-effects, fig.width = width('double'), fig.height = 2.2*2, fig.cap = fig_random_effects_legend, out.width = "6.81in", out.height = "4.4in", out.extra="center"}
 loadd(random_species_draws)
@@ -387,21 +386,21 @@ n_random_ani <- n_random_species %>%
   n_sp
 
 fig_random_effects_legend <- 
-  paste0("Species-level effects of environmental stress (a) Conditional effect of stress for individual species. Each line corresponds to the median relationship for each species. Although we included in the analysis of all species that are present in two or core communities, to facilitate visualisation here, we show only species for which there is suitability information in at least six communities (", 
+  paste0("Species-level effects of environmental stress (a) Conditional effect of stress for individual species. Each line corresponds to the median relationship for each species. Although we included in the analysis all species that are present in two or more communities, to facilitate visualisation here, we show only species present in at least six communities (", 
          n_random_pla, " plants and ", 
          n_random_ani, " pollinators). As in the previous figure, fitted values assume a hypothetical community of median size. In each panel, we highlight two species for which the relationship between environmental suitability and the normalised degree was particularly strong. ", 
-         "(b and c) The correlation between the species' intercept and the species' slope of suitability was negative. The species' intercept can be interpreted as the relative difference between the number of partners a species has under mean levels of environmental stress and the mean number of partners across all species. Positive values of species' slope indicate a positive relationship between stress and the number of partners and vice-versa.")
+         "(b and c) There was a positive correlation between the species' intercept and the species' stress-specialisation slope. The species' intercept can be interpreted as the number of partners a species would have under mean levels of environmental stress.")
 
 readd(fig_random_effects)
 ```
 
-As expected, we found a strong and positive relationship between the number of possible interactions and the number of realised interactions in the community. 
+As expected, we found a strong and positive relationship between the number of possible interactions and the number of realised interactions in the community (i.e. species that were capable of being generalists tended to realise this generality at all locations).
 There was also a large difference of WAIC between the model that included this predictor and that that excluded it. 
 This result indicates that the availability of potential partners—this is, community composition—accounts for a large proportion of the variability in species degree. 
-Importantly, our findings relating to the variability of the stress-specialisation relationship were qualitatively unchanged, whether we included this variable or not. 
+Importantly, our findings relating to the variability of the stress-specialisation relationship were qualitatively unchanged, whether we accounted for community composition or not. 
 
 The standard deviation (in the parameters scale) of the community intercepts was `r round(sd_loc_id$Estimate, 2)` [`r round(sd_loc_id$Q2.5, 2)`, `r round(sd_loc_id$Q97.5, 2)`] which indicates the importance of the local context when determining specialisation. 
-The standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' stress slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brakets). 
+The standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' stress slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brackets). 
 
 # Discussion 
 
