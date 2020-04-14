@@ -134,8 +134,8 @@ stats_clean_int <- clean_interactions %>%
 We retrieved plant-pollinator networks from the Web of Life database [@fortuna_web_2014]. 
 This database contains datasets originating from `r length(interaction_citations$BIBTEXKEY)` studies published in the primary literature between `r int_citations_year_range[1]` and `r int_citations_year_range[2]`. 
 Calculating the environmental stress of species in their community and their potential partners required us to reduce both the taxonomic and distributional/locational uncertainty.
-A critical step towards reducing this uncertainty is to ensure that the names used to identify species are valid and unambiguous, which in turn allow us to obtain further information from biological databases and accurately match species across studies. 
-Therefore, our first step was to ensure consistent spelling and standardisation of species names synonyms (see Supplementary Methods).
+A critical step towards reducing this uncertainty is to ensure that the names used to identify species are valid and unambiguous, which in turn allows us to obtain further information from biological databases and accurately match species across studies. 
+Therefore, our first step was to ensure consistent spelling and standardisation of species names and synonyms (see Supplementary Methods).
 The cleaning process resulted on a total of `r format(stats_clean_int$pla_id, big.mark = ",")` plants and `r format(stats_clean_int$ani_id, big.mark = ",")` pollinator species distributed across `r format(stats_clean_int$loc_id)` locations arround the globe (Figure \@ref(fig:fig-distribution-species-mult-locations) and  \@ref(fig:fig-worldmap)).
 
 ```{r fig-distribution-species-mult-locations, fig.width = width('single'), fig.height = 2.2, fig.cap = fig_dist_species_multiple_locations_legend}
@@ -158,11 +158,11 @@ fig_dist_species_multiple_locations_legend <-
 readd(fig_dist_species_multiple_locations)
 ```
 
-After matching species across studies as accurate as possible, we carried on two more steps. 
+After matching species across studies as accurately as possible, we performed two more steps. 
 First, we calculated the environmental stress of species in their communities.
-Second, we relate the species stress in their community with the number of partner species it has as a metric of their level of specialisation.
+Second, we relate each species' stress in its community with the number of partner species it has as a metric of its level of specialisation.
 
-## Environmental stress
+## Environmental stressdispla
 
 ```{r occurrences-calcs}
 loadd(n_occurrences, n_cleaned_occurrences, n_dirty_occurrences, gbif_key_groups, org_ids, n_thinned_occurrences, complete_climate_cells, complete_filled_cells_1, complete_filled_cells_2)
@@ -177,7 +177,7 @@ percent_filled_round_one <- 1 - complete_filled_cells_1[1]/complete_climate_cell
 ```
 
 We calculated the environmental stress of species in their communities.
-We assume that stress a species experiences in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
+We assume that the stress a species experiences in a particular location is inversely related to the suitability of the average environmental conditions in that place. 
 As we aim to compare specialisation levels for different levels of environmental stress, we only calculate bioclimatic suitability for species that were present in at least `r numbers2words(readd(minimum_spp_locations))` communities.
 To calculate the bioclimatic suitability of a species in a particular location, we used a niche-factor analysis [@hirzel_ecological-niche_2002; @broennimann_measuring_2012]. 
 This approach is based on the probability density function of species distribution in an environmental variable space. 
@@ -188,10 +188,10 @@ As bioclimatic suitability is calculated in a scale from zero to one following t
 The niche factor analysis requires two critical pieces of information. 
 First, it requires information about the occurrences of the species of interest.
 Second, the method requires information about the environmental conditions for all the locations in which the species occurs.
-We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org). 
+We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences of our focal species from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org). 
 Issues with data quality are a central issue hampering the use of publicly available species occurrence GBIF data in ecology and biogeography [@jetz_essential_2019]. 
 We, therefore, followed a series of filters and geographic heuristics to correct or remove erroneous and imprecise referencing records [see supplementary methods; @zizka_coordinatecleaner_2019] which allowed us to identify and remove `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million potentially problematic occurrences from further analysis.
-We integrated the occurrences from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
+We integrated the occurrence records from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
 
 We retrieved environmental data from WorldClim V2.0, which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
 We then complemented data obtained from WorldClim with data from Envirem [@title_envirem_2017], which includes 16 extra bioclimatic and two topographic variables. 
@@ -216,14 +216,14 @@ We removed from further analysis occurrences located within the `r complete_fill
 
 Next, we calculated the probability density function of the species distribution in environmental space. 
 To determine the environmental space, we used the first two components from a principal component analysis of the 37 bioclimatic variables associated with the species occurrences. 
-Specifically we used the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and center and scale all bioclimatic variables to have a mean of zero and a unit variance. 
-We then determined the position of species occurrences in the environmental space and estimate their bivariate probability density function. 
+Specifically we used the `dudi.pca` function from the R package `ade4` `r as.character(packageVersion('ade4'))` [@dray_ade4_2007] and centered and scaled all bioclimatic variables to have a mean of zero and a unit variance. 
+We then determined the position of species occurrences in the environmental space and estimated their bivariate probability density function. 
 We used a kernel method to estimate this density and normalised it such that it ranges between zero and one. 
-We used the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002] (as it has been proposed earlier) because it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
+We used the kernel density method in the niche-factor analysis [@broennimann_measuring_2012] rather than the distance from the mode [@hirzel_ecological-niche_2002] (as has been proposed earlier) because it has been shown to reduce the procedure's sensitivity to sampling effort and the resolution of the environmental space.
 Specifically, to calculate the probability density function we used `ecospat.grid.clim.dyn` from the R package `ecospat` `r as.character(packageVersion('ecospat'))` [@broennimann_ecospat_2018] with a grid resolution of 200.
 We then determined the location in the environmental space of the plant-pollinator communities using the function `suprow` from `ade4`.
-The normalised density at that particular location [which we calculated using the R package `raster` `r as.character(packageVersion('raster'))`; @hijmans_raster_2019] corresponds the bioclimatic suitability. 
-The result of all these steps is the environmental stress which corresponds to one minus the bioclimatic suitability for a species of a particular location.  
+The normalised density at that particular location [which we calculated using the R package `raster` `r as.character(packageVersion('raster'))`; @hijmans_raster_2019] corresponds with the bioclimatic suitability. 
+The result of all these steps is the generation of a value of environmental stress, which corresponds to one minus the bioclimatic suitability for a species of a particular location.  
 
 ```{r sensitivity-analysis-calculations}
 loadd(sensitivity_species_name)
@@ -241,17 +241,17 @@ For that we used the species with most occurrences available, *`r sensitivity_sp
 
 We then used a set of Bayesian multilevel models to evaluate the impact of environmental stress on species specialisation. 
 Specifically, we use the normalised degree of species as our response variable; that is, the number of species it interacts with given the number of species in the opposite guild [@martin_gonzalez_centrality_2010]. 
-The normalised degree was modelled using a logit link function, and a binomial distribution in which the number of partner species a focal interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
+The normalised degree was modelled using a logit link function and a binomial distribution in which the number of partner species a focal species interacts with is the number of successes, and the number of species in the opposite guild is the number of trials. 
 We are aware that whether species interact or not is not a Bernoulli process as species interactions are not strictly independent from each other. 
 However, the use of a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
 Importantly, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function.
 
-We evaluated four models to assess the relative importance of suitability. 
+We evaluated four models to assess the relative importance of stress for each focal species.  
 A first model, our baseline model, included five variables. 
 <!-- fixed variables (population-level predictors) and two random variables (grouping levels). -->
-The predictors in the baseline model were the environmental stress, its number of known possible partners in the community, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
+The predictors in the baseline model were the environmental stress of the community for each focal species, the species' number of known possible partners in the community, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
 We included the number of known possible partners as a predictor in our models as it allows us to control for the effects of the environment on community composition, effectively accounting for species co-occurrence. 
-We calculated this metric by determining the number of partners with which the species is known to interact in any other community.
+We calculated this metric by determining the number of partners with which the species is known to interact in any other community and assessing how mant of these potential partners are present in the local community.
 Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance. 
 Often, the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.
 
