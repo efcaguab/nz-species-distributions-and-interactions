@@ -1,10 +1,10 @@
 ---
 title: "Environmental stress drives intermediate plant and pollinator specialisation"
 author: 
+  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
   - "Audrey Lustig^2^ ([audrey.lustig@canterbury.ac.nz](audrey.lustig@canterbury.ac.nz))"
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
   - "Daniel B. Stouffer^1^ ([daniel.stouffer@canterbury.ac.nz](daniel.stouffer@canterbury.ac.nz))"
-  - "E. Fernando Cagua^1^ ([efc29@uclive.ac.nz](mailto:efc29@uclive.ac.nz))"
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
