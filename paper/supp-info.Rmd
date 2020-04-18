@@ -152,7 +152,7 @@ In this fashion, we were able to further correct `r n_sp_manual_corrections` nam
 Most manual corrections were made on names that have been abbreviated or had more than two spelling mistakes.
 A complete list of manual name corrections can bee seen in Table \@ref(tab:tab-manual-name-corrections).
 
-```{r tab-manual-name-corrections, eval = FALSE}
+```{r tab-manual-name-corrections}
 loadd(spp, manual_name_corrections)
 manual_name_corrections %>%
   inner_join(spp, by = c("queried_sp_name" = "sp_name")) %>%
