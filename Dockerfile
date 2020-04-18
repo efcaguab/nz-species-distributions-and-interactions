@@ -31,3 +31,4 @@ RUN python3 -m pip install wheel \
   && squashfs-root/AppRun +PlugInstall +qall
 
 RUN R -e "install.packages(c('fuzzyjoin'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-04-01'))"
+RUN R -e "install.packages(c('RefManageR'), repos = c(CRAN = 'https://mran.revolutionanalytics.com/snapshot/2019-06-01'))"
