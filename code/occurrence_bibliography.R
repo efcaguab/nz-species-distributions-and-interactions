@@ -28,7 +28,7 @@ write_bib <- function(references, bib_file){
   if (file.exists(bib_file))
     file.remove(bib_file)
   
-  ocurrences_bib_clean %>%
+  references %>%
     purrr::walk(RefManageR::WriteBib, 
                 file = bib_file, 
                 append = TRUE)
