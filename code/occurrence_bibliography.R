@@ -1,7 +1,7 @@
 # Save a bib file for a list of dois from GBIF
-get_occurrence_refs <- function(dois){
+get_occurrence_refs <- function(gbif_download_info){
   
-  occurrences_bib <- RefManageR::GetBibEntryWithDOI(dois)
+  occurrences_bib <- RefManageR::GetBibEntryWithDOI(gbif_download_info$doi)
   
   # update GBIF name cause its ugly
   change_author_familyname <- function(x, new_name){
@@ -16,7 +16,14 @@ get_occurrence_refs <- function(dois){
   }
   
   update_bib_type <- function(x){
-    x$bibtype <- "Electronic"
+    x$bibtype <- "Online"
+    x
+  }
+  
+  update_urldate <- function(x, y){
+    x$urldate <- y %>%
+      as.Date() %>%
+      as.character()
     x
   }
   
@@ -24,7 +31,8 @@ get_occurrence_refs <- function(dois){
     purrr::map(change_author_familyname,
                new_name = "GBIF.org") %>%
     purrr::map(update_ref_key) %>%
-    purrr::map(update_bib_type)
+    purrr::map(update_bib_type) %>%
+    purrr::map2(gbif_download_info$modified, update_urldate)
   
 }
 
