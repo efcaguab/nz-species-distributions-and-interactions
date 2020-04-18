@@ -37,7 +37,6 @@ header-includes:
 
 ## To-do
 
-* Fix a couple of references
 * Add a few references to the methods justifying occurrence cleaning approach (thanks Audrey)
 
 ## Won't-do
