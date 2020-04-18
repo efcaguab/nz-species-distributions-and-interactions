@@ -125,7 +125,7 @@ all_int_cites <- paste0("@", interaction_citations$BIBTEXKEY) %>%
 Data were obtained from the Web of Life database [@fortuna_web_2014] which includes data from `r length(interaction_citations$BIBTEXKEY)` published studies `r all_int_cites`.
 
 Interaction data from the included studies included `r format(n_sp_names, big.mark = ",")` unique organism names. 
-From these `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
+From these, `r format(n_names_in_multiple_references_orig, big.mark = ",")` were present in more than one study.
 From the total number of organisms, `r format(n_sp_names_subsp_level, big.mark = ",")` were identified to the subspecies or variety level, `r format(n_sp_names_sp_level_no_subsp, big.mark = ",")` to the species level, `r format(n_sp_names_gen_level, big.mark = ",")` to the genus level, whereas the remaining `r format(n_no_tax_info, big.mark = ",")` were unidentified. 
 As the species level was the most common taxonomic rank available in our interaction datasets, in all further analysis, we grouped together subspecies or varieties within the same species. 
 
@@ -146,13 +146,13 @@ First, because we wanted to be able to identify the cases in which the same spec
 This can occur not only when the canonical name has been changed but also when there are widely used orthographic variants.
 Second, because retrieving occurrence data is often only possible using the latest accepted/valid name for a particular species.
 
-All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct or find synonyms `r format(n_sp_not_found, big.mark = ",")` of them. 
-We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for canonical names that both, resembled the unvalidated names and matched the geographic and taxonomic expectations. 
-In this fashion, we were able to further correct `r n_sp_manual_corrections` names. 
-Most manual corrections were made on names that have been abbreviated or had more than two spelling mistakes. 
+All together, from the `r format(n_sp_names_sp_level - n_sp_correct_in_data, big.mark = ",")` names we were unable to validate, it was not possible to automatically correct or find synonyms for `r format(n_sp_not_found, big.mark = ",")` of them. 
+We then manually consulted multiple online databases, chiefly Wikispecies (https://species.wikimedia.org/), and looked for canonical names that both, resembled the unvalidated names and matched the geographic and taxonomic expectations.
+In this fashion, we were able to further correct `r n_sp_manual_corrections` names.
+Most manual corrections were made on names that have been abbreviated or had more than two spelling mistakes.
 A complete list of manual name corrections can bee seen in Table \@ref(tab:tab-manual-name-corrections).
 
-```{r tab-manual-name-corrections}
+```{r tab-manual-name-corrections, eval = FALSE}
 loadd(spp, manual_name_corrections)
 manual_name_corrections %>%
   inner_join(spp, by = c("queried_sp_name" = "sp_name")) %>%
@@ -198,10 +198,10 @@ data_sources_mult_nets <- int_metadata %>%
 n_data_sources_mult_nets <- nrow(data_sources_mult_nets)
 ```
 
-This cleaning process allowed us to match further `r n_sp_names - n_sp_ids` names across data sources and, by doing so, identify another `r n_names_in_multiple_references_after - n_names_in_multiple_references_orig` species that were present in more than one study. 
+This cleaning process allowed us to match a further `r n_sp_names - n_sp_ids` names across data sources and, by doing so, identify another `r n_names_in_multiple_references_after - n_names_in_multiple_references_orig` species that were present in more than one study. 
 The process also allowed us to identify `r numbers2words(length(problematic_networks))` problematic data sources in which some names were included as both plants and pollinators. 
 These data sources were removed from further analysis. 
-In `r numbers2words(n_data_sources_mult_nets)` of our data sources interaction data was recorded at multiple points in time. 
+In `r numbers2words(n_data_sources_mult_nets)` of our data sources, interaction data were recorded at multiple points in time. 
 When this was the case, we combined interaction data into one single interaction network. 
 
 ```{r fig-worldmap, fig.width = width('single'), fig.cap ="Worldwide distribution of pollination communities included in this study"}
@@ -225,10 +225,10 @@ n_species_with_dirty_occurrences <- get_n_species(n_dirty_occurrences)
 
 We retrieved occurrences from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org) using the R package `rgbif` `r as.character(packageVersion('taxize'))` [@chamberlain_r_2017; @chamberlain_rgbif_2019].
 Specifically, for each species, we only requested occurrences for which the coordinates of the observation were available and that had no known geospatial issue in the GBIF database.
-Roughly, we downloaded `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species we were interested on. 
-This occurrences, however, contain observations of mixed quality. 
+We downloaded roughly `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences for the `r format(n_species_with_occurrences, big.mark = ",")` species in which we were interested. 
+These occurrences, however, contain observations of mixed quality. 
 Therefore, we followed @zizka_coordinatecleaner_2019 and applied a series of simple filters and geographic heuristics to remove those of lower quality. 
-Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (as records prior to this date have been shown to be often imprecise); (*iii*) those in which the number of counts in the occurrence was registered was either zero (as that indicates that the species has not been recorded); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (as occurrences from unknown and fossil records are known to be highly unreliable). 
+Specifically, we removed all occurrences with (*i*) a coordinate uncertainty larger than 100km; (*ii*) those recorded prior to 1945 (as records prior to this date have been shown to be often imprecise); (*iii*) those in which the number of counts in the occurrence was registered as zero (as that indicates that the species has not been recorded); and (*iv*) those occurrences in which the "basis of record" was not a human observation or a preserved specimen (as occurrences from unknown and fossil records are known to be highly unreliable). 
 We then used the R package `CoordinateCleaner` `r as.character(packageVersion('taxize'))` [@zizka_coordinatecleaner_2019] and land mass and country data from Natural Earth (https://www.naturalearthdata.com) with a 1:10,000,000 scale to further identify and remove problematic occurrences. 
 We removed occurrences for which their coordinates (*v*) fell outside the borders of the country where they were recorded; (*vi*) those around a country capital or the centroid of the country and province centroids; (*vii*) those around a biodiversity institution; and (*viii*) those located within oceans. 
 Through this cleaning process, we removed with `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million occurrences distributed across `r n_species_with_dirty_occurrences` species.
