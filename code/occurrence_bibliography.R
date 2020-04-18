@@ -15,10 +15,16 @@ get_occurrence_refs <- function(dois){
     x
   }
   
+  update_bib_type <- function(x){
+    x$bibtype <- "Electronic"
+    x
+  }
+  
   occurrences_bib %>%
     purrr::map(change_author_familyname,
                new_name = "GBIF.org") %>%
-    purrr::map(update_ref_key)
+    purrr::map(update_ref_key) %>%
+    purrr::map(update_bib_type)
   
 }
 
