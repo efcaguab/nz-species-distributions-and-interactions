@@ -416,6 +416,10 @@ reporting_plan <- drake_plan(
                                file_out("paper/int-bibliography.bib"),
                                biblio_download_date)
   ),
+  occurrence_refs = get_occurrence_refs(gbif_download_info$doi), 
+  occurrence_bibliography = target(
+    command = write_bib(occurrence_refs, 
+                        file_out("paper/interaction_bibliography.bib"))),
   interaction_citations = bib2df::bib2df(file_in("paper/int-bibliography.bib")),
   abstract = readLines(file_in("./paper/abstract.md")),
   keywords = process_keywords(file_in("./paper/keywords.md")),

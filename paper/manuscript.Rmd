@@ -8,6 +8,7 @@ author:
 bibliography: 
   - bibliography.bib
   - int-bibliography.bib
+  - occurrence_bibliography.bib
 csl: ecology-letters.csl
 output: #word_document
   bookdown::pdf_document2:
@@ -48,7 +49,7 @@ library(dplyr)
 
 loadd(abs_wordcount, msc_wordcount, n_displays, n_references, keywords, bibliography)
 loadd(interaction_citations, config) 
-loadd(bibliography)
+loadd(bibliography, occurrence_refs)
 ```
  
 ^1^ Centre for Integrative Ecology, School of Biological Sciences, University of Canterbury, Private Bag 4800, Christchurch 8041, New Zealand
@@ -185,10 +186,18 @@ Habitats are characterised by a collection of environmental variables.
 In a nutshell, those habitats in which the species occurs more often are deemed to be more suitable for the species than habitats in which the species has never been observed. 
 As bioclimatic suitability is calculated in a scale from zero to one following the niche-factor analysis, for simplicity, we define environmental stress as one minus suitability. 
 
+```{r occurrence-citations}
+occ_cit <- occurrence_refs %>%
+  purrr::map_chr(names) %>%
+  paste0("@", .) %>%
+  paste(collapse = "; ") %>%
+  paste0("[", ., "]")
+```
+
 The niche factor analysis requires two critical pieces of information. 
 First, it requires information about the occurrences of the species of interest.
 Second, the method requires information about the environmental conditions for all the locations in which the species occurs.
-We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences of our focal species from the Global Biodiversity Information Facility (GBIF; https://www.gbif.org). 
+We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences of our focal species from the Global Biodiversity Information Facility `r occ_cit`. 
 Issues with data quality are a central issue hampering the use of publicly available species occurrence GBIF data in ecology and biogeography [@jetz_essential_2019]. 
 We, therefore, followed a series of filters and geographic heuristics to correct or remove erroneous and imprecise referencing records [see supplementary methods; @zizka_coordinatecleaner_2019] which allowed us to identify and remove `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million potentially problematic occurrences from further analysis.
 We integrated the occurrence records from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
