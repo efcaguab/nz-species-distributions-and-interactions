@@ -1,7 +1,7 @@
 ---
 title: "Draft information"
-subtitle: "version: draft-0.4"
-date: "2019-12-01"
+subtitle: "version: draft-0.5"
+date: "2020-04-18"
 # bibliography: phd-bibliography/pollen-competition.bib
 csl: ecology-letters.csl
 output:
@@ -30,26 +30,21 @@ header-includes:
 
 ## Done
 
-* Refocused the introduction
-* Moved details of the taxonomic data cleaning process to supplementary materials
-* Moved details of occurrence data cleaning process to supplementary materials
-* Reorganised the results
-* Rewrote most of the discussion
-* Changed some details about how species are cleaned
-* Removed species generality and the breadth of the environmental niche from the model
-* Language is now centered on stress and specialisation. Mentioning bioclimatic suitability only when needed in the methods.
+* Included feedback to paper (thanks Jason)
+* Added many references including some to GBIF datasets
+* Minor adjustments to figure captions
+* Tidied up the supplementary materials
 
 ## To-do
 
-* There are some unfamiliar warnings for when matching environmental variables to occurrences. I need to double-check this is all correct before submission. 
-* Refine the supplementary results. 
-* Fix references
-* Finish manual species checks
-* Quantify number of "true specialists", "true generalists" and flexible species.
-* Check out Pedro Bergamo paper in Ecology Letters
+* Fix a couple of references
+* Add a few references to the methods justifying occurrence cleaning approach (thanks Audrey)
+
+## Won't-do
+
+* Finish the manual checks for species names that we were unable to correct automatically. It takes ~5-10 mins per species and we have ~600. Given the amount of data we already have it probably won't make much of a difference.
 
 ## Comments
 
-* Jason, thanks for proposing the idea of calculating the suitability of the community as a whole. I think it would be super exciting but didn't pursue that path. Mainly because that would imply downloading the occurrences for all the species we know their correct name as opposed to just those that are in more than one community as we do now. Currently, the occurrence data for the latter group is ~50GB. Expanding the group will likely mean dealing with 3-5 times as much data. This exercise creates some new technical problems — all solvable but challenging enough to take longer than what I want to budget for it. 
-
+* Jason, one of your comments was: *"I can't remember if I've raised this before, but if species are near to the boundaries of number of partners (close to zero or close to N, where N is the number of species in a community), a random change in the number of partners is more likely to bring them towards the mean because they can't go any higher than N or lower than 0. Is there any way to deal with this?"*. That certainly might be happening for species with few partners. I try to address that in the discussion (see \lr{regression-to-the-mean}). I don't think it happens for species with many partners because very few of the species analysed are close to N (only ~2% of plants and ~3% of animals have a normalised degree > 0.5, ~0.5% of both have a normalised degree > 0.75). To avoid confusion I've removed the "regression to the mean" statements in the discussion. 
 * Appart from that, I think I followed most suggestions one way or another. **Thanks!**
