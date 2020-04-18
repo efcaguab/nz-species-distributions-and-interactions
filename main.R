@@ -416,7 +416,7 @@ reporting_plan <- drake_plan(
                                file_out("paper/int-bibliography.bib"),
                                biblio_download_date)
   ),
-  occurrence_refs = get_occurrence_refs(gbif_download_info$doi), 
+  occurrence_refs = get_occurrence_refs(gbif_download_info), 
   occurrence_bibliography = target(
     command = write_bib(occurrence_refs, 
                         file_out("paper/occurrence_bibliography.bib"))),
