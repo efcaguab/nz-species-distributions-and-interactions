@@ -209,13 +209,13 @@ The additional set of variables from Envirem are relevant to ecological or physi
 We obtained all environmental data as rasters composed by cells of 2.5 arc-minutes. 
 
 After obtaining information about species occurrence and the environment, we then merged these two datasets such that a vector with details of our 37 bioclimatic and topographic variables characterised the location of each occurrence. 
-Sets of occurrence data tend to be spatially aggregated due to sample bias (tendency to collect close to cities, certain countries). 
-Moreover, spatial autocorrelation arises in ecological data because geographically clumped records tend to be more similar in physical characteristics and/or species abundances than do pairs of locations that are farther apart. 
-To account for such spatial dependency in occurrence data, we only included one occurrence record if a species had more than one within a cell of the bioclimatic raster. 
+Sets of occurrence data tend to be spatially aggregated due to sample bias [tendency to collect close to cities, certain countries; @jetz_essential_2019]. 
+Moreover, spatial autocorrelation arises in ecological data because geographically clumped records tend to be more similar in physical characteristics and/or species abundances than do pairs of locations that are farther apart [@elith_species_2009; @dormann_methods_2007]. 
+To account for such spatial dependency in occurrence data, we only included one occurrence record if a species had more than one within a cell of the bioclimatic raster [@torres_using_2018; @elith_species_2009]. 
 We did this to avoid giving more weight to areas with a high number of occurrences, a common scenario in occurrence records collected opportunistically as the ones we use here. 
 In this step we removed `r scales::percent(percent_thinned)` of the occurrences which resulted in a total of `r round(sum(n_thinned_occurrences$N)/1000000, digits = 1)` million occurrences used in our niche analysis. 
 
-A common issue of terrestrial bioclimatic datasets is that the boundaries of the cells with information do not precisely match the landmass boundaries. 
+A common issue of terrestrial bioclimatic datasets is that the boundaries of the cells with information do not precisely match the landmass boundaries [@zizka_coordinatecleaner_2019]. 
 The result of this missmatch is that not all environmental variables were available for `r format(complete_climate_cells[1], big.mark = ",")` of the raster cells with occurrences (`r scales::percent(complete_climate_cells[1]/sum(complete_climate_cells), accuracy = 0.1)` of the total). 
 As expected, the vast majority of these problematic cells were close to the shore. 
 To address this issue, we calculated the average value of environmental variables within a `r config$climate_buffer/1000`km buffer of the centre of the cell where the variable was missing and used it to approximate the value of the variable in that cell. 
