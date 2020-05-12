@@ -6,7 +6,7 @@ author:
   - "Jason M. Tylianakis^1^ ([jason.tylianakis@canterbury.ac.nz](jason.tylianakis@canterbury.ac.nz))"
   - "Daniel B. Stouffer^1^ ([daniel.stouffer@canterbury.ac.nz](daniel.stouffer@canterbury.ac.nz))"
 bibliography: 
-  - bibliography.bib
+  - bibliography.yaml
   - int-bibliography.bib
   - occurrence_bibliography.bib
 csl: ecology-letters.csl
