@@ -198,16 +198,15 @@ occ_cit <- occurrence_refs %>%
 The niche factor analysis requires two critical pieces of information. 
 First, it requires information about the occurrences of the species of interest.
 Second, the method requires information about the environmental conditions for all the locations in which the species occurs.
-We retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences of our focal species from the Global Biodiversity Information Facility `r occ_cit`. 
+To obtain the first kind type of information, we retrieved `r round(sum(n_occurrences$N)/1000000, digits = 1)` million occurrences of our focal species from the Global Biodiversity Information Facility `r occ_cit`. 
 Issues with data quality are a central issue hampering the use of publicly available species occurrence GBIF data in ecology and biogeography [@jetz_essential_2019]. 
 We, therefore, followed a series of filters and geographic heuristics to correct or remove erroneous and imprecise referencing records [see supplementary methods; @zizka_coordinatecleaner_2019] which allowed us to identify and remove `r round(sum(n_dirty_occurrences$N)/1000000, digits = 1)` million potentially problematic occurrences from further analysis.
 We integrated the occurrence records from our plant-pollinator communities to the cleaned occurrences retrieved from GBIF.
 
-We retrieved environmental data from WorldClim V2.0, which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
+To obtain the second type of information, we retrieved environmental data from WorldClim V2.0, which includes 19 bioclimatic variables commonly used in species distribution modelling [@fick_worldclim_2017]. 
 We then complemented data obtained from WorldClim with data from Envirem [@title_envirem_2017], which includes 16 extra bioclimatic and two topographic variables. 
 The additional set of variables from Envirem are relevant to ecological or physiological processes and thus have the potential to improve our suitability estimation [@title_envirem_2018]. 
 We obtained all environmental data as rasters composed by cells of 2.5 arc-minutes. 
-We chose this resolution because it provides a reasonable match to the locational accuracy of the species occurrences found in GBIF, particularly those that originate from preserved specimens in museum collections. 
 
 After obtaining information about species occurrence and the environment, we then merged these two datasets such that a vector with details of our 37 bioclimatic and topographic variables characterised the location of each occurrence. 
 Sets of occurrence data tend to be spatially aggregated due to sample bias (tendency to collect close to cities, certain countries). 
@@ -282,7 +281,7 @@ A first model, our baseline model, included five variables.
 <!-- fixed variables (population-level predictors) and two random variables (grouping levels). -->
 The predictors in the baseline model were the environmental stress of the community for each focal species, the species' number of known possible partners in the community, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
 We included the number of known possible partners as a predictor in our models as it allows us to control for the effects of the environment on community composition, effectively accounting for species co-occurrence. 
-We calculated this metric by determining the number of partners with which the species is known to interact in any other community and assessing how mant of these potential partners are present in the local community.
+We determined the number of possible partners in a particular community by counting the number of species in the opposite guild with which the species interacted in any other community in our interaction dataset.
 Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance. 
 Often, the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.
 
@@ -291,10 +290,10 @@ This approach allowed us to investigate two questions.
 First, it allows us to inspect the extent to which environmental stress affects species similarly. 
 Second, by investigating the correlation between the intercept and the slope as a model parameter, it allowed us to inspect the extent by which species with a small or large number of partner species respond to increasing levels of environmental stress. 
 To account for unmeasured differences between communities, like sampling effort, sampling method, or diversity, we also allowed the model intercept to be different for each community in our study.
-To facilitate model interpretation and convergence, we scaled all continuous variables to have a mean of zero and a unit variance. 
+To facilitate model interpretation and convergence, we scaled all continuous predictor variables to have a mean of zero and a unit variance. 
 
 We compared this baseline model with three alternative models in which we removed one predictor at a time.
-To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC).
+To quantify the difference between models, in terms of their expected out-of-sample performance, we use the Wanatabe-Akaike information criterion (WAIC); as with other information criteria, the smaller the WAIC the better the performance.
 All models were fitted under a Bayesian framework using the R package `brms` `r as.character(packageVersion('brms'))` [@burkner_brms_2017; @burkner_advanced_2018] as an interface for Stan [@carpenter_stan_2017]. 
 For each model, we used four Markov chains of 4,000 iterations each; we used half of the iterations for warmup.
 We used weakly informative priors for all model parameters. 
@@ -349,7 +348,7 @@ fig_conditional_effects_legend <-
   paste0("Conditional effects of predictors in our baseline model. The shown values are based on predictions for a hypothetical community with ",
          median_n_pla, " plants and ", 
          median_n_ani, " pollinators",
-         ". These values correspond to the median number of species in each guild across communities. In each panel, we condition on the mean value of the other predictor in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance; however, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between the guild and the number of possible interactions, we only show the conditional effect of pollinators.")
+         ". These values correspond to the median number of species in each guild across communities. In each panel, we condition on the mean value of the other predictors in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance; however, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between the guild and the number of possible interactions, we only show the conditional effect of pollinators.")
 
 readd(fig_conditional_effects)
 ```
@@ -375,10 +374,10 @@ model_ranking$waic %>%
 ```
 
 For some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
-Interestingly, the slope of this relationship was correlated with the species' specialisation intercept in the model (Figure \@ref(fig:fig-random-effects)b and c; the mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`]).
-This correlation indicates that the slope of the stress-specialisation relationship was more likely to be positive for species with many partners under average stress conditions (and negative for species fewer partners).
+Interestingly, the slope of this relationship was correlated with the species' specialisation intercept in the model (Figure \@ref(fig:fig-random-effects)b and c). The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`] (95% credible intervals shown within square brackets).
+This correlation indicates that the slope of the stress-specialisation relationship was more likely to be positive for species with many partners under average stress conditions (and more likely to be negative for species fewer partners).
 Recall that the model estimates the intercept of the number of partners for each species at the mean value for stress across communities (`r round(readd(mean_parameter_values)$suitability, 2)`).
-Extrapolating to no-stress conditions this means that species that would interact with few partners under no stress are more likely to interact with more partners as stress increases, whereas those that would interact with many partners are more likely to interact fewer.
+Extrapolating to no-stress conditions this means that species that would interact with few partners under no stress are more likely to interact with more partners as stress increases, whereas those that would interact with many partners are more likely to interact with fewer.
 
 ```{r fig-random-effects, fig.width = width('double'), fig.height = 2.2*2, fig.cap = fig_random_effects_legend, out.width = "6.81in", out.height = "4.4in", out.extra="center"}
 loadd(random_species_draws)
@@ -399,7 +398,7 @@ fig_random_effects_legend <-
   paste0("Species-level effects of environmental stress (a) Conditional effect of stress for individual species. Each line corresponds to the median relationship for each species. Although we included in the analysis all species that are present in two or more communities, to facilitate visualisation here, we show only species present in at least six communities (", 
          n_random_pla, " plants and ", 
          n_random_ani, " pollinators). As in the previous figure, fitted values assume a hypothetical community of median size. In each panel, we highlight two species for which the relationship between environmental suitability and the normalised degree was particularly strong. ", 
-         "(b and c) There was a positive correlation between the species' intercept and the species' stress-specialisation slope. The species' intercept can be interpreted as the number of partners a species would have under mean levels of environmental stress.")
+         "(b and c) There was a positive correlation between the species' intercept and the species' stress-specialisation slope.")
 
 readd(fig_random_effects)
 ```
@@ -410,7 +409,7 @@ This result indicates that the availability of potential partners—this is, com
 Importantly, our findings relating to the variability of the stress-specialisation relationship were qualitatively unchanged, whether we accounted for community composition or not. 
 
 The standard deviation (in the parameters scale) of the community intercepts was `r round(sd_loc_id$Estimate, 2)` [`r round(sd_loc_id$Q2.5, 2)`, `r round(sd_loc_id$Q97.5, 2)`] which indicates the importance of the local context when determining specialisation. 
-The standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' stress slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] (95% credible intervals shown within square brackets). 
+The standard deviation of the species intercept was `r round(sd_org_id$Estimate, 2)` [`r round(sd_org_id$Q2.5, 2)`, `r round(sd_org_id$Q97.5, 2)`], and that of the species' stress slope was `r round(sd_org_id_suitability$Estimate, 2)` [`r round(sd_org_id_suitability$Q2.5, 2)`, `r round(sd_org_id_suitability$Q97.5, 2)`] . 
 
 # Discussion 
 
@@ -421,7 +420,7 @@ Based on existing literature, we proposed two alternative hypotheses of how envi
 Species with many partners in low-stress communities were more likely to have a negative relationship and hence reduce the number of partners as stress increases. 
 Contrastingly, species in our datasets with few partners in low-stress communities were more likely to interact with more partners in more stressful communities.
 
-Our results suggest that changes in community composition are indeed the primary channel through which the environment determines changes interaction probability, and this is a common mechanism through which ecological networks respond to environmental change [@tylianakis_ecological_2017]. 
+Our results suggest that changes in community composition are indeed the primary channel through which the environment determines changes in interaction probability, and this is a common mechanism through which ecological networks respond to environmental change [@tylianakis_ecological_2017]. 
 However, they also show that, for a large number of species, the environment may also play a substantial role in determining their level of specialisation. 
 Previous research has recognised that environmental factors may help explain the changes in network structure along environmental gradients that cannot be explained by community composition [@tylianakis_habitat_2007].
 However, how these two factors were linked had been elusive so far [@gravel_bringing_2018]. 
@@ -432,10 +431,10 @@ Recent research suggests that species are continuously changing their interactio
 So far it appears that this rewiring is primarily driven by generalist species [@ponisio_opportunistic_2017; @burkle_plant-pollinator_2013], presumably because generalist species are less sensitive to trait matching of their interaction partners [@caradonna_interaction_2017].
 Our results add two important nuances to these findings. 
 First, because "generalists" seem to focus on fewer partners as environmental conditions deteriorate, we show that trait matching might still play a role in determining the  less-flexible core interactions of generalist species. 
-Second, and most importantly, our results suggest that only a small proportion of species are "true generalists" or "true specialists" this is, species that interact with a large or small number of partners regardless of the environmental stress, respectively. 
+Second, and most importantly, our results suggest that only a small proportion of species are "true generalists" or "true specialists"; that is, species that interact with a large or small number of partners regardless of the environmental stress, respectively. 
 This pattern implies that rewiring is not exclusive to species with many partners. 
 Instead, at least a fraction of the species that appear to be specialist *in their communities* might be as flexible, if not more, than those with a large number of partners, effectively behaving as facultative generalists in the face of environmental change. 
-These flexible "specialists" might therefore have a more significant role in network persistence than previously expected.
+These "flexible specialists" might therefore have a more significant role in network persistence than previously expected.
 
 \R{regression-to-the-mean}In our model, we can roughly divide species between true specialists, true generalists, and flexible species. 
 However, there is a fourth group that remained invisible to our model but has important implications for network persistence and stability.
@@ -455,7 +454,7 @@ Answering this question would require expanding our suitability analysis to all 
 
 In conclusion, we show that the environment can affect the specialisation level of plants and pollinators in systematic ways beyond community composition. 
 Species that are inflexible with their interaction partners are unlikely to persist under more stressful environmental conditions. 
-However, we show that many species are flexible in regards to their specialisation levels and therefore are not inherently generalists or specialists. 
+However, we show that many species are flexible with regards to their specialisation levels and therefore are not inherently generalists or specialists. 
 Instead, the species' level of specialisation/generalisation should be considered on a relative scale depending on environmental stress at a given location. 
 
 # Acknowledgements
