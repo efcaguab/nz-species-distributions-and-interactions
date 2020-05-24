@@ -147,7 +147,7 @@ most_popular_species <- readd(fig_dist_species_multiple_locations_data) %>%
   arrange(guild) 
 
 fig_dist_species_multiple_locations_legend <- 
-  paste0("Frequency distribution of the number of locations in which a species is present. The most common pollinator species was *", 
+  paste0("Inverse cummulative distribution of the number of locations in which a species is present. The most common pollinator species was *", 
        most_popular_species$sp_name[1], 
        "*, which was sampled at ", 
        most_popular_species$n_locations[1], 
