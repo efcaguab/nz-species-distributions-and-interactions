@@ -1,5 +1,5 @@
 ---
-title: "Environment affects specialisation of plants and pollinators"
+title: "Environmental stress drives plant and pollinator specialisation"
 subtitle: "Supplementary information"
 author: "E. Fernando Cagua, Audrey Lustig, Jason M. Tylianakis, Daniel B. Stouffer"
 bibliography: 
