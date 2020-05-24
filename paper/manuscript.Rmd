@@ -282,8 +282,7 @@ A first model, our baseline model, included five variables.
 The predictors in the baseline model were the environmental stress of the community for each focal species, the species' number of known possible partners in the community, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
 We included the number of known possible partners as a predictor in our models as it allows us to control for the effects of the environment on community composition, effectively accounting for species co-occurrence. 
 We determined the number of possible partners in a particular community by counting the number of species in the opposite guild with which the species interacted in any other community in our interaction dataset.
-Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance. 
-Often, the potential and the actual number of partners is the same or very close to each other, especially for rare species present only in a few communities.
+Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance.
 
 We allowed the intercept and slope of the stress-specialisation relationship to vary among species. 
 This approach allowed us to investigate two questions. 
