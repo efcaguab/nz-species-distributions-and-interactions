@@ -327,7 +327,7 @@ waic_se_diff_suitability <- sqrt(nrow(waic_comp_suitability) * var(waic_comp_sui
 
 Our models performed relatively well.
 The Bayesian R^2^ for our baseline model was `r round(bayesian_r2_baseline[1], digits = 2)`, which indicates that our models were able to capture a large proportion of the variability on the data. 
-Environmental stress was still an important predictor in our model. 
+Environmental stress was an important predictor in our model. 
 The difference in WAIC between our baseline model and the model that did not include environmental stress was `r round(waic_diff_suitability)` ± `r round(waic_se_diff_suitability)` (Table \@ref(tab:tab-model-comparison)).
 
 We found that some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
