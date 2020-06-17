@@ -330,8 +330,29 @@ The Bayesian R^2^ for our baseline model was `r round(bayesian_r2_baseline[1], d
 Environmental stress was an important predictor in our model. 
 The difference in WAIC between our baseline model and the model that did not include environmental stress was `r round(waic_diff_suitability)` ± `r round(waic_se_diff_suitability)` (Table \@ref(tab:tab-model-comparison)).
 
-We found that some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
-Interestingly, the slope of these relationships was correlated with the species' specialisation intercepts in the model (Figure \@ref(fig:fig-random-effects)b and c). The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`] (95% credible intervals shown within square brackets).
+```{r tab-model-comparison}
+model_ranking$waic %>%
+  purrr::map(~.$estimates["waic", ]) %>% 
+  purrr::map_df(~tibble::tibble(estimate = .[1], se = .[2]), .id = "formula") %>%
+  dplyr::arrange(estimate) %>%
+  dplyr::filter(formula != "formula_full") %>%
+  dplyr::mutate(formula = translate_model_formula(formula, "long-abv"), 
+                formula = kableExtra::cell_spec(formula, format = "latex", 
+                                                bold =nchar(formula) == max(nchar(formula)))) %>% 
+  knitr::kable("latex", 
+               booktabs = TRUE, 
+               digits = c(0,0,0), 
+               format.args = list(big.mark = ","), 
+               col.names = c("predictors", "WAIC", "SE"),
+               escape = FALSE,
+               linesep = "",
+               caption = "Comparison in out of sample predictive power of the baseline model (bold) and their alternatives. We rank models by their expected log predictive density based on their Wanatabe-Akaike information criterion (WAIC).") %>%
+  kableExtra::kable_styling(font_size = 8) #%>%
+```
+
+We found that for some species, there is a strong negative relationship between stress and specialisation, while for others, there is a strong positive relationship (Figure \@ref(fig:fig-random-effects)a). 
+Interestingly, the slope of these relationships was correlated with the species' specialisation intercepts in the model (Figure \@ref(fig:fig-random-effects)b and c). 
+The mean correlation coefficient was `r round(random_cor$Estimate, 2)` [`r round(random_cor$Q2.5, 2)`, `r round(random_cor$Q97.5, 2)`] (95% credible intervals shown within square brackets).
 This correlation indicates that the slope of the stress-specialisation relationship was more likely to be positive for species with many partners under average stress conditions (and more likely to be negative for species fewer partners).
 Recall that the model estimates the intercept of the number of partners for each species at the mean value for stress across communities (`r round(readd(mean_parameter_values)$suitability, 2)`).
 Species that would interact with few partners  under no stress are more likely to interact with more partners as stress increases, whereas those that would interact with many partners are more likely to interact with fewer.
@@ -360,8 +381,8 @@ fig_random_effects_legend <-
 readd(fig_random_effects)
 ```
 
-The the variability of the specialisation-stress relationship across species was also evident when looking at overall patterns. 
-We found that environmental stress does not have a consistent effect across species. 
+The variability of the specialisation-stress relationship across species was also evident when looking at overall patterns.
+We found that environmental stress does not have a consistent effect across species.
 Indeed, when looking at the fixed effects, stress has virtually no relationship with the normalised degree—our metric of specialisation (Figure \@ref(fig:fig-conditional-effects)a). 
 
 ```{r fig-conditional-effects, fig.width = width('single'), fig.height = 2.2*1.5, fig.cap = fig_conditional_effects_legend}
@@ -382,26 +403,6 @@ fig_conditional_effects_legend <-
          ". These values correspond to the median number of species in each guild across communities. In each panel, we condition on the mean value of the other predictors in the model. We indicate mean values for each predictor with a vertical dashed line. For model fitting, we scaled all predictors to have a mean of zero and unit variance; however, here we show the unscaled predictors to facilitate interpretation. To illustrate the uncertainty around the fitted estimates, we plot the fits of 100 independent draws from the posterior distribution. The thick lines indicate the mean values of the response distribution. As there was no interaction between the guild and the number of possible interactions, we only show the conditional effect of pollinators.")
 
 readd(fig_conditional_effects)
-```
-
-```{r tab-model-comparison}
-model_ranking$waic %>%
-  purrr::map(~.$estimates["waic", ]) %>% 
-  purrr::map_df(~tibble::tibble(estimate = .[1], se = .[2]), .id = "formula") %>%
-  dplyr::arrange(estimate) %>%
-  dplyr::filter(formula != "formula_full") %>%
-  dplyr::mutate(formula = translate_model_formula(formula, "long-abv"), 
-                formula = kableExtra::cell_spec(formula, format = "latex", 
-                                                bold =nchar(formula) == max(nchar(formula)))) %>% 
-  knitr::kable("latex", 
-               booktabs = TRUE, 
-               digits = c(0,0,0), 
-               format.args = list(big.mark = ","), 
-               col.names = c("predictors", "WAIC", "SE"),
-               escape = FALSE,
-               linesep = "",
-               caption = "Comparison in out of sample predictive power of the baseline model (bold) and their alternatives. We rank models by their expected log predictive density based on their Wanatabe-Akaike information criterion (WAIC).") %>%
-  kableExtra::kable_styling(font_size = 8) #%>%
 ```
 
 As expected, we found a strong and positive relationship between the number of possible interactions and the number of realised interactions in the community (i.e. species that were capable of being generalists tended to realise this generality at all locations).
