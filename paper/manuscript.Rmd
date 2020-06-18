@@ -280,13 +280,15 @@ We are aware that whether species interact or not is not a Bernoulli process as 
 However, the use of a binomial distribution allows us to account for the differences in species richness across communities indirectly. 
 Importantly, results are qualitatively similar when we model species degree directly using a Poisson distribution and a logarithmic link function.
 
-We evaluated four models to assess the relative importance of stress for each focal species.  
+We evaluated four models to assess the relative importance of stress for each focal species. 
+
 A first model, our baseline model, included five variables. 
-<!-- fixed variables (population-level predictors) and two random variables (grouping levels). -->
 The predictors in the baseline model were the environmental stress of the community for each focal species, the species' number of known possible partners in the community, and both the species guild (plant or a pollinator) and its interaction with environmental stress.
-We included the number of known possible partners as a predictor in our models as it allows us to control for the effects of the environment on community composition, effectively accounting for species co-occurrence. 
-We determined the number of possible partners in a particular community by counting the number of species in the opposite guild with which the species interacted in any other community in our interaction dataset.
-Controlling for the number of potential partners makes our model a particularly stringent test of our environmental-stress hypotheses because this variable could explain a large proportion of variance.
+We included the number of known possible partners as a predictor in our models. 
+We included this predictor as we would expect an increase in the number of actual partners merely due to an increase in the number of available partners.
+From a community ecology perspective, this is justified because our response variable can be interpreted as the "realised" portion of the niche, and the number of potential partners is a rough approximation to the "fundamental" niche. 
+From a biogeographic perspective, including the number of potential partners is an attempt to control for the effects of the environment on community composition and species co-occurrence. 
+We determined the number of possible partners in a particular community by counting the number of species in the opposite guild with which the species interacted in any other community in our interaction dataset. 
 
 We allowed the intercept and slope of the stress-specialisation relationship to vary among species. 
 This approach allowed us to investigate two questions. 
